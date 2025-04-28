@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34511.84
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuickHire.Infrastructure", "QuickHire.Infrastructure.csproj", "{257C904D-FE9D-4496-BD83-8E5F7FCAA615}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{257C904D-FE9D-4496-BD83-8E5F7FCAA615}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{257C904D-FE9D-4496-BD83-8E5F7FCAA615}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{257C904D-FE9D-4496-BD83-8E5F7FCAA615}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{257C904D-FE9D-4496-BD83-8E5F7FCAA615}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7BD1F0DB-2683-4D55-BFAD-0B0887260B77}
+	EndGlobalSection
+EndGlobal

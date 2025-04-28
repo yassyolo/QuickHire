@@ -1,4 +1,4 @@
-@QuickHire.Api_HostAddress = http://localhost:5056
+@QuickHire.Api_HostAddress = http://localhost:5084
 
 GET {{QuickHire.Api_HostAddress}}/weatherforecast/
 Accept: application/json
