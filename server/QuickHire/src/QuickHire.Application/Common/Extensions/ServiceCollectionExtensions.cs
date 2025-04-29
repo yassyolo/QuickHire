@@ -7,23 +7,21 @@ namespace QuickHire.Application.Common.Extensions;
 
 public static class ServiceCollectionExtensions
 {
-    public static IServiceCollection AddApplication(this IServiceCollection services)
+    public static IServiceCollection AddApplication(this IServiceCollection services, Assembly assembly)
     {
-        services.AddMediator()
-            .AddPipelineBehaviors();
+        services.AddMediator(assembly);
         return services;
     }
-    private static IServiceCollection AddMediator(this IServiceCollection services)
+    private static IServiceCollection AddMediator(this IServiceCollection services, Assembly assembly)
     {
-        services.AddMediatR(Assembly.GetExecutingAssembly());
+        services.AddMediatR(config =>
+        {
+            config.RegisterServicesFromAssembly(assembly);
+            config.AddOpenBehavior(typeof(ValidationBehavior<,>));
+            config.AddOpenBehavior(typeof(LoggingBehavior<,>));
+            config.AddOpenBehavior(typeof(PerformanceBehavior<,>));
+        });
         return services;
     }
 
-    public static IServiceCollection AddPipelineBehaviors(this IServiceCollection services)
-    {
-        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
-        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
-        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(PerformanceBehavior<,>));
-        return services;
-    }
 }

@@ -1,8 +1,7 @@
 ﻿using QuickHire.Infrastructure.Extensions;
 using static QuickHire.Infrastructure.Extensions.ServiceCollectionExtensions;
 using static QuickHire.Application.Common.Extensions.ServiceCollectionExtensions;
-using Microsoft.EntityFrameworkCore;
-using QuickHire.Infrastructure.Persistence;
+using System.Reflection;
 namespace QuickHire.Api.Extensions;
 
 internal static class ServiceCollectionExtensions
@@ -16,9 +15,9 @@ internal static class ServiceCollectionExtensions
         return services;
     }
 
-    public static IServiceCollection RegisterApplication(this IServiceCollection services)
+    public static IServiceCollection RegisterApplication(this IServiceCollection services, Assembly assembly)
     {
-        services.AddApplication();
+        services.AddApplication(assembly);
         return services;
     }
 }

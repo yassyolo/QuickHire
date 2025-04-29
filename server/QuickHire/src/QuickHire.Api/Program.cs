@@ -1,26 +1,18 @@
-using MediatR;
-using Microsoft.EntityFrameworkCore;
+using QuickHire.Api.Exceptions;
 using QuickHire.Api.Extensions;
-using QuickHire.Infrastructure.Persistence;
-using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+var assembly = typeof(Program).Assembly;
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.RegisterInfrastructure(builder.Configuration);
-builder.Services.RegisterApplication();
+builder.Services.RegisterApplication(assembly);
 builder.Services.AddAuthorization();
 
-//var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-
-//builder.Services.AddDbContext<ApplicationDbContext>(options =>
-//{
-//    options.UseSqlServer(connectionString);
-//});
+builder.Services.AddExceptionHandler<CustomExceptionHandling>();
 
 var app = builder.Build();
 
