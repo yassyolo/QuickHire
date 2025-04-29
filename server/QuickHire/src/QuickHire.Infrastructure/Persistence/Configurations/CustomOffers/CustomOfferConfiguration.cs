@@ -28,10 +28,6 @@ internal class CustomOfferConfiguration : IEntityTypeConfiguration<CustomOffer>
 
         builder.Property(x => x.ExpiresInDays).IsRequired();
 
-        builder.Property(x => x.BuyerId).IsRequired();
-
-        builder.Property(x => x.SellerId).IsRequired();
-
         builder.Property(x => x.CreatedAt).IsRequired();
 
         builder.Property(x => x.RejectionReason).HasMaxLength(RejectionReasonMaxLength);

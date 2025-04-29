@@ -19,7 +19,5 @@ internal class PortfolioConfiguration : IEntityTypeConfiguration<Portfolio>
         builder.Property(x => x.Description).IsRequired().HasMaxLength(DescriptionMaxLength);
 
         builder.Property(x => x.VideoUrl).HasMaxLength(FileUrlMaxLength);
-
-        builder.Property(x => x.UserId).IsRequired();
     }
 }

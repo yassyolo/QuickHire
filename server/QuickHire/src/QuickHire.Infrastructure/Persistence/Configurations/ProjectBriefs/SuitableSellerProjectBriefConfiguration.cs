@@ -15,5 +15,7 @@ internal class SuitableSellerProjectBriefConfiguration : IEntityTypeConfiguratio
         builder.HasOne(x => x.CustomOffer)
             .WithOne()
             .HasForeignKey<SuitableSellerProjectBrief>(x => x.CustomOfferId);
+
+        builder.HasQueryFilter(x => !x.ProjectBrief.IsDeleted);
     }
 }

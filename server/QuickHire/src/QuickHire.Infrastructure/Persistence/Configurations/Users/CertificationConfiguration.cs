@@ -16,7 +16,5 @@ internal class CertificationConfiguration : IEntityTypeConfiguration<Certificati
         builder.Property(x => x.Issuer).IsRequired().HasMaxLength(IssuerMaxLength);
 
         builder.Property(x => x.IssuedAt).IsRequired();
-
-        builder.Property(x => x.UserId).IsRequired();
     }
 }

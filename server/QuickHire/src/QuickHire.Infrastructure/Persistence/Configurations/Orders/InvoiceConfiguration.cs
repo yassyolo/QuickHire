@@ -14,8 +14,6 @@ internal class InvoiceConfiguration : IEntityTypeConfiguration<Invoice>
 
         builder.Property(x => x.InvoiceNumber).IsRequired().HasMaxLength(CustomItemNumberMaxLength);
 
-        builder.Property(x => x.UserId).IsRequired();
-
         builder.Property(x => x.CreatedAt).IsRequired();
 
         builder.Property(x => x.TotalAmount).IsRequired().HasPrecision(8, 2);

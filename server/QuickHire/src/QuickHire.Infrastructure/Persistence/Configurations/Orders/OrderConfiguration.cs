@@ -19,10 +19,6 @@ internal class OrderConfiguration : IEntityTypeConfiguration<Order>
             .WithOne()
             .HasForeignKey<Order>(x => x.SelectedPaymentPlanId);
 
-        builder.Property(x => x.BuyerId).IsRequired();
-
-        builder.Property(x => x.SellerId).IsRequired();
-
         builder.Property(x => x.CreatedAt).IsRequired();
 
         builder.Property(x => x.Status)

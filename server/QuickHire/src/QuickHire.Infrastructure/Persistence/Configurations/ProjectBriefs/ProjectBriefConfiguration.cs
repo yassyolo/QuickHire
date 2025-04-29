@@ -32,8 +32,6 @@ internal class ProjectBriefConfiguration : IEntityTypeConfiguration<ProjectBrief
             .WithMany()
             .HasForeignKey(x => x.SubCategoryId);
 
-        builder.Property(x => x.BuyerId).IsRequired();
-
         builder.Property(x => x.CreatedAt).IsRequired();
 
         builder.Property(x => x.Status)

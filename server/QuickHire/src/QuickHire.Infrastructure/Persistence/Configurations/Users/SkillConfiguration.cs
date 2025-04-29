@@ -15,8 +15,6 @@ internal class SkillConfiguration : IEntityTypeConfiguration<Skill>
 
         builder.Property(x => x.Name).IsRequired().HasMaxLength(NameMaxLength);
 
-        builder.Property(x => x.UserId).IsRequired();
-
         builder.Property(x => x.Level)
             .IsRequired()
             .HasConversion(x => x.ToString(),

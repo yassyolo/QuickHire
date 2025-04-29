@@ -12,10 +12,13 @@ internal class BrowsingHistoryConfiguration : IEntityTypeConfiguration<BrowsingH
 
         builder.HasOne(x => x.Gig)
             .WithMany()
-            .HasForeignKey(x => x.GigId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .HasForeignKey(x => x.GigId);
 
-        builder.Property(x => x.UserId).IsRequired();
+        builder.HasOne(x => x.Buyer)
+            .WithMany(x => x.BrowsingHistories)
+            .HasForeignKey(x => x.BuyerId);
+
+        builder.HasQueryFilter(x => !x.Gig.IsDeleted);
         
         builder.Property(x => x.ViewedAt).IsRequired();
     }

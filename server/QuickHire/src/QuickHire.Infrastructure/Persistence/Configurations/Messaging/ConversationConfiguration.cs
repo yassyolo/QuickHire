@@ -10,10 +10,6 @@ internal class ConversationConfiguration : IEntityTypeConfiguration<Conversation
     {
         builder.HasKey(x => x.Id);
 
-        builder.Property(x => x.BuyerId).IsRequired();
-
-        builder.Property(x => x.SellerId).IsRequired();
-
         builder.Property(x => x.CreatedAt).IsRequired();
 
         builder.Property(x => x.LastMessageAt).IsRequired();

@@ -13,7 +13,11 @@ internal class BillingDetailsConfiguration : IEntityTypeConfiguration<BillingDet
 
         builder.Property(x => x.FullName).IsRequired().HasMaxLength(FullNameMaxLength);
 
-        builder.Property(x => x.AddressId).IsRequired();
+        builder.HasOne(x => x.Address)
+            .WithOne()
+            .HasForeignKey<BillingDetails>(x => x.AddressId);
+
+        builder.HasQueryFilter(x => !x.Address.IsDeleted);
 
         builder.Property(x => x.CompanyName).HasMaxLength(CompanyNameMaxLength);
     }

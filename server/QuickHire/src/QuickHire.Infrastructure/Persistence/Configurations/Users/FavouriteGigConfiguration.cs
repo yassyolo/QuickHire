@@ -21,5 +21,7 @@ internal class FavouriteGigConfiguration : IEntityTypeConfiguration<FavouriteGig
         builder.HasOne(x => x.FavouriteGigsList)
             .WithMany(x => x.FavouriteGigs)
             .HasForeignKey(x => x.FavouriteGigsListId);
+
+        builder.HasQueryFilter(x => !x.Gig.IsDeleted);
     }
 }

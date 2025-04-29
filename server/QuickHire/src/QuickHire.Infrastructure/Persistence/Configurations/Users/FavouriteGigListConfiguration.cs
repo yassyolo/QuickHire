@@ -15,8 +15,6 @@ internal class FavouriteGigListConfiguration : IEntityTypeConfiguration<Favourit
 
         builder.Property(x => x.Description).HasMaxLength(DescriptionMaxLength);
 
-        builder.Property(x => x.UserId).IsRequired();
-
         builder.Property(x => x.CreatedAt).IsRequired();
     }
 }

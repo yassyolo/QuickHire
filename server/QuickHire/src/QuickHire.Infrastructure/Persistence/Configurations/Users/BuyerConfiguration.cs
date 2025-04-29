@@ -16,32 +16,28 @@ internal class BuyerConfiguration : IEntityTypeConfiguration<Buyer>
             .WithOne()
             .HasForeignKey<Buyer>(x => x.BillingDetailsId);
 
-        builder.HasMany(x => x.BrowsingHistory)
-            .WithOne()
-            .HasForeignKey(x => x.UserId);
-
         builder.HasMany(x => x.FavouriteGigsLists)
-           .WithOne()
-           .HasForeignKey(x => x.UserId);
+           .WithOne(x => x.Buyer)
+           .HasForeignKey(x => x.BuyerId);
 
         builder.HasMany(x => x.Invoices)
-           .WithOne()
-           .HasForeignKey(x => x.UserId);
+           .WithOne(x => x.Buyer)
+           .HasForeignKey(x => x.BuyerId);
 
         builder.HasMany(x => x.Conversations)
-           .WithOne()
+           .WithOne(x => x.Buyer)
            .HasForeignKey(x => x.BuyerId);
 
         builder.HasMany(x => x.PlacedOrders)
-           .WithOne()
+           .WithOne(x => x.Buyer)
            .HasForeignKey(x => x.BuyerId);
 
         builder.HasMany(x => x.CustomOffers)
-           .WithOne()
+           .WithOne(x => x.Buyer)
            .HasForeignKey(x => x.BuyerId);
 
         builder.HasMany(x => x.ProjectBriefs)
-           .WithOne()
+           .WithOne(x => x.Buyer)
            .HasForeignKey(x => x.BuyerId);
     }
 }
