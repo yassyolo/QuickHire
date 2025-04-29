@@ -7,6 +7,7 @@ public class Certification : BaseSoftDeletableEntity<int>
     public string Name { get; set; } = string.Empty;
     public string Issuer { get; set; } = string.Empty;
     public DateTime IssuedAt { get; set; } 
-    public string UserId { get; set; } = string.Empty;
+    public int SellerId { get; set; }
+    public Seller Seller { get; set; } = null!;
 }
 

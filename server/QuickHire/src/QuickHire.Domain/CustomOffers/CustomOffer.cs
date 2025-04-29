@@ -4,6 +4,7 @@ using QuickHire.Domain.Messaging;
 using QuickHire.Domain.Orders;
 using QuickHire.Domain.ProjectBriefs;
 using QuickHire.Domain.Shared.Implementations;
+using QuickHire.Domain.Users;
 
 namespace QuickHire.Domain.CustomOffers;
 
@@ -15,8 +16,10 @@ public class CustomOffer : BaseSoftDeletableEntity<int>
     public int Revisions { get; set; }
     public int DeliveryTimeInDays { get; set; }
     public int ExpiresInDays { get; set; }
-    public string BuyerId { get; set; } = string.Empty;
-    public string SellerId { get; set; } = string.Empty;
+    public int BuyerId { get; set; } 
+    public Buyer Buyer { get; set; } = null!;
+    public int SellerId { get; set; }
+    public Seller Seller { get; set; } = null!;
     public IEnumerable<PaymentPlanInclude> InclusiveServices { get; set; } = new List<PaymentPlanInclude>();
     public int GigId { get; set; }
     public Gig Gig { get; set; } = null!;

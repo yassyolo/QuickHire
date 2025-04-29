@@ -1,12 +1,15 @@
 ﻿using QuickHire.Domain.Orders;
 using QuickHire.Domain.Shared.Implementations;
+using QuickHire.Domain.Users;
 
 namespace QuickHire.Domain.Messaging;
 
 public class Conversation : BaseSoftDeletableEntity<int>
 {
-    public string BuyerId { get; set; } = string.Empty;
-    public string SellerId { get; set; } = string.Empty;
+    public int BuyerId { get; set; } 
+    public Buyer Buyer { get; set; } = null!;
+    public int SellerId { get; set; } 
+    public Seller Seller { get; set; } = null!;
     public DateTime CreatedAt { get; set; } 
     public DateTime LastMessageAt { get; set; } 
     public bool IsStarredByBuyer { get; set; }

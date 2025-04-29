@@ -3,6 +3,7 @@ using QuickHire.Domain.Gigs;
 using QuickHire.Domain.Messaging;
 using QuickHire.Domain.Orders.Enums;
 using QuickHire.Domain.Shared.Implementations;
+using QuickHire.Domain.Users;
 
 namespace QuickHire.Domain.Orders;
 
@@ -15,8 +16,10 @@ public class Order : BaseSoftDeletableEntity<int>
     public CustomOffer? CustomOffer { get; set; }
     public int SelectedPaymentPlanId { get; set; } 
     public PaymentPlan? SelectedPaymentPlan { get; set; } = null;
-    public string BuyerId { get; set; } = string.Empty;
-    public string SellerId { get; set; } = string.Empty;
+    public int BuyerId { get; set; } 
+    public Buyer Buyer { get; set; } = null!;
+    public int SellerId { get; set; } 
+    public Seller Seller { get; set; } = null!;
     public DateTime CreatedAt { get; set; }
     public DateTime? DeliveredAt { get; set; }  
     public OrderStatus Status { get; set; }

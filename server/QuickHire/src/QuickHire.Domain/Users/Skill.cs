@@ -7,5 +7,6 @@ public class Skill : BaseSoftDeletableEntity<int>
 {
     public string Name { get; set; } = string.Empty;
     public SkillLevel Level { get; set; } 
-    public string UserId { get; set; } = string.Empty;
+    public int SellerId { get; set; }
+    public Seller Seller { get; set; } = null!;
 }

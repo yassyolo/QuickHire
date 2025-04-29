@@ -11,7 +11,7 @@ public class Buyer : BaseEntity<int>
     public string UserId { get; set; } = string.Empty;
     public int? BillingDetailsId { get; set; }
     public BillingDetails? BillingDetails { get; set; } 
-    public IEnumerable<BrowsingHistory>? BrowsingHistory { get; set; }
+    public IEnumerable<BrowsingHistory>? BrowsingHistories { get; set; }
     public IEnumerable<FavouriteGigsList>? FavouriteGigsLists { get; set; }
     public IEnumerable<Invoice>? Invoices { get; set; }   
     public IEnumerable<Conversation>? Conversations { get; set; }

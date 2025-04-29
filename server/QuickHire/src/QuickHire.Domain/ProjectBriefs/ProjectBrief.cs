@@ -2,6 +2,7 @@
 using QuickHire.Domain.CustomOffers;
 using QuickHire.Domain.ProjectBriefs.Enums;
 using QuickHire.Domain.Shared.Implementations;
+using QuickHire.Domain.Users;
 
 namespace QuickHire.Domain.ProjectBriefs;
 
@@ -16,7 +17,8 @@ public class ProjectBrief : BaseSoftDeletableEntity<int>
     public MainCategory MainCategory { get; set; } = null!;
     public int SubCategoryId { get; set; }
     public SubCategory SubCategory { get; set; } = null!;
-    public string BuyerId { get; set; } = string.Empty;
+    public int BuyerId { get; set; } 
+    public Buyer Buyer { get; set; } = null!;
     public DateTime CreatedAt { get; set; } 
     public DateTime? WithdrawnAt { get; set; }
     public ProjectBriefStatus Status { get; set; }

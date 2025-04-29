@@ -8,10 +8,10 @@ namespace QuickHire.Domain.Users;
 public class Seller : BaseEntity<int>
 {
     public string UserId { get; set; } = string.Empty;
-    public IEnumerable<Portfolio>? Portfolios { get; set; } 
-    public IEnumerable<Certification>? Certifications { get; set; }
-    public IEnumerable<Education>? Educations { get; set; }
-    public IEnumerable<Skill>? Skills { get; set; }
+    public IEnumerable<Portfolio> Portfolios { get; set; } = new List<Portfolio>();
+    public IEnumerable<Certification> Certifications { get; set; } = new List<Certification>();
+    public IEnumerable<Education> Educations { get; set; } = new List<Education>();
+    public IEnumerable<Skill> Skills { get; set; } = new List<Skill>();
     public IEnumerable<Gig>? Gigs { get; set; }
     public IEnumerable<Conversation>? Conversations { get; set; }
     public IEnumerable<Order>? SoldOrders { get; set; }

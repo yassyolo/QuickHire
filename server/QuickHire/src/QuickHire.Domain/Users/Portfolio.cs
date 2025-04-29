@@ -6,8 +6,9 @@ public class Portfolio : BaseSoftDeletableEntity<int>
 {
     public string Title { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
-    public IEnumerable<string> ImageUrls { get; set; } = new List<string>();
+    public string? ImageUrl { get; set; }
     public string? VideoUrl { get; set; } = string.Empty;
-    public string UserId { get; set; } = string.Empty;
+    public int SellerId { get; set; } 
+    public Seller Seller { get; set; } = null!;
 }
 
