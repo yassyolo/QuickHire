@@ -19,6 +19,7 @@ internal class AuthTokenProcessor
     public AuthTokenProcessor(IOptions<JwtOptions> jwtOptions, IHttpContextAccessor httpContext)
     {
         _jwtOptions = jwtOptions.Value;
+        _contextAccessor = httpContext;
     }
 
     public (string jwtToken, DateTime expirationTime) GenerateToken(ApplicationUser user, string[] roles)
@@ -33,7 +34,7 @@ internal class AuthTokenProcessor
         {
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new Claim(JwtRegisteredClaimNames.Sub, user.Id),
-            new Claim(JwtRegisteredClaimNames.Email, user.Email),
+            new Claim(JwtRegisteredClaimNames.Email, user.Email ?? string.Empty),
             new Claim(ClaimTypes.NameIdentifier, Guid.NewGuid().ToString()),
         };
 
@@ -67,7 +68,7 @@ internal class AuthTokenProcessor
 
     public void WriteTokeToCookie(string cookieName, string token, DateTime expiresAt)
     {
-        _contextAccessor.HttpContext.Response.Cookies.Append(cookieName, token,
+        _contextAccessor.HttpContext?.Response.Cookies.Append(cookieName, token,
             new CookieOptions
             {
                 HttpOnly = true,
