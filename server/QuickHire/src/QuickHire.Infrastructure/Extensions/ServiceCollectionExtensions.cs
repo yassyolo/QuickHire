@@ -6,6 +6,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using QuickHire.Application.Common.Interfaces.Repository;
+using QuickHire.Application.Common.Interfaces.Services;
+using QuickHire.Infrastructure.Authentication;
+using QuickHire.Infrastructure.Authentication.Processors;
+using QuickHire.Infrastructure.CloudStorage;
+using QuickHire.Infrastructure.Communication;
+using QuickHire.Infrastructure.Helpers;
 using QuickHire.Infrastructure.Options;
 using QuickHire.Infrastructure.Persistence;
 using QuickHire.Infrastructure.Persistence.Identity;
@@ -109,9 +115,24 @@ public static class ServiceCollectionExtensions
 
     private static IServiceCollection AddOptions(this IServiceCollection services, IConfiguration configuration)
     {
+        services.Configure<CloudinaryOptions>(configuration.GetSection(CloudinaryOptions.CloudinaryOptionsKey));
+
+        services.Configure<SendGridOptions>(configuration.GetSection(SendGridOptions.SendGridOptionsKey));
+
         services.Configure<JwtOptions>(configuration.GetSection(JwtOptions.JwtOptionsKey));
 
         services.Configure<GoogleAuthenticationOptions>(configuration.GetSection(GoogleAuthenticationOptions.GoogleAuthenticationOptionsKey)); 
+
+        return services;
+    }
+
+    private static IServiceCollection AddServices(this IServiceCollection services)
+    {
+        services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IEmailSenderService, EmailSenderService>();
+        services.AddScoped<IAuthTokenProcessor, AuthTokenProcessor>();
+        services.AddScoped<ICloudinaryService, CloudinaryService>();
+        services.AddScoped<IPdfHelper, PdfHelper>();
 
         return services;
     }
