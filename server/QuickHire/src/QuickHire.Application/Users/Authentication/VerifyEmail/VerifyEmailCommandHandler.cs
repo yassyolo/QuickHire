@@ -30,9 +30,9 @@ internal class VerifyEmailCommandHandler : IRequestHandler<VerifyEmailCommand, V
 
         var result = await _userService.VerifyEmailAsync(user.Id, request.model.Token);
 
-        if (!result.Succeeded)
+        if (!result.IsSuccess)
         {
-            throw new BadRequestException("Invalid token", "The provided token is invalid or has expired.");
+            throw new BadRequestException("Invalid token", string.Join(";", result.Errors.Select(x => x.ToString())));
         }
 
         return new VerifyEmailResponseModel

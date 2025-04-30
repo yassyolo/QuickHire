@@ -7,20 +7,20 @@ using static System.Net.WebRequestMethods;
 
 namespace QuickHire.Application.Users.Authentication.Register;
 
-internal class RegisterUserCommandHandler : ICommandHandler<RegisterUserCommand, RegisterUserResponseModel>
+internal class RegisterBuyerCommandHandler : ICommandHandler<RegisterBuyerCommand, RegisterUserResponseModel>
 {
     private readonly IRepository _repository;
     private readonly IUserService _userService;
     private readonly IEmailSenderService _emailSenderService;
 
-    public RegisterUserCommandHandler(IRepository repository, IUserService userService, IEmailSenderService emailSenderService)
+    public RegisterBuyerCommandHandler(IRepository repository, IUserService userService, IEmailSenderService emailSenderService)
     {
         _repository = repository;
         _userService = userService;
         _emailSenderService = emailSenderService;
     }
 
-    public async Task<RegisterUserResponseModel> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
+    public async Task<RegisterUserResponseModel> Handle(RegisterBuyerCommand request, CancellationToken cancellationToken)
     {
         var userExists = await _userService.UserExistsAsync(request.model.Email);
 
@@ -33,7 +33,7 @@ internal class RegisterUserCommandHandler : ICommandHandler<RegisterUserCommand,
 
         if (!createdUserResult.IsSuccess)
         {
-            throw new BadRequestException("User registration failed", createdUserResult.Errors.Select(x => x.ToString().ToArray()));    
+            throw new BadRequestException("User registration failed", string.Join("; ", createdUserResult.Errors.Select(e => e.ToString())));    
         }
 
         var user = await _userService.GetUserByEmailAsync(request.model.Email);

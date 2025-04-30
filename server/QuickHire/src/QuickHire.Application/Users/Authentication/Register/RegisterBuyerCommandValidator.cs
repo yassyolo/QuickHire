@@ -3,9 +3,9 @@ using static QuickHire.Application.Common.Constants.ValidationMessages;
 
 namespace QuickHire.Application.Users.Authentication.Register
 {
-    internal class RegisterUserCommandValidator : AbstractValidator<RegisterUserCommand>
+    internal class RegisterBuyerCommandValidator : AbstractValidator<RegisterBuyerCommand>
     {
-        public RegisterUserCommandValidator()
+        public RegisterBuyerCommandValidator()
         {
             RuleFor(x => x.model.Email)
                 .NotEmpty()

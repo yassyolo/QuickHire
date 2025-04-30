@@ -2,5 +2,5 @@
 
 internal class VerifyEmailResponseModel 
 {
-    internal string Message { get; set; } = string.Empty;    
+    internal string Message { get; set; } = string.Empty;   
 }
