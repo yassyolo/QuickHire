@@ -11,7 +11,7 @@ using JwtRegisteredClaimNames = Microsoft.IdentityModel.JsonWebTokens.JwtRegiste
 
 namespace QuickHire.Infrastructure.Authentication.Processors;
 
-internal class AuthTokenProcessor
+internal class AuthTokenProcessor : IAuthTokenProcessor
 { 
     private readonly JwtOptions _jwtOptions;
     private readonly IHttpContextAccessor _contextAccessor;
@@ -22,7 +22,7 @@ internal class AuthTokenProcessor
         _contextAccessor = httpContext;
     }
 
-    public (string jwtToken, DateTime expirationTime) GenerateToken(ApplicationUser user, string[] roles)
+    public (string jwtToken, DateTime expirationTime) GenerateToken(ApplicationUser user, IList<string> roles)
     {
         var symmetricKey = new SymmetricSecurityKey
                            (Encoding.UTF8.GetBytes(_jwtOptions.Secret));
@@ -35,7 +35,7 @@ internal class AuthTokenProcessor
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new Claim(JwtRegisteredClaimNames.Sub, user.Id),
             new Claim(JwtRegisteredClaimNames.Email, user.Email ?? string.Empty),
-            new Claim(ClaimTypes.NameIdentifier, Guid.NewGuid().ToString()),
+            new Claim(ClaimTypes.NameIdentifier, user.UserName),
         };
 
         foreach (var role in roles)
@@ -69,13 +69,13 @@ internal class AuthTokenProcessor
     public void WriteTokeToCookie(string cookieName, string token, DateTime expiresAt)
     {
         _contextAccessor.HttpContext?.Response.Cookies.Append(cookieName, token,
-            new CookieOptions
-            {
-                HttpOnly = true,
-                Expires = expiresAt,
-                Secure = true,
-                IsEssential = true,
-                SameSite = SameSiteMode.Strict
-            });
+             new CookieOptions
+             {
+                 HttpOnly = true,
+                 Expires = expiresAt,
+                 Secure = true,
+                 IsEssential = true,
+                 SameSite = SameSiteMode.Strict
+             });
     }
 }
