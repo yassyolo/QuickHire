@@ -1,10 +1,10 @@
 ﻿namespace QuickHire.Infrastructure.Options;
 
-internal class SendGridOptions
+public class SendGridOptions
 {
-    internal const string SendGridOptionsKey = "SendGridOptions";
+    public const string SendGridOptionsKey = "SendGridOptions";
 
-    internal string ApiKey { get; set; } = string.Empty;
-    internal string FromEmail { get; set; } = string.Empty;
-    internal string FromName { get; set; } = string.Empty;
+    public string ApiKey { get; set; } = string.Empty;
+    public string FromEmail { get; set; } = string.Empty;
+    public string FromName { get; set; } = string.Empty;
 }

@@ -1,9 +1,9 @@
 ﻿namespace QuickHire.Infrastructure.Options;
 
-internal class CloudinaryOptions
+public class CloudinaryOptions
 {
-    internal const string CloudinaryOptionsKey = "CloudinaryOptions";
-    internal string CloudName { get; set; } = string.Empty;
-    internal string ApiKey { get; set; } = string.Empty;
-    internal string ApiSecret { get; set; } = string.Empty;
+    public const string CloudinaryOptionsKey = "CloudinaryOptions";
+    public string CloudName { get; set; } = string.Empty;
+    public string ApiKey { get; set; } = string.Empty;
+    public string ApiSecret { get; set; } = string.Empty;
 }

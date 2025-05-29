@@ -1,9 +1,9 @@
 ﻿namespace QuickHire.Infrastructure.Options;
 
-internal class GoogleAuthenticationOptions
+public class GoogleAuthenticationOptions
 {
-    internal const string GoogleAuthenticationOptionsKey = "GoogleAuthenticationOptions";
+    public const string GoogleAuthenticationOptionsKey = "GoogleAuthenticationOptions";
 
-    internal string ClientId { get; set; } = string.Empty!;
-    internal string ClientSecret { get; set; } = string.Empty!;
+    public string ClientId { get; set; } = string.Empty!;
+    public string ClientSecret { get; set; } = string.Empty!;
 }
