@@ -5,8 +5,7 @@ using static QuickHire.Application.Common.Constants.LoggingFormats;
 
 namespace QuickHire.Application.Common.Behaviors;
 
-
-internal class PerformanceBehavior<TRequest, TResponse>
+public class PerformanceBehavior<TRequest, TResponse>
     : IPipelineBehavior<TRequest, TResponse>
     where TRequest : notnull
 {

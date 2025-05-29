@@ -1,0 +1,13 @@
+.statistics-data-label {
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--white-color);
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  text-transform: capitalize;
+  background-color: var(--fiverr-green-color);
+  padding: 5px 12px;
+  border-radius: 5px;
+  width: fit-content; 
+}

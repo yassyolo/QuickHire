@@ -1,0 +1,26 @@
+.main-categories-header-dropdown-item{
+    display: flex;
+    flex-direction: column;
+    max-width: 350px;
+
+}
+
+.name-and-subsubcategory-list{
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.item-name{
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--navbar-category-color);
+    text-decoration: none ;
+    display: inline-block;
+}
+
+ul{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}

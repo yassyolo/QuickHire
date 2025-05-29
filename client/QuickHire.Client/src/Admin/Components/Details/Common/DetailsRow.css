@@ -1,0 +1,35 @@
+.detail-row{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  min-width: 47%;
+  align-items: center;
+  background-color: #ececec;
+  padding: 5px 10px;
+  gap: 10px;
+  border-radius: 5px;
+}
+
+.detail-label {
+  font-size: 14px;
+  margin-right: 10px;
+  color: var(--text-grey-color);
+  min-width:90px; 
+  flex-shrink: 0; 
+}
+
+.detail-value {
+  font-size: 16px;
+  color: var(--text-black-color);
+  max-width: 100%;
+  word-break: break-word;
+  flex: 1 1 auto;
+  white-space: normal;
+}
+
+.detail-row-icon {
+  font-size: 16px;
+  color: var(--text-grey-color);
+  margin-right: 10px;
+  flex-shrink: 0; 
+}

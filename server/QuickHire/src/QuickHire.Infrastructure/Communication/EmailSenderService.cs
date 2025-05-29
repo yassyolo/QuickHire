@@ -1,4 +1,5 @@
 ﻿using Azure.Core;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using QuickHire.Application.Common.Interfaces.Services;
 using QuickHire.Application.Users.Models.Authentication;
@@ -16,25 +17,18 @@ internal class EmailSenderService : IEmailSenderService
 {
     private readonly SendGridOptions _sendGridOptions;
 
-    public EmailSenderService(IOptions<SendGridOptions> sendGridOptions)
+    public EmailSenderService(IOptions<SendGridOptions> options)
     {
-        _sendGridOptions = sendGridOptions.Value;
+        _sendGridOptions = options.Value;
     }
 
     public async Task SendEmailAsync(EmailModel emailModel, CancellationToken cancellationToken = default)
     {
-        var key = _sendGridOptions.ApiKey;
-        var client = new SendGridClient(key);
+        var client = new SendGridClient(_sendGridOptions.ApiKey);
         var from = new EmailAddress(_sendGridOptions.FromEmail, _sendGridOptions.FromName);
-        var subject = emailModel.Subject;
         var to = new EmailAddress(emailModel.To, emailModel.To);
-        var msg = MailHelper.CreateSingleEmail(from, to, emailModel.Subject, plainTextContent: subject, htmlContent: subject);
+        var msg = MailHelper.CreateSingleEmail(from, to, emailModel.Subject, plainTextContent: "Please verify your email address by clicking the link.", htmlContent: emailModel.Body);
 
-        var response = await client.SendEmailAsync(msg, cancellationToken);
-
-        if (response.StatusCode != System.Net.HttpStatusCode.OK)
-        {
-            throw new InternalServerErrorException("Failed to send email.", $"Failed to send email to {to}.");
-        }
+        await client.SendEmailAsync(msg, cancellationToken);
     }
 }

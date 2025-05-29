@@ -1,0 +1,28 @@
+.seller-tag{
+    background-color: var(--white-color);
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    gap: 5px;
+}
+
+.seller-tag-icon{
+    width: 20px;
+    height: 20px;
+}
+
+.seller-info{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.seller-tag-title{
+    font-size: 14px;
+    color: var(--black-color);
+    font-weight: 500;
+}
+
+.seller-tag-actions{
+    font-weight: 25px;
+}

@@ -1,0 +1,34 @@
+.admin-table {
+  width: 100%;
+  overflow: visible !important;
+   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.05);
+  background-color: #fff;
+  border: 2px solid #e0e0e0;
+  border-radius: 5px !important;
+}
+
+.table-container {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 1px; 
+}
+
+.table-container thead th {
+  text-align: left;
+  font-size: 14px;
+  font-weight: 600;
+  border-bottom: 1px solid #e0e0e0;
+  color: var(--text-grey-color);
+}
+
+.table-container td {
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.actions-cell {
+    gap: 8px;
+    justify-content: center;
+    align-items: center;
+    min-width: 250px;
+}
+

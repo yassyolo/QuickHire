@@ -1,0 +1,15 @@
+.image-preview-container {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    padding-top: 10px;
+  }
+  
+  .image-preview-container img {
+    max-width: 300px;
+    max-height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 1px solid var(--green-color);
+  }
+  

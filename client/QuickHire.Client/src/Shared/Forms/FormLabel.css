@@ -1,0 +1,5 @@
+.form-label-tooltip {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}

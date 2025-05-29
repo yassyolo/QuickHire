@@ -1,55 +1,51 @@
 ﻿using QuickHire.Application.Common.Interfaces.Abstractions;
-using QuickHire.Application.Common.Interfaces.Repository;
 using QuickHire.Application.Common.Interfaces.Services;
 using QuickHire.Application.Users.Models.Authentication;
 using QuickHire.Domain.Shared.Exceptions;
-using static System.Net.WebRequestMethods;
 
 namespace QuickHire.Application.Users.Authentication.Register;
 
 internal class RegisterBuyerCommandHandler : ICommandHandler<RegisterBuyerCommand, RegisterUserResponseModel>
 {
-    private readonly IRepository _repository;
     private readonly IUserService _userService;
     private readonly IEmailSenderService _emailSenderService;
 
-    public RegisterBuyerCommandHandler(IRepository repository, IUserService userService, IEmailSenderService emailSenderService)
+    public RegisterBuyerCommandHandler(IUserService userService, IEmailSenderService emailSenderService)
     {
-        _repository = repository;
         _userService = userService;
         _emailSenderService = emailSenderService;
     }
 
     public async Task<RegisterUserResponseModel> Handle(RegisterBuyerCommand request, CancellationToken cancellationToken)
     {
-        var userExists = await _userService.UserExistsAsync(request.model.Email);
+        var userExists = await _userService.UserExistsAsync(request.Email);
 
         if (userExists)
         {
-            throw new ConflictException("User already exists", $"Email: {request.model.Email} already in use.");
+            throw new ConflictException("User already exists", $"Email: {request.Email} already in use.");
         }
 
-        var createdUserResult = await _userService.CreateUserAsync(request.model);
+        var createdUserResult = await _userService.CreateUserAsync(request.Email, request.Password);
 
         if (!createdUserResult.IsSuccess)
         {
             throw new BadRequestException("User registration failed", string.Join("; ", createdUserResult.Errors.Select(e => e.ToString())));    
         }
 
-        var user = await _userService.GetUserByEmailAsync(request.model.Email);
+        var user = await _userService.GetUserByEmailAsync(request.Email);
 
         if (user == null)
         {
-            throw new NotFoundException("User not found", $"User with email: {request.model.Email} not found.");
+            throw new NotFoundException("ApplicationUser", request.Email);
         }
 
         var emailVerificationToken = await _userService.GenerateEmailVerificationTokenAsync(user.Id);
 
-        var verificationLink = $"https://localhost:7267/verify-email?userId={user.Id}&token={Uri.EscapeDataString(emailVerificationToken)}";
+        var verificationLink = $"https://localhost:7267/auth/verify-email?userId={user.Id}&token={Uri.EscapeDataString(emailVerificationToken)}";
 
         var emailModel = new EmailModel
         {
-            To = user.Email,
+            To = user.Email!,
             Subject = "Email Verification",
             Body = $@"
         <html>
@@ -72,8 +68,8 @@ internal class RegisterBuyerCommandHandler : ICommandHandler<RegisterBuyerComman
                         display: inline-block;
                         margin-top: 20px;
                         padding: 10px 20px;
-                        background-color: #007BFF;
-                        color: white;
+                        background-color: #1DBF73;
+                        color: #ffff;
                         text-decoration: none;
                         border-radius: 5px;
                         font-weight: bold;
@@ -104,8 +100,7 @@ internal class RegisterBuyerCommandHandler : ICommandHandler<RegisterBuyerComman
 
         return new RegisterUserResponseModel
         {
-            Message = "User registered successfully",
-            Username = user.UserName,
+            Username = user.UserName!
         };
     }
 }

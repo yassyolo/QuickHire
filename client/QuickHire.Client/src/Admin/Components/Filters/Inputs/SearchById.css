@@ -1,0 +1,16 @@
+.search-by-id{
+    width: 120px;
+    display: flex;
+    flex-direction: row;
+}
+
+.validation-input{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 5px;
+}
+
+.invisible{
+    display: none;
+}

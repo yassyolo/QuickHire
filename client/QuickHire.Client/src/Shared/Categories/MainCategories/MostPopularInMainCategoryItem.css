@@ -1,0 +1,30 @@
+.most-popular-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: var(--white-color);
+    box-shadow: var(--default-shadow);
+    flex-grow: 1;
+    width: auto;  
+    min-width: 0; 
+}
+
+.most-popular-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--category-description-color);
+  margin-left: 10px;
+  white-space: nowrap;        
+  overflow: hidden;           
+  text-overflow: ellipsis;    
+  max-width: 100%;            
+}
+
+.most-popular-image{
+    width: 60px;
+    height: 50px;
+    border-radius: 10px;
+    object-fit: cover;
+}

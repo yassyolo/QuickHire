@@ -1,0 +1,13 @@
+.info-button {
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0;
+  cursor: pointer;
+  color: var(--text-grey-color);
+}
+
+.info-button:hover {
+  box-shadow: none !important;
+  transform: none !important;
+}

@@ -15,5 +15,5 @@ public static class LoggingFormats
         "[END] Request {RequestName} - Response {ResponseName} - RequestData: {RequestData} - ResponseData: {ResponseData}";
 
     public static string ErrorExceptionFormat =>
-        "[ERROR] Request {RequestName} - Exception: {ExceptionMessage}, Time of occurrence: {TimeOfOccurrence}";
+        "[ERROR] Request {RequestUrl} - Exception: {ExceptionMessage}, Time of occurrence: {TimeOfOccurrence}";
 }

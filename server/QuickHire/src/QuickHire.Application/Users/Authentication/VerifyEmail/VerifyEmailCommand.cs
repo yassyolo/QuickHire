@@ -1,6 +1,6 @@
 ﻿using MediatR;
-using QuickHire.Application.Users.Models.Authentication;
+using QuickHire.Application.Common.Interfaces.Abstractions;
 
 namespace QuickHire.Application.Users.Authentication.VerifyEmail;
 
-internal record VerifyEmailCommand(VerifyEmailModel model) : IRequest<VerifyEmailResponseModel>;
+public record VerifyEmailCommand(string UserId, string Token) : ICommand<Unit>;

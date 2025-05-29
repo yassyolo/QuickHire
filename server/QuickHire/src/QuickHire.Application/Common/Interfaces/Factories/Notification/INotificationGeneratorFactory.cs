@@ -4,5 +4,5 @@ namespace QuickHire.Application.Common.Interfaces.Factories.Notification;
 
 public interface INotificationGeneratorFactory
 {
-    INotificationGenerator GetNotificationGenerator(NotificationType type);
+    INotificationGenerator? GetNotificationGenerator(NotificationType type);
 }

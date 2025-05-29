@@ -1,0 +1,25 @@
+.no-invoice-data-td{
+    text-align: center;
+    margin-top: 40px;
+    font-size: 22px;
+    font-weight: 600;
+    background-color: var(--white-color);
+    padding: 20px 0;
+}
+
+.no-invoices-title{
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text-black-color);
+    margin-bottom: 15px;
+}
+
+.no-invoices-subtitle{
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--text-grey-color);
+}
+
+.no-invoice-data-icon{
+    margin-bottom: 40px;
+}

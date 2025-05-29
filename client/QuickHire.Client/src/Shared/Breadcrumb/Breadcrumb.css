@@ -1,0 +1,28 @@
+.breadcrumb-container {
+  display: flex;
+  align-items: center;
+  margin: 0px 0 30px 0;
+  gap: 10px;
+}
+
+.breadcrumb-link {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.breadcrumb-label, .breadcrumb-link{
+    font-size: 14px;
+    color: var(--text-black-color);
+    font-weight: 500;
+}
+
+.breadcrumb-link.last {
+  font-weight: 600;
+}
+
+.breadcrumb-separator {
+  color: var(--text-grey-color);
+  padding: 0 4px;
+  font-weight: 400;
+  font-size: 0.85rem;
+}

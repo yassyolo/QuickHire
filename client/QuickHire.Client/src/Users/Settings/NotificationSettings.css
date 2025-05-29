@@ -1,0 +1,26 @@
+.notification-settings-container{
+    display: flex;
+    flex-direction: row;
+    min-width: 550px;
+    border-radius: 10px;
+    padding: 40px;
+    border: 1px solid #ddd;
+    gap: 100px;
+}
+
+.notification-settings-info{
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--text-black-color);
+}
+
+.info-description{
+    gap: 10px;
+    max-width: 300px;
+}
+
+.notification-settings-description{
+    font-size: 15px;
+    color: var(--text-grey-color);
+    font-weight: 500;
+}

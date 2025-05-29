@@ -1,0 +1,22 @@
+.most-popular-in-main-category-title{
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--categories-description-color);
+    margin-bottom: 10px;
+    justify-content: flex-start;
+}
+
+.most-popular-items{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.most-popular-in-main-category{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 20px;
+}

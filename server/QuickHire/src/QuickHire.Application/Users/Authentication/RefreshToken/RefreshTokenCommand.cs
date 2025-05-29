@@ -4,5 +4,5 @@ using QuickHire.Application.Users.Models.Authentication;
 
 namespace QuickHire.Application.Users.Authentication.RefreshToken;
 
-internal record RefreshTokenCommand(RefreshTokenModel model) : ICommand<Unit>;
+public record RefreshTokenCommand(RefreshTokenModel Model) : ICommand<Unit>;
 

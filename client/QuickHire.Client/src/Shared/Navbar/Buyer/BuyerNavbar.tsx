@@ -1,0 +1,44 @@
+import { Outlet } from 'react-router-dom';
+import { IconButton } from '../../Buttons/IconButton';
+import { NotificationButtonDropdown } from '../../Notifications/NotificationButtonDropdown';
+import { ProfileIconDropdown } from '../../Profile/ProfileIconDropdown';
+import { Footer } from '../../Footer/Footer';
+import { BuyerProfileDropdown } from '../../Profile/BuyerProfileDropdown';
+import { MainCategoriesHeader } from '../../Categories/MainCategories/MainCategoriesHeader';
+import './BuyerNavbar.css';
+import { Logo } from '../../Logo/Logo';
+import { SearchGig } from '../../../Admin/Components/Filters/Inputs/SearchGig';
+import { useSearch } from './SearchContext';
+
+export function BuyerNavbar() {
+    const { setKeyword } = useSearch();
+
+  return (
+    <div className="page-container">
+        <nav className="top-seller-navbar">
+            <div className="top-seller-navbar-left">
+                <Logo />
+                <SearchGig setKeyword={setKeyword}/>
+            </div>
+
+            <div className="top-seller-navbar-right">
+                <IconButton buttonInfo="Favourites" icon={<i className="fa-regular fa-heart"></i>} onClick={() => {}} className={"inbox-button"} ariaLabel={"FavoritesButton"}></IconButton>
+
+                <NotificationButtonDropdown/>
+                <IconButton buttonInfo="Messages" icon={<i className="fa-regular fa-envelope"></i>} onClick={() => {}} className={"inbox-button"} ariaLabel={"MessagesButton"}></IconButton>
+                <ProfileIconDropdown> <BuyerProfileDropdown /></ProfileIconDropdown>
+            </div>
+        </nav>      
+          <div className="bottom-seller-navbar">
+            <MainCategoriesHeader />
+            </div>
+
+        <main> <Outlet /> </main>
+
+<div className="buyer-footer">
+            <Footer/>
+</div>
+
+    </div>
+  );
+}

@@ -1,0 +1,25 @@
+.profile-icon-dropdown {
+    position: relative; 
+    display: inline-block; 
+}
+
+.profile-icon-dropdown-content {
+    position: absolute;
+    top: 100%;
+    right: 10%;         
+    min-width: 230px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: var(--default-shadow);
+    z-index: 9999;
+}
+
+.profile-icon{
+    width: 36px;
+    height: 36x;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    object-fit: cover;
+    background-color: var(--white-color);   
+}

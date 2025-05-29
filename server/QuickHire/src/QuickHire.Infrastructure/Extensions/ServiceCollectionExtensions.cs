@@ -5,26 +5,28 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using QuickHire.Application.Common.Interfaces.Factories.Notification;
 using QuickHire.Application.Common.Interfaces.Repository;
 using QuickHire.Application.Common.Interfaces.Services;
+using QuickHire.Domain.Users.Enums;
 using QuickHire.Infrastructure.Authentication;
 using QuickHire.Infrastructure.Authentication.Processors;
 using QuickHire.Infrastructure.CloudStorage;
 using QuickHire.Infrastructure.Communication;
+using QuickHire.Infrastructure.Factories.Notification;
 using QuickHire.Infrastructure.Helpers;
 using QuickHire.Infrastructure.Options;
 using QuickHire.Infrastructure.Persistence;
 using QuickHire.Infrastructure.Persistence.Identity;
 using QuickHire.Infrastructure.Persistence.Repositories;
+using QuickHire.Infrastructure.Realtime.Services;
 using System.Text;
 
 namespace QuickHire.Infrastructure.Extensions;
 
 public static class ServiceCollectionExtensions
 {
-    private static IServiceCollection AddAppPersitance(
-        this IServiceCollection services,
-        IConfiguration configuration)
+    private static IServiceCollection AddAppPersitance(this IServiceCollection services, IConfiguration configuration)
     {
         var connectionString = configuration.GetConnectionString("DefaultConnection");
 
@@ -44,16 +46,13 @@ public static class ServiceCollectionExtensions
             options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             options.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
 
-        }).AddCookie().AddGoogle(options =>
+        }).AddCookie(options =>
         {
-            var googleAuthenticationOptions = configuration.GetSection(GoogleAuthenticationOptions.GoogleAuthenticationOptionsKey).Get<GoogleAuthenticationOptions>() ?? throw new ArgumentException(nameof(GoogleAuthenticationOptions));
-
-            options.ClientId = googleAuthenticationOptions.ClientId;
-            options.ClientSecret = googleAuthenticationOptions.ClientSecret;
-            options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            options.Cookie.Name = "ACCESS_TOKEN";  
+            options.SlidingExpiration = true;
         }).AddJwtBearer(options =>
         {
-            var jwtOptions = configuration.GetSection(JwtOptions.JwtOptionsKey).Get<JwtOptions>() ?? throw new ArgumentException(nameof(JwtOptions));
+            var section = configuration.GetSection(JwtOptions.JwtOptionsKey);           
 
             options.TokenValidationParameters = new TokenValidationParameters
             {
@@ -61,9 +60,9 @@ public static class ServiceCollectionExtensions
                 ValidateAudience = true,
                 ValidateLifetime = true,
                 ValidateIssuerSigningKey = true,
-                ValidIssuer = jwtOptions.Issuer,
-                ValidAudience = jwtOptions.Audience,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOptions.Secret)),
+                ValidIssuer = section["Issuer"],
+                ValidAudience = section["Audience"],
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(section["Secret"])),
             };
 
             options.Events = new JwtBearerEvents
@@ -101,9 +100,12 @@ public static class ServiceCollectionExtensions
         return services
             .AddAppPersitance(configuration)
             .AddAppIdentity()
-            .AddRepository()
             .AddOptions(configuration)
-            .AddAppAuthentication(configuration);
+            .AddRepository()
+            .AddAppAuthentication(configuration)
+            .AddNotificationFactory()
+            .AddServices()
+            .AddRealtime();
     }
 
     private static IServiceCollection AddRepository(this IServiceCollection services)
@@ -115,13 +117,56 @@ public static class ServiceCollectionExtensions
 
     private static IServiceCollection AddOptions(this IServiceCollection services, IConfiguration configuration)
     {
-        services.Configure<CloudinaryOptions>(configuration.GetSection(CloudinaryOptions.CloudinaryOptionsKey));
+        services.Configure<CloudinaryOptions>(options => configuration.GetSection(CloudinaryOptions.CloudinaryOptionsKey).Bind(options)); 
+        services.Configure<SendGridOptions>(options => configuration.GetSection(SendGridOptions.SendGridOptionsKey).Bind(options));
+        services.Configure<JwtOptions>(options => configuration.GetSection(JwtOptions.JwtOptionsKey).Bind(options));
+      
+        return services;
+    }
 
-        services.Configure<SendGridOptions>(configuration.GetSection(SendGridOptions.SendGridOptionsKey));
+    private static IServiceCollection AddNotificationFactory(this IServiceCollection services)
+    {
+        services.AddScoped<INotificationGenerator, NewProjectBriefMadeNotificationGenerator>();
+        services.AddScoped<INotificationGenerator, CustomOfferReceivedNotificationGenerator>();
+        services.AddScoped<INotificationGenerator, CustomOfferAcceptedNotificationGenerator>();
+        services.AddScoped<INotificationGenerator, CustomOfferCancelledNotificationGenerator>();
+        services.AddScoped<INotificationGenerator, CustomOfferExpiredNotificationGenerator>();
+        services.AddScoped<INotificationGenerator, CustomRequestPlacedNotificationGenerator>();
+        services.AddScoped<INotificationGenerator, CustomRequestReceivedNotificationGenerator>();
+        services.AddScoped<INotificationGenerator, HotGigNotificationGenerator>();
+        services.AddScoped<INotificationGenerator, NewGigUploadedNotificationGenerator>();
+        services.AddScoped<INotificationGenerator, OrderDeliveredNotificationGenerator>();
+        services.AddScoped<INotificationGenerator, OrderPlacedNotificationGenerator>();
+        services.AddScoped<INotificationGenerator, OrderStatusUpdateNotificationGenerator>();
+        services.AddScoped<INotificationGenerator, ProfileMadeNotificationGenerator>();
+        services.AddScoped<INotificationGenerator, ProfileUpdateNotificationGenerator>();
+        services.AddScoped<INotificationGenerator, ProjectBriefReceivedNotificationGenerator>();
+        services.AddScoped<INotificationGenerator, RevisionReceivedNotificationGenerator>();
 
-        services.Configure<JwtOptions>(configuration.GetSection(JwtOptions.JwtOptionsKey));
+        services.AddScoped<INotificationGeneratorFactory>(provider =>
+        {
+            var notificationGenerators = new Dictionary<NotificationType, INotificationGenerator>
+        {
+            { NotificationType.NewProjectBriefMade, provider.GetRequiredService<NewProjectBriefMadeNotificationGenerator>() },
+            { NotificationType.CustomOfferReceived, provider.GetRequiredService<CustomOfferReceivedNotificationGenerator>() },
+            { NotificationType.CustomOfferAccepted, provider.GetRequiredService<CustomOfferAcceptedNotificationGenerator>() },
+            { NotificationType.CustomOfferCancelled, provider.GetRequiredService<CustomOfferCancelledNotificationGenerator>() },
+            { NotificationType.CustomOfferExpired, provider.GetRequiredService<CustomOfferExpiredNotificationGenerator>() },
+            { NotificationType.CustomRequestPlaced, provider.GetRequiredService<CustomRequestPlacedNotificationGenerator>() },
+            { NotificationType.CustomRequestReceived, provider.GetRequiredService<CustomRequestReceivedNotificationGenerator>() },
+            { NotificationType.HotGig, provider.GetRequiredService<HotGigNotificationGenerator>() },
+            { NotificationType.NewGigUploaded, provider.GetRequiredService<NewGigUploadedNotificationGenerator>() },
+            { NotificationType.OrderDelivered, provider.GetRequiredService<OrderDeliveredNotificationGenerator>() },
+            { NotificationType.OrderPlaced, provider.GetRequiredService<OrderPlacedNotificationGenerator>() },
+            { NotificationType.OrderStatusUpdate, provider.GetRequiredService<OrderStatusUpdateNotificationGenerator>() },
+            { NotificationType.ProfileMade, provider.GetRequiredService<ProfileMadeNotificationGenerator>() },
+            { NotificationType.ProfileUpdate, provider.GetRequiredService<ProfileUpdateNotificationGenerator>() },
+            { NotificationType.ProjectBriefReceived, provider.GetRequiredService<ProjectBriefReceivedNotificationGenerator>() },
+            { NotificationType.RevisionReceived, provider.GetRequiredService<RevisionReceivedNotificationGenerator>() },
+        };
 
-        services.Configure<GoogleAuthenticationOptions>(configuration.GetSection(GoogleAuthenticationOptions.GoogleAuthenticationOptionsKey)); 
+            return new NotificationGenerationFactory(notificationGenerators);
+        });
 
         return services;
     }
@@ -129,10 +174,18 @@ public static class ServiceCollectionExtensions
     private static IServiceCollection AddServices(this IServiceCollection services)
     {
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<INotificationService, NotificationService>();
         services.AddScoped<IEmailSenderService, EmailSenderService>();
         services.AddScoped<IAuthTokenProcessor, AuthTokenProcessor>();
         services.AddScoped<ICloudinaryService, CloudinaryService>();
         services.AddScoped<IPdfHelper, PdfHelper>();
+
+        return services;
+    }
+
+    private static IServiceCollection AddRealtime(this IServiceCollection services)
+    {
+        services.AddSignalR();
 
         return services;
     }

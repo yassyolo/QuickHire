@@ -3,5 +3,5 @@ using QuickHire.Application.Users.Models.Authentication;
 
 namespace QuickHire.Application.Users.Authentication.Register;
 
-public record RegisterBuyerCommand(RegisterUserModel model) : ICommand<RegisterUserResponseModel>;
+public record RegisterBuyerCommand(string Email, string Password) : ICommand<RegisterUserResponseModel>;
 

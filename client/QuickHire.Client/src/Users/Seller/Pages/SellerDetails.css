@@ -1,0 +1,88 @@
+.seller-details-page{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    border-radius: 10px; 
+    padding: 15px 10px;
+}
+.seller-details-top {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    padding: 20px;
+}
+
+.seller-info {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    width: 100%;
+    padding: 0 20px;
+}
+
+.username-full-name{
+    gap: 20px;
+    align-items: center;
+}
+
+.seller-full-name {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text-black-color);
+}
+
+.seller-username{
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-grey-color);
+}
+
+.seller-country {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-black-color);
+}
+
+.names-country-languages{
+    gap: 10px;
+}
+
+.country-languages{
+    gap: 10px;
+}
+
+.language-badge{
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-black-color);
+}
+
+.gigs-quick-link{
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    padding: 22px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    width: 100%;
+    width: 600px;
+}
+
+.quick-links-title{
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.quick-link{
+    text-decoration: none;
+    color: var(--text-black-color);
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: var(--transition-ease);
+}
+
+.quick-link:hover{
+    text-decoration: underline;
+}

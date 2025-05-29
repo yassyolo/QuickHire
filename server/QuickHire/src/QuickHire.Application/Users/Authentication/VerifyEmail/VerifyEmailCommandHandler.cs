@@ -5,22 +5,24 @@ using QuickHire.Domain.Shared.Exceptions;
 
 namespace QuickHire.Application.Users.Authentication.VerifyEmail;
 
-internal class VerifyEmailCommandHandler : IRequestHandler<VerifyEmailCommand, VerifyEmailResponseModel>
+internal class VerifyEmailCommandHandler : IRequestHandler<VerifyEmailCommand, Unit>
 {
     private readonly IUserService _userService;
+    private readonly INotificationService _notificationService;
 
-    public VerifyEmailCommandHandler(IUserService userService)
+    public VerifyEmailCommandHandler(IUserService userService, INotificationService notificationService)
     {
         _userService = userService;
+        _notificationService = notificationService;
     }
 
-    public async Task<VerifyEmailResponseModel> Handle(VerifyEmailCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(VerifyEmailCommand request, CancellationToken cancellationToken)
     {
-        var user = await _userService.GetUserByUserIdAsync(request.model.UserId);
+        var user = await _userService.GetUserByUserIdAsync(request.UserId);
 
         if(user == null)
         {
-            throw new NotFoundException("User not found", $"User with id: {request.model.UserId} not found.");
+            throw new NotFoundException("User not found", $"User with id: {request.UserId} not found.");
         }
 
         if (user.EmailConfirmed)
@@ -28,16 +30,16 @@ internal class VerifyEmailCommandHandler : IRequestHandler<VerifyEmailCommand, V
             throw new BadRequestException("Email already verified", $"Email {user.Email} is already verified.");
         }
 
-        var result = await _userService.VerifyEmailAsync(user.Id, request.model.Token);
+        var result = await _userService.VerifyEmailAsync(user.Id, request.Token);
 
         if (!result.IsSuccess)
         {
             throw new BadRequestException("Invalid token", string.Join(";", result.Errors.Select(x => x.ToString())));
         }
 
-        return new VerifyEmailResponseModel
-        {
-            Message = "Email verified successfully"
-        };
+        await _notificationService.MakeNotification( user.Id, Domain.Users.Enums.NotificationType.ProfileMade, 
+            new Dictionary<string, string> { { "UserName", user.UserName! } });
+
+        return Unit.Value;
     }
 }

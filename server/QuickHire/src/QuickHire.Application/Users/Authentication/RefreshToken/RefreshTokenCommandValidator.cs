@@ -2,11 +2,11 @@
 
 namespace QuickHire.Application.Users.Authentication.RefreshToken;
 
-internal class RefreshTokenCommandValidator : AbstractValidator<RefreshTokenCommand>
+public class RefreshTokenCommandValidator : AbstractValidator<RefreshTokenCommand>
 {
     public RefreshTokenCommandValidator()
     {
-        RuleFor(x => x.model.Token)
+        RuleFor(x => x.Model.Token)
             .NotEmpty()
             .WithMessage("Token is required.");
     }

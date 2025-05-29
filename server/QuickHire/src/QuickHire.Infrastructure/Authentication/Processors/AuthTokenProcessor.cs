@@ -24,18 +24,16 @@ internal class AuthTokenProcessor : IAuthTokenProcessor
 
     public (string jwtToken, DateTime expirationTime) GenerateToken(ApplicationUser user, IList<string> roles)
     {
-        var symmetricKey = new SymmetricSecurityKey
-                           (Encoding.UTF8.GetBytes(_jwtOptions.Secret));
+        var symmetricKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.Secret));
 
-        var signingCredentials = new SigningCredentials
-                                 (symmetricKey, SecurityAlgorithms.HmacSha256);
+        var signingCredentials = new SigningCredentials(symmetricKey, SecurityAlgorithms.HmacSha256);
 
         var claims = new List<Claim>
         {
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new Claim(JwtRegisteredClaimNames.Sub, user.Id),
             new Claim(JwtRegisteredClaimNames.Email, user.Email ?? string.Empty),
-            new Claim(ClaimTypes.NameIdentifier, user.UserName),
+            new Claim(ClaimTypes.NameIdentifier, user.UserName!),
         };
 
         foreach (var role in roles)
@@ -43,7 +41,7 @@ internal class AuthTokenProcessor : IAuthTokenProcessor
             claims.Add(new Claim(ClaimTypes.Role, role));
         }
 
-        var expiresAt = DateTime.Now.AddMinutes(double.Parse(_jwtOptions.ExpirationTimeInMinutes));
+        var expiresAt = DateTime.Now.AddMinutes(_jwtOptions.ExpirationTimeInMinutes);
 
         var token = new JwtSecurityToken(
             issuer: _jwtOptions.Issuer,

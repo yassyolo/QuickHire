@@ -4,7 +4,7 @@ using static QuickHire.Application.Common.Constants.LoggingFormats;
 
 namespace QuickHire.Application.Common.Behaviors;
 
-internal class LoggingBehavior<TRequest, TResponse>
+public class LoggingBehavior<TRequest, TResponse>
     (ILogger<LoggingBehavior<TRequest, TResponse>> logger)
     : IPipelineBehavior<TRequest, TResponse>
     where TRequest : notnull, IRequest<TResponse>

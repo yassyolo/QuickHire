@@ -1,0 +1,7 @@
+.total-items{
+    display: flex;
+    flex-direction: row;
+    font-size: 15px;
+    font-weight: bold;
+    gap: 10px;
+}

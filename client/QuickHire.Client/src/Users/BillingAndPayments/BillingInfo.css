@@ -1,0 +1,10 @@
+.billing-info-form{
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.billing-info-container{
+    margin-bottom: 40px;
+}

@@ -1,0 +1,15 @@
+.faq-row{
+border: 1px solid var(--text-grey-color);
+border-radius: 5px;
+padding: 5px 10px;
+justify-content: space-between;
+display: flex;
+flex-direction: row;
+}
+
+.faq-list-title{
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-black-color);
+    margin-bottom: 10px;
+}

@@ -1,0 +1,26 @@
+.notification-dropdown-top{
+    background-color: var(--white-color);
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: start;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-black-color);
+}
+
+.notification-dropdown-top i{
+    font-weight: bold;
+    font-size: 16px;}
+
+.notification-dropdown-bottom{
+        border-top: 1px solid #ddd;
+}
+
+.notification-dropdown-bottom i{
+    font-size: 15px;
+    cursor: pointer;
+    margin-left: 10px;
+}

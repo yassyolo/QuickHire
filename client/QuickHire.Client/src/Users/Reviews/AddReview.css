@@ -1,0 +1,14 @@
+.add-rating-form-title{
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.add-rating-button{
+    margin-top: 20px;
+    display: flex;
+  justify-content: flex-end;
+}
+
+.add-rating-form{
+    max-width: 600px;
+}

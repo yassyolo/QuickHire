@@ -1,0 +1,17 @@
+.side-page-navigation {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.side-page-navigation-item{
+    color: var(--text-black-color);
+    font-size: 15px;
+    font-weight: 500;
+    padding: 10px 0;
+    cursor: pointer;
+}
+
+.side-page-navigation-item.selected{
+    font-weight: 600;
+}

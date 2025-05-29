@@ -2,9 +2,9 @@
 
 namespace QuickHire.Application.Common.Interfaces.Abstractions;
 
-internal interface  ICommand 
+public interface  ICommand 
     : IRequest<Unit>;
-internal interface ICommand<out TResponse> 
+public interface ICommand<out TResponse> 
     : IRequest<TResponse>;
 
 

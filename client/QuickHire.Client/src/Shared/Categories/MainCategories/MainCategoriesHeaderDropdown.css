@@ -1,0 +1,5 @@
+.sub-categories-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0px 60px;
+}

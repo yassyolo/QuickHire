@@ -1,0 +1,8 @@
+.profile-dropdown{
+    background-color: var(--white-color) !important;
+    padding: 15px !important;
+    border-radius: 5px;
+    box-shadow: var(--default-shadow);
+    width: 100%;
+    gap: 5px;
+}

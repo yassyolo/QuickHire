@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
-using QuickHire.Domain.Orders;
+using QuickHire.Application.Orders.Models.Invoice;
 
 namespace QuickHire.Infrastructure.Helpers;
 
 public interface IPdfHelper
 {
-    IFormFile GeneratePdfFromHtml(Invoice invoice);
+    IFormFile GeneratePdfFromHtml(InvoiceModel invoice);
 }

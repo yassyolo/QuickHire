@@ -1,0 +1,6 @@
+.sort-by-list{
+    display: flex;
+    flex-direction: row;
+    gap: 13px;
+    justify-content: flex-end;
+}

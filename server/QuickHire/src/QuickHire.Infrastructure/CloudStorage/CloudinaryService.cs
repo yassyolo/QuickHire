@@ -8,15 +8,16 @@ using QuickHire.Infrastructure.Options;
 using static QuickHire.Infrastructure.CloudStorage.Constants.FolderOrganization;
 using static QuickHire.Infrastructure.CloudStorage.Constants;
 using QuickHire.Application.Common.Interfaces.Services;
+using Microsoft.Extensions.Configuration;
 
-internal class CloudinaryService : ICloudinaryService
+public class CloudinaryService : ICloudinaryService
 {
     private readonly Cloudinary _cloudinary;
     private readonly CloudinaryOptions _cloudinaryOptions;
 
-    public CloudinaryService(IOptions<CloudinaryOptions> cloudinaryOptions)
+    public CloudinaryService(IOptions<CloudinaryOptions> options)
     {
-        _cloudinaryOptions = cloudinaryOptions.Value;
+        _cloudinaryOptions = options.Value;
         var account = new Account(_cloudinaryOptions.CloudName, _cloudinaryOptions.ApiKey, _cloudinaryOptions.ApiSecret);
         _cloudinary = new Cloudinary(account);
     }
@@ -44,7 +45,7 @@ internal class CloudinaryService : ICloudinaryService
             _ => throw new BadRequestException("Unsupported file type", $"File type {extension} is not supported.")
         };
 
-        if(mimeType == "image/jpeg")
+        if (mimeType == "image/jpeg" || mimeType == "image/png")
         {
             var uploadParams = new ImageUploadParams
             {

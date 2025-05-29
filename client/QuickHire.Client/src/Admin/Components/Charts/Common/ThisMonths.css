@@ -1,0 +1,11 @@
+.this-month {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  font-size: 15px;
+font-weight: bold;
+}
+
+.this-month-percentage {
+  color: var(--text-grey-color);
+}

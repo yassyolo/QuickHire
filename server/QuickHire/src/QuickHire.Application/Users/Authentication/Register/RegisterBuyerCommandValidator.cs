@@ -3,17 +3,17 @@ using static QuickHire.Application.Common.Constants.ValidationMessages;
 
 namespace QuickHire.Application.Users.Authentication.Register
 {
-    internal class RegisterBuyerCommandValidator : AbstractValidator<RegisterBuyerCommand>
+    public class RegisterBuyerCommandValidator : AbstractValidator<RegisterBuyerCommand>
     {
         public RegisterBuyerCommandValidator()
         {
-            RuleFor(x => x.model.Email)
+            RuleFor(x => x.Email)
                 .NotEmpty()
                 .WithMessage(Required)
                 .EmailAddress()
                 .WithMessage(InvalidEmail);
 
-            RuleFor(x => x.model.Password)
+            RuleFor(x => x.Password)
                 .NotEmpty()
                 .WithMessage(Required)
                 .Matches(@"[A-Z]")

@@ -1,0 +1,13 @@
+.form-select:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    background-color: #f8f9fa;
+    outline: none;
+    transition: all 0.2s ease-in-out;
+}
+
+.form-select{
+    appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}

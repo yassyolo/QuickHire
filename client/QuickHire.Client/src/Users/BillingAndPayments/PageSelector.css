@@ -1,0 +1,36 @@
+.page-selector {
+  width: 99, 5%;
+  justify-content: flex-start;
+  gap: 16px;
+  padding: 12px 0;
+}
+
+.page-items {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  position: relative;
+  border-bottom: 1px solid var(--text-grey-color); 
+}
+
+.page-pill {
+  padding: 6px 14px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-grey-color);
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.page-pill:hover {
+  color: var(--text-black-color);
+}
+
+.page-pill.active { 
+  border-bottom: 1px solid var(--text-black-color); 
+    color: var(--text-black-color);
+
+  z-index: 1;
+}
+
+

@@ -21,7 +21,7 @@ internal class LoginBuyerCommandHandler : ICommandHandler<LoginBuyerCommand, Uni
 
         if (user == null)
         {
-            throw new NotFoundException("User not found", $"User with email or username: {request.model.EmailOrUsername} not found.");
+            throw new NotFoundException("ApplicationUser", request.model.EmailOrUsername);
         }
 
         var passwordCheckResult = await _userService.CheckPasswordAsync(user, request.model.Password);

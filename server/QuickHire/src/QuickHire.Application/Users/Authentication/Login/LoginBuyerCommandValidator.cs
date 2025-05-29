@@ -2,7 +2,7 @@
 
 namespace QuickHire.Application.Users.Authentication.Login;
 
-internal class LoginBuyerCommandValidator : AbstractValidator<LoginBuyerCommand>
+public class LoginBuyerCommandValidator : AbstractValidator<LoginBuyerCommand>
 {
     public LoginBuyerCommandValidator()
     {

@@ -1,0 +1,31 @@
+.seller-details-container{
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    padding: 32px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    width: 100%;
+    min-width: 200px;
+    max-width: 600px;
+}
+
+.seller-details-title{
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.seller-details-no-content{
+    font-size: 16px;
+    color: #999;
+    max-width: 260px;
+    margin-bottom: 30px;
+}
+
+.seller-details-content{
+    display: flex;
+    flex-direction: column;
+    margin: 20px 0;
+    gap: 10px;
+}

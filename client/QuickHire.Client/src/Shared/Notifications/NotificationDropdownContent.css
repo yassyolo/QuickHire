@@ -1,0 +1,8 @@
+.notification-dropdown-content {
+  min-height: 300px;
+  max-height: 200px;
+  min-width: 400px;
+  width: 100%;
+  overflow-y: auto;
+  background-color: #ececec;
+}

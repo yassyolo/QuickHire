@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using QuickHire.Application.Common.Interfaces.Repository;
 using QuickHire.Domain.Shared.Contracts;
+using System.Linq.Expressions;
 
 namespace QuickHire.Infrastructure.Persistence.Repositories;
 
@@ -67,5 +69,27 @@ internal class Repository : IRepository
     private DbSet<T> GetDbSet<T>() where T : class
     {
         return _context.Set<T>();
+    }
+
+    public async Task<IEnumerable<T>> ToListAsync<T>(IQueryable<T> queryable) where T : class
+    {
+        return await queryable.ToListAsync();
+    }
+
+    public async Task<T> FirstOrDefaultAsync<T>(IQueryable<T> queryable) where T : class
+    {
+        return await queryable.FirstOrDefaultAsync();
+    }
+
+    public IQueryable<T> GetAllIncluding<T>(params Expression<Func<T, object>>[] includes) where T : class
+    {
+        IQueryable<T> query = GetDbSet<T>();
+
+        foreach (var include in includes)
+        {
+            query = query.Include(include);
+        }
+
+        return query;
     }
 }

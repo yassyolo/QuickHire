@@ -1,0 +1,16 @@
+.image-subtext{
+    font-size: 18px;
+    font-weight: 500;
+    color: var(--white-color);
+}
+
+.image-subtext-item{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.image-subtext-item i{
+    font-size: 16px;
+    color: var(--white-color);
+}

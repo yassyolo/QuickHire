@@ -1,0 +1,33 @@
+.notification-button-dropdown {
+    position: relative; 
+    display: inline-block; 
+}
+
+.notification-dropdown {
+    position: absolute;
+    top: 100%;         
+    right: 10%;         
+    min-width: 300px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: var(--default-shadow);
+    z-index: 9999;
+}
+
+.notification-icon-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.notification-dot {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 10px;
+  height: 10px;
+  background-color: rgb(201, 6, 6);
+  border-radius: 50%;
+  border: 2px solid white; 
+  z-index: 10;
+}

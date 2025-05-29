@@ -1,0 +1,28 @@
+.icon-action-button{
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    gap: 75px;
+    border: 1px solid #ddd !important;
+    padding: 8px 2px 8px 12px !important;
+    border-radius: 10px;
+    background-color: var(--white-color);
+    box-shadow: none !important;
+    align-items: center;
+}
+
+.icon-action-button:hover{
+    transform: none !important;
+    box-shadow: 0 0 6px var(--fiverr-green-color) !important;
+}
+
+.button-text{
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-black-color);
+}
+
+.icon-container i{
+    font-size: 19px;
+    color: var(--text-black-color);
+}

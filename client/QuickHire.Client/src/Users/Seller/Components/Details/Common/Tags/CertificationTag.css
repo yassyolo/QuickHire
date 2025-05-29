@@ -1,0 +1,19 @@
+.issuer-date{
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
+
+.certification-tag-issuer{
+    font-size: 12px;
+    color: var(--black-color);
+    font-weight: 400;
+}
+
+.certification-tag-date{
+    font-size: 12px;
+    text-decoration:wavy;
+    color: var(--black-color);
+    font-weight: 400;
+}
+
