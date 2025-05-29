@@ -4,7 +4,7 @@ using static QuickHire.Infrastructure.Extensions.PlaceholderExtension;
 
 namespace QuickHire.Infrastructure.Factories.Notification;
 
-internal class CustomOfferCancelled: INotificationGenerator
+internal class CustomOfferCancelledNotificationGenerator: INotificationGenerator
 {
     public NotificationType Type => NotificationType.CustomOfferCancelled;
 
@@ -23,6 +23,8 @@ internal class CustomOfferCancelled: INotificationGenerator
             IsRead = false,
             Title = finalTitle,
             Message = finalMessage,
+            Sent = false
+
         };
     }
 }

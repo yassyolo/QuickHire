@@ -23,6 +23,8 @@ internal class OrderPlacedNotificationGenerator : INotificationGenerator
             IsRead = false,
             Title = finalTitle,
             Message = finalMessage,
+            Sent = false
+
         };
     }
 }

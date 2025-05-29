@@ -22,6 +22,7 @@ internal class ProfileMadeNotificationGenerator : INotificationGenerator
             IsRead = false,
             Title = finalTitle,
             Message = finalMessage,
+            Sent = false
         };
     }
 }

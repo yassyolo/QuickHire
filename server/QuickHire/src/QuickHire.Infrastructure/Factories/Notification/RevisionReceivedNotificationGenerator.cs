@@ -23,6 +23,8 @@ internal class RevisionReceivedNotificationGenerator : INotificationGenerator
             IsRead = false,
             Title = finalTitle,
             Message = finalMessage,
+            Sent = false
+
         };
     }
 }

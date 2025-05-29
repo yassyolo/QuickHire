@@ -23,6 +23,7 @@ internal class OrderStatusUpdateNotificationGenerator : INotificationGenerator
             IsRead = false,
             Title = finalTitle,
             Message = finalMessage,
+            Sent = false
         };
     }
 }

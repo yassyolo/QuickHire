@@ -23,6 +23,8 @@ internal class CustomRequestReceivedNotificationGenerator : INotificationGenerat
             IsRead = false,
             Title = finalTitle,
             Message = finalMessage,
+            Sent = false
+
         };
     }
 }

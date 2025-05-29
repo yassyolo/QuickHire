@@ -23,6 +23,8 @@ internal class CustomOfferAcceptedNotificationGenerator : INotificationGenerator
             IsRead = false,
             Title = finalTitle,
             Message = finalMessage,
+            Sent = false
+
         };
     }
 }

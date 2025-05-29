@@ -23,6 +23,8 @@ internal class NewProjectBriefMadeNotificationGenerator : INotificationGenerator
             IsRead = false,
             Title = finalTitle,
             Message = finalMessage,
+            Sent = false
+
         };
     }
 }
