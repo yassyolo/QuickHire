@@ -1,8 +1,7 @@
 ﻿using DinkToPdf;
 using DinkToPdf.Contracts;
 using Microsoft.AspNetCore.Http;
-using QuickHire.Domain.Orders;
-using QuickHire.Infrastructure.Helpers.Models;
+using QuickHire.Application.Orders.Models.Invoice;
 
 namespace QuickHire.Infrastructure.Helpers;
 
@@ -15,38 +14,9 @@ internal class PdfHelper : IPdfHelper
         _converter = new BasicConverter(new PdfTools());
     }
 
-    public IFormFile GeneratePdfFromHtml(Invoice invoice)
-    {
-        var invoiceModel = new InvoiceModel()
-        {
-            InvoiceNumber = invoice.InvoiceNumber,
-            BuyerName = invoice.Buyer.BillingDetails.FullName,
-            BuyerAddress = invoice.Buyer.BillingDetails.Address.,
-            BuyerCompanyName = invoice.Buyer.BillingDetails.CompanyName,
-            CreatedAt = invoice.CreatedAt.ToString(),
-            OrderNumber = invoice.Order.OrderNumber,
-            TotalAmount = invoice.TotalAmount.ToString(),
-            SubTotal = invoice.Subtotal.ToString(),
-            Tax = invoice.Tax.ToString(),
-            Items = new List<InvoiceItemModel>
-            {
-                new()
-                {
-                    ItemName = invoice.Order.Gig.Title,
-                    Quantity = 1,
-                    TotalAmount = invoice.Order.Gig.Price.ToString()
-                },
-                new()
-                {
-                    ItemName = "Service fee",
-                    Quantity = 1,
-                    TotalAmount = invoice.ServiceFee.ToString()
-                }
-            }
-        };
-      
-    
-         var htmlContent = GenerateInvoiceHtml(invoiceModel);
+    public IFormFile GeneratePdfFromHtml(InvoiceModel invoice)
+    {   
+        var htmlContent = GenerateInvoiceHtml(invoice);
 
         var doc = new HtmlToPdfDocument()
         {
