@@ -16,6 +16,8 @@ public class  Gig : BaseSoftDeletableEntity<int>
     public int SellerId { get; set; } 
     public Seller Seller { get; set; } = null!;
     public int SubSubCategoryId { get; set; }
+    public DateTime CreatedAt { get; set; } 
+    public int Clicks { get; set; }
     public SubSubCategory SubSubCategory { get; set; } = null!;
     public ModerationStatus ModerationStatus { get; set; } 
     public IEnumerable<FAQ> FAQs { get; set; } = new List<FAQ>();

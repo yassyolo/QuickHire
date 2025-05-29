@@ -12,8 +12,6 @@ internal class ApplicationUserConfiguration : IEntityTypeConfiguration<Applicati
 {
     public void Configure(EntityTypeBuilder<ApplicationUser> builder)
     {
-        builder.HasKey(x => x.Id);
-
         builder.Property(x => x.JoinedAt).IsRequired();
 
         builder.Property(x => x.UserName).IsRequired().HasMaxLength(UsernameMaxLength);
@@ -33,10 +31,6 @@ internal class ApplicationUserConfiguration : IEntityTypeConfiguration<Applicati
             .HasForeignKey(x => x.UserId);
 
         builder.HasMany(x => x.Languages)
-            .WithOne()
-            .HasForeignKey(x => x.UserId);
-
-        builder.HasMany(x => x.FAQs)
             .WithOne()
             .HasForeignKey(x => x.UserId);
 

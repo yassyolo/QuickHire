@@ -3,10 +3,12 @@ using QuickHire.Domain.Shared.Implementations;
 
 namespace QuickHire.Domain.Categories;
 
-public class SubSubCategory : BaseSoftDeletableEntity<int>
+public class SubSubCategory : BaseEntity<int>
 {
     public string Name { get; set; } = string.Empty;
     public int SubCategoryId { get; set; }
+    public int Clicks { get; set; } = 0;
+    public DateTime CreatedOn { get; set; }
     public SubCategory SubCategory { get; set; } = null!;
     public IEnumerable<Gig>? Gigs { get; set; } 
     public IEnumerable<GigFilter> GigFilters { get; set; } = new List<GigFilter>();

@@ -11,5 +11,4 @@ public class FAQ : BaseSoftDeletableEntity<int>
     public MainCategory? MainCategory { get; set; }
     public int? GigId { get; set; }
     public Gig? Gig { get; set; }
-    public string? UserId { get; set; }
 }

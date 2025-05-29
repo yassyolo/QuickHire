@@ -32,5 +32,6 @@ public class Order : BaseSoftDeletableEntity<int>
     public Invoice? Invoice { get; set; } 
     public int? DeliveryId { get; set; }
     public Delivery? Delivery { get; set; } 
+    public decimal TotalPrice { get; set; }
 }
 

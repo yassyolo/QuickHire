@@ -15,9 +15,9 @@ internal class EducationConfiguration : IEntityTypeConfiguration<Education>
 
         builder.Property(x => x.Institution).IsRequired().HasMaxLength(InstitutionMaxLength);
 
-        builder.Property(x => x.StartDate).IsRequired();
+        builder.Property(x => x.GraduationYear).IsRequired();
 
-        builder.Property(x => x.EndDate).IsRequired();
+        builder.Property(x => x.Major).IsRequired().HasMaxLength(InstitutionMaxLength);
 
         builder.Property(x => x.Degree)
             .IsRequired()

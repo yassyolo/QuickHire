@@ -9,4 +9,6 @@ public class Review : BaseSoftDeletableEntity<int>
     public int OrderId { get; set; }
     public Order Order { get; set; } = null!;
     public string CreatorUserId { get; set; } = string.Empty;
+    public string ReceiverUserId { get; set; } = string.Empty;
+    public DateTime CreatedOn { get; set; } 
 }

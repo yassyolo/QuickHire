@@ -12,7 +12,7 @@ internal class SubCategoryConfiguration : IEntityTypeConfiguration<SubCategory>
     {
         builder.HasKey(x => x.Id);
 
-        builder.Property(x => x.ImageUrl).IsRequired().HasMaxLength(FileUrlMaxLength);
+        builder.Property(x => x.ImageUrl).HasMaxLength(FileUrlMaxLength);
 
         builder.Property(x => x.Name).IsRequired().HasMaxLength(NameMaxLength);
 

@@ -11,5 +11,6 @@ public class Notification : BaseSoftDeletableEntity<int>
     public bool IsRead { get; set; }
     public NotificationType NotificationType { get; set; }
     public string UserId { get; set; } = string.Empty;
+    public bool Sent { get; set; }
 }
 

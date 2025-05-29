@@ -66,7 +66,7 @@ public static class EntityPropertyLength
         public const int FullNameMinLength = 4;
         public const int DescriptionMaxLength = 300;
         public const int DescriptionMinLength = 30;
-        public const int UsernameMaxLength = 20;
+        public const int UsernameMaxLength = 30;
         public const int UsernameMinLength = 2;
     }
 

@@ -9,5 +9,5 @@ public class BrowsingHistory : BaseEntity<int>
     public Buyer Buyer { get; set; } = null!;
     public int GigId { get; set; } 
     public Gig Gig { get; set; } = null!;
-    public DateTime ViewedAt { get; set; } = DateTime.Now;
+    public DateTime ViewedAt { get; set; } 
 }

@@ -5,7 +5,7 @@ namespace QuickHire.Domain.Categories;
 
 public class GigFilter : BaseSoftDeletableEntity<int>
 {
-    public string Title { get; set; } = string.Empty;
+    public string? Title { get; set; }
     public GigFilterType Type { get; set; }
     public int? SubSubCategoryId { get; set; }
     public SubSubCategory? SubSubCategory { get; set; }

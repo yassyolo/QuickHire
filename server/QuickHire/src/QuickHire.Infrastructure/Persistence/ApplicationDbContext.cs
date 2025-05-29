@@ -113,6 +113,7 @@ public class ApplicationDbContext
     public DbSet<Revision> Revisions { get; set; }
     public DbSet<ProjectBrief> ProjectBriefs { get; set; }
     public DbSet<SuitableSellerProjectBrief> SuitableSellerProjectBriefs { get; set; }
+    public DbSet<Country> Countries { get; set; }
 }
         
 

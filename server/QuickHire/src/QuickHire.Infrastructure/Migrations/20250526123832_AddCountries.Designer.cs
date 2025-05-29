@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using QuickHire.Infrastructure.Persistence;
 
@@ -11,9 +12,11 @@ using QuickHire.Infrastructure.Persistence;
 namespace QuickHire.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250526123832_AddCountries")]
+    partial class AddCountries
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -141,9 +144,6 @@ namespace QuickHire.Infrastructure.Migrations
                         .HasMaxLength(300)
                         .HasColumnType("nvarchar(300)");
 
-                    b.Property<string>("ApplicationUserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
 
@@ -161,13 +161,16 @@ namespace QuickHire.Infrastructure.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.HasKey("Id");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.HasIndex("ApplicationUserId");
+                    b.HasKey("Id");
 
                     b.HasIndex("GigId");
 
                     b.HasIndex("MainCategoryId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("FAQs");
                 });
@@ -277,6 +280,7 @@ namespace QuickHire.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ImageUrl")
+                        .IsRequired()
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
@@ -1684,9 +1688,6 @@ namespace QuickHire.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("Sent")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -1985,10 +1986,6 @@ namespace QuickHire.Infrastructure.Migrations
 
             modelBuilder.Entity("QuickHire.Domain.Categories.FAQ", b =>
                 {
-                    b.HasOne("QuickHire.Infrastructure.Persistence.Identity.ApplicationUser", null)
-                        .WithMany("FAQs")
-                        .HasForeignKey("ApplicationUserId");
-
                     b.HasOne("QuickHire.Domain.Gigs.Gig", "Gig")
                         .WithMany("FAQs")
                         .HasForeignKey("GigId");
@@ -1996,6 +1993,10 @@ namespace QuickHire.Infrastructure.Migrations
                     b.HasOne("QuickHire.Domain.Categories.MainCategory", "MainCategory")
                         .WithMany("FAQs")
                         .HasForeignKey("MainCategoryId");
+
+                    b.HasOne("QuickHire.Infrastructure.Persistence.Identity.ApplicationUser", null)
+                        .WithMany("FAQs")
+                        .HasForeignKey("UserId");
 
                     b.Navigation("Gig");
 

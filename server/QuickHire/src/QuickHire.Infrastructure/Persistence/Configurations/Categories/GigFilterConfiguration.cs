@@ -13,7 +13,7 @@ internal class GigFilterConfiguration : IEntityTypeConfiguration<GigFilter>
     {
         builder.HasKey(x => x.Id);
 
-        builder.Property(x => x.Title).IsRequired().HasMaxLength(GigFilterTitleMaxLength);
+        builder.Property(x => x.Title).HasMaxLength(GigFilterTitleMaxLength);
 
         builder.Property(x => x.Type)
             .HasConversion(x => x.ToString(),

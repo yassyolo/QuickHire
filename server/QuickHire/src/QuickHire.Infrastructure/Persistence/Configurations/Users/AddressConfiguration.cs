@@ -11,13 +11,14 @@ internal class AddressConfiguration : IEntityTypeConfiguration<Address>
     {
         builder.HasKey(x => x.Id);
 
+        builder.HasOne(x => x.Country)
+            .WithOne()
+            .HasForeignKey<Address>(x => x.CountryId);
         builder.Property(x => x.Street).IsRequired().HasMaxLength(StreetMaxLength);
 
         builder.Property(x => x.City).IsRequired().HasMaxLength(CityMaxLength);
 
         builder.Property(x => x.ZipCode).IsRequired().HasMaxLength(ZipCodeMaxLength);
-
-        builder.Property(x => x.Country).IsRequired().HasMaxLength(CountryMaxLength);
 
         builder.Property(x => x.UserId).IsRequired();
 
