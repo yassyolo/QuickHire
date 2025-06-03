@@ -6,7 +6,8 @@ import { ExploreSubcategoriesInMainCategory } from "./ExploreSubcategoriesInMain
 import { FAQList } from "../../FAQ/FAQList";
 import { TagList } from "../../../Gigs/Tags/TagList";
 import "./MainCategoryPage.css";
-import { SellerPage } from "../../../Users/Seller/SellerPage";
+import { SellerPage } from "../../../Users/Seller/Pages/Common/SellerPage";
+import { BrowsingHistoryRow } from "../../../Users/Buyer/BrowsingHistory/BrowsingHistoryRow/BrowsingHistoryRow";
 
 export interface MainCategory{
     id: number;
@@ -44,9 +45,12 @@ export function MainCategoryPage() {
                         mainCategoryId={mainCategoryId} />
                 )}
                 {mainCategoryId !== null && mainCategory && (
-                    <ExploreSubcategoriesInMainCategory
+                    <div className="explore-main-category-page-subcategories">
+                        <ExploreSubcategoriesInMainCategory
                         mainCategoryId={mainCategoryId}
                         mainCategoryName={mainCategory.name} />
+                    </div>
+                    
                 )}
             </div>
 
@@ -58,10 +62,12 @@ export function MainCategoryPage() {
                     </div>
                 )}
                 <div className="tags-in-main-category">
-                    <h2>You might be interested in {mainCategory?.name}</h2>
+                    <div className="you-might-be-interested-in-title">You might be interested in {mainCategory?.name}</div>
                     {mainCategoryId !== null && mainCategory && (
                         <TagList mainCategoryId={mainCategoryId}></TagList>
                     )}
                 </div>
-            </div></>)
+            </div>
+            <BrowsingHistoryRow/>
+            </>)
 }

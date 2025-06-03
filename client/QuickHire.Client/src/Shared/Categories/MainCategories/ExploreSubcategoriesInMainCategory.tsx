@@ -40,10 +40,10 @@ export function ExploreSubcategoriesInMainCategory({ mainCategoryId, mainCategor
             <div className="explore-subcategories-title">Explore {mainCategoryName}</div>
             <ul className="explore-subcategories-list">
                 {subcategories.map(subcategory => (
-                    <li key={subcategory.id} >
+                    <li key={subcategory.id} className="explore-subcategories-item" >
                         <img src={subcategory.imageUrl} alt={subcategory.name} className="explore-subcategories-item-image" />
-                        <span>{subcategory.name}</span>
-                        <ul>
+                        <div className="explore-subcategories-item-name">{subcategory.name}</div>
+                        <ul className="explore-subcategories-subsubcategories">
                             {subcategory.subSubCategories.map(subSubCategory => (
                                 <li key={subSubCategory.id}>
                                     <span>{subSubCategory.name}</span>

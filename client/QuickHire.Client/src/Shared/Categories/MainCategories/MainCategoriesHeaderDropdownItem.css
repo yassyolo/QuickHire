@@ -24,3 +24,14 @@ ul{
     padding: 0;
     margin: 0;
 }
+
+.main-categories-header-dropdown-item-subsubcategory-list{
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+li .main-categories-header-dropdown-item-subsubcategory{
+    cursor: pointer;
+}

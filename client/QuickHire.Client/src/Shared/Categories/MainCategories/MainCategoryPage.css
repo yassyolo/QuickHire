@@ -29,10 +29,32 @@ width: 100%;
 }
 
 .main-category-faqs{
+    margin-top: 50px;
+    padding: 70px 80px 100px 80px;
     background-color: 
 #fafafa;
     width: 100%;
 
     justify-content: center ;
     align-items: center;
+}
+
+.explore-main-category-page-subcategories{
+    margin-top: 50px;
+}
+
+.tags-in-main-category{
+    margin-top: 50px;
+    justify-content: center;
+    align-items: center;
+    width: 90%;
+}
+
+.you-might-be-interested-in-title{
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--categories-description-color);
+    margin-bottom: 10px;
+    justify-content: center;
+    text-align: center;
 }

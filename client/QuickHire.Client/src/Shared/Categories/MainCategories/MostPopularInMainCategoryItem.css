@@ -9,17 +9,31 @@
     flex-grow: 1;
     width: auto;  
     min-width: 0; 
+    gap: 5px;
 }
 
 .most-popular-name {
   font-size: 16px;
   font-weight: 600;
-  color: var(--category-description-color);
+  color: var(--categories-description-color);
   margin-left: 10px;
   white-space: nowrap;        
   overflow: hidden;           
   text-overflow: ellipsis;    
-  max-width: 100%;            
+  max-width: 100%;  
+  transition: var(--transition-ease);         
+}
+.most-popular-item:hover .most-popular-name {
+    color: var(--fiverr-green-color);
+}
+
+.most-popular-item:hover i{
+    color: var(--fiverr-green-color);
+}
+
+.most-popular-item i{
+    transition: var(--transition-ease);         
+
 }
 
 .most-popular-image{

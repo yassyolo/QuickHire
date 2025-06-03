@@ -1,4 +1,3 @@
-import { Link } from "react-router-dom";
 import { SubCategoryInMainCategory } from "./MainCategoriesHeaderDropdown";
 import "./MainCategoriesHeaderDropdownItem.css";
 
@@ -10,7 +9,7 @@ export function MainCategoriesHeaderDropdownItem({ data }: MainCategoriesHeaderD
     return (
         <div className="main-categories-header-dropdown-item">
                 <div key={data.id} className="name-and-subsubcategory-list">
-                    <Link to={`/buyer/sub-categories/${data.id}`} className="item-name">{data.name}</Link>
+                    <div className="item-name">{data.name}</div>
                     {data.subSubCategories && data.subSubCategories.length > 0 && (
                         <ul className="main-categories-header-dropdown-item-subsubcategory-list">
                             {data.subSubCategories.map((subSubCategory) => (

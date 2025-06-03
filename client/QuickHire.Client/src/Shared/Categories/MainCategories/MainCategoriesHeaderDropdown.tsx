@@ -25,7 +25,6 @@ export function MainCategoriesHeaderDropdown({ id, show }: MainCategoriesHeaderD
             const url = `https://localhost:7267/admin/sub-categories/header/${id}`;
             const response = await axios.get<SubCategoryInMainCategory[]>(url);
             setSubCategories(response.data);
-            console.log("Fetched Sub Categories:", response.data);
         } catch (error) {
             console.error("Error fetching sub-categories:", error);
         }
