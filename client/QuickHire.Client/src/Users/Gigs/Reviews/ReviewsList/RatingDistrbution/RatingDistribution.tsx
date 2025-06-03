@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./RatingDistribution.css"
-import { StarRatingShowcase } from "../../Shared/Star/StarRatingShowcase";
+import { StarRatingShowcase } from "../../../../../Shared/Star/StarRatingShowcase";
+import axios from "axios";
 export interface Ratings{
     stars: number;
     count: number;
@@ -13,45 +14,34 @@ export interface RatingDistribution{
 }
 
 export interface RatingDistributionProps {
-    id: number
+    gigId?: number
+    userId?: number;
 }
 
-export function RatingDistribution(/*{ id }: RatingDistributionProps*/) {
-    const [ratings, setRatings] = useState<RatingDistribution>();
+export function RatingDistribution({ gigId, userId }: RatingDistributionProps) {
+    const [ratings, setRatings] = useState<RatingDistribution>()
 
-    useEffect(() => {
-        const mockData: RatingDistribution = {
-            ratings: [  
-                { stars: 1, count: 10 },
-                { stars: 2, count: 20 },
-                { stars: 3, count: 30 },
-                { stars: 4, count: 40 },
-                { stars: 5, count: 50 }
-            ],
-            total: 150,
-            average: 3.5
-        };
-        setRatings(mockData);
-    }, []);
+     useEffect(() => {
+     const fetchRatingDistribution = async () => {
+        if (!gigId || !userId) return;
+        try {
+            const useParams = new URLSearchParams();
+            useParams.append('GigId', gigId.toString());
+            useParams.append('UserId', userId.toString());
+            const response = await axios.get<RatingDistribution>(`https://localhost:7267/orders/reviews/ratings-distribution?${useParams.toString()}`);
+            setRatings(response.data);
+        } catch (error) {
+            console.error("Error fetching rating distribution:", error);
+        }
+    }
 
-     /*useEffect(() => {
-    const fetchRatings = async () => {
-      try {
-        const response = await fetch(`https://localhost:7267/gigs/statistics/ratings-distribution/${id}`);
-        const result = await response.json();
-        setRatings(result);
-      } catch (error) {
-        console.error("Error fetching rating distribution:", error);
-      }
-    };
-
-    fetchRatings();
-  }, [id]);*/
+    fetchRatingDistribution();
+  }, [gigId, userId]);
     return(
         <div aria-label="rating-distribution" className="rating-distribution">
             <div id={"rating-distribution"} className="rating-distribution-header">Reviews</div>
             <div className="rating-distribution-info">
-                <div className="rating-distribution-total">{ratings?.total} reviews for this Gig</div>
+                <div className="rating-distribution-total">{ratings?.total} reviews</div>
                 <div className="rating-distribution-average"> <StarRatingShowcase rating={Math.round(ratings?.average ?? 0)}></StarRatingShowcase>{ratings?.average ?? 0}</div>
             </div>
             <div id={"rating-distribution-chart"} className="rating-distribution-chart">

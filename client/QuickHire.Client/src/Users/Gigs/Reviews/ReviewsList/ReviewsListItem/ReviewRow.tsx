@@ -1,6 +1,6 @@
-import { StarRatingShowcase } from '../../Shared/Star/StarRatingShowcase';
+import { StarRatingShowcase } from '../../../../../Shared/Star/StarRatingShowcase';
 import './ReviewRow.css';
-import { Review } from './ReviewsList';
+import { Review } from '../ReviewsList';
 
 export interface ReviewRowProps {
     review: Review;

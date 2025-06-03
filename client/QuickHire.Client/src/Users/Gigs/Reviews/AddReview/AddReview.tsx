@@ -1,12 +1,16 @@
 import { useState } from "react";
-import { FormGroup } from "../../Shared/Forms/FormGroup";
-import { StarRating } from "../../Shared/Star/Star";
-import { ActionButton } from "../../Shared/Buttons/ActionButton";
 import axios from "axios";
-import { FormLabel } from "../../Shared/Forms/FormLabel";
 import "./AddReview.css";
+import { FormLabel } from "../../../../Shared/Forms/FormLabel";
+import { FormGroup } from "../../../../Shared/Forms/FormGroup";
+import { ActionButton } from "../../../../Shared/Buttons/ActionButton";
+import { StarRating } from "../../../../Shared/Star/Star";
+import { useParams } from "react-router-dom";
+
+
 
 export function AddReview() {
+    const {id} = useParams<{ id: string }>();
     const [rating, setRating] = useState(0);
     const [comment, setComment] = useState("");
     const [showCommentTooltip, setShowCommentTooltip] = useState(false);
@@ -31,10 +35,12 @@ export function AddReview() {
         setValidationErrors({});
 
         try {
-            const response = await axios.post("/api/reviews", {
-                rating,
-                comment
-            });
+            const url = "https://localhost:7267/orders/reviews";
+            const response = await axios.post(url, {
+                OrderId: Number(id),
+                Rating: rating,
+                Comment: comment
+            })
             if (response.status === 200) {
                 //ToDo
             }
