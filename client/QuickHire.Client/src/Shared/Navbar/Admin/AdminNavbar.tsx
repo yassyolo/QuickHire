@@ -22,7 +22,7 @@ export function AdminNavbar() {
           </>}>      
           
         </SellerOrAdminNavbar>
-        <main> <Outlet /> </main>
+        <main className="admin-main"> <Outlet /> </main>
 
         <Footer></Footer>
     </div>

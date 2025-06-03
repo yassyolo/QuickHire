@@ -21,7 +21,7 @@ export function SellerNavbar() {
           
         </SellerOrAdminNavbar>
 
-        <main><Outlet /></main>
+        <main className="seller-main"><Outlet /></main>
         <div className="seller-footer"><Footer/></div>
     </div>
   );

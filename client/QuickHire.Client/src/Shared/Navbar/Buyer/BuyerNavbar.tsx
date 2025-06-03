@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { IconButton } from '../../Buttons/IconButton';
 import { NotificationButtonDropdown } from '../../Notifications/NotificationButtonDropdown';
 import { ProfileIconDropdown } from '../../Profile/ProfileIconDropdown';
@@ -12,6 +12,10 @@ import { useSearch } from './SearchContext';
 
 export function BuyerNavbar() {
     const { setKeyword } = useSearch();
+    const navigate = useNavigate();
+    const handleFavouritesIconClick = () => {
+        navigate('/buyer/favourite-gigs');
+    };
 
   return (
     <div className="page-container">
@@ -22,7 +26,7 @@ export function BuyerNavbar() {
             </div>
 
             <div className="top-seller-navbar-right">
-                <IconButton buttonInfo="Favourites" icon={<i className="fa-regular fa-heart"></i>} onClick={() => {}} className={"inbox-button"} ariaLabel={"FavoritesButton"}></IconButton>
+                <IconButton buttonInfo="Favourites" icon={<i className="fa-regular fa-heart"></i>} onClick={handleFavouritesIconClick} className={"inbox-button"} ariaLabel={"FavoritesButton"}></IconButton>
 
                 <NotificationButtonDropdown/>
                 <IconButton buttonInfo="Messages" icon={<i className="fa-regular fa-envelope"></i>} onClick={() => {}} className={"inbox-button"} ariaLabel={"MessagesButton"}></IconButton>
@@ -33,7 +37,7 @@ export function BuyerNavbar() {
             <MainCategoriesHeader />
             </div>
 
-        <main> <Outlet /> </main>
+        <main className="buyer-main"> <Outlet /> </main>
 
 <div className="buyer-footer">
             <Footer/>
