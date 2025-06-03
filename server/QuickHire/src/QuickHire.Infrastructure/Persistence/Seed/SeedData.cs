@@ -576,7 +576,6 @@ public class SeedData
             {
                 Id = 1,
                 UserId = User1.Id,
-                BillingDetailsId = BillingDetails1.Id,
             };
 
             var list = new List<Buyer>() { Buyer1 };
@@ -734,21 +733,21 @@ public class SeedData
     {
         if (!_context.Skills.Any())
         {
-            Skill1 = new Skill { Id = 1, Name = "Graphic designer", Level = SkillLevel.Advanced };
-            Skill2 = new Skill { Id = 2, Name = "UI/UX designer", Level = SkillLevel.Advanced, SellerId = Seller1.Id };
-            Skill3 = new Skill { Id = 3, Name = "Creative designer", Level = SkillLevel.Advanced, SellerId = Seller1.Id };
-            Skill4 = new Skill { Id = 4, Name = "Adobe Photoshop Expert", Level = SkillLevel.Advanced, SellerId = Seller1.Id };
-            Skill5 = new Skill { Id = 5, Name = "Adobe Illustration Expert", Level = SkillLevel.Advanced, SellerId = Seller1.Id };
-            Skill6 = new Skill { Id = 6, Name = "UI designer", Level = SkillLevel.Advanced, SellerId = Seller2.Id };
-            Skill7 = new Skill { Id = 7, Name = "Adobe XD expert", Level = SkillLevel.Advanced, SellerId = Seller2.Id };
-            Skill8 = new Skill { Id = 8, Name = "Figma designer", Level = SkillLevel.Advanced, SellerId = Seller2.Id };
-            Skill9 = new Skill { Id = 9, Name = "Brand identity designer", Level = SkillLevel.Advanced, SellerId = Seller2.Id };
-            Skill10 = new Skill { Id = 10, Name = "UX designer", Level = SkillLevel.Advanced, SellerId = Seller3.Id };
-            Skill11 = new Skill { Id = 11, Name = "Wordpress", Level = SkillLevel.Advanced, SellerId = Seller3.Id };
-            Skill12 = new Skill { Id = 12, Name = "UX writer", Level = SkillLevel.Advanced, SellerId = Seller3.Id };
-            Skill13 = new Skill { Id = 13, Name = "Mobile UX writer", Level = SkillLevel.Advanced, SellerId = Seller3.Id };
-            Skill14 = new Skill { Id = 14, Name = "UI designer", Level = SkillLevel.Advanced, SellerId = Seller3.Id };
-            Skill15 = new Skill { Id = 15, Name = "WEbsite UX designer", Level = SkillLevel.Advanced, SellerId = Seller3.Id };
+            Skill1 = new Skill { Id = 1, Name = "Graphic designer" };
+            Skill2 = new Skill { Id = 2, Name = "UI/UX designer", SellerId = Seller1.Id };
+            Skill3 = new Skill { Id = 3, Name = "Creative designer", SellerId = Seller1.Id };
+            Skill4 = new Skill { Id = 4, Name = "Adobe Photoshop Expert", SellerId = Seller1.Id };
+            Skill5 = new Skill { Id = 5, Name = "Adobe Illustration Expert", SellerId = Seller1.Id };
+            Skill6 = new Skill { Id = 6, Name = "UI designer", SellerId = Seller2.Id };
+            Skill7 = new Skill { Id = 7, Name = "Adobe XD expert", SellerId = Seller2.Id };
+            Skill8 = new Skill { Id = 8, Name = "Figma designer", SellerId = Seller2.Id };
+            Skill9 = new Skill { Id = 9, Name = "Brand identity designer", SellerId = Seller2.Id };
+            Skill10 = new Skill { Id = 10, Name = "UX designer", SellerId = Seller3.Id };
+            Skill11 = new Skill { Id = 11, Name = "Wordpress", SellerId = Seller3.Id };
+            Skill12 = new Skill { Id = 12, Name = "UX writer", SellerId = Seller3.Id };
+            Skill13 = new Skill { Id = 13, Name = "Mobile UX writer", SellerId = Seller3.Id };
+            Skill14 = new Skill { Id = 14, Name = "UI designer", SellerId = Seller3.Id };
+            Skill15 = new Skill { Id = 15, Name = "WEbsite UX designer", SellerId = Seller3.Id };
 
             var list = new List<Skill>() { Skill1, Skill2, Skill3, Skill4, Skill5, Skill6, Skill7, Skill8, Skill9, Skill10, Skill11, Skill12, Skill13, Skill14, Skill15 };
             _context.AddRange(list);
@@ -853,37 +852,31 @@ public class SeedData
             {
                 UserId = User1.Id,
                 LanguageId = Language1.Id,
-                Proficiency = ProficiencyLevel.Fluent
             };
             UserLanguage2 = new UserLanguage
             {
                 UserId = User1.Id,
                 LanguageId = Language2.Id,
-                Proficiency = ProficiencyLevel.Basic
             };
             UserLanguage3 = new UserLanguage
             {
                 UserId = User2.Id,
                 LanguageId = Language1.Id,
-                Proficiency = ProficiencyLevel.Fluent
             };
             UserLanguage4 = new UserLanguage
             {
                 UserId = User3.Id,
                 LanguageId = Language1.Id,
-                Proficiency = ProficiencyLevel.Fluent
             };
             UserLanguage5 = new UserLanguage
             {
                 UserId = User4.Id,
                 LanguageId = Language3.Id,
-                Proficiency = ProficiencyLevel.Basic
             };
             UserLanguage6 = new UserLanguage
             {
                 UserId = User1.Id,
                 LanguageId = Language4.Id,
-                Proficiency = ProficiencyLevel.Basic
             };
             var list = new List<UserLanguage>
             {

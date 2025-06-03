@@ -10,8 +10,10 @@ using QuickHire.Domain.Orders;
 using QuickHire.Domain.ProjectBriefs;
 using QuickHire.Domain.Shared.Contracts;
 using QuickHire.Domain.Users;
+using QuickHire.Infrastructure.Persistence.EFHelpers;
 using QuickHire.Infrastructure.Persistence.Identity;
 using System.Linq.Expressions;
+using System.Reflection.Emit;
 using ApplicationUser = QuickHire.Infrastructure.Persistence.Identity.ApplicationUser;
 
 namespace QuickHire.Infrastructure.Persistence;
@@ -40,8 +42,9 @@ public class ApplicationDbContext
         builder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
 
         ApplySoftDeleteQueryFilter(builder);
-
         ApplyDefaultDeleteBehavior(builder);
+
+        builder.HasDbFunction(typeof(SqlFunctions).GetMethod(nameof(SqlFunctions.Soundex))).HasName("SOUNDEX");
     }
 
     private void ApplyDefaultDeleteBehavior(ModelBuilder builder)
@@ -114,6 +117,7 @@ public class ApplicationDbContext
     public DbSet<ProjectBrief> ProjectBriefs { get; set; }
     public DbSet<SuitableSellerProjectBrief> SuitableSellerProjectBriefs { get; set; }
     public DbSet<Country> Countries { get; set; }
+    public DbSet<IndustrySkillSeller> IndustrySkillSellers { get; set; }
 }
         
 
