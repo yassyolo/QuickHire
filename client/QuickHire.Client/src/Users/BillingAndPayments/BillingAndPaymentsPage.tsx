@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
 import { PageTitle } from "../../Admin/Pages/Common/PageTitle";
 import { PageSelector } from "./PageSelector";
-import { BillingHistory } from "./BillingHistory";
-import { SellerPage } from "../Seller/SellerPage";
-import { BillingInfo } from "./BillingInfo";
+import { BillingHistory } from "./BillingHistory/BillingHistory";
+import { SellerPage } from "../Seller/Pages/Common/SellerPage";
+import { BillingInfo } from "./BillingInfo/BillingInfo";
 
 interface BillingAndPaymentsPageProps {
     homeUrl: string;
+    buyer: boolean;
 }
 
-export function BillingAndPaymentsPage({ homeUrl }: BillingAndPaymentsPageProps) {
+export function BillingAndPaymentsPage({ homeUrl, buyer }: BillingAndPaymentsPageProps) {
     const [showBillingHistory, setShowBillingHistory] = useState(false);
     const [showBillingInfo, setShowBillingInfo] = useState(false);
     const [breadcrumbs, setBreadcrumbs] = useState<{ label: React.ReactNode; to?: string }[]>([]);
@@ -50,13 +51,8 @@ export function BillingAndPaymentsPage({ homeUrl }: BillingAndPaymentsPageProps)
                 { name: "Billing info", onClick: handleBillingInfoVisibility, isActive: showBillingInfo },
             ]} />
 
-            {showBillingHistory && 
-            <BillingHistory/>}
-
-            {showBillingInfo &&
-            <BillingInfo></BillingInfo>
-            }
-       
+            {showBillingHistory && <BillingHistory buyer={buyer}/>}
+            {showBillingInfo && <BillingInfo></BillingInfo>}      
         </SellerPage>
     );
 }
