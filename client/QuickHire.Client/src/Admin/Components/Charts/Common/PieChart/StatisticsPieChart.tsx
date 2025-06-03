@@ -1,4 +1,4 @@
-import { Label } from "./Label";
+import { Label } from "../LineChart/Common/Label";
 import { PieChartComponent } from "./PieChartComponent";
 import './StatisticsPieChart.css';
 

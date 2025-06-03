@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { StatisticsLineChart } from "./Common/StatisticsLineChart";
-import { StatisticsData, StatisticsTable } from "./Common/StatisticsTables";
-import { StatisticsPieChart } from "./Common/StatisticsPieChart";
+import { StatisticsLineChart } from "../Common/LineChart/StatisticsLineChart";
+import { StatisticsData, StatisticsTable } from "../Common/LineChart/Common/StatisticsTables";
+import { StatisticsPieChart } from "../Common/PieChart/StatisticsPieChart";
 
 export interface PieChartData {
     data: {label: string; value: string; percentage: string}[];
@@ -71,7 +71,7 @@ const fetchReviewResponseData = async () => {
     <StatisticsTable>
         <StatisticsLineChart icon={<i className="bi bi-star-half"></i>} label={"Stars"} thisMonthCount={viewsStars?.thisMonthItem.count || ""} thisMonthPercentage={viewsStars?.thisMonthItem.percentage || ""} peakDate={viewsStars?.peakItem.date || ""} data={viewsStars?.data || []}></StatisticsLineChart>
         <StatisticsLineChart icon={<i className="bi bi-chat-quote"></i>} label={"Reviews"} totalItemsCount={reviewsData?.totalItem.count || ""} totalItemslabel={reviewsData?.totalItem.label || ""} thisMonthCount={reviewsData?.thisMonthItem.count || ""} thisMonthPercentage={reviewsData?.thisMonthItem.percentage || ""} peakDate={reviewsData?.peakItem.date || ""} data={reviewsData?.data || []}></StatisticsLineChart>
-        <StatisticsPieChart /*icon={<i className="bi bi-chat-square-heart"></i>} */ label={"Rating Distribution"} data={ratingDistributionData?.data || []}></StatisticsPieChart>
+        <StatisticsPieChart label={"Rating Distribution"} data={ratingDistributionData?.data || []}></StatisticsPieChart>
         <StatisticsPieChart label={"Review Response Rate"} data={reviewResponseData?.data || []}></StatisticsPieChart>
     </StatisticsTable>
     );

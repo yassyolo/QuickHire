@@ -1,4 +1,4 @@
-import { DetailsRow } from '../../Details/Common/DetailsRow';
+import { DetailsRow } from '../../../../Details/Common/DetailsRow';
 import './ThisMonths.css';
 export interface ThisMonthProps {
     count: string;

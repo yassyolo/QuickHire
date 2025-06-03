@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { StatisticsLineChart } from "./Common/StatisticsLineChart";
-import { StatisticsData, StatisticsTable } from "./Common/StatisticsTables";
+import { StatisticsLineChart } from "../Common/LineChart/StatisticsLineChart";
+import { StatisticsData, StatisticsTable } from "../Common/LineChart/Common/StatisticsTables";
 
 export interface EngagementStatisticsProps {
     id: number;

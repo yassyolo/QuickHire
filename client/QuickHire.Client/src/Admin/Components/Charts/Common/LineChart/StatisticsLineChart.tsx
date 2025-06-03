@@ -1,9 +1,9 @@
-import { Peak } from "./Peak";
-import { ThisMonth } from "./ThisMonths";
-import { TotalItems } from "./TotalItems";
+import { Peak } from "./Common/Peak";
+import { TotalItems } from "./Common/TotalItems";
 import { LineChartComponent } from "./LineChart";
 import './StatisticsLineChart.css';
-import { Label } from "./Label";
+import { Label } from "./Common/Label";
+import { ThisMonth } from "./Common/ThisMonths";
 
 export interface StatisticsLineChartDataProps {
     label: string;
