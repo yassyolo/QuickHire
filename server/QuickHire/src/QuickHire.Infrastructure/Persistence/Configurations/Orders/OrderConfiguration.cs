@@ -21,6 +21,10 @@ internal class OrderConfiguration : IEntityTypeConfiguration<Order>
 
         builder.Property(x => x.CreatedAt).IsRequired();
 
+        builder.Property(x => x.TotalPrice)
+            .IsRequired()
+            .HasColumnType("decimal(18,2)");
+
         builder.Property(x => x.Status)
             .IsRequired()
             .HasConversion(x => x.ToString(),

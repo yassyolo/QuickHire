@@ -14,6 +14,10 @@ internal class BrowsingHistoryConfiguration : IEntityTypeConfiguration<BrowsingH
             .WithMany()
             .HasForeignKey(x => x.GigId);
 
+        builder.HasOne(x => x.Seller)
+            .WithMany()
+            .HasForeignKey(x => x.SellerId);
+
         builder.HasOne(x => x.Buyer)
             .WithMany(x => x.BrowsingHistories)
             .HasForeignKey(x => x.BuyerId);

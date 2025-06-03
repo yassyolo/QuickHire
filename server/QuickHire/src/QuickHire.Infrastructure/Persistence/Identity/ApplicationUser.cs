@@ -11,10 +11,12 @@ public class ApplicationUser : IdentityUser<string>
     public string? Description { get; set; }
     public DateTime JoinedAt { get; set; }
     public string? ProfileImageUrl { get; set; } = string.Empty;
-    public IEnumerable<Notification>? Notifications { get; set; }
     public IEnumerable<UserLanguage>? Languages { get; set; }
-    public IEnumerable<FAQ>? FAQs { get; set; }
     public ModerationStatus ModerationStatus { get; set; }
     public DateTime? RefreshTokenExpiresAt { get; set; }
-    public string? RefreshToken { get; set; } 
+    public string? RefreshToken { get; set; }
+    public int? BillingDetailsId { get; set; }
+    public BillingDetails? BillingDetails { get; set; }
+    public int? AddressId { get; set; }
+    public Address? Address { get; set; }
 }

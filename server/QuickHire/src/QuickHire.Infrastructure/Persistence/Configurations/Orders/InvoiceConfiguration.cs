@@ -27,5 +27,19 @@ internal class InvoiceConfiguration : IEntityTypeConfiguration<Invoice>
         builder.HasOne(x => x.Order)
             .WithOne(x => x.Invoice)
             .HasForeignKey<Invoice>(x => x.OrderId);
+
+        builder.HasOne(x => x.Seller)
+            .WithMany()
+            .HasForeignKey(x => x.SellerId)
+            .IsRequired();
+
+        builder.HasOne(x => x.Buyer)
+            .WithMany()
+            .HasForeignKey(x => x.BuyerId)
+            .IsRequired();
+
+        builder.Property(x => x.SourceUrl)
+            .IsRequired(false)
+            .HasMaxLength(500);
     }
 }

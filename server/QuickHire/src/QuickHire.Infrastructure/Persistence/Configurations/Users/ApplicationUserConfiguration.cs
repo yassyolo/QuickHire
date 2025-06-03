@@ -26,13 +26,13 @@ internal class ApplicationUserConfiguration : IEntityTypeConfiguration<Applicati
         builder.Property(x => x.ProfileImageUrl)
             .HasMaxLength(FileUrlMaxLength);
 
-        builder.HasMany(x => x.Notifications)
-            .WithOne()
-            .HasForeignKey(x => x.UserId);
-
         builder.HasMany(x => x.Languages)
             .WithOne()
             .HasForeignKey(x => x.UserId);
+
+        builder.HasOne(x => x.BillingDetails)
+            .WithOne()
+            .HasForeignKey<ApplicationUser>(x => x.BillingDetailsId);
 
         builder.Property(x => x.ModerationStatus)
             .IsRequired()

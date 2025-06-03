@@ -15,7 +15,7 @@ internal class ReviewConfiguration : IEntityTypeConfiguration<Review>
 
         builder.Property(x => x.Rating).IsRequired().HasMaxLength(RatingStarsMaxLength);
 
-        builder.Property(x => x.CreatorUserId).IsRequired();
+        builder.Property(x => x.UserId).IsRequired();
 
         builder.HasOne(x => x.Order)
             .WithMany(x => x.Reviews)

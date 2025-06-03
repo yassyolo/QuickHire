@@ -13,14 +13,13 @@ public class ProjectBrief : BaseSoftDeletableEntity<int>
     public string AboutBuyer { get; set; } = string.Empty;
     public decimal Budget { get; set; }
     public int DeliveryTimeInDays { get; set; } 
-    public int MainCategoryId { get; set; }
-    public MainCategory MainCategory { get; set; } = null!;
-    public int SubCategoryId { get; set; }
-    public SubCategory SubCategory { get; set; } = null!;
+    public int SubSubCategoryId { get; set; }
+    public SubSubCategory SubSubCategory { get; set; } = null!;
     public int BuyerId { get; set; } 
     public Buyer Buyer { get; set; } = null!;
     public DateTime CreatedAt { get; set; } 
     public DateTime? WithdrawnAt { get; set; }
     public ProjectBriefStatus Status { get; set; }
     public List<CustomOffer>? CustomOffers { get; set; } 
+
 }

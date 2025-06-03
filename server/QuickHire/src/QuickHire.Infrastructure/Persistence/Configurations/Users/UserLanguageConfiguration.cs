@@ -16,9 +16,5 @@ internal class UserLanguageConfiguration : IEntityTypeConfiguration<UserLanguage
         builder.HasOne(x => x.Language)
             .WithMany()
             .HasForeignKey(x => x.LanguageId);
-
-        builder.Property(x => x.Proficiency)
-            .HasConversion(x => x.ToString(),
-            x => (ProficiencyLevel)Enum.Parse(typeof(ProficiencyLevel), x));
     }
 }

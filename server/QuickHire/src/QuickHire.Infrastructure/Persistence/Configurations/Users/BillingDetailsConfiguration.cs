@@ -17,6 +17,8 @@ internal class BillingDetailsConfiguration : IEntityTypeConfiguration<BillingDet
             .WithOne()
             .HasForeignKey<BillingDetails>(x => x.AddressId);
 
+        builder.Property(x => x.UserId).IsRequired();
+
         builder.HasQueryFilter(x => !x.Address.IsDeleted);
 
         builder.Property(x => x.CompanyName).HasMaxLength(CompanyNameMaxLength);

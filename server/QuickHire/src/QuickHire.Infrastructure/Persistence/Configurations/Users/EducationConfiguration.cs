@@ -20,8 +20,6 @@ internal class EducationConfiguration : IEntityTypeConfiguration<Education>
         builder.Property(x => x.Major).IsRequired().HasMaxLength(InstitutionMaxLength);
 
         builder.Property(x => x.Degree)
-            .IsRequired()
-            .HasConversion(x => x.ToString(),
-            x => (EducationDegree)Enum.Parse(typeof(EducationDegree), x));
+            .IsRequired();
     }
 }

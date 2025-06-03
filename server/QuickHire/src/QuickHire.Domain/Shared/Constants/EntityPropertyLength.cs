@@ -35,6 +35,8 @@ public static class EntityPropertyLength
     {
         public const int InstitutionMaxLength = 100;
         public const int InstitutionMinLength = 2;
+        public const int MajorMaxLength = 50;
+        public const int MajorMinLength = 2;
     }
 
     public static class Language

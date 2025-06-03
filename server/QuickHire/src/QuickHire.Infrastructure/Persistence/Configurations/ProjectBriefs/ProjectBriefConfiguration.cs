@@ -24,13 +24,9 @@ internal class ProjectBriefConfiguration : IEntityTypeConfiguration<ProjectBrief
             .IsRequired()
             .HasPrecision(8, 2);
 
-        builder.HasOne(x => x.MainCategory)
+        builder.HasOne(x => x.SubSubCategory)
             .WithMany()
-            .HasForeignKey(x => x.MainCategoryId);
-
-        builder.HasOne(x => x.SubCategory)
-            .WithMany()
-            .HasForeignKey(x => x.SubCategoryId);
+            .HasForeignKey(x => x.SubSubCategoryId);
 
         builder.Property(x => x.CreatedAt).IsRequired();
 

@@ -9,8 +9,7 @@ namespace QuickHire.Domain.Users;
 public class Buyer : BaseEntity<int>
 {
     public string UserId { get; set; } = string.Empty;
-    public int? BillingDetailsId { get; set; }
-    public BillingDetails? BillingDetails { get; set; } 
+    public IEnumerable<Notification>? Notifications { get; set; }
     public IEnumerable<BrowsingHistory>? BrowsingHistories { get; set; }
     public IEnumerable<FavouriteGigsList>? FavouriteGigsLists { get; set; }
     public IEnumerable<Invoice>? Invoices { get; set; }   
@@ -18,4 +17,5 @@ public class Buyer : BaseEntity<int>
     public IEnumerable<Order>? PlacedOrders { get; set;}
     public IEnumerable<CustomOffer>? CustomOffers { get; set; }
     public IEnumerable<ProjectBrief>? ProjectBriefs { get; set; }
+    public IEnumerable<FavouriteGig>? FavouriteGigs { get; set; }
 }

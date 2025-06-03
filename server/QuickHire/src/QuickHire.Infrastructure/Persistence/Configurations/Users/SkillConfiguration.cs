@@ -14,10 +14,5 @@ internal class SkillConfiguration : IEntityTypeConfiguration<Skill>
         builder.HasKey(x => x.Id);
 
         builder.Property(x => x.Name).IsRequired().HasMaxLength(NameMaxLength);
-
-        builder.Property(x => x.Level)
-            .IsRequired()
-            .HasConversion(x => x.ToString(),
-            x => (SkillLevel)Enum.Parse(typeof(SkillLevel), x));
     }
 }

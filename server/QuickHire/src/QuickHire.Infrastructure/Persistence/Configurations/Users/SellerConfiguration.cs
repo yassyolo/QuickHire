@@ -17,6 +17,14 @@ internal class SellerConfiguration : IEntityTypeConfiguration<Seller>
             .HasForeignKey(x => x.SellerId)
             .IsRequired();
 
+        builder.HasMany(x => x.Notifications)
+            .WithOne(x => x.Seller)
+            .HasForeignKey(x => x.SellerId);
+
+        builder.HasOne(x => x.Industry)
+            .WithMany()
+            .HasForeignKey(x => x.IndustryId);
+
         builder.HasMany(x => x.Certifications)
             .WithOne(x => x.Seller)
             .HasForeignKey(x => x.SellerId)

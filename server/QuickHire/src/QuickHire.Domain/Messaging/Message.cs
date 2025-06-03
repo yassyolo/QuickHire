@@ -7,8 +7,8 @@ namespace QuickHire.Domain.Messaging;
 
 public class Message : BaseSoftDeletableEntity<int>
 {
-    public string SenderId { get; set; } = string.Empty;
-    public string ReceiverId { get; set; } = string.Empty;
+    public int SenderId { get; set; } 
+    public int ReceiverId { get; set; } 
     public string Text { get; set; } = string.Empty;
     public DateTime SentAt { get; set; }
     public bool IsRead { get; set; }

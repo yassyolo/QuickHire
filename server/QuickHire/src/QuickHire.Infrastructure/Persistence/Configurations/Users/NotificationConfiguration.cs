@@ -19,8 +19,6 @@ internal class NotificationConfiguration : IEntityTypeConfiguration<Notification
 
         builder.Property(x => x.IsRead).IsRequired();
 
-        builder.Property(x => x.UserId).IsRequired();
-
         builder.Property(x => x.CreatedAt).IsRequired();
 
         builder.HasQueryFilter(x => !x.IsDeleted);

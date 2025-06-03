@@ -10,7 +10,10 @@ internal class SuitableSellerProjectBriefConfiguration : IEntityTypeConfiguratio
     {
         builder.HasKey(x => new { x.SellerId, x.ProjectBriefId });
 
-        builder.Property(x => x.SellerId).IsRequired();
+        builder.HasOne(x => x.Seller)
+            .WithMany()
+            .HasForeignKey(x => x.SellerId)
+            .IsRequired();
 
         builder.HasOne(x => x.CustomOffer)
             .WithOne()

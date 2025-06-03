@@ -5,7 +5,7 @@
 namespace QuickHire.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class ChangeAppUserId : Migration
+    public partial class RemovedEnumsFromEducation : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

@@ -8,4 +8,5 @@ public class BillingDetails : BaseEntity<int>
     public Address Address { get; set; } = null!;
     public int AddressId { get; set; }
     public string? CompanyName { get; set; } 
+    public string UserId { get; set; } = string.Empty;
 }

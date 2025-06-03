@@ -10,7 +10,10 @@ public class Notification : BaseSoftDeletableEntity<int>
     public DateTime CreatedAt { get; set; } 
     public bool IsRead { get; set; }
     public NotificationType NotificationType { get; set; }
-    public string UserId { get; set; } = string.Empty;
+    public int? BuyerId { get; set; }
+    public Buyer? Buyer { get; set; }
+    public int? SellerId { get; set; }
+    public Seller? Seller { get; set; }
     public bool Sent { get; set; }
 }
 

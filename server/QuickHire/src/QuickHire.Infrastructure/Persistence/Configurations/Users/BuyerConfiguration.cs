@@ -12,13 +12,17 @@ internal class BuyerConfiguration : IEntityTypeConfiguration<Buyer>
 
         builder.Property(x => x.UserId).IsRequired();
 
-        builder.HasOne(x => x.BillingDetails)
-            .WithOne()
-            .HasForeignKey<Buyer>(x => x.BillingDetailsId);
-
         builder.HasMany(x => x.FavouriteGigsLists)
            .WithOne(x => x.Buyer)
            .HasForeignKey(x => x.BuyerId);
+
+        builder.HasMany(x => x.FavouriteGigs)
+            .WithOne(x => x.Buyer)
+              .HasForeignKey(x => x.BuyerId);
+
+        builder.HasMany(x => x.Notifications)
+            .WithOne(x => x.Buyer)
+              .HasForeignKey(x => x.BuyerId);
 
         builder.HasMany(x => x.Invoices)
            .WithOne(x => x.Buyer)

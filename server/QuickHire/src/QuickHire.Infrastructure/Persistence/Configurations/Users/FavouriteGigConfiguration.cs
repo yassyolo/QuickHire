@@ -10,7 +10,10 @@ internal class FavouriteGigConfiguration : IEntityTypeConfiguration<FavouriteGig
     {
         builder.HasKey(x => x.Id);
 
-        builder.Property(x => x.UserId).IsRequired();
+        builder.HasOne(x => x.Buyer)
+            .WithMany()
+            .HasForeignKey(x => x.BuyerId)
+            .IsRequired();
 
         builder.Property(x => x.AddedAt).IsRequired();
 
