@@ -1,4 +1,5 @@
-﻿using QuickHire.Application.Common.Interfaces.Factories.Notification;
+﻿using iText.Commons.Bouncycastle.Cms;
+using QuickHire.Application.Common.Interfaces.Factories.Notification;
 using QuickHire.Domain.Users.Enums;
 using static QuickHire.Infrastructure.Extensions.PlaceholderExtension;
 
@@ -11,19 +12,25 @@ internal class OrderStatusUpdateNotificationGenerator : INotificationGenerator
     public string Title { get; set; } = "Your Order Status Has Been Updated!";
     public string Message { get; set; } = "Hello, {UserName}! The status of your order with number {OrderNumber} has changed to {NewStatus}. Check out details here: {OrderId}.";
 
-    public Domain.Users.Notification Generate(string userId, Dictionary<string, string>? placeholders = null)
+    public Domain.Users.Notification Generate(int recipientId, NotificationRecipientType recipientType, Dictionary<string, string>? placeholders = null)
     {
         string finalTitle = ReplacePlaceHolders(Title, placeholders);
         string finalMessage = ReplacePlaceHolders(Message, placeholders);
 
-        return new Domain.Users.Notification
+        var notification = new Domain.Users.Notification
         {
-            UserId = userId,
             CreatedAt = DateTime.Now,
             IsRead = false,
             Title = finalTitle,
             Message = finalMessage,
             Sent = false
         };
+
+        if (recipientType == NotificationRecipientType.Buyer)
+            notification.BuyerId = recipientId;
+        else if (recipientType == NotificationRecipientType.Seller)
+            notification.SellerId = recipientId;
+
+        return notification;
     }
 }

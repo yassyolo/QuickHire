@@ -1,4 +1,5 @@
-﻿using QuickHire.Application.Common.Interfaces.Factories.Notification;
+﻿using iText.Commons.Bouncycastle.Cms;
+using QuickHire.Application.Common.Interfaces.Factories.Notification;
 using QuickHire.Domain.Users.Enums;
 using static QuickHire.Infrastructure.Extensions.PlaceholderExtension;
 
@@ -10,19 +11,25 @@ internal class ProfileMadeNotificationGenerator : INotificationGenerator
     public string Title { get; set; } = "Your Profile Has Been Created";
     public string Message { get; set; } = "Welcome, {UserName}! Your profile has been successfully created. Take a moment to complete your details and start using all the features available to you.";
 
-    public Domain.Users.Notification Generate(string userId, Dictionary<string, string>? placeholders = null)
+    public Domain.Users.Notification Generate(int recipientId, NotificationRecipientType recipientType, Dictionary<string, string>? placeholders = null)
     {
         string finalTitle = ReplacePlaceHolders(Title, placeholders);
         string finalMessage = ReplacePlaceHolders(Message, placeholders);
 
-        return new Domain.Users.Notification
+        var notification = new Domain.Users.Notification
         {
-            UserId = userId,
             CreatedAt = DateTime.Now,
             IsRead = false,
             Title = finalTitle,
             Message = finalMessage,
             Sent = false
         };
+
+        if (recipientType == NotificationRecipientType.Buyer)
+            notification.BuyerId = recipientId;
+        else if (recipientType == NotificationRecipientType.Seller)
+            notification.SellerId = recipientId;
+
+        return notification;
     }
 }

@@ -1,4 +1,5 @@
-﻿using QuickHire.Application.Common.Interfaces.Factories.Notification;
+﻿using iText.Commons.Bouncycastle.Cms;
+using QuickHire.Application.Common.Interfaces.Factories.Notification;
 using QuickHire.Domain.Users.Enums;
 using static QuickHire.Infrastructure.Extensions.PlaceholderExtension;
 
@@ -11,20 +12,25 @@ internal class CustomRequestPlacedNotificationGenerator : INotificationGenerator
     public string Title { get; set; } = "Your Custom Request Has Been Placed!";
     public string Message { get; set; } = "Hello, {UserName}! Your custom request with number {CustomRequestNumber} has been successfully placed. Click here to view its progress: {ConversationId}.";
 
-    public Domain.Users.Notification Generate(string userId, Dictionary<string, string>? placeholders = null)
+    public Domain.Users.Notification Generate(int recipientId, NotificationRecipientType recipientType, Dictionary<string, string>? placeholders = null)
     {
         string finalTitle = ReplacePlaceHolders(Title, placeholders);
         string finalMessage = ReplacePlaceHolders(Message, placeholders);
 
-        return new Domain.Users.Notification
+        var notification = new Domain.Users.Notification
         {
-            UserId = userId,
             CreatedAt = DateTime.Now,
             IsRead = false,
             Title = finalTitle,
             Message = finalMessage,
             Sent = false
-
         };
+
+        if (recipientType == NotificationRecipientType.Buyer)
+            notification.BuyerId = recipientId;
+        else if (recipientType == NotificationRecipientType.Seller)
+            notification.SellerId = recipientId;
+
+        return notification;
     }
 }

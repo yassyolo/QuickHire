@@ -14,6 +14,7 @@ internal class NotificationService : INotificationService
 {
     private readonly IRepository _repository;
     private readonly INotificationGeneratorFactory _notificationGeneratorFactory;
+    private readonly IUserService _userService;
 
     public NotificationService(INotificationGeneratorFactory notificationGeneratorFactory, IRepository repository)
     {
@@ -21,10 +22,10 @@ internal class NotificationService : INotificationService
         _repository = repository;
     }
 
-    public async Task MakeNotification(string userId, NotificationType type, Dictionary<string, string>? placeholders = null)
+    public async Task MakeNotification(int recipientId, NotificationRecipientType recipientType, NotificationType type, Dictionary<string, string>? placeholders = null)
     {
         var notificationGenerator = _notificationGeneratorFactory.GetNotificationGenerator(type);
-        var notification = notificationGenerator.Generate(userId, placeholders);
+        var notification = notificationGenerator.Generate(recipientId, recipientType, placeholders);
         await _repository.AddAsync(notification);
         await _repository.SaveChangesAsync();
     }
@@ -41,8 +42,17 @@ internal class NotificationService : INotificationService
         }
     } 
     
-    public async Task<IEnumerable<Notification>> GetUserNotifications(string userId)
+    public async Task<IEnumerable<Notification>> GetUserNotifications(bool buyer)
     {
-        return await _repository.GetAllReadOnly<Notification>().Where(x => !x.IsRead && x.UserId== userId && x.Sent == false).ToListAsync();
+        if(buyer)
+        {
+            var buyerId = await _userService.GetBuyerIdByUserIdAsync();
+            return await _repository.GetAllReadOnly<Notification>().Where(x => x.BuyerId == buyerId && x.Sent == false).ToListAsync();
+        }
+        else
+        {
+            var sellerId = await _userService.GetSellerIdByUserIdAsync();
+            return await _repository.GetAllReadOnly<Notification>().Where(x => x.SellerId == sellerId && x.Sent == false).ToListAsync();
+        }
     }
 }
