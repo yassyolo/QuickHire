@@ -1,0 +1,17 @@
+.new-description-tag {
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: var(--white-color);
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.new-description-tag-text {
+    font-size: 15px;
+    color: var(--text-black-color);
+    flex-wrap: wrap;
+    word-break: break-word;
+    white-space: pre-wrap; 
+    overflow-wrap: break-word; 
+    max-width: 90%; 
+}

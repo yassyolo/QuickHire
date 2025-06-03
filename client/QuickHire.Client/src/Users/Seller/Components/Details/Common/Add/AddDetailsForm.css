@@ -1,5 +1,11 @@
-.add-details-modal{
-    gap: 25px;
+.add-details-modal-content{
+    gap: 15px;
     display: flex;
     flex-direction: column;
+}
+
+.add-button-wrapper{
+    display: flex;
+    justify-content: flex-end;
+    margin: 20px 0; 
 }

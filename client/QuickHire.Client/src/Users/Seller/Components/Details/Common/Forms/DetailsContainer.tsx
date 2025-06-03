@@ -6,19 +6,24 @@ export interface DetailsContainerProps {
     title: string;
     noContent: string;
     children: React.ReactNode | null;
-    editModal?: React.ReactNode;
+    editModal: React.ReactNode;
     addModal: React.ReactNode;
     onAddModalShow: () => void;
+    onEditModalShow: () => void; 
 }
 
-export function DetailsComponent({ title, noContent, children, editModal, addModal, onAddModalShow }: DetailsContainerProps) {
+export function DetailsComponent({ title, noContent, children, editModal, addModal, onAddModalShow, onEditModalShow}: DetailsContainerProps) {
     const [showEditModal, setShowEditModal] = useState(false);
     const [showAddModal, setAddModal] = useState(false);
 
 const handleAddModalVisibility = () => {
-    onAddModalShow(); // call the parent to trigger modal visibility
-    setAddModal(!showAddModal); // optional: remove this if modal is fully controlled by parent
-};    const handleShowEditModalVisibility = () => setShowEditModal(!showEditModal);
+    onAddModalShow(); 
+    setAddModal(!showAddModal); 
+};   
+ const handleShowEditModalVisibility = () => {
+    onEditModalShow(); 
+    setShowEditModal(!showEditModal); 
+};
 
     const hasChildren = React.Children.count(children) > 0;
 

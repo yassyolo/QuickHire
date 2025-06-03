@@ -1,0 +1,24 @@
+.new-certification-tag {
+    display: inline-block;
+    padding: 5px 10px;
+    background-color: var(--white-color);
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin: 5px 0;
+}
+
+.new-certification-tag-text {
+    font-size: 14px;
+    color: var(--text-black-color);
+    flex-wrap: wrap;
+    word-break: break-word;
+    overflow-wrap: break-word; 
+    max-width: 95%; 
+    font-weight: 600;
+}
+
+.new-certification-tag-date {
+    font-size: 12px;
+    color: var(--text-grey-color);
+    margin-top: 10px;
+}

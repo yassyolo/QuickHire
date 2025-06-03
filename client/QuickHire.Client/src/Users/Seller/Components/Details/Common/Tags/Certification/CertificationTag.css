@@ -1,11 +1,23 @@
-.education-tag-date{
+.issuer-date{
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
+
+.certification-tag-issuer{
     font-size: 12px;
-    text-decoration: wavy;
     color: var(--black-color);
     font-weight: 400;
 }
 
-.education-tag{
+.certification-tag-date{
+    font-size: 12px;
+    text-decoration:wavy;
+    color: var(--black-color);
+    font-weight: 400;
+}
+
+.certification-tag{
     display: flex;
     flex-direction: column;
     gap: 5px;
@@ -16,21 +28,20 @@
     width: 80%;
 }
 
-.major-end-year{
-    display: flex;
-    flex-direction: row;
-    gap: 5px;
-    font-size: 15px;
-    color: var(--text-grey-color);
-}
 
-.degree-institution{
+.certification-issuer{
     font-size: 15px;
     color: var(--text-black-color);
     font-weight: 600;
     margin-bottom: 5px;
 }
 
-.education-institution{
+.certification-issuer-text{
     margin-left: 5px;
+}
+
+.certification-date{
+    font-size: 14px;
+    color: var(--text-grey-color);
+    font-weight: 400;
 }

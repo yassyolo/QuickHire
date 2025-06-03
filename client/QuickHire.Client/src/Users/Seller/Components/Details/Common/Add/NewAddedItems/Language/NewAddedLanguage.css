@@ -1,0 +1,9 @@
+.new-language-tag {
+        display: inline-block;
+    padding: 5px 10px;
+    background-color: var(--white-color);
+    border: 1px solid #ddd;
+    width: 50%;
+    border-radius: 5px;
+    margin: 5px 0 ;
+}

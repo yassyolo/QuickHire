@@ -4,11 +4,12 @@ import { useTooltip } from "../../../../../../Shared/Tooltip/Tooltip";
 import { FormGroup } from "../../../../../../Shared/Forms/FormGroup";
 import { AddDetailsModal } from "./AddDetailsForm";
 import { DetailsModalButtons } from "../EditOrDelete/DetailsModalButtons";
-import { NewAddedDescription } from "./NewAddedItems/NewAddedDescription";
+import { NewAddedDescription } from "./NewAddedItems/Description/NewAddedDescription";
+import "./AddDescriptionModalForm.css";
 
 
 interface AddDescriptionModalFormProps {
-     onSuccess: (description: string) => void;
+    onSuccess: (description: string) => void;
 }
 
 export function AddDescriptionModalForm({onSuccess}: AddDescriptionModalFormProps) {
@@ -33,7 +34,7 @@ export function AddDescriptionModalForm({onSuccess}: AddDescriptionModalFormProp
 
     const handleOnSave = async () => {
         try{
-            await axios.post("https://localhost:7267/users/details/description", { description: newDescription });
+            await axios.post("https://localhost:7267/seller/description", { description: newDescription });
             onSuccess(newDescription);
             setNewDescription("");
 
@@ -58,23 +59,43 @@ export function AddDescriptionModalForm({onSuccess}: AddDescriptionModalFormProp
     setNewDescription(""); 
 };
  
-      return(
-        <><AddDetailsModal onSave={onAdd}>
-            <div className="d-flex flex-column gap-3">
-                <FormGroup id={"description"} label={"Description"} tooltipDescription={"Enter a brief description of yourself."} type={"text"} value={description} onChange={handleDescriptionChange} placeholder={"Enter Description"} ariaDescribedBy={"description-help"} onShowTooltip={handleShowDescriptionTooltip} showTooltip={showDescriptionTooltip} error={validationErrors.Description || []} />
+        return (
+  <div className="add-form-wrapper">
+    <AddDetailsModal onSave={onAdd}>
+      <div className="d-flex flex-column gap-3">
+        <FormGroup
+          id={"description"}
+          label={"Description"}
+          tooltipDescription={"Enter a brief description of yourself."}
+          type={"text"}
+          value={description}
+          onChange={handleDescriptionChange}
+          placeholder={"Enter Description"}
+          ariaDescribedBy={"description-help"}
+          onShowTooltip={handleShowDescriptionTooltip}
+          showTooltip={showDescriptionTooltip}
+          error={validationErrors.Description || []}
+        />
+      </div>
 
-            </div>
-        </AddDetailsModal>
-         {newDescription && newDescription.trim() !== "" && (
-    <div className="new-descriptions">
-        <NewAddedDescription
+     
+    </AddDetailsModal>
+
+     {newDescription?.trim() && (
+        <div className="new-descriptions">
+          <NewAddedDescription
             description={newDescription}
             onRemove={handleRemoveNewDescription}
             onEdit={handleEditNewDescription}
-        />
-    </div>
-)}
+          />
+        </div>
+      )}
 
-        <DetailsModalButtons onSave={handleOnSave} onClear={handleClear} /></>
-    )
+    <div className="description-buttons">
+      <DetailsModalButtons onSave={handleOnSave} onClear={handleClear} />
+    </div>
+  </div>
+);
+
+    
 }

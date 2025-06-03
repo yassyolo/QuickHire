@@ -1,0 +1,12 @@
+.add-form-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%; 
+}
+
+.description-buttons {
+  margin-top: auto;
+  padding-top: 1rem;
+  display: flex;
+  justify-content: flex-end;
+}
