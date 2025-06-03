@@ -1,0 +1,126 @@
+.favourite-page-list-item {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  width: 290px;
+  height: 330px;
+  border: 1px solid #dfdddd;
+    border-radius: 5px;
+    box-shadow: var(--default-shadow);
+
+}
+
+.favourite-page-list-item-images {
+  display: flex;
+  height: 60% !important;
+}
+
+.left-image {
+  width: 50%;
+  height: 100%;
+  border-right: 5px solid var(--white-color);
+}
+
+.left-image img {
+  border-top-left-radius: 5px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.right-images {
+  width: 50%;
+  display: flex;
+  gap: 5px;
+  flex-direction: column;
+  border-top-right-radius: 5px;
+}
+
+.right-images img {
+  width: 100%;
+  height: 50%;
+  object-fit: cover;
+}
+
+.right-images img:first-child {
+  border-top-right-radius: 5px;
+}
+
+.favourite-page-list-item-title{
+    font-size: 17px;
+    font-weight: bold;
+    color: var(--text-black-color);
+}
+
+.favourite-page-list-item-gig-count {
+    font-size: 14px;
+    color: var(--text-grey-color);
+}
+
+.favourite-page-list-item-header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.favourite-page-list-item-description {
+    font-size: 13px;
+    color: var(--text-grey-color);
+    flex-wrap: wrap;
+}
+
+.favourite-page-list-info{
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    gap: 10px;
+}
+
+.dots{
+    justify-content: flex-end;
+    font-size: 22px;
+    color: var(--text-grey-color);
+    cursor: pointer;
+}
+
+.favourite-page-list-item-actions-container{
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+    height: 40%;
+}
+
+.favourite-page-list-item-actions{
+    position: absolute;
+    top: 30px;
+    right: 0;
+    background-color: var(--white-color);
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: var(--default-box-shadow);
+    min-width: 100px;
+    z-index: 3000;
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+    color: var(--text-black-color);
+    cursor: pointer;
+}
+
+.favourite-page-list-item-action-item{
+padding: 7px;
+}
+
+.favourite-page-list-item-action-item:hover{
+    background-color: #ddd;
+}
+
+.image-placeholder {
+  width: 100%;
+  height: 100%;
+  background-color: #ccc; 
+  display: block;
+  border-radius: inherit;
+}

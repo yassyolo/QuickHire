@@ -1,0 +1,14 @@
+.favourite-list-item{
+    padding: 7px;
+    border-radius: 5px;
+    gap: 5px;
+}
+
+.favourite-list-item:hover{
+    background-color: #ccc;
+}
+
+.favourite-list-item i{
+    font-size: 20px;
+    color: var(--text-grey-color) !important;
+}
