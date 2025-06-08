@@ -22,7 +22,7 @@ internal class AuthTokenProcessor : IAuthTokenProcessor
         _contextAccessor = httpContext;
     }
 
-    public (string jwtToken, DateTime expirationTime) GenerateToken(ApplicationUser user, IList<string> roles)
+    public (string jwtToken, DateTime expirationTime) GenerateToken(ApplicationUser user, IList<string> roles, string mode)
     {
         var symmetricKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtOptions.Secret));
 
@@ -30,6 +30,8 @@ internal class AuthTokenProcessor : IAuthTokenProcessor
 
         var claims = new List<Claim>
         {
+            new Claim("mode", mode ?? string.Empty ),
+            new Claim("profilePictureUrl", user.ProfileImageUrl ?? string.Empty),
             new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new Claim(JwtRegisteredClaimNames.Sub, user.Id),
             new Claim(JwtRegisteredClaimNames.Email, user.Email ?? string.Empty),
@@ -73,7 +75,7 @@ internal class AuthTokenProcessor : IAuthTokenProcessor
                  Expires = expiresAt,
                  Secure = true,
                  IsEssential = true,
-                 SameSite = SameSiteMode.Strict
+                 SameSite = SameSiteMode.None
              });
     }
 }
