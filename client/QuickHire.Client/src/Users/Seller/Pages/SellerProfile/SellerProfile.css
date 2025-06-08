@@ -12,50 +12,6 @@
     padding: 20px;
 }
 
-.seller-info {
-    display: flex;
-    flex-direction: row;
-    gap: 20px;
-    width: 100%;
-    padding: 0 20px;
-}
-
-.username-full-name{
-    gap: 20px;
-    align-items: center;
-}
-
-.seller-full-name {
-    font-size: 22px;
-    font-weight: 600;
-    color: var(--text-black-color);
-}
-
-.seller-username{
-    font-size: 16px;
-    font-weight: 500;
-    color: var(--text-grey-color);
-}
-
-.seller-country {
-    font-size: 16px;
-    font-weight: 500;
-    color: var(--text-black-color);
-}
-
-.names-country-languages{
-    gap: 10px;
-}
-
-.country-languages{
-    gap: 10px;
-}
-
-.language-badge{
-    font-size: 16px;
-    font-weight: 500;
-    color: var(--text-black-color);
-}
 
 .gigs-quick-link{
     display: flex;
@@ -85,4 +41,42 @@
 
 .quick-link:hover{
     text-decoration: underline;
+}
+
+.seller-details-list{
+    margin-top: 30px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 30px;
+    width: 67%;
+}
+
+.seller-portfolio-container{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 67%;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.seller-portfolio-title{
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-black-color);
+}
+
+.seller-portfolio-no-content{
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-grey-color);
+    margin-bottom: 10px;
+}
+
+.seller-portfolios-content{
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
 }

@@ -24,8 +24,7 @@
     padding: 10px;
     background-color: var(--white-color);
     border-radius: 5px;
-    border: 1px solid var(--text-grey-color);
-    width: 80%;
+    border: 1px solid #ccc;
 }
 
 

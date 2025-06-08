@@ -1,5 +1,5 @@
 import React from "react";
-import { IconButton } from "../../../../../../Shared/Buttons/IconButton";
+import { IconButton } from "../../../../../../Shared/Buttons/IconButton/IconButton";
 import './AddOrEditDetailsModal.css';
 
 export interface DetailsModalProps {

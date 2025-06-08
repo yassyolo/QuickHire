@@ -76,11 +76,6 @@ export function EditLanguageModalForm({
     clearForm();
   };
 
-  const handleEdit = (lang: UserLanguage) => {
-    setLangToEditId(lang.languageId);
-    setSelectedLanguageId(lang.languageId);
-  };
-
   const handleRemove = (lang: UserLanguage) => {
     setNewLanguages(prev => prev.filter(l => l.languageId !== lang.languageId));
     if (langToEditId === lang.languageId) clearForm();
@@ -124,7 +119,7 @@ export function EditLanguageModalForm({
           key={lang.languageId}
           languageName={lang.languageName}
           onDelete={() => handleRemove(lang)}
-          onEdit={() => handleEdit(lang)}
+          onEdit={() => handleRemove(lang)}
         />
       ))}
 

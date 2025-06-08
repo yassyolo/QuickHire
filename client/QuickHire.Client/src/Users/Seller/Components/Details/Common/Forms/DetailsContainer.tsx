@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ActionButton } from "../../../../../../Shared/Buttons/ActionButton";
+import { ActionButton } from "../../../../../../Shared/Buttons/ActionButton/ActionButton";
 import './DetailsContainer.css';
 
 export interface DetailsContainerProps {

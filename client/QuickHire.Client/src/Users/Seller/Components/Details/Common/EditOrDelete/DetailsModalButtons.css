@@ -1,0 +1,10 @@
+.details-modal-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  position: absolute;
+  width: 440px;
+  bottom: 20px;
+  padding-top: 10px;
+  border-top: 1px solid #ddd;
+}

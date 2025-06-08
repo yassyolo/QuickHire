@@ -1,0 +1,30 @@
+.seller-dashboard-orders-container{
+    gap: 10px;
+    margin-top: 30px;
+}
+
+.seller-dashboard-orders-header{
+    border-radius: 5px;
+    padding: 10px;
+    background-color: var(--white-color);
+    border: 1px solid #ddd;
+}
+
+.seller-dashboard-orders-list{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+.order-item-separator{
+    height: 1px;
+    background-color: #ddd;
+    margin: 10px 0;
+}
+
+.list-item-order{
+    border-bottom: 1px solid #ddd;
+}

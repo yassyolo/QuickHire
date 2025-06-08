@@ -1,4 +1,5 @@
-import { ActionButton } from "../../../../../../Shared/Buttons/ActionButton";
+import { ActionButton } from "../../../../../../Shared/Buttons/ActionButton/ActionButton";
+import './DetailsModalButtons.css';
 
 interface DetailsModalButtonsProps {
     onSave: () => void;
@@ -7,7 +8,7 @@ interface DetailsModalButtonsProps {
 
 export function DetailsModalButtons({onSave, onClear}: DetailsModalButtonsProps) {
     return (
-        <div className="details-modal-buttons justify-content-between d-flex flex-row">
+        <div className="details-modal-buttons">
             <ActionButton text={"Clear"} onClick={onClear} className={"details-modal-clear-button"} ariaLabel={"Clear details modal button"}     />
             <ActionButton text={"Save"} onClick={onSave} className={"details-modal-save-button"} ariaLabel={"Save details modal button"}     />
         </div>

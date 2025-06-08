@@ -1,0 +1,30 @@
+.seller-dashboard-tip {
+  display: flex;
+  align-items: center;
+  background-color: #f8f9fa;
+  border-radius: 5px;
+  padding: 20px;
+  margin: 10px 0;
+  width: 1000px;
+}
+
+.seller-dashboard-tip.right-aligned {
+  flex-direction: row-reverse;
+  text-align: right;
+}
+
+.tip-content {
+  font-size: 18px;
+  color: var(--text-black-color);
+}
+
+.tip-photo {
+  margin: 0 20px;
+}
+
+.tip-photo img {
+  width: 200px;
+  height: 130px;
+  border-radius: 5px;
+  object-fit: cover;
+}
