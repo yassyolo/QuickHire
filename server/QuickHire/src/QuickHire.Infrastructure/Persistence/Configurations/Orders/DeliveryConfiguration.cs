@@ -23,5 +23,9 @@ internal class DeliveryConfiguration : IEntityTypeConfiguration<Delivery>
         builder.HasOne(x => x.Order)
             .WithOne(x => x.Delivery)
             .HasForeignKey<Delivery>(x => x.OrderId);
+
+        builder.HasOne(x => x.Message)
+            .WithOne()
+            .HasForeignKey<Delivery>(x => x.MessageId);
     }
 }

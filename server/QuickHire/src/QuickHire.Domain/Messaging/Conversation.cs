@@ -6,10 +6,11 @@ namespace QuickHire.Domain.Messaging;
 
 public class Conversation : BaseSoftDeletableEntity<int>
 {
-    public int BuyerId { get; set; } 
-    public Buyer Buyer { get; set; } = null!;
-    public int SellerId { get; set; } 
-    public Seller Seller { get; set; } = null!;
+    public string ParticipantAId { get; set; } = string.Empty;
+    public string ParticipantAMode { get; set; } = string.Empty;
+
+    public string ParticipantBId { get; set; } = string.Empty;
+    public string ParticipantBMode { get; set; }  = string.Empty;
     public DateTime CreatedAt { get; set; } 
     public DateTime LastMessageAt { get; set; } 
     public bool IsStarredByBuyer { get; set; }

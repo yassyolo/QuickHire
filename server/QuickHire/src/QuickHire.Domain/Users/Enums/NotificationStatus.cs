@@ -17,6 +17,8 @@ public enum NotificationType
     CustomOfferExpired,
     CustomOfferCancelled,
     NewGigUploaded,
-    HotGig
+    HotGig,
+    ReportedGig,
+    ReportedUser,
 }
 

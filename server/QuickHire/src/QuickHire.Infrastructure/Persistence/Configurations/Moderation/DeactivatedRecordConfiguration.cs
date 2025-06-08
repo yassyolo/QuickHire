@@ -21,9 +21,5 @@ internal class DeactivatedRecordConfiguration : IEntityTypeConfiguration<Deactiv
         builder.HasOne(x => x.Gig)
             .WithOne()
             .HasForeignKey<DeactivatedRecord>(x => x.GigId);
-
-        builder.HasOne(x => x.ReportedItem)
-            .WithOne()
-            .HasForeignKey<DeactivatedRecord>(x => x.ReportedItemId);
     }
 }

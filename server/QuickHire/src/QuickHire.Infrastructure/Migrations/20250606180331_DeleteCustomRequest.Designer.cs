@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using QuickHire.Infrastructure.Persistence;
 
@@ -11,9 +12,11 @@ using QuickHire.Infrastructure.Persistence;
 namespace QuickHire.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250606180331_DeleteCustomRequest")]
+    partial class DeleteCustomRequest
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -352,6 +355,9 @@ namespace QuickHire.Infrastructure.Migrations
                         .HasMaxLength(150)
                         .HasColumnType("nvarchar(150)");
 
+                    b.Property<int>("ExpiresInDays")
+                        .HasColumnType("int");
+
                     b.Property<int>("GigId")
                         .HasColumnType("int");
 
@@ -672,19 +678,17 @@ namespace QuickHire.Infrastructure.Migrations
                     b.Property<int?>("OrderId")
                         .HasColumnType("int");
 
-                    b.Property<string>("ParticipantAId")
+                    b.Property<int>("ParticipantAId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ParticipantARole")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ParticipantAMode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("ParticipantBId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("ParticipantBId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ParticipantBMode")
+                    b.Property<string>("ParticipantBRole")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -712,8 +716,14 @@ namespace QuickHire.Infrastructure.Migrations
                     b.Property<int>("ConversationId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("CustomOfferId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<int?>("DeliveryId")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -721,20 +731,18 @@ namespace QuickHire.Infrastructure.Migrations
                     b.Property<bool>("IsRead")
                         .HasColumnType("bit");
 
-                    b.Property<string>("PayloadJson")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ReceiverId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("ReceiverId")
+                        .HasColumnType("int");
 
                     b.Property<string>("ReceiverRole")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("SenderId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("RevisionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SenderId")
+                        .HasColumnType("int");
 
                     b.Property<string>("SenderRole")
                         .IsRequired()
@@ -751,6 +759,14 @@ namespace QuickHire.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ConversationId");
+
+                    b.HasIndex("DeliveryId")
+                        .IsUnique()
+                        .HasFilter("[DeliveryId] IS NOT NULL");
+
+                    b.HasIndex("RevisionId")
+                        .IsUnique()
+                        .HasFilter("[RevisionId] IS NOT NULL");
 
                     b.ToTable("Messages");
                 });
@@ -876,9 +892,6 @@ namespace QuickHire.Infrastructure.Migrations
                         .HasColumnType("nvarchar(200)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("MessageId")
-                        .IsUnique();
 
                     b.HasIndex("OrderId")
                         .IsUnique();
@@ -1192,8 +1205,6 @@ namespace QuickHire.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MessageId");
-
                     b.HasIndex("OrderId");
 
                     b.ToTable("Revisions");
@@ -1247,6 +1258,9 @@ namespace QuickHire.Infrastructure.Migrations
 
                     b.Property<int>("SubSubCategoryId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime?>("WithdrawnAt")
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 
@@ -1768,39 +1782,18 @@ namespace QuickHire.Infrastructure.Migrations
                     b.ToTable("UserLanguages");
                 });
 
-            modelBuilder.Entity("QuickHire.Infrastructure.Persistence.Identity.ApplicationRole", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedName")
-                        .IsUnique()
-                        .HasDatabaseName("RoleNameIndex")
-                        .HasFilter("[NormalizedName] IS NOT NULL");
-
-                    b.ToTable("AspNetRoles", (string)null);
-                });
-
             modelBuilder.Entity("QuickHire.Infrastructure.Persistence.Identity.ApplicationUser", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("AddressId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("BillingDetailsId")
                         .HasColumnType("int");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -1854,7 +1847,8 @@ namespace QuickHire.Infrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("ProfileImageUrl")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("RefreshToken")
                         .HasColumnType("nvarchar(max)");
@@ -1875,6 +1869,12 @@ namespace QuickHire.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AddressId");
+
+                    b.HasIndex("BillingDetailsId")
+                        .IsUnique()
+                        .HasFilter("[BillingDetailsId] IS NOT NULL");
+
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
@@ -1886,9 +1886,36 @@ namespace QuickHire.Infrastructure.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("QuickHire.Infrastructure.Persistence.Identity.ApplicationUserRole", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedName")
+                        .IsUnique()
+                        .HasDatabaseName("RoleNameIndex")
+                        .HasFilter("[NormalizedName] IS NOT NULL");
+
+                    b.ToTable("AspNetRoles", (string)null);
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.HasOne("QuickHire.Infrastructure.Persistence.Identity.ApplicationRole", null)
+                    b.HasOne("QuickHire.Infrastructure.Persistence.Identity.ApplicationUserRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -1915,7 +1942,7 @@ namespace QuickHire.Infrastructure.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
-                    b.HasOne("QuickHire.Infrastructure.Persistence.Identity.ApplicationRole", null)
+                    b.HasOne("QuickHire.Infrastructure.Persistence.Identity.ApplicationUserRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -2009,7 +2036,7 @@ namespace QuickHire.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("QuickHire.Domain.Messaging.Message", "Message")
-                        .WithOne()
+                        .WithOne("CustomOffer")
                         .HasForeignKey("QuickHire.Domain.CustomOffers.CustomOffer", "MessageId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -2146,7 +2173,19 @@ namespace QuickHire.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("QuickHire.Domain.Orders.Delivery", "Delivery")
+                        .WithOne("Message")
+                        .HasForeignKey("QuickHire.Domain.Messaging.Message", "DeliveryId");
+
+                    b.HasOne("QuickHire.Domain.Orders.Revision", "Revision")
+                        .WithOne("Message")
+                        .HasForeignKey("QuickHire.Domain.Messaging.Message", "RevisionId");
+
                     b.Navigation("Conversation");
+
+                    b.Navigation("Delivery");
+
+                    b.Navigation("Revision");
                 });
 
             modelBuilder.Entity("QuickHire.Domain.Moderation.DeactivatedRecord", b =>
@@ -2169,19 +2208,11 @@ namespace QuickHire.Infrastructure.Migrations
 
             modelBuilder.Entity("QuickHire.Domain.Orders.Delivery", b =>
                 {
-                    b.HasOne("QuickHire.Domain.Messaging.Message", "Message")
-                        .WithOne()
-                        .HasForeignKey("QuickHire.Domain.Orders.Delivery", "MessageId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("QuickHire.Domain.Orders.Order", "Order")
                         .WithOne("Delivery")
                         .HasForeignKey("QuickHire.Domain.Orders.Delivery", "OrderId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("Message");
 
                     b.Navigation("Order");
                 });
@@ -2289,19 +2320,11 @@ namespace QuickHire.Infrastructure.Migrations
 
             modelBuilder.Entity("QuickHire.Domain.Orders.Revision", b =>
                 {
-                    b.HasOne("QuickHire.Domain.Messaging.Message", "Message")
-                        .WithMany()
-                        .HasForeignKey("MessageId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("QuickHire.Domain.Orders.Order", "Order")
                         .WithMany("Revisions")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("Message");
 
                     b.Navigation("Order");
                 });
@@ -2551,6 +2574,21 @@ namespace QuickHire.Infrastructure.Migrations
                     b.Navigation("Language");
                 });
 
+            modelBuilder.Entity("QuickHire.Infrastructure.Persistence.Identity.ApplicationUser", b =>
+                {
+                    b.HasOne("QuickHire.Domain.Users.Address", "Address")
+                        .WithMany()
+                        .HasForeignKey("AddressId");
+
+                    b.HasOne("QuickHire.Domain.Users.BillingDetails", "BillingDetails")
+                        .WithOne()
+                        .HasForeignKey("QuickHire.Infrastructure.Persistence.Identity.ApplicationUser", "BillingDetailsId");
+
+                    b.Navigation("Address");
+
+                    b.Navigation("BillingDetails");
+                });
+
             modelBuilder.Entity("QuickHire.Domain.Categories.GigFilter", b =>
                 {
                     b.Navigation("Options");
@@ -2607,6 +2645,17 @@ namespace QuickHire.Infrastructure.Migrations
                     b.Navigation("Messages");
                 });
 
+            modelBuilder.Entity("QuickHire.Domain.Messaging.Message", b =>
+                {
+                    b.Navigation("CustomOffer");
+                });
+
+            modelBuilder.Entity("QuickHire.Domain.Orders.Delivery", b =>
+                {
+                    b.Navigation("Message")
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("QuickHire.Domain.Orders.Order", b =>
                 {
                     b.Navigation("Conversation")
@@ -2623,6 +2672,12 @@ namespace QuickHire.Infrastructure.Migrations
                     b.Navigation("Reviews");
 
                     b.Navigation("Revisions");
+                });
+
+            modelBuilder.Entity("QuickHire.Domain.Orders.Revision", b =>
+                {
+                    b.Navigation("Message")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("QuickHire.Domain.ProjectBriefs.ProjectBrief", b =>

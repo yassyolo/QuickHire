@@ -14,10 +14,13 @@ internal class PortfolioConfiguration : IEntityTypeConfiguration<Portfolio>
     {
         builder.HasKey(x => x.Id);
 
+        builder.Property(x => x.ImageUrl).IsRequired();
+
         builder.Property(x => x.Title).IsRequired().HasMaxLength(TitleMaxLength);
 
         builder.Property(x => x.Description).IsRequired().HasMaxLength(DescriptionMaxLength);
 
-        builder.Property(x => x.VideoUrl).HasMaxLength(FileUrlMaxLength);
+        builder.HasOne(x => x.MainCategory).WithMany()
+            .HasForeignKey(x => x.MainCategoryId);
     }
 }

@@ -23,13 +23,5 @@ internal class MessageConfiguration : IEntityTypeConfiguration<Message>
         builder.Property(x => x.IsRead).IsRequired();
 
         builder.Property(x => x.AttachmentUrl).HasMaxLength(FileUrlMaxLength);
-
-        builder.HasOne(x => x.Delivery)
-            .WithOne(x => x.Message)
-            .HasForeignKey<Message>(x => x.DeliveryId);
-
-        builder.HasOne(x => x.Revision)
-            .WithOne(x => x.Message)
-            .HasForeignKey<Message>(x => x.RevisionId);
     }
 }

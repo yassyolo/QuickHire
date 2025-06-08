@@ -2,8 +2,8 @@
 
 public enum ModerationStatus
 {
-    PendingVerification = 1,
-    PendingReview= 2,
-    Active = 3,
-    Deactivated = 4
+    Active = 1,
+    PendingReview = 2,
+    Deactivated = 3,
+    Paused = 4
 }

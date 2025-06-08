@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using QuickHire.Domain.Categories;
 using QuickHire.Domain.CustomOffers;
-using QuickHire.Domain.CustomRequests;
 using QuickHire.Domain.Gigs;
 using QuickHire.Domain.Messaging;
 using QuickHire.Domain.Moderation;
@@ -19,7 +18,7 @@ using ApplicationUser = QuickHire.Infrastructure.Persistence.Identity.Applicatio
 namespace QuickHire.Infrastructure.Persistence;
 
 public class ApplicationDbContext
-    : IdentityDbContext<ApplicationUser, ApplicationUserRole, string>
+    : IdentityDbContext<ApplicationUser, ApplicationRole, string>
 {
     //public ApplicationDbContext()
     //{
@@ -96,7 +95,6 @@ public class ApplicationDbContext
     public DbSet<SubCategory> SubCategories { get; set; }
     public DbSet<SubSubCategory> SubSubCategories { get; set; }
     public DbSet<CustomOffer> CustomOffers { get; set; }
-    public DbSet<CustomRequest> CustomRequests { get; set; }
     public DbSet<Gig> Gigs { get; set; }
     public DbSet<GigMetadata> GigMetadatas { get; set; }
     public DbSet<GigRequirement> GigRequirements { get; set; }

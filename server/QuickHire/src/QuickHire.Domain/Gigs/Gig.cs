@@ -1,6 +1,5 @@
 using QuickHire.Domain.Categories;
 using QuickHire.Domain.CustomOffers;
-using QuickHire.Domain.CustomRequests;
 using QuickHire.Domain.Moderation.Enums;
 using QuickHire.Domain.Orders;
 using QuickHire.Domain.Shared.Implementations;
@@ -12,7 +11,6 @@ public class  Gig : BaseSoftDeletableEntity<int>
     public string Title { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public List<string> ImageUrls { get; set; } = new List<string>();
-    public string? VideoUrl { get; set; } = string.Empty;
     public int SellerId { get; set; } 
     public Seller Seller { get; set; } = null!;
     public int SubSubCategoryId { get; set; }
@@ -27,5 +25,4 @@ public class  Gig : BaseSoftDeletableEntity<int>
     public IEnumerable<Tag> Tags { get; set; } = new List<Tag>();
     public IEnumerable<Order> Orders { get; set; } = new List<Order>();
     public IEnumerable<CustomOffer> CustomOffers { get; set; } = new List<CustomOffer>();
-    public IEnumerable<CustomRequest> CustomRequests { get; set; } = new List<CustomRequest>();
 }

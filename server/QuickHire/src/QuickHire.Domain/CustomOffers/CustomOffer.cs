@@ -15,7 +15,6 @@ public class CustomOffer : BaseSoftDeletableEntity<int>
     public decimal Price { get; set; }
     public int Revisions { get; set; }
     public int DeliveryTimeInDays { get; set; }
-    public int ExpiresInDays { get; set; }
     public int BuyerId { get; set; } 
     public Buyer Buyer { get; set; } = null!;
     public int SellerId { get; set; }

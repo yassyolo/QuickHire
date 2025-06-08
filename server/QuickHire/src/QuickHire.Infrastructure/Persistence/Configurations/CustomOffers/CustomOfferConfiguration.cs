@@ -26,8 +26,6 @@ internal class CustomOfferConfiguration : IEntityTypeConfiguration<CustomOffer>
             .IsRequired()
             .HasPrecision(8, 2);
 
-        builder.Property(x => x.ExpiresInDays).IsRequired();
-
         builder.Property(x => x.CreatedAt).IsRequired();
 
         builder.Property(x => x.RejectionReason).HasMaxLength(RejectionReasonMaxLength);
@@ -43,7 +41,7 @@ internal class CustomOfferConfiguration : IEntityTypeConfiguration<CustomOffer>
             .HasForeignKey(x => x.GigId);
 
         builder.HasOne(x => x.Message)
-            .WithOne(x => x.CustomOffer)
+            .WithOne()
             .HasForeignKey<CustomOffer>(x => x.MessageId);
 
         builder.HasOne(x => x.Order)

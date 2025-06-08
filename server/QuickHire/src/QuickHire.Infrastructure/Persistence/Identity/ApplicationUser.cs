@@ -15,8 +15,4 @@ public class ApplicationUser : IdentityUser<string>
     public ModerationStatus ModerationStatus { get; set; }
     public DateTime? RefreshTokenExpiresAt { get; set; }
     public string? RefreshToken { get; set; }
-    public int? BillingDetailsId { get; set; }
-    public BillingDetails? BillingDetails { get; set; }
-    public int? AddressId { get; set; }
-    public Address? Address { get; set; }
 }

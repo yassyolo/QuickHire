@@ -18,8 +18,6 @@ public class ProjectBrief : BaseSoftDeletableEntity<int>
     public int BuyerId { get; set; } 
     public Buyer Buyer { get; set; } = null!;
     public DateTime CreatedAt { get; set; } 
-    public DateTime? WithdrawnAt { get; set; }
     public ProjectBriefStatus Status { get; set; }
     public List<CustomOffer>? CustomOffers { get; set; } 
-
 }

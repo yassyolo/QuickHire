@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using QuickHire.Infrastructure.Persistence;
 
@@ -11,9 +12,11 @@ using QuickHire.Infrastructure.Persistence;
 namespace QuickHire.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250608113946_RemoveAddressFromAppUser")]
+    partial class RemoveAddressFromAppUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -672,19 +675,17 @@ namespace QuickHire.Infrastructure.Migrations
                     b.Property<int?>("OrderId")
                         .HasColumnType("int");
 
-                    b.Property<string>("ParticipantAId")
+                    b.Property<int>("ParticipantAId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ParticipantARole")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ParticipantAMode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("ParticipantBId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("ParticipantBId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ParticipantBMode")
+                    b.Property<string>("ParticipantBRole")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -712,8 +713,14 @@ namespace QuickHire.Infrastructure.Migrations
                     b.Property<int>("ConversationId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("CustomOfferId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<int?>("DeliveryId")
+                        .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
@@ -721,20 +728,18 @@ namespace QuickHire.Infrastructure.Migrations
                     b.Property<bool>("IsRead")
                         .HasColumnType("bit");
 
-                    b.Property<string>("PayloadJson")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ReceiverId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("ReceiverId")
+                        .HasColumnType("int");
 
                     b.Property<string>("ReceiverRole")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("SenderId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int?>("RevisionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SenderId")
+                        .HasColumnType("int");
 
                     b.Property<string>("SenderRole")
                         .IsRequired()
@@ -751,6 +756,14 @@ namespace QuickHire.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ConversationId");
+
+                    b.HasIndex("DeliveryId")
+                        .IsUnique()
+                        .HasFilter("[DeliveryId] IS NOT NULL");
+
+                    b.HasIndex("RevisionId")
+                        .IsUnique()
+                        .HasFilter("[RevisionId] IS NOT NULL");
 
                     b.ToTable("Messages");
                 });
@@ -876,9 +889,6 @@ namespace QuickHire.Infrastructure.Migrations
                         .HasColumnType("nvarchar(200)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("MessageId")
-                        .IsUnique();
 
                     b.HasIndex("OrderId")
                         .IsUnique();
@@ -1191,8 +1201,6 @@ namespace QuickHire.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("MessageId");
 
                     b.HasIndex("OrderId");
 
@@ -1854,7 +1862,8 @@ namespace QuickHire.Infrastructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("ProfileImageUrl")
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.Property<string>("RefreshToken")
                         .HasColumnType("nvarchar(max)");
@@ -2009,7 +2018,7 @@ namespace QuickHire.Infrastructure.Migrations
                         .IsRequired();
 
                     b.HasOne("QuickHire.Domain.Messaging.Message", "Message")
-                        .WithOne()
+                        .WithOne("CustomOffer")
                         .HasForeignKey("QuickHire.Domain.CustomOffers.CustomOffer", "MessageId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -2146,7 +2155,19 @@ namespace QuickHire.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("QuickHire.Domain.Orders.Delivery", "Delivery")
+                        .WithOne("Message")
+                        .HasForeignKey("QuickHire.Domain.Messaging.Message", "DeliveryId");
+
+                    b.HasOne("QuickHire.Domain.Orders.Revision", "Revision")
+                        .WithOne("Message")
+                        .HasForeignKey("QuickHire.Domain.Messaging.Message", "RevisionId");
+
                     b.Navigation("Conversation");
+
+                    b.Navigation("Delivery");
+
+                    b.Navigation("Revision");
                 });
 
             modelBuilder.Entity("QuickHire.Domain.Moderation.DeactivatedRecord", b =>
@@ -2169,19 +2190,11 @@ namespace QuickHire.Infrastructure.Migrations
 
             modelBuilder.Entity("QuickHire.Domain.Orders.Delivery", b =>
                 {
-                    b.HasOne("QuickHire.Domain.Messaging.Message", "Message")
-                        .WithOne()
-                        .HasForeignKey("QuickHire.Domain.Orders.Delivery", "MessageId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("QuickHire.Domain.Orders.Order", "Order")
                         .WithOne("Delivery")
                         .HasForeignKey("QuickHire.Domain.Orders.Delivery", "OrderId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("Message");
 
                     b.Navigation("Order");
                 });
@@ -2289,19 +2302,11 @@ namespace QuickHire.Infrastructure.Migrations
 
             modelBuilder.Entity("QuickHire.Domain.Orders.Revision", b =>
                 {
-                    b.HasOne("QuickHire.Domain.Messaging.Message", "Message")
-                        .WithMany()
-                        .HasForeignKey("MessageId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("QuickHire.Domain.Orders.Order", "Order")
                         .WithMany("Revisions")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("Message");
 
                     b.Navigation("Order");
                 });
@@ -2607,6 +2612,17 @@ namespace QuickHire.Infrastructure.Migrations
                     b.Navigation("Messages");
                 });
 
+            modelBuilder.Entity("QuickHire.Domain.Messaging.Message", b =>
+                {
+                    b.Navigation("CustomOffer");
+                });
+
+            modelBuilder.Entity("QuickHire.Domain.Orders.Delivery", b =>
+                {
+                    b.Navigation("Message")
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("QuickHire.Domain.Orders.Order", b =>
                 {
                     b.Navigation("Conversation")
@@ -2623,6 +2639,12 @@ namespace QuickHire.Infrastructure.Migrations
                     b.Navigation("Reviews");
 
                     b.Navigation("Revisions");
+                });
+
+            modelBuilder.Entity("QuickHire.Domain.Orders.Revision", b =>
+                {
+                    b.Navigation("Message")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("QuickHire.Domain.ProjectBriefs.ProjectBrief", b =>

@@ -5,6 +5,5 @@ public enum CustomOfferStatus
     Pending,
     Accepted,
     Rejected,
-    Withdrawn,
-    Expired
+    Withdrawn
 }

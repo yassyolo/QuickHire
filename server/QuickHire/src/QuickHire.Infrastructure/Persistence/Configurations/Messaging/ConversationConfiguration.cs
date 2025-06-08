@@ -25,5 +25,11 @@ internal class ConversationConfiguration : IEntityTypeConfiguration<Conversation
         builder.HasMany(x => x.Messages)
             .WithOne(x => x.Conversation)
             .HasForeignKey(x => x.ConversationId);
+
+        builder.Property(x => x.ParticipantAId).IsRequired();
+        builder.Property(x => x.ParticipantAMode).IsRequired();
+
+        builder.Property(x => x.ParticipantBId).IsRequired();
+        builder.Property(x => x.ParticipantBMode).IsRequired();
     }
 }

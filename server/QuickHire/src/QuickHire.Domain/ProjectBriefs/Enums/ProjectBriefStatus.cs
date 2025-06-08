@@ -4,6 +4,5 @@ public enum ProjectBriefStatus
 {
     Pending,
     OrderPlaced,
-    Delivered,
-    Cancelled
+    Delivered
 }

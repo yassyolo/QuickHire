@@ -44,10 +44,6 @@ internal class SellerConfiguration : IEntityTypeConfiguration<Seller>
            .WithOne(x => x.Seller)
            .HasForeignKey(x => x.SellerId);
 
-        builder.HasMany(x => x.Conversations)
-           .WithOne(x => x.Seller)
-           .HasForeignKey(x => x.SellerId);
-
         builder.HasMany(x => x.SoldOrders)
            .WithOne(x => x.Seller)
            .HasForeignKey(x => x.SellerId);
