@@ -25,15 +25,24 @@ using FilterOption = QuickHire.Domain.Categories.FilterOption;
 using System.Runtime.CompilerServices;
 using Microsoft.AspNetCore.Http.HttpResults;
 using QuickHire.Domain.Categories.Enums;
+using QuickHire.Infrastructure.Persistence.Identity;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace QuickHire.Infrastructure.Persistence.Seed;
 
 public class SeedData
 {
+
     private readonly ApplicationDbContext _context;
-    private readonly IServiceProvider _serviceProvider;
-    private readonly RoleManager<ApplicationUser> _roleManager;
     private readonly UserManager<ApplicationUser> _userManager;
+
+    public SeedData(
+        ApplicationDbContext context,
+        UserManager<ApplicationUser> userManager)
+    {
+        _context = context;
+        _userManager = userManager;
+    }
     public Language Language1 { get; set; } = null!;
     public Language Language2 { get; set; } = null!;
     public Language Language3 { get; set; } = null!;
@@ -55,14 +64,59 @@ public class SeedData
     public UserLanguage UserLanguage4 { get; set; } = null!;
     public UserLanguage UserLanguage5 { get; set; } = null!;
     public UserLanguage UserLanguage6 { get; set; } = null!;
+    public UserLanguage UserLanguage7 { get; set; } = null!;
+    public UserLanguage UserLanguage8 { get; set; } = null!;
+    public UserLanguage UserLanguage9 { get; set; } = null!;
+    public UserLanguage UserLanguage10 { get; set; } = null!;
+    public UserLanguage UserLanguage11{ get; set; } = null!;
+    public UserLanguage UserLanguage12 { get; set; } = null!;
+    public UserLanguage UserLanguage13 { get; set; } = null!;
+    public UserLanguage UserLanguage14 { get; set; } = null!;
+    public UserLanguage UserLanguage15 { get; set; } = null!;
+    public UserLanguage UserLanguage16 { get; set; } = null!;
+    public UserLanguage UserLanguage17 { get; set; } = null!;
+    public UserLanguage UserLanguage18 { get; set; } = null!;
+    public UserLanguage UserLanguage19 { get; set; } = null!;
+    public UserLanguage UserLanguage20 { get; set; } = null!;
+
+
+
     public ApplicationUser User1 { get; set; } = null!;
     public ApplicationUser User2 { get; set; } = null!;
     public ApplicationUser User3 { get; set; } = null!;
     public ApplicationUser User4 { get; set; } = null!;
-    public Buyer Buyer1 { get; set; } = null!;  
+    public ApplicationUser User5 { get; set; } = null!;
+    public ApplicationUser User6 { get; set; } = null!;
+    public ApplicationUser User7 { get; set; } = null!;
+    public ApplicationUser User8 { get; set; } = null!;
+    public ApplicationUser User9 { get; set; } = null!;
+    public ApplicationUser User10 { get; set; } = null!;
+
+
+    public Buyer Buyer1 { get; set; } = null!;
+    public Buyer Buyer2 { get; set; } = null!;
+    public Buyer Buyer3 { get; set; } = null!;
+    public Buyer Buyer4 { get; set; } = null!;
+    public Buyer Buyer5 { get; set; } = null!;
+    public Buyer Buyer6 { get; set; } = null!;
+    public Buyer Buyer7 { get; set; } = null!;
+    public Buyer Buyer8 { get; set; } = null!;
+    public Buyer Buyer9 { get; set; } = null!;
+    public Buyer Buyer10 { get; set; } = null!;
+
+
     public Seller Seller1 { get; set; } = null!;
     public Seller Seller2 { get; set; } = null!;
     public Seller Seller3 { get; set; } = null!;
+    public Seller Seller4 { get; set; } = null!;
+    public Seller Seller5 { get; set; } = null!;
+    public Seller Seller6 { get; set; } = null!;
+    public Seller Seller7 { get; set; } = null!;
+    public Seller Seller8 { get; set; } = null!;
+    public Seller Seller9 { get; set; } = null!;
+    public Seller Seller10 { get; set; } = null!;
+
+
     public Certification Certification1 { get; set; } = null!;
     public Certification Certification2 { get; set; } = null!;
     public Certification Certification3 { get; set; } = null!;
@@ -76,6 +130,13 @@ public class SeedData
     public Address Address2 { get; set; } = null!;
     public Address Address3 { get; set; } = null!;
     public Address Address4 { get; set; } = null!;
+    public Address Address5 { get; set; } = null!;
+    public Address Address6 { get; set; } = null!;
+    public Address Address7 { get; set; } = null!;
+    public Address Address8 { get; set; } = null!;
+    public Address Address9 { get; set; } = null!;
+    public Address Address10 { get; set; } = null!;
+
     public Skill Skill1 { get; set; } = null!;
     public Skill Skill2 { get; set; } = null!;
     public Skill Skill3 { get; set; } = null!;
@@ -320,6 +381,16 @@ public class SeedData
 
     public BillingDetails BillingDetails1 { get; set; } = null!;
     public BillingDetails BillingDetails2 { get; set; } = null!;
+    public BillingDetails BillingDetails3 { get; set; } = null!;
+    public BillingDetails BillingDetails4 { get; set; } = null!;
+    public BillingDetails BillingDetails5 { get; set; } = null!;
+    public BillingDetails BillingDetails6 { get; set; } = null!;
+    public BillingDetails BillingDetails7 { get; set; } = null!;
+    public BillingDetails BillingDetails8 { get; set; } = null!;
+    public BillingDetails BillingDetails9 { get; set; } = null!;
+    public BillingDetails BillingDetails10 { get; set; } = null!;
+
+    
 
     public Country Country1 { get; set; } = null!;
     public Country Country2 { get; set; } = null!;
@@ -474,38 +545,56 @@ public class SeedData
     public GigFilter GigFilter1ForSubSubCategory3ForSubCategory3ForMainCategory1 { get; set; } = null!;
     public GigFilter GigFilter3ForSubSubCategory3ForSubCategory3ForMainCategory1 { get; set; } = null!;
 
+    //App type
+    public FilterOption FilterOption1ForGigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1 { get; set; } = null!;
+    public FilterOption FilterOption2ForGigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1 { get; set; } = null!;
+    public FilterOption FilterOption3ForGigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1 { get; set; } = null!;
+    public FilterOption FilterOption4ForGigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1 { get; set; } = null!;
+    public FilterOption FilterOption5ForGigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1 { get; set; } = null!;
+    public FilterOption FilterOption6ForGigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1 { get; set; } = null!;
+    public FilterOption FilterOption7ForGigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1 { get; set; } = null!;
+    public FilterOption FilterOption8ForGigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1 { get; set; } = null!;
+
+    //Design tool
+    public FilterOption FilterOption1ForGigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1 { get; set; } = null!;
+    public FilterOption FilterOption2ForGigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1 { get; set; } = null!;
+    public FilterOption FilterOption3ForGigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1 { get; set; } = null!;
+    public FilterOption FilterOption4ForGigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1 { get; set; } = null!;
+    public FilterOption FilterOption5ForGigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1 { get; set; } = null!;
+    public FilterOption FilterOption6ForGigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1 { get; set; } = null!;
+
+    //"Service includes"
+    public FilterOption FilterOption1ForGigFilter3ForSubSubCategory3ForSubCategory2ForMainCategory1 { get; set; } = null!;
+    public FilterOption FilterOption2ForGigFilter3ForSubSubCategory3ForSubCategory2ForMainCategory1 { get; set; } = null!;
+    public FilterOption FilterOption3ForGigFilter3ForSubSubCategory3ForSubCategory2ForMainCategory1 { get; set; } = null!;
+    public FilterOption FilterOption4ForGigFilter3ForSubSubCategory3ForSubCategory2ForMainCategory1 { get; set; } = null!;
+
+    public ApplicationRole UserRole1 { get; set; } = null!;
+    public ApplicationRole UserRole2 { get; set; } = null!;
+    public ApplicationRole UserRole3 { get; set; } = null!;
 
 
-
-
-
-
-
-    public SeedData(ApplicationDbContext context, IServiceProvider serviceProvider)
-    {
-        _context = context;
-        _serviceProvider = serviceProvider;
-    }
 
     public async Task SeedAsync()
     {
-        //await SeedApplicationUsers();
-       // await SeedAddresses();
-        //await SeedUserLanguages();
-        await SeedLanguages();
-        await SeedCountries();
-        //await SeedBillingDetails();
-        //await SeedBuyers();
-        //await SeedSellers();
-        //await SeedCertifications();
-        //await SeedSkills();
-        //await SeedPortfolios();
+        await SeedCountries();     
         await SeedMainCategories();
         await SeedMainCategoriesFAQs();
         await SeedSubCategories();
         await SeedSubSubCategories();
         await SeedGigFiltersForSubSubCategories();
         await SeedFilterOptions();
+        await SeedApplicationUsers();
+        await SeedAddresses();
+        await SeedBillingDetails();
+        await SeedLanguages();
+        await SeedUserLanguages();
+        await SeedBuyers();
+        await SeedSellers();
+        await SeedEducations();
+        await SeedCertifications();
+        await SeedSkills();
+        await SeedPortfolios();
     }
 
     private async Task SeedApplicationUsers()
@@ -514,72 +603,178 @@ public class SeedData
         {
             User1 = new ApplicationUser
             {
-                UserName = "jhonehenry333",
-                Email = "jhonehenry333@example.com",
-                PhoneNumber = "0890320456",
-                FullName = "Jhon H Rifat",
-                Description = "I am Rifat, a professional graphic designer ,HIGH QUALITY WORK, FAST DELIVERY and BEST PRICE this is what I can assure you. Your Satisfaction and Quality of my work is my main priority. Top Services: ✔️ Logo Design ✔️ Logo redesign ✔️ Logo Update to modern and professional ✔️ T-shirt design ✔️ Branding and stationary design ✔️ Business card letterhead ✔️ Flyer, Brochure",
-                JoinedAt = DateTime.Now.AddYears(-1),
-                ProfileImageUrl = "https://randomuser.me/api/portraits/men/1.jpg",
-                ModerationStatus = ModerationStatus.Active
+                Id = Guid.NewGuid().ToString(),
+                UserName = "alice.johnson@example.com",
+                Email = "alice.johnson@example.com",
+                EmailConfirmed = true,
+                FullName = "Alice Johnson",
+                Description = "UI/UX designer with a passion for clean, functional interfaces.",
+                JoinedAt = DateTime.UtcNow.AddDays(-120),
+                ProfileImageUrl = "https://randomuser.me/api/portraits/women/81.jpg",
+                ModerationStatus = ModerationStatus.Active,
             };
-
             User2 = new ApplicationUser
             {
-                UserName = "nextui",
-                Email = "nextui@example.com",
-                PhoneNumber = "0890370826",
-                FullName = "Jahid Hasan",
-                Description = "Hello Fiverr Community! At Nextui, we are a team of passionate designers committed to crafting exceptional user experiences and delivering top-quality digital products. Whether you need a website, dashboard, mobile app UI/UX design, branding, or identity design, we've got you covered. Our mission is to provide outstanding design solutions that will captivate your audience, engage your users, and drive your business forward. Reach out to us today, and let's create something amazing together! 😎",
-                JoinedAt = DateTime.Now.AddYears(-2),
-                ProfileImageUrl = "https://randomuser.me/api/portraits/women/2.jpg",
-                ModerationStatus = ModerationStatus.Active
-            };
+                Id = Guid.NewGuid().ToString(),
 
+                UserName = "carlos.ramirez@example.com",
+                Email = "carlos.ramirez@example.com",
+                EmailConfirmed = true,
+                FullName = "Carlos Ramirez",
+                Description = "Full-stack developer specializing in modern JavaScript frameworks.",
+                JoinedAt = DateTime.UtcNow.AddDays(-200),
+                ProfileImageUrl = "https://randomuser.me/api/portraits/men/76.jpg",
+                ModerationStatus = ModerationStatus.PendingReview,
+            };
             User3 = new ApplicationUser
             {
-                UserName = "matiasfontenla",
-                Email = "matiasfontenla@example.com",
-                PhoneNumber = "08903470327",
-                FullName = "Matias Fontenla",
-                Description = "I am a professional UX/UI designer and developer with over 3 years of experience in the field. I have previously worked for US & AR-based companies and are now offering our services on Fiverr. I am highly skilled in various design tools such as Figma, Adobe XD, and Sketch, as well as multiple programming languages. I have been working with companies as a freelancer since 2021. Please feel free to contact us to collaborate on creating something amazing together. Thank you!",
-                JoinedAt = DateTime.Now.AddDays(-70),
-                ProfileImageUrl = "https://randomuser.me/api/portraits/men/3.jpg",
-                ModerationStatus = ModerationStatus.Active
-            };
+                Id = Guid.NewGuid().ToString(),
 
+                UserName = "fatima.alsayed@example.com",
+                Email = "fatima.alsayed@example.com",
+                EmailConfirmed = true,
+                FullName = "Fatima Al-Sayed",
+                Description = "Freelance illustrator and mobile UI artist.",
+                JoinedAt = DateTime.UtcNow.AddDays(-50),
+                ProfileImageUrl = "https://randomuser.me/api/portraits/women/9.jpg",
+                ModerationStatus = ModerationStatus.Deactivated,
+            };
             User4 = new ApplicationUser
             {
-                UserName = "wajid_uiux",
-                Email = "wajid_uiux@example.com",
-                PhoneNumber = "+1234567893",
-                FullName = "Wajid K",
-                Description = "Hi, Welcome to my seller profile. I am Wajid Khan Ui Ux designer with 2+ years of experience. i have got\r\nexpertise in Mobile App design, Website Design, Landing page design and Webb App design. in my work\r\nincluding Prototyping, Responsive Design, Usability Testing.",
-                JoinedAt = DateTime.Now.AddMonths(-8),
-                ProfileImageUrl = "https://randomuser.me/api/portraits/men/4.jpg",
-                ModerationStatus = ModerationStatus.Active
+                Id = Guid.NewGuid().ToString(),
+
+                UserName = "liam.oconnor@example.com",
+                Email = "liam.oconnor@example.com",
+                EmailConfirmed = true,
+                FullName = "Liam O'Connor",
+                Description = "UX researcher with a strong background in psychology.",
+                JoinedAt = DateTime.UtcNow.AddDays(-300),
+                ProfileImageUrl = "https://randomuser.me/api/portraits/men/88.jpg",
+                ModerationStatus = ModerationStatus.Active,
+            };
+            User5 = new ApplicationUser
+            {
+                Id = Guid.NewGuid().ToString(),
+
+                UserName = "sakura.tanaka@example.com",
+                Email = "sakura.tanaka@example.com",
+                EmailConfirmed = true,
+                FullName = "Sakura Tanaka",
+                Description = "Interaction designer focused on accessibility and usability.",
+                JoinedAt = DateTime.UtcNow.AddDays(-90),
+                ProfileImageUrl = "https://randomuser.me/api/portraits/women/7.jpg",
+                ModerationStatus = ModerationStatus.Active,
+            };
+            User6 = new ApplicationUser
+            {
+                Id = Guid.NewGuid().ToString(),
+
+                UserName = "mohamed.abdallah@example.com",
+                Email = "mohamed.abdallah@example.com",
+                EmailConfirmed = true,
+                FullName = "Mohamed Abdallah",
+                Description = "Front-end developer and UX prototyper.",
+                JoinedAt = DateTime.UtcNow.AddDays(-60),
+                ProfileImageUrl = "https://randomuser.me/api/portraits/men/92.jpg",
+                ModerationStatus = ModerationStatus.Active,
+            };
+            User7 = new ApplicationUser
+            {
+                Id = Guid.NewGuid().ToString(),
+
+                UserName = "nina.petrova@example.com",
+                Email = "nina.petrova@example.com",
+                EmailConfirmed = true,
+                FullName = "Nina Petrova",
+                Description = "Web designer with expertise in Adobe XD and Figma.",
+                JoinedAt = DateTime.UtcNow.AddDays(-180),
+                ProfileImageUrl = "https://randomuser.me/api/portraits/women/62.jpg",
+                ModerationStatus = ModerationStatus.Active,
+            };
+            User8 = new ApplicationUser
+            {
+                Id = Guid.NewGuid().ToString(),
+
+                UserName = "thomas.muller@example.com",
+                Email = "thomas.muller@example.com",
+                EmailConfirmed = true,
+                FullName = "Thomas Müller",
+                Description = "UX strategist and product designer.",
+                JoinedAt = DateTime.UtcNow.AddDays(-250),
+                ProfileImageUrl = "https://randomuser.me/api/portraits/men/23.jpg",
+                ModerationStatus = ModerationStatus.Active,
+            };
+            User9 = new ApplicationUser
+            {
+                Id = Guid.NewGuid().ToString(),
+
+                UserName = "isabella.rossi@example.com",
+                Email = "isabella.rossi@example.com",
+                EmailConfirmed = true,
+                FullName = "Isabella Rossi",
+                Description = "Creative UX designer with a flair for branding.",
+                JoinedAt = DateTime.UtcNow.AddDays(-40),
+                ProfileImageUrl = "https://randomuser.me/api/portraits/women/65.jpg",
+                ModerationStatus = ModerationStatus.Active,
+            };
+            User10 = new ApplicationUser
+            {
+                Id = Guid.NewGuid().ToString(),
+
+                UserName = "david.kim@example.com",
+                Email = "david.kim@example.com",
+                EmailConfirmed = true,
+                FullName = "David Kim",
+                Description = "UX/UI designer passionate about human-centered design.",
+                JoinedAt = DateTime.UtcNow.AddDays(-130),
+                ProfileImageUrl = "https://randomuser.me/api/portraits/men/49.jpg",
+                ModerationStatus = ModerationStatus.Active,
             };
 
+            var users = new[] { User1, User2, User3, User4, User5, User6, User7, User8, User9, User10 };
 
-            var users = new[] { User1, User2, User3, User4};
             foreach (var user in users)
             {
                 var result = await _userManager.CreateAsync(user, "Password123!");
+                if (!result.Succeeded)
+                {
+                    var errors = string.Join("; ", result.Errors.Select(e => e.Description));
+                    throw new Exception($"Failed to create user {user.UserName}: {errors}");
+                }
             }
         }
     }
+
     private async Task SeedBuyers()
     {
         if (!_context.Buyers.Any())
         {
-            Buyer1 = new Buyer
-            {
-                Id = 1,
-                UserId = User1.Id,
-            };
+            Buyer1 = new Buyer { UserId = User1.Id };
+            Buyer2 = new Buyer { UserId = User2.Id };
+            Buyer3 = new Buyer { UserId = User3.Id };
+            Buyer4 = new Buyer { UserId = User4.Id };
+            Buyer5 = new Buyer { UserId = User5.Id };
+            Buyer6 = new Buyer { UserId = User6.Id };
+            Buyer7 = new Buyer { UserId = User7.Id };
+            Buyer8 = new Buyer { UserId = User8.Id };
+            Buyer9 = new Buyer { UserId = User9.Id };
+            Buyer10 = new Buyer { UserId = User10.Id };
 
-            var list = new List<Buyer>() { Buyer1 };
-            _context.AddRange(list);
+            var buyers = new List<Buyer>
+{
+    Buyer1,
+    Buyer2,
+    Buyer3,
+    Buyer4,
+    Buyer5,
+    Buyer6,
+    Buyer7,
+    Buyer8,
+    Buyer9,
+    Buyer10
+};
+
+            _context.Buyers.AddRange(buyers);
             await _context.SaveChangesAsync();
         }
     }
@@ -589,143 +784,265 @@ public class SeedData
         {
             Seller1 = new Seller
             {
-                Id = 1,
-                UserId = User2.Id,
+                UserId = User1.Id,
+                Clicks = 100,
+                IndustryId = MainCategory1.Id,
             };
 
             Seller2 = new Seller
             {
-                Id = 2,
-                UserId = User3.Id,
+                UserId = User2.Id,
+                Clicks = 150,
+                IndustryId = MainCategory1.Id,
             };
 
             Seller3 = new Seller
             {
-                Id = 3,
-                UserId = User4.Id,
+                UserId = User3.Id,
+                Clicks = 200,
+                IndustryId = MainCategory1.Id,
             };
 
-            var list = new List<Seller>() { Seller1, Seller2, Seller3 };
-            _context.AddRange(list);
+            Seller4 = new Seller
+            {
+                UserId = User4.Id,
+                Clicks = 250,
+                IndustryId = MainCategory1.Id,
+            };
+
+            Seller5 = new Seller
+            {
+                UserId = User5.Id,
+                Clicks = 300,
+                IndustryId = MainCategory1.Id,
+            };
+
+            Seller6 = new Seller
+            {
+                UserId = User6.Id,
+                Clicks = 350,
+                IndustryId = MainCategory1.Id,
+            };
+
+            Seller7 = new Seller
+            {
+                UserId = User7.Id,
+                Clicks = 400,
+                IndustryId = MainCategory1.Id,
+            };
+
+            Seller8 = new Seller
+            {
+                UserId = User8.Id,
+                Clicks = 450,
+                IndustryId = MainCategory1.Id,
+            };
+
+            Seller9 = new Seller
+            {
+                UserId = User9.Id,
+                Clicks = 500,
+                IndustryId = MainCategory1.Id,
+            };
+
+            Seller10 = new Seller
+            {
+                UserId = User10.Id,
+                Clicks = 550,
+                IndustryId = MainCategory1.Id,
+            };
+
+            var sellers = new List<Seller>
+{
+    Seller1, Seller2, Seller3, Seller4, Seller5,
+    Seller6, Seller7, Seller8, Seller9, Seller10
+};
+
+            _context.Sellers.AddRange(sellers);
             await _context.SaveChangesAsync();
         }
     }
-    /*private async Task SeedAddresses()
+    private async Task SeedEducations()
+    {
+        if (!_context.Educations.Any())
+        {
+            var educationsForSeller1 = new List<Education>
+{
+    new Education
+    {
+        Degree = "Bachelor of Fine Arts",
+        Institution = "Art University",
+        Major = "Graphic Design",
+        GraduationYear = 2015,
+        SellerId = Seller1.Id
+    },
+    new Education
+    {
+        Degree = "Master of Interaction Design",
+        Institution = "Design Institute",
+        Major = "Human-Computer Interaction",
+        GraduationYear = 2018,
+        SellerId = Seller1.Id
+    }
+};
+
+            _context.Educations.AddRange(educationsForSeller1);
+            await _context.SaveChangesAsync();
+        }
+        
+    }
+    private async Task SeedAddresses()
     {
         if (!_context.Addresses.Any())
         {
-            Address1 = new Address()
+            Address1 = new Address
             {
-                Id = 1,
                 Street = "123 Main St",
                 City = "New York",
                 ZipCode = "10001",
-                Country = "USA",
-                UserId = User1.Id,
-                IsBillingAddress = false
+                IsBillingAddress = true,
+                Country = Country1,
+                CountryId = Country1.Id,
+                UserId = User1.Id
             };
 
-            Address2 = new Address()
+            Address2 = new Address
             {
-                Id = 2,
-                Street = "456 Queen St",
+                Street = "456 Maple Ave",
                 City = "Toronto",
-                ZipCode = "M5V 2B6",
-                Country = "Canada",
+                ZipCode = "M4B1B4",
                 UserId = User2.Id,
-                IsBillingAddress = false
+                IsBillingAddress = true,
+                Country = Country2,
+                CountryId = Country2.Id,
             };
 
-            Address3 = new Address()
+            Address3 = new Address
             {
-                Id = 3,
-                Street = "789 Oxford Rd",
+                Street = "789 King’s Rd",
                 City = "London",
-                ZipCode = "SW1A 1AA",
-                Country = "UK",
+                ZipCode = "SW3 5UZ",
                 UserId = User3.Id,
-                IsBillingAddress = false
+                IsBillingAddress = true,
+                Country = Country3,
+                CountryId = Country3.Id
             };
 
-            Address4 = new Address()
+            Address4 = new Address
             {
-                Id = 4,
-                Street = "Rue de Rivoli 25",
+                Street = "12 Rue de Paris",
                 City = "Paris",
                 ZipCode = "75001",
-                Country = "France",
                 UserId = User4.Id,
-                IsBillingAddress = true
+                IsBillingAddress = true,
+                Country = Country4,
+                CountryId = Country4.Id
+            };
+
+            Address5 = new Address
+            {
+                Street = "34 Berliner Strasse",
+                City = "Berlin",
+                ZipCode = "10115",
+                UserId = User5.Id,
+                IsBillingAddress = true,
+                Country = Country5,
+                CountryId = Country5.Id
+            };
+
+            Address6 = new Address
+            {
+                Street = "56 Calle Mayor",
+                City = "Madrid",
+                ZipCode = "28013",
+                UserId = User6.Id,
+                IsBillingAddress = true,
+                Country = Country6,
+                CountryId = Country6.Id
+            };
+
+            Address7 = new Address
+            {
+                Street = "78 Via Roma",
+                City = "Rome",
+                ZipCode = "00185",
+                UserId = User7.Id,
+                IsBillingAddress = true,
+                Country = Country7,
+                CountryId = Country7.Id
+            };
+
+            Address8 = new Address
+            {
+                Street = "90 George St",
+                City = "Sydney",
+                ZipCode = "2000",
+                UserId = User8.Id,
+                IsBillingAddress = true,
+                Country = Country8,
+                CountryId = Country8.Id
+            };
+
+            Address9 = new Address
+            {
+                Street = "123 MG Road",
+                City = "Mumbai",
+                ZipCode = "400001",
+                UserId = User9.Id,
+                IsBillingAddress = true,
+                Country = Country9,
+                CountryId = Country9.Id
+            };
+
+            Address10 = new Address
+            {
+                Street = "456 Avenida Paulista",
+                City = "São Paulo",
+                ZipCode = "01310-100",
+                UserId = User10.Id,
+                IsBillingAddress = true,
+                Country = Country10,
+                CountryId = Country10.Id
             };
 
 
-            var list = new List<Address>() { Address1, Address2, Address3, Address4  };
+            var list = new List<Address>() { Address1, Address2, Address3, Address4, Address5, Address6, Address7, Address8, Address9, Address10 };
 
             _context.AddRange(list);
             await _context.SaveChangesAsync();
         }
     
-    }*/
+    }
     private async Task SeedCertifications()
     {
         if (!_context.Certifications.Any())
         {
-            Certification1 = new Certification
-            {
-                Id = 1,
-                Name = "Certified Graphic Designer",
-                Issuer = "Adobe",
-                IssuedAt = DateTime.Now.AddYears(-2),
-                SellerId = Seller1.Id
-            };
+            var certificationsForSeller1 = new List<Certification>
+{
+    new Certification
+    {
+        Name = "Adobe Certified Expert (ACE)",
+        Issuer = "Adobe",
+        IssuedAt = new DateTime(2019, 5, 12),
+        SellerId = Seller1.Id
+    },
+    new Certification
+    {
+        Name = "UX Design Professional Certificate",
+        Issuer = "Google",
+        IssuedAt = new DateTime(2020, 9, 1),
+        SellerId = Seller1.Id
+    },
+    new Certification
+    {
+        Name = "Human-Centered Design Certificate",
+        Issuer = "Coursera / University of California San Diego",
+        IssuedAt = new DateTime(2021, 3, 20),
+        SellerId = Seller1.Id
+    }
+};
 
-            Certification2 = new Certification
-            {
-                Id = 2,
-                Name = "Creative IT Institute Diploma In graphics Designing",
-                Issuer = "Creative IT",
-                IssuedAt = DateTime.Now.AddYears(-5),
-                SellerId = Seller1.Id
-            };
-
-            Certification3 = new Certification
-            {
-                Id = 3,
-                Name = "Creative IT Institute Diploma In graphics Designing",
-                Issuer = "Creative IT",
-                IssuedAt = DateTime.Now.AddYears(-3),
-                SellerId = Seller2.Id
-            };
-
-            Certification4 = new Certification
-            {
-                Id = 4,
-                Name = "Ostad Ostad Mobile App UI Design",
-                Issuer = "Ostad Ostad",
-                IssuedAt = DateTime.Now.AddYears(-1),
-                SellerId = Seller2.Id
-            };
-
-            Certification5 = new Certification
-            {
-                Id = 5,
-                Name = "Codo a codo Fullstack developer with node js",
-                Issuer = "Codo a codo",
-                IssuedAt = DateTime.Now.AddYears(-2),
-                SellerId = Seller3.Id
-            };
-
-            Certification6 = new Certification
-            {
-                Id = 6,
-                Name = "Codo a codo ux/ui designer",
-                Issuer = "Codo a codo",
-                IssuedAt = DateTime.Now.AddYears(-3),
-                SellerId = Seller3.Id
-            };
-
-            var list = new List<Certification>() { Certification1, Certification2, Certification3, Certification4, Certification5, Certification6 };
-            _context.AddRange(list);
+            _context.Certifications.AddRange(certificationsForSeller1);
             await _context.SaveChangesAsync();
         }
     }
@@ -733,86 +1050,53 @@ public class SeedData
     {
         if (!_context.Skills.Any())
         {
-            Skill1 = new Skill { Id = 1, Name = "Graphic designer" };
-            Skill2 = new Skill { Id = 2, Name = "UI/UX designer", SellerId = Seller1.Id };
-            Skill3 = new Skill { Id = 3, Name = "Creative designer", SellerId = Seller1.Id };
-            Skill4 = new Skill { Id = 4, Name = "Adobe Photoshop Expert", SellerId = Seller1.Id };
-            Skill5 = new Skill { Id = 5, Name = "Adobe Illustration Expert", SellerId = Seller1.Id };
-            Skill6 = new Skill { Id = 6, Name = "UI designer", SellerId = Seller2.Id };
-            Skill7 = new Skill { Id = 7, Name = "Adobe XD expert", SellerId = Seller2.Id };
-            Skill8 = new Skill { Id = 8, Name = "Figma designer", SellerId = Seller2.Id };
-            Skill9 = new Skill { Id = 9, Name = "Brand identity designer", SellerId = Seller2.Id };
-            Skill10 = new Skill { Id = 10, Name = "UX designer", SellerId = Seller3.Id };
-            Skill11 = new Skill { Id = 11, Name = "Wordpress", SellerId = Seller3.Id };
-            Skill12 = new Skill { Id = 12, Name = "UX writer", SellerId = Seller3.Id };
-            Skill13 = new Skill { Id = 13, Name = "Mobile UX writer", SellerId = Seller3.Id };
-            Skill14 = new Skill { Id = 14, Name = "UI designer", SellerId = Seller3.Id };
-            Skill15 = new Skill { Id = 15, Name = "WEbsite UX designer", SellerId = Seller3.Id };
+            var skillsForSeller1 = new List<Skill>
+{
+    new Skill { Name = "UI Design", SellerId = Seller1.Id },
+    new Skill { Name = "UX Research", SellerId = Seller1.Id },
+    new Skill { Name = "Prototyping", SellerId = Seller1.Id },
+    new Skill { Name = "Wireframing", SellerId = Seller1.Id },
+    new Skill { Name = "Adobe XD", SellerId = Seller1.Id },
+    new Skill { Name = "Figma", SellerId = Seller1.Id },
+    new Skill { Name = "User Testing", SellerId = Seller1.Id },
+};
 
-            var list = new List<Skill>() { Skill1, Skill2, Skill3, Skill4, Skill5, Skill6, Skill7, Skill8, Skill9, Skill10, Skill11, Skill12, Skill13, Skill14, Skill15 };
-            _context.AddRange(list);
+            _context.Skills.AddRange(skillsForSeller1);
             await _context.SaveChangesAsync();
         }
     }   
     private async Task SeedPortfolios() { 
         if (!_context.Portfolios.Any())
         {
-            Portfolio1 = new Portfolio
-            {
-                Id = 1,
-                Title = "Clean Cut Lawn services",
-                Description = "Clean cut is a lawn services company based on USA. i did the branding of this company and this is the final logo\r\nClean Cut Lawn services",
-                ImageUrl = "https://media.istockphoto.com/id/1394774878/photo/green-earth-recycle-concept-earth-day-surrounded-by-globes-trees-leaf-and-plant-on-a-brown.jpg?b=1&s=612x612&w=0&k=20&c=cE0-hpJI_6vuEwgaIXHWmT7lRpEsLxoTnCT191vHgkQ=",
-                SellerId = Seller1.Id
-            };
+            var portfoliosForSeller1 = new List<Portfolio>
+{
+    new Portfolio
+    {
+        Title = "Mobile App Redesign",
+        Description = "Redesigned the UI/UX for a leading fitness mobile application to improve usability and engagement.",
+        ImageUrl = "https://fiverr-res.cloudinary.com/images/t_main1,q_auto,f_auto,q_auto,f_auto/gigs/183302979/original/6b0e602157e118b8dc576730b2199ee071ea173b/design-wireframes-ui-design-prototype-on-figma.png",
+        SellerId = Seller1.Id,
+        MainCategoryId = Seller1.IndustryId
+    },
+    new Portfolio
+    {
+        Title = "E-Commerce Website UI",
+        Description = "Created an intuitive and accessible interface for a global e-commerce platform with a focus on mobile-first design.",
+        ImageUrl = "https://fiverr-res.cloudinary.com/images/t_main1,q_auto,f_auto,q_auto,f_auto/gigs/391888067/original/d5c79dd691b418b88da77cf4f1581c1cec75e0aa/design-stunning-ui-ux-experiences-in-figma-for-your-project.png",
+        SellerId = Seller1.Id,
+        MainCategoryId = Seller1.IndustryId
+    },
+    new Portfolio
+    {
+        Title = "Landing Page for Startup",
+        Description = "Designed and prototyped a modern landing page for a SaaS startup to increase conversion rates.",
+        ImageUrl = "https://fiverr-res.cloudinary.com/images/t_main1,q_auto,f_auto,q_auto,f_auto/gigs/370976683/original/d1f54595465130e8e005253713e4c812df36b6c0/do-saas-design-desktop-application-and-web-app-ui-ux-in-figma.jpg",
+        SellerId = Seller1.Id,
+        MainCategoryId = Seller1.IndustryId
+    }
+};
 
-            Portfolio2 = new Portfolio
-            {
-                Id = 2,
-                Title = "Eastcoast paint and refinishing",
-                Description = "Eastcoast paint and refinishing llc\r\nAs a premier painting contractor, we are committed to delivering customer service that is second to none. We offer a wide range of services to meet your residential and commercial painting needs. Big job or small, we have you covered.",
-                ImageUrl = "https://media.istockphoto.com/id/1149597075/photo/graphic-designer-development-process-drawing-sketch-design-creative-ideas-draft-logo-product.jpg?b=1&s=612x612&w=0&k=20&c=P1IkfkPH7vMMqjhIJdrJ-5MaGkBqt-w0xJPtCuBzANE=" ,
-                SellerId = Seller1.Id
-            };
-
-            Portfolio3 = new Portfolio
-            {
-                Id = 3,
-                Title = "Logo Design",
-                Description = "Essential Service Group is an well known company in USA, they provide different kind of home services.\r\nESG logo",
-                ImageUrl = "https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/7213e406838acb8f269dd5b7e1b42bfb-1711736427941/ESG-logo.jpg",
-                SellerId = Seller1.Id
-            };
-
-            Portfolio4 = new Portfolio
-            {
-                Id = 4,
-                Title = "creative and unique logo project",
-                Description = "creative and unique logo project\r\n#real estate logo\r\nmodern logo\r\n#unique logo\r\n#business logo\r\n#logo design",
-                ImageUrl = "https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/e89be40dd7c5468cf9d426ad115dd210-1711183376534/3d-unique-logo-design-for-company-with-unlimited-revsions.jpg",
-                SellerId = Seller1.Id
-            };
-
-            Portfolio5 = new Portfolio
-            {
-                Id = 5,
-                Title = "Jewelry Landing Page",
-                Description = "I’m delighted to present my new jewelry landing page! It’s designed to be elegant and captivating, showcasing exquisite collections in a visually stunning way. The layout is refined and easy to navigate, allowing you to browse through products, learn about craftsmanship, and make purchases effortlessly. If you have any questions or want to know more about the jewelry, feel free to reach out! I’d be thrilled to share more about these beautiful pieces with you.",
-                ImageUrl = "https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto/v1/attachments/project_item/attachment/94882e7ae51bad1a1b32178463446e22-1720935490873/Jewelery%20Landing%20Page-1.png",
-                SellerId = Seller2.Id
-            };
-
-            Portfolio6 = new Portfolio
-            {
-                Id = 6,
-                Title = "Gardenlife - redesign",
-                Description = "The project focused on redesigning the GardenLife website using Figma to enhance user experience and modernize the site's visual appeal. The objective was to create a fresh and engaging online presence for GardenLife, a company specializing in gardening products and advice.",
-                ImageUrl = "https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto,t_portfolio_project_card/v1/attachments/project_item/attachment/c96819b68a55601b691d68d14eccb27d-1724171461929/HOME_DESKTOP.png",
-                SellerId = Seller3.Id
-            };
-
-            var list = new List<Portfolio>() { Portfolio1, Portfolio2, Portfolio3 };
-            _context.AddRange(list);
+            _context.Portfolios.AddRange(portfoliosForSeller1);
             await _context.SaveChangesAsync();
         }
     }
@@ -843,70 +1127,142 @@ public class SeedData
             await _context.SaveChangesAsync();
         }      
     }
-
     private async Task SeedUserLanguages()
     {
         if (!_context.UserLanguages.Any())
         {
-            UserLanguage1 = new UserLanguage
-            {
-                UserId = User1.Id,
-                LanguageId = Language1.Id,
-            };
-            UserLanguage2 = new UserLanguage
-            {
-                UserId = User1.Id,
-                LanguageId = Language2.Id,
-            };
-            UserLanguage3 = new UserLanguage
-            {
-                UserId = User2.Id,
-                LanguageId = Language1.Id,
-            };
-            UserLanguage4 = new UserLanguage
-            {
-                UserId = User3.Id,
-                LanguageId = Language1.Id,
-            };
-            UserLanguage5 = new UserLanguage
-            {
-                UserId = User4.Id,
-                LanguageId = Language3.Id,
-            };
-            UserLanguage6 = new UserLanguage
-            {
-                UserId = User1.Id,
-                LanguageId = Language4.Id,
-            };
-            var list = new List<UserLanguage>
-            {
-                UserLanguage1,
-                UserLanguage2,
-                UserLanguage3,
-                UserLanguage4,
-                UserLanguage5,
-                UserLanguage6
-            };
+            UserLanguage1 = new UserLanguage { UserId = User1.Id, LanguageId = Language1.Id }; // Alice - English
+            UserLanguage2 = new UserLanguage { UserId = User1.Id, LanguageId = Language3.Id }; // Alice - French
 
-            _context.UserLanguages.AddRange(list);
+            UserLanguage3 = new UserLanguage { UserId = User2.Id, LanguageId = Language2.Id }; // Carlos - Spanish
+            UserLanguage4 = new UserLanguage { UserId = User2.Id, LanguageId = Language1.Id }; // Carlos - English
+
+            UserLanguage5 = new UserLanguage { UserId = User3.Id, LanguageId = Language8.Id }; // Fatima - Arabic
+            UserLanguage6 = new UserLanguage { UserId = User3.Id, LanguageId = Language1.Id }; // Fatima - English
+
+            UserLanguage7 = new UserLanguage { UserId = User4.Id, LanguageId = Language1.Id }; // Liam - English
+            UserLanguage8 = new UserLanguage { UserId = User4.Id, LanguageId = Language4.Id }; // Liam - German
+
+            UserLanguage9 = new UserLanguage { UserId = User5.Id, LanguageId = Language6.Id }; // Sakura - Japanese
+            UserLanguage10 = new UserLanguage { UserId = User5.Id, LanguageId = Language1.Id }; // Sakura - English
+
+            UserLanguage11 = new UserLanguage { UserId = User6.Id, LanguageId = Language8.Id }; // Mohamed - Arabic
+            UserLanguage12 = new UserLanguage { UserId = User6.Id, LanguageId = Language1.Id }; // Mohamed - English
+
+            UserLanguage13 = new UserLanguage { UserId = User7.Id, LanguageId = Language10.Id }; // Nina - Russian
+            UserLanguage14 = new UserLanguage { UserId = User7.Id, LanguageId = Language1.Id };  // Nina - English
+
+            UserLanguage15 = new UserLanguage { UserId = User8.Id, LanguageId = Language4.Id };  // Thomas - German
+            UserLanguage16 = new UserLanguage { UserId = User8.Id, LanguageId = Language1.Id };  // Thomas - English
+
+            UserLanguage17 = new UserLanguage { UserId = User9.Id, LanguageId = Language12.Id }; // Isabella - Italian
+            UserLanguage18 = new UserLanguage { UserId = User9.Id, LanguageId = Language1.Id };  // Isabella - English
+
+            UserLanguage19 = new UserLanguage { UserId = User10.Id, LanguageId = Language7.Id }; // David - Korean
+            UserLanguage20 = new UserLanguage { UserId = User10.Id, LanguageId = Language1.Id }; // David - English
+
+            // Then add to context:
+            _context.UserLanguages.AddRange(
+                UserLanguage1, UserLanguage2, UserLanguage3, UserLanguage4, UserLanguage5,
+                UserLanguage6, UserLanguage7, UserLanguage8, UserLanguage9, UserLanguage10,
+                UserLanguage11, UserLanguage12, UserLanguage13, UserLanguage14, UserLanguage15,
+                UserLanguage16, UserLanguage17, UserLanguage18, UserLanguage19, UserLanguage20
+            );
             await _context.SaveChangesAsync();
         }      
     }
-
     private async Task SeedBillingDetails()
     {
         if (!_context.BillingDetails.Any())
         {
             BillingDetails1 = new BillingDetails
             {
-                Id = 1,
-                FullName = "Wajid K",
-                CompanyName = "K Enterprises",
-                AddressId = Address4.Id
+                FullName = User1.FullName,
+                Address = Address1,
+                AddressId = Address1.Id,
+                CompanyName = "UX Studio",
+                UserId = User1.Id
+            };
+            BillingDetails2 = new BillingDetails
+            {
+                FullName = User2.FullName,
+                Address = Address2,
+                AddressId = Address2.Id,
+                CompanyName = "JS Solutions",
+                UserId = User2.Id
+            };
+            BillingDetails3 = new BillingDetails
+            {
+                FullName = User3.FullName,
+                Address = Address3,
+                AddressId = Address3.Id,
+                CompanyName = "Fatima Illustrations",
+                UserId = User3.Id
+            };
+            BillingDetails4 = new BillingDetails
+            {
+                FullName = User4.FullName,
+                Address = Address4,
+                AddressId = Address4.Id,
+                CompanyName = "Insight UX",
+                UserId = User4.Id
+            };
+            BillingDetails5 = new BillingDetails
+            {
+                FullName = User5.FullName,
+                Address = Address5,
+                AddressId = Address5.Id,
+                CompanyName = "Tanaka Interaction Design",
+                UserId = User5.Id
+            };
+            BillingDetails6 = new BillingDetails
+            {
+                FullName = User6.FullName,
+                Address = Address6,
+                AddressId = Address6.Id,
+                CompanyName = "Frontend Works",
+                UserId = User6.Id
+            };
+            BillingDetails7 = new BillingDetails
+            {
+                FullName = User7.FullName,
+                Address = Address7,
+                AddressId = Address7.Id,
+                CompanyName = "Nina Web Studio",
+                UserId = User7.Id
+            };
+            BillingDetails8 = new BillingDetails
+            {
+                FullName = User8.FullName,
+                Address = Address8,
+                AddressId = Address8.Id,
+                CompanyName = "UX Strategies GmbH",
+                UserId = User8.Id
+            };
+            BillingDetails9 = new BillingDetails
+            {
+                FullName = User9.FullName,
+                Address = Address9,
+                AddressId = Address9.Id,
+                CompanyName = "Rossi Branding",
+                UserId = User9.Id
+            };
+            BillingDetails10 = new BillingDetails
+            {
+                FullName = User10.FullName,
+                Address = Address10,
+                AddressId = Address10.Id,
+                CompanyName = "Human-Centered Design Co.",
+                UserId = User10.Id
             };
 
-            var list = new BillingDetails[] { BillingDetails1 };
-            _context.AddRange(list);
+            var billingList = new[]
+            {
+            BillingDetails1, BillingDetails2, BillingDetails3, BillingDetails4, BillingDetails5,
+            BillingDetails6, BillingDetails7, BillingDetails8, BillingDetails9, BillingDetails10
+        };
+
+            _context.BillingDetails.AddRange(billingList);
             await _context.SaveChangesAsync();
         }
     }
@@ -1031,7 +1387,6 @@ public class SeedData
             await _context.SaveChangesAsync();
         }
     }
-
     private async Task SeedMainCategoriesFAQs()
     {
         if (!_context.FAQs.Any())
@@ -1278,7 +1633,6 @@ public class SeedData
             await _context.SaveChangesAsync();
         }
     }
-
     private async Task SeedSubCategories()
     {
         if(!_context.SubCategories.Any())
@@ -1695,8 +2049,6 @@ public class SeedData
             await _context.SaveChangesAsync();
         }
     }
-
-
     private async Task SeedSubSubCategories()
     {
         if(!_context.SubSubCategories.Any())
@@ -2724,7 +3076,6 @@ CreatedOn = DateTime.Now.AddDays(-136)
         }
 
     }
-
     private async Task SeedGigFiltersForSubSubCategories()
     {
          if(!_context.GigFilters.Any())
@@ -3579,7 +3930,6 @@ GigFilter3ForSubSubCategory1ForSubCategory1ForMainCategory1 = new GigFilter
 
         }
     }
-
     private async Task SeedFilterOptions()
     {
         if (!_context.FilterOptions.Any())
@@ -3629,11 +3979,155 @@ GigFilter3ForSubSubCategory1ForSubCategory1ForMainCategory1 = new GigFilter
                 Name = "New Seller",
                 GigFilterId = GigFilter5.Id
             };
+             FilterOption1ForGigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1 = new FilterOption()
+            {
+                GigFilterId = GigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1.Id,
+                Name = "Mobile App (iOS/Android)"
+            };
 
-            var list = new List<FilterOption> { FilterOption1, FilterOption2, FilterOption3, FilterOption4, FilterOption5, FilterOption6, FilterOption7, FilterOption8, FilterOption9 };
+             FilterOption2ForGigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1 = new FilterOption()
+            {
+                GigFilterId = GigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1.Id,
+                Name = "Web Application"
+            };
+
+             FilterOption3ForGigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1 = new FilterOption()
+            {
+                GigFilterId = GigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1.Id,
+                Name = "Desktop Application"
+            };
+
+             FilterOption4ForGigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1 = new FilterOption()
+            {
+                GigFilterId = GigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1.Id,
+                Name = "E-commerce Platform"
+            };
+
+             FilterOption5ForGigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1 = new FilterOption()
+            {
+                GigFilterId = GigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1.Id,
+                Name = "SaaS Dashboard"
+            };
+
+             FilterOption6ForGigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1 = new FilterOption()
+            {
+                GigFilterId = GigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1.Id,
+                Name = "Landing Page / Marketing Site"
+            };
+
+             FilterOption7ForGigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1 = new FilterOption()
+            {
+                GigFilterId = GigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1.Id,
+                Name = "Progressive Web App (PWA)"
+            };
+
+             FilterOption8ForGigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1 = new FilterOption()
+            {
+                GigFilterId = GigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1.Id,
+                Name = "Enterprise / B2B Tool"
+            };
+
+             FilterOption1ForGigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1 = new FilterOption()
+            {
+                GigFilterId = GigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1.Id,
+                Name = "Figma"
+            };
+
+             FilterOption2ForGigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1 = new FilterOption()
+            {
+                GigFilterId = GigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1.Id,
+                Name = "Adobe XD"
+            };
+
+             FilterOption3ForGigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1 = new FilterOption()
+            {
+                GigFilterId = GigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1.Id,
+                Name = "Sketch"
+            };
+
+             FilterOption4ForGigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1 = new FilterOption()
+            {
+                GigFilterId = GigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1.Id,
+                Name = "Adobe Photoshop"
+            };
+
+             FilterOption5ForGigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1 = new FilterOption()
+            {
+                GigFilterId = GigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1.Id,
+                Name = "Adobe Illustrator"
+            };
+
+             FilterOption6ForGigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1 = new FilterOption()
+            {
+                GigFilterId = GigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1.Id,
+                Name = "InVision"
+            };
+
+            FilterOption1ForGigFilter3ForSubSubCategory3ForSubCategory2ForMainCategory1 = new FilterOption()
+            {
+                GigFilterId = GigFilter3ForSubSubCategory3ForSubCategory2ForMainCategory1.Id,
+                Name = "User Flow Diagrams"
+            };
+
+            FilterOption2ForGigFilter3ForSubSubCategory3ForSubCategory2ForMainCategory1 = new FilterOption()
+            {
+                GigFilterId = GigFilter3ForSubSubCategory3ForSubCategory2ForMainCategory1.Id,
+                Name = "Wireframes"
+            };
+
+            FilterOption3ForGigFilter3ForSubSubCategory3ForSubCategory2ForMainCategory1 = new FilterOption()
+            {
+                GigFilterId = GigFilter3ForSubSubCategory3ForSubCategory2ForMainCategory1.Id,
+                Name = "Interactive Prototypes"
+            };
+
+            FilterOption4ForGigFilter3ForSubSubCategory3ForSubCategory2ForMainCategory1 = new FilterOption()
+            {
+                GigFilterId = GigFilter3ForSubSubCategory3ForSubCategory2ForMainCategory1.Id,
+                Name = "UI Style Guide"
+            };
+
+
+            var list = new List<FilterOption> {FilterOption1ForGigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1,
+    FilterOption2ForGigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1,
+    FilterOption3ForGigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1,
+    FilterOption4ForGigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1,
+    FilterOption5ForGigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1,
+    FilterOption6ForGigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1,
+    FilterOption7ForGigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1,
+    FilterOption8ForGigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1,
+
+    // "Design tool"
+    FilterOption1ForGigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1,
+    FilterOption2ForGigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1,
+    FilterOption3ForGigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1,
+    FilterOption4ForGigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1,
+    FilterOption5ForGigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1,
+    FilterOption6ForGigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1,
+
+    // "Service includes"
+    FilterOption1ForGigFilter3ForSubSubCategory3ForSubCategory2ForMainCategory1,
+    FilterOption2ForGigFilter3ForSubSubCategory3ForSubCategory2ForMainCategory1,
+    FilterOption3ForGigFilter3ForSubSubCategory3ForSubCategory2ForMainCategory1,
+    FilterOption4ForGigFilter3ForSubSubCategory3ForSubCategory2ForMainCategory1, FilterOption1, FilterOption2, FilterOption3, FilterOption4, FilterOption5, FilterOption6, FilterOption7, FilterOption8, FilterOption9 };
             _context.AddRange(list);
             await _context.SaveChangesAsync();
         }
     }
+  /*  private async Task SeedGigRequirements()
+    {
+        if(!_context.GigRequirements.Any())
+        {
+            GigRequirement1 = new GigRequirement
+            {
+                GigId = 123,                    // example gig ID
+                Gig = someGigInstance,          // assign an existing Gig instance here
+                IsFileUpload = false,           // or true if the requirement expects a file upload
+                Question = "Please describe your project requirements in detail."
+            };
 
+            await _context.GigRequirements.AddAsync(GigRequirement1);
+            await _context.SaveChangesAsync();
+        }
+    }*/
 }
