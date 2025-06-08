@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
 using QuickHire.Application.Common.Interfaces.Factories.Notification;
 using QuickHire.Application.Common.Interfaces.Repository;
@@ -20,6 +21,7 @@ using QuickHire.Infrastructure.Persistence;
 using QuickHire.Infrastructure.Persistence.Identity;
 using QuickHire.Infrastructure.Persistence.Repositories;
 using QuickHire.Infrastructure.Realtime.Services;
+using QuickHire.Infrastructure.Services;
 using System.Text;
 
 namespace QuickHire.Infrastructure.Extensions;
@@ -80,7 +82,7 @@ public static class ServiceCollectionExtensions
 
     private static IServiceCollection AddAppIdentity(this IServiceCollection services)
     {
-        services.AddIdentity<ApplicationUser, ApplicationUserRole>(options =>
+        services.AddIdentity<ApplicationUser, ApplicationRole>(options =>
         {
             options.Password.RequiredLength = 6;
             options.Password.RequireUppercase = false;
@@ -126,28 +128,36 @@ public static class ServiceCollectionExtensions
 
     private static IServiceCollection AddNotificationFactory(this IServiceCollection services)
     {
-        services.AddScoped<INotificationGenerator, NewProjectBriefMadeNotificationGenerator>();
-        services.AddScoped<INotificationGenerator, CustomOfferReceivedNotificationGenerator>();
-        services.AddScoped<INotificationGenerator, CustomOfferAcceptedNotificationGenerator>();
-        services.AddScoped<INotificationGenerator, CustomOfferCancelledNotificationGenerator>();
-        services.AddScoped<INotificationGenerator, CustomOfferExpiredNotificationGenerator>();
-        services.AddScoped<INotificationGenerator, CustomRequestPlacedNotificationGenerator>();
-        services.AddScoped<INotificationGenerator, CustomRequestReceivedNotificationGenerator>();
-        services.AddScoped<INotificationGenerator, HotGigNotificationGenerator>();
-        services.AddScoped<INotificationGenerator, NewGigUploadedNotificationGenerator>();
-        services.AddScoped<INotificationGenerator, OrderDeliveredNotificationGenerator>();
-        services.AddScoped<INotificationGenerator, OrderPlacedNotificationGenerator>();
-        services.AddScoped<INotificationGenerator, OrderStatusUpdateNotificationGenerator>();
-        services.AddScoped<INotificationGenerator, ProfileMadeNotificationGenerator>();
-        services.AddScoped<INotificationGenerator, ProfileUpdateNotificationGenerator>();
-        services.AddScoped<INotificationGenerator, ProjectBriefReceivedNotificationGenerator>();
-        services.AddScoped<INotificationGenerator, RevisionReceivedNotificationGenerator>();
+        // Register concrete notification generators
+        services.TryAddScoped<NewProjectBriefMadeNotificationGenerator>();
+        services.AddScoped<CustomOfferReceivedNotificationGenerator>();
+        services.AddScoped<CustomOfferAcceptedNotificationGenerator>();
+        services.AddScoped<CustomOfferCancelledNotificationGenerator>();
+        services.AddScoped<CustomOfferExpiredNotificationGenerator>();
+        services.AddScoped<CustomRequestPlacedNotificationGenerator>();
+        services.AddScoped<CustomRequestReceivedNotificationGenerator>();
+        services.AddScoped<HotGigNotificationGenerator>();
+        services.AddScoped<NewGigUploadedNotificationGenerator>();
+        services.AddScoped<OrderDeliveredNotificationGenerator>();
+        services.AddScoped<OrderPlacedNotificationGenerator>();
+        services.AddScoped<OrderStatusUpdateNotificationGenerator>();
+        services.AddScoped<ProfileMadeNotificationGenerator>();
+        services.AddScoped<ProfileUpdateNotificationGenerator>();
+        services.AddScoped<ProjectBriefReceivedNotificationGenerator>();
+        services.AddScoped<RevisionReceivedNotificationGenerator>();
+        services.AddScoped<ReportedUserNotificationGenerator>();
+        services.AddScoped<ReportedGigNotificationGEnerator>();
 
-        services.AddScoped<INotificationGeneratorFactory>(provider =>
+        // Then register the factory that depends on those generators
+        services.TryAddScoped<INotificationGeneratorFactory>(provider =>
         {
             var notificationGenerators = new Dictionary<NotificationType, INotificationGenerator>
         {
             { NotificationType.NewProjectBriefMade, provider.GetRequiredService<NewProjectBriefMadeNotificationGenerator>() },
+                        { NotificationType.ReportedUser, provider.GetRequiredService<ReportedUserNotificationGenerator>() },
+
+                                    { NotificationType.ReportedGig, provider.GetRequiredService<ReportedGigNotificationGEnerator>() },
+
             { NotificationType.CustomOfferReceived, provider.GetRequiredService<CustomOfferReceivedNotificationGenerator>() },
             { NotificationType.CustomOfferAccepted, provider.GetRequiredService<CustomOfferAcceptedNotificationGenerator>() },
             { NotificationType.CustomOfferCancelled, provider.GetRequiredService<CustomOfferCancelledNotificationGenerator>() },
@@ -179,6 +189,7 @@ public static class ServiceCollectionExtensions
         services.AddScoped<IAuthTokenProcessor, AuthTokenProcessor>();
         services.AddScoped<ICloudinaryService, CloudinaryService>();
         services.AddScoped<IPdfHelper, PdfHelper>();
+        services.AddScoped<IGigScoringService, GigScoringService>();
 
         return services;
     }
