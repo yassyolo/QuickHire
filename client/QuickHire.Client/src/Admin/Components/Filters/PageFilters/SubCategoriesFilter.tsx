@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { SearchById } from "../Inputs/SearchById";
-import { SearchByKeyword } from "../Inputs/SearchByKeyword";
-import { ActionButton } from "../../../../Shared/Buttons/ActionButton";
+import { SearchById } from "../Inputs/SearchById/SearchById";
+import { SearchByKeyword } from "../Inputs/SearchByKeyword/SearchByKeyword";
+import { ActionButton } from "../../../../Shared/Buttons/ActionButton/ActionButton";
 import { CategoriesPopulate } from "../../Dropdowns/Populate/CategoriesPopulate";
 import { ButtonDropdownContainer } from "../../Dropdowns/Common/ButtonDropdownContainer";
 

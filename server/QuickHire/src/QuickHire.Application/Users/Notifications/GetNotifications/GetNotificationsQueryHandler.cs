@@ -8,19 +8,38 @@ namespace QuickHire.Application.Users.Notifications.GetNotifications;
 public class GetNotificationsQueryHandler : IQueryHandler<GetNotificationsQuery, IEnumerable<GetNotificationsResponseModel>>
 {
     private readonly INotificationService _notificationService;
-    private readonly IUserService _userService;
 
     public GetNotificationsQueryHandler(INotificationService notificationService)
     {
         _notificationService = notificationService;
     }
 
+
     public async Task<IEnumerable<GetNotificationsResponseModel>> Handle(GetNotificationsQuery request, CancellationToken cancellationToken)
     {
-        var userId = _userService.GetCurrentUserIdAsync();
+        /*var notifications = await _notificationService.GetUserNotifications(request.Buyer);
 
-        var notifications = await _notificationService.GetUserNotifications(userId);
-        return notifications.Adapt<IEnumerable<GetNotificationsResponseModel>>();
+        return notifications.Adapt<IEnumerable<GetNotificationsResponseModel>>();*/
+
+        return new List<GetNotificationsResponseModel>
+    {
+            new GetNotificationsResponseModel
+            {
+                Id = 1,
+                Title = "Sample Notification",
+                Message = "This is a sample notification message.",
+                CreatedAt = DateTime.UtcNow.ToString("o")
+            },
+            new GetNotificationsResponseModel
+            {
+                Id = 2,
+                Title = "Another Notification",
+                Message = "This is another sample notification message.",
+                CreatedAt = DateTime.UtcNow.ToString("o")
+            }
+
+    };
     }
+
 }
 

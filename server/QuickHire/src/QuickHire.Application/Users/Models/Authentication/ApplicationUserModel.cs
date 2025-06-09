@@ -7,4 +7,5 @@ public class ApplicationUserModel
     public string? UserName { get; set; } 
     public bool EmailConfirmed { get; set; } 
     public DateTime? RefreshTokenExpirationDate { get; set; }
+    public string Mode { get; set; } = string.Empty; 
 }

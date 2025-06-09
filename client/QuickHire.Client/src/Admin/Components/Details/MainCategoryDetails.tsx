@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import "./GigDetailsPage.css";
-import { AdminPage } from "../../Pages/Common/AdminPage";
+import "./Gig/GigDetailsPage.css";
 import { Breadcrumb } from "../../../Shared/Breadcrumb/Breadcrumb";
 import { SideNavigation } from "../../../Shared/SideNavigation/SideNavigation";
-import { IconButton } from "../../../Shared/Buttons/IconButton";
+import { IconButton } from "../../../Shared/Buttons/IconButton/IconButton";
 import { EditMainCategoryModal } from "../Modals/Edit/EditMainCategoryModal";
 import { DeactivateMainCategoryModal } from "../Modals/Deactivate/DeactivateMainCategoryModal";
 import { EditSubCategoryModal } from "../Modals/Edit/EditSubCategoryModal";
@@ -13,6 +12,7 @@ import { AddSubCategoryModal } from "../Modals/Add/AddSubCategoryModal";
 import { CategoryActions } from "./Common/CategoryActions";
 import { CategoryDetails } from "./Common/CategoryDetails";
 import { SubCategoriesTableSection } from "./Common/SubCategoriesTableSection";
+import { SellerPage } from "../../../Users/Seller/Pages/Common/SellerPage";
 
 export interface MainCategoryDetails {
   id: number;
@@ -31,6 +31,7 @@ export interface SubCategoriesInMainCategory {
 
 export function MainCategoryDetails() {
   const { id } = useParams<{ id: string }>();
+  const parsedId = id ? parseInt(id, 10) : null;
   const navigate = useNavigate();
 
   const [details, setDetails] = useState<MainCategoryDetails | null>(null);
@@ -44,6 +45,10 @@ export function MainCategoryDetails() {
   const [showAddSubModal, setShowAddSubModal] = useState(false);
   const [editSubCategoryId, setEditSubCategoryId] = useState<number | null>(null);
   const [deactivateSubCategoryId, setDeactivateSubCategoryId] = useState<number | null>(null);
+
+  useEffect(() => {
+    console.log("chage selected id", editSubCategoryId);
+  }, [editSubCategoryId]);
 
   useEffect(() => {
     if (!id) return;
@@ -81,11 +86,12 @@ export function MainCategoryDetails() {
     setDetails(prev => prev ? { ...prev, subCategories: [...(prev.subCategories || []), newSub] } : null);
   };
 
-  const handleEditSubCategorySuccess = (id: number, newName: string) => {
-    setSubCategories(prev => prev.map(sc => sc.id === id ? { ...sc, name: newName } : sc));
+  const handleEditSubCategorySuccess = (id: number, newName: string, newImage: string) => 
+  {
+    setSubCategories(prev => prev.map(sc => sc.id === id ? { ...sc, name: newName, imageUrl: newImage } : sc));
     setDetails(prev => prev ? {
       ...prev,
-      subCategories: prev.subCategories?.map(sc => sc.id === id ? { ...sc, name: newName } : sc)
+      subCategories: prev.subCategories?.map(sc => sc.id === id ? { ...sc, name: newName, imageUrl: newImage } : sc)
     } : null);
   };
 
@@ -100,12 +106,12 @@ export function MainCategoryDetails() {
   const handleSeeSubCategory = (id: number) => navigate(`/admin/sub-categories/${id}`);
 
   return (
-    <AdminPage>
-      <div className="gig-details-page">
-        <div className="breadcrumb-side-nav">
-          <Breadcrumb items={[ { label: <i className="bi bi-house-door" /> }, { label: "Main Categories", to: "/admin/main-categories" }
+    <SellerPage>
+      <div className="category-details-page d-flex flex-row" >
+        <div className="breadcrumb-side-nav" style={{marginRight: "30px"}}>
+          <Breadcrumb items={[ { label: <i className="bi bi-house-door" /> }, { label: "Main categories", to: "/admin/main-categories" }
           ]} />
-          <SideNavigation items={[{ label: "Details", onClick: () => setView("details") }, { label: "SubCategories", onClick: () => setView("subcategories") }]} />
+          <SideNavigation items={[{ label: "Details", onClick: () => setView("details") }, { label: "Sub categories", onClick: () => setView("subcategories") }]} />
         </div>
 
         {isLoading && <div>Loading...</div>}
@@ -132,10 +138,15 @@ export function MainCategoryDetails() {
             title="Sub Categories" addButtonLabel="CREATE A NEW CATEGORY" items={subCategories}
             onAddClick={() => setShowAddSubModal(true)}
             addModal={
-              <AddSubCategoryModal
-                showModal={showAddSubModal} onClose={() => setShowAddSubModal(false)}
-                onAddSubCategorySuccess={handleAddSubCategorySuccess}
-              />
+              parsedId !== null ? (
+                <AddSubCategoryModal
+                  showModal={showAddSubModal}
+                  onClose={() => setShowAddSubModal(false)}
+                  onAddSubCategorySuccess={handleAddSubCategorySuccess}
+                  showCategoriesPopulate={false}
+                  submitedMainCategoryId={parsedId}
+                />
+              ) : null
             }
             renderActions={(item) => (
               <>
@@ -167,6 +178,6 @@ export function MainCategoryDetails() {
           />
         )}
       </div>
-    </AdminPage>
+    </SellerPage>
   );
 }

@@ -21,3 +21,37 @@
   color: var(--navbar-category-hover-color);
 }
 
+.nav-link.dropdown-toggle{
+  position: relative;
+}
+
+.seller-dropdown-menu {
+  position: absolute;
+  top: 80%;
+  left: 25%;
+  z-index: 1000;
+  float: left;
+  min-width: 220px;
+  margin-top: 2px;
+  padding: 5px 0;
+  font-size: 15px;
+  font-weight: 500  ;
+  text-align: left;
+  list-style: none;
+  background-color: var(--white-color);
+  border-radius: 5px;
+  box-shadow: var(--default-shadow);
+}
+
+.seller-dropdown-item {
+  display: block;
+  padding: 0px 8px;
+  color: var(--navbar-category-color);
+  text-decoration: none;
+}
+
+.seller-dropdown-item:hover {
+  background-color:#ececec;
+  color: var(--text-black-color);
+}
+

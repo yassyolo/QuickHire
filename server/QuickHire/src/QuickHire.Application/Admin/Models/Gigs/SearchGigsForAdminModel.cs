@@ -7,7 +7,7 @@ public class SearchGigsForAdminModel
     public int Orders { get; set; }
     public decimal Revenue { get; set; }
     public int Clicks { get; set; }
-    public decimal AvgReview { get; set; }
+    public double AvgReview { get; set; }
     public string SubSubCategoryName { get; set; } = string.Empty;
     public string Status { get; set; } = string.Empty;
 }

@@ -16,8 +16,8 @@ public class SubCategoriesInMainCategoryQueryHandler : IQueryHandler<SubCategori
 
     public async Task<IEnumerable<SubCategoriesInMainCategoryResponseModel>> Handle(SubCategoriesInMainCategoryQuery request, CancellationToken cancellationToken)
     {
-        var subCategoriesQuery = _repository.GetAllReadOnly<QuickHire.Domain.Categories.SubCategory>().Where(x => x.MainCategoryId == request.Id);
-        subCategoriesQuery = _repository.GetAllIncluding<QuickHire.Domain.Categories.SubCategory>(x => x.SubSubCategories);
+        var subCategoriesQuery= _repository.GetAllIncluding<QuickHire.Domain.Categories.SubCategory>(x => x.SubSubCategories).Where(x => x.MainCategoryId == request.Id);
+
         var subCategoriesList = await _repository.ToListAsync(subCategoriesQuery);
 
         return subCategoriesList.Adapt<IEnumerable<SubCategoriesInMainCategoryResponseModel>>();

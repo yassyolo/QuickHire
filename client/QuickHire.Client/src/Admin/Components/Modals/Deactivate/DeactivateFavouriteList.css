@@ -1,0 +1,12 @@
+.deactivate-favourite-list-header{
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-black-color);
+}
+
+.deactivate-favourite-list-description{
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-grey-color);
+    margin: 20px;
+}

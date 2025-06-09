@@ -20,8 +20,8 @@
 
 .actions-dropdown {
   position: absolute;
-  bottom: -110px;
-  right: 0;
+  bottom: -100%;
+  left: 100%;
   background-color: var(--white-color);
   box-shadow: var(--default-shadow);
   border-radius: 8px;

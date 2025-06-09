@@ -1,0 +1,22 @@
+.gig-card-rating {
+    gap: 5px;
+    align-content: center;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.average-rating {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-black-color);
+}
+
+.average-rating i{
+    margin-right: 2px;
+}
+
+.reviews-count {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text-grey-color);
+}

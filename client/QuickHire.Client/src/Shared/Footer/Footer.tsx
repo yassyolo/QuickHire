@@ -42,7 +42,7 @@ export function Footer() {
             <div className="footer-middle">
                 <ul className="footer-middle-links">
                     {categories.map((category) => (
-                        <Link key={category.id} to={`/categories/${category.id}`} className="footer-middle-link">
+                        <Link key={category.id} to={`/buyer/main-categories/${category.id}`} className="footer-middle-link">
                             {category.name}
                         </Link>
                     ))}

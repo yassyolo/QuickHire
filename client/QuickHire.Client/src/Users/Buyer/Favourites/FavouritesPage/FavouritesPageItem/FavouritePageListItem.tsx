@@ -2,6 +2,7 @@ import { useState } from 'react';
 import './FavouritePageListItem.css';
 import { EditFavouriteListModal } from '../../../../../Admin/Components/Modals/Edit/EditFavouriteListModal';
 import { DeactivateFavouriteList } from '../../../../../Admin/Components/Modals/Deactivate/DeactivateFavouriteList';
+import { useNavigate } from 'react-router-dom';
 interface FavouritePageListItemProps {
     id: number;
     name: string;
@@ -11,11 +12,11 @@ interface FavouritePageListItemProps {
     onEditSuccess: (id: number, name: string, description: string) => void;
     onDeactivateFavouriteList: (id: number) => void;
 }
-//todo: add delete functionality
 export function FavouritePageListItem({ id, name, imageUrls, description, gigCount, onEditSuccess, onDeactivateFavouriteList }: FavouritePageListItemProps) {
     const [showActions, setShowActions] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const navigate = useNavigate();
     const handleShowDeleteModal = () => {
         setShowDeleteModal(!showDeleteModal);
     }
@@ -25,11 +26,14 @@ export function FavouritePageListItem({ id, name, imageUrls, description, gigCou
     const handleActionsClick = () => {
         setShowActions(!showActions);
     }
+    const handleShowFavouriteList = () => {
+        navigate(`/buyer/favourite-gigs/${id}`);
+    }
 
 
 
     return (
-        <div className="favourite-page-list-item d-flex flex-column" key={id}>
+        <div className="favourite-page-list-item d-flex flex-column" key={id} onClick={handleShowFavouriteList}>
             <div className="favourite-page-list-item-images">
                 <div className="left-image">
   {imageUrls[0] ? (

@@ -37,12 +37,14 @@ export function TitleFilterSelector({selectedId, setSelectedId, data, endpoint}:
     <div className="pill-filter-selector">
       {options.length > 0 && (
         <div className="pill-items">
-          {options.map(item =>
-            typeof item.id === "number" ? (
-              <div key={item.id} className={`status-pill ${selectedId === item.id ? "active" : ""}`} onClick={handleClick(item.id)}>
-                {item.name}</div>
-            ) : null
-          )}
+          {options.map(item => {
+  const idNumber = parseInt(item.id as string); 
+  return (
+    <div key={idNumber} className={`status-pill ${selectedId === idNumber ? "active" : ""}`} onClick={handleClick(idNumber)}>
+      {item.name}
+    </div>
+  );
+})}
         </div>
       )}
     </div>

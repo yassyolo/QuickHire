@@ -1,0 +1,26 @@
+.profile-checklist-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 15px;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: var(--white-color);
+  width: 100%;
+  border: 1px solid #ddd;
+}
+
+.profile-checklist-item-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-black-color);
+}
+
+.profile-checklist-item-description {
+  font-size: 14px;
+  color: var(--text-grey-color);
+}
+
+.title-description-chechlist{
+    gap: 5px;
+}

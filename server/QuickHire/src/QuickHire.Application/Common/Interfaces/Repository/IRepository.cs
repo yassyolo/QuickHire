@@ -14,4 +14,5 @@ public interface IRepository
     Task<IEnumerable<T>> ToListAsync<T>(IQueryable<T> queryable) where T : class;
     Task<T> FirstOrDefaultAsync<T>(IQueryable<T> queryable) where T : class;
     IQueryable<T> GetAllIncluding<T>(params Expression<Func<T, object>>[] includes) where T : class;
+    IQueryable<T> Include<T>(IQueryable<T> query, params Expression<Func<T, object>>[] includes) where T : class;
 }

@@ -1,11 +1,12 @@
 ﻿using MediatR;
+using QuickHire.Application.Admin.Models.FAQ;
 using QuickHire.Application.Common.Interfaces.Abstractions;
 using QuickHire.Application.Common.Interfaces.Repository;
 using FAQ = QuickHire.Domain.Categories;
 
 namespace QuickHire.Application.Admin.FAQ.AddFAQ;
 
-public class AddFAQCommandHandler : ICommandHandler<AddFAQCommand, Unit>
+public class AddFAQCommandHandler : ICommandHandler<AddFAQCommand, FAQResponseModel>
 {
     private readonly IRepository _repository;
 
@@ -14,7 +15,7 @@ public class AddFAQCommandHandler : ICommandHandler<AddFAQCommand, Unit>
         _repository = repository;
     }
 
-    public async Task<Unit> Handle(AddFAQCommand request, CancellationToken cancellationToken)
+    public async Task<FAQResponseModel> Handle(AddFAQCommand request, CancellationToken cancellationToken)
     {
         var faq = new QuickHire.Domain.Categories.FAQ
         {
@@ -35,6 +36,11 @@ public class AddFAQCommandHandler : ICommandHandler<AddFAQCommand, Unit>
         await _repository.AddAsync(faq);
         await _repository.SaveChangesAsync();
 
-        return Unit.Value;
+        return new FAQResponseModel
+        {
+            Id = faq.Id,
+            Question = faq.Question,
+            Answer = faq.Answer,
+        };
     }
 }

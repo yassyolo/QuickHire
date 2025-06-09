@@ -31,8 +31,7 @@ internal class LoginBuyerCommandHandler : ICommandHandler<LoginBuyerCommand, Uni
             throw new UnauthorizedAccessException("Invalid credentials", "The provided email/username or password is incorrect.");
         }
 
-        await _userService.AssignJwtToken(user);
-        await _userService.AssignRefreshToken(user);
+        await _userService.AssignJwtTokens(user, "buyer");
 
         return Unit.Value;
     }

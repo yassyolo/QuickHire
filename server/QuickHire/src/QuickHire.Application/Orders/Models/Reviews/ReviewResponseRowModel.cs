@@ -10,4 +10,5 @@ public class ReviewResponseRowModel
     public string Duration { get; set; } = string.Empty;
     public string Price { get; set; } = string.Empty;
     public string CountryName { get; set; } = string.Empty;
+    public bool RepeatBuyer { get; set; }
 }

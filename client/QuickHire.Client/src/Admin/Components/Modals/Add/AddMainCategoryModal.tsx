@@ -3,10 +3,10 @@ import { AddModal } from "./Common/AddModal";
 import axios from "axios";
 import { FormGroup } from "../../../../Shared/Forms/FormGroup";
 import { FAQFormGroup } from "../../../../Shared/Forms/FAQFormGroup";
-import { FAQ } from "../../../../Shared/FAQ/FAQ";
+import { FAQ } from "../../../../Shared/FAQ/FAQItem/FAQ";
 import "./AddMainCategoryModal.css";
 import { useTooltip } from "../../../../Shared/Tooltip/Tooltip";
-import { ActionButton } from "../../../../Shared/Buttons/ActionButton";
+import { ActionButton } from "../../../../Shared/Buttons/ActionButton/ActionButton";
 
 export interface AddMainCategoryModalProps {
     title: string;

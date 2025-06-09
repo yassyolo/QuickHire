@@ -15,7 +15,7 @@ public class RoleFilterQueryHandler : IQueryHandler<RoleFilterQuery, RoleFilterI
 
     public async Task<RoleFilterItemModel[]> Handle(RoleFilterQuery request, CancellationToken cancellationToken)
     {
-        return await _userService.GetRolesAsync();
+        return await _userService.GetRolesAsync();     
     }
 }
 

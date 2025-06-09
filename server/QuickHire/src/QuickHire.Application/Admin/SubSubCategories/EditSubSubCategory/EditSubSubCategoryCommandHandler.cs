@@ -22,11 +22,7 @@ public class EditSubSubCategoryCommandHandler : ICommandHandler<EditSubSubCatego
         {
             throw new NotFoundException(nameof(SubSubCategory), request.Id);
         }
-
-        if (subSubCategory.Name != request.Name)
-        {
-            subSubCategory.Name = request.Name;
-        }       
+        subSubCategory.Name = request.Name;       
 
         await _repository.UpdateAsync(subSubCategory);
         await _repository.SaveChangesAsync();

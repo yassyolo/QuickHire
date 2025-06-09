@@ -46,7 +46,7 @@ public class EditLanguagesCommandHandler : ICommandHandler<EditLanguagesCommand,
         
         await _repository.SaveChangesAsync();
 
-        var updatedUserLanguagesQueryable =  _repository.GetAllReadOnly<QuickHire.Domain.Users.UserLanguage>().Where(x => x.UserId == userId);
+        var updatedUserLanguagesQueryable =  _repository.GetAllIncluding<QuickHire.Domain.Users.UserLanguage>(x => x.Language).Where(x => x.UserId == userId);
         var updatedUserLanguages = await _repository.ToListAsync(updatedUserLanguagesQueryable);
 
         return updatedUserLanguages.Select(x => new UserLanguageModel

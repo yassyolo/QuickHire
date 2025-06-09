@@ -1,0 +1,25 @@
+.no-content-item{
+    text-align: center;
+    margin-top: 40px;
+    font-size: 22px;
+    font-weight: 600;
+    background-color: var(--white-color);
+    padding: 20px 0;
+}
+
+.no-content-title{
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text-black-color);
+    margin-bottom: 13px;
+}
+
+.no-content-description{
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--text-grey-color);
+}
+
+.no-content-icon{
+    margin-bottom: 35px;
+}

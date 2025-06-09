@@ -7,10 +7,9 @@ export interface DataTableProps<T extends { id: number | string }> {
     columns: (keyof T)[];
     headers: Record<keyof T, string>;
     renderActions?: (row: T) => React.ReactNode;
-    noDataTd?: React.ReactNode;
 }
 
-export function DataTable<T extends { id: number | string}>({ data, columns, headers, renderActions, noDataTd}: DataTableProps<T>) {
+export function DataTable<T extends { id: number | string}>({ data, columns, headers, renderActions}: DataTableProps<T>) {
     return (
         <div className="admin-table">
          <table className="table-container" aria-label="data-table">
@@ -21,8 +20,7 @@ export function DataTable<T extends { id: number | string}>({ data, columns, hea
                 </tr>
             </thead>
             <tbody aria-label="table-body" key="table-body">
-                {noDataTd ? noDataTd : null}
-                {data.length === 0 && noDataTd === null ?  ( <tr> <NoDataTd colSpan={columns.length + 1} /> </tr>) : 
+                {data.length === 0 ?  ( <tr> <NoDataTd colSpan={columns.length + 1} /> </tr>) : 
                 ( data.map((row) => (
                         <tr key={row.id}>
                             {columns.map((column) => (

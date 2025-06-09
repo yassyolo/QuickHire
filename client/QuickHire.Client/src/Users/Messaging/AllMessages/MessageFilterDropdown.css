@@ -1,0 +1,20 @@
+.filter-item {
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  cursor: pointer;
+}
+
+.filter-title {
+  font-size: 16px;
+  color: var(--text-black-color);
+  font-weight: bold;
+}
+
+.order-status-list{
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+}

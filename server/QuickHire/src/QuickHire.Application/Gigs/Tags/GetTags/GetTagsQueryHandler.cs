@@ -16,6 +16,7 @@ public class GetTagsQueryHandler : IQueryHandler<GetTagsQuery, List<GetTagsRespo
         _repository = repository;
     }
 
+    //Todo
     public async Task<List<GetTagsResponseModel>> Handle(GetTagsQuery request, CancellationToken cancellationToken)
     {
         /*var gigQueryable = _repository.GetAllReadOnly<Gig>();

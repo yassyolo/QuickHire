@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { SearchByKeyword } from "../../../../Admin/Components/Filters/Inputs/SearchByKeyword";
+import { SearchByKeyword } from "../../../../Admin/Components/Filters/Inputs/SearchByKeyword/SearchByKeyword";
 import axios from "axios";
 import { ButtonDropdownContainer } from "../../../../Admin/Components/Dropdowns/Common/ButtonDropdownContainer";
-import { ActionButton } from "../../../../Shared/Buttons/ActionButton";
+import { ActionButton } from "../../../../Shared/Buttons/ActionButton/ActionButton";
 import { DateRange } from "../../../../Admin/Components/Dropdowns/Populate/DateRange";
 import { DataTable } from "../../../../Admin/Components/Tables/Common/AdminDataTable";
 import "./FinancialDocuments.css";

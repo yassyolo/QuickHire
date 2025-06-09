@@ -10,6 +10,8 @@ export interface AddFaqModalProps {
     showModal: boolean;
     onClose: () => void;
     onAddFAQSuccess: (id: number, question: string, answer: string) => void;
+    mainCategoryId?: number;
+    gigId?: number;
 }
 
 interface Faq{
@@ -18,7 +20,7 @@ interface Faq{
     answer: string;
 }
 
-export function AddFAQModal({ title, showModal, onClose, onAddFAQSuccess }: AddFaqModalProps) {
+export function AddFAQModal({ title, showModal, onClose, onAddFAQSuccess , mainCategoryId, gigId}: AddFaqModalProps) {
     const [question, setQuestion] = useState<string>("");
     const [answer, setAnswer] = useState<string>("");
     const [showQuestionTooltip, handleShowQuestionTooltip] = useTooltip();
@@ -45,16 +47,31 @@ export function AddFAQModal({ title, showModal, onClose, onAddFAQSuccess }: AddF
         setValidationErrors({}); 
 
         try {
-            const url = `https://localhost:7267/faqs/add`;
+            const url = `https://localhost:7267/faqs`;
 
-            const response = await axios.post(url, { question, answer});
+        const data: { question: string; answer: string; mainCategoryId?: number; gigId?: number } = {
+            question,
+            answer,
+        };
+
+        if (mainCategoryId != null) {
+            data.mainCategoryId = mainCategoryId;
+        }
+
+        if (gigId != null) {
+            data.gigId = gigId;
+        }
+
+        const response = await axios.post(url, data);
+            
             const faq = response.data as Faq;
 
             onAddFAQSuccess(faq.id, faq.question, faq.answer);
+            onClose();
+
             setQuestion("");
             setAnswer("");
             setValidationErrors({});
-            onClose();
         } catch (error: unknown) {
             if (axios.isAxiosError(error) && error.response && error.response.status === 400) {
                 console.error("Validation Errors:", error.response.data.errors);

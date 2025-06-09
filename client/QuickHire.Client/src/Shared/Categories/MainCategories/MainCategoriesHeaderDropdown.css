@@ -1,5 +1,7 @@
 .sub-categories-list {
   display: flex;
+  flex-direction: column;
   flex-wrap: wrap;
-  gap: 0px 60px;
+  max-height: 400px; 
+  gap: 8px;
 }

@@ -11,14 +11,15 @@ export interface AddSubCategoryModalProps {
     showModal: boolean;
     onClose: () => void;
     onAddSubCategorySuccess: (subCategory: SubCategoriesInMainCategory) => void;
-}
+    showCategoriesPopulate: boolean;
+    submitedMainCategoryId: number;}
 
 interface MainCategoryPopulate{
     id: number;
     name: string;
 }
 
-export function AddSubCategoryModal({onClose, onAddSubCategorySuccess, showModal }: AddSubCategoryModalProps) {
+export function AddSubCategoryModal({onClose, onAddSubCategorySuccess, showModal, showCategoriesPopulate, submitedMainCategoryId }: AddSubCategoryModalProps) {
     const [name, setName] = useState<string>("");
     const [image, setImage] = useState<File | null>(null);
     const [newImagePreviewUrl, setNewImagePreviewUrl] = useState<string>("");
@@ -76,7 +77,11 @@ export function AddSubCategoryModal({onClose, onAddSubCategorySuccess, showModal
 
             formData.append("name", name);
             if (image) formData.append("image", image);
-            if (selectedMainCategoryId !== undefined) formData.append("mainCategoryId", selectedMainCategoryId.toString());
+            if (showCategoriesPopulate && selectedMainCategoryId !== undefined) {
+                formData.append("mainCategoryId", selectedMainCategoryId.toString());
+            } else if (!showCategoriesPopulate) {
+                formData.append("mainCategoryId", submitedMainCategoryId.toString());
+            }
     
             const result = await axios.post("https://localhost:7267/admin/sub-categories/add", formData);
             if (result.status === 200) {
@@ -108,7 +113,8 @@ export function AddSubCategoryModal({onClose, onAddSubCategorySuccess, showModal
             <FormGroup error={validationErrors.Name} id={"sub-category-name"} label={"Name"} type={"text"} value={name} onChange={handleNameInputChange} placeholder={"Enter Name"} ariaDescribedBy={"name-help"} onShowTooltip={handleShowNameTooltip} showTooltip={showNameTooltip} tooltipDescription={"Use a clear, descriptive name."} ></FormGroup>  
             <FormGroup error={validationErrors.Image} id={"sub-category-image"} label={"Image"} type={"file"} onChange={handleImageInputChange} placeholder={"Upload Image"} ariaDescribedBy={"image-help"} onShowTooltip={handleShowImageTooltip} showTooltip={showImageTooltip} tooltipDescription={"Upload a relevant image for the sub-category. Ensure it's clear and represents the category accurately."} ></FormGroup>  
             {newImagePreviewUrl && <ImagePreview alt={"Preview"} src={newImagePreviewUrl} />}
-            <SelectDropdown id="main-category" label="Main category" options={categories} value={selectedMainCategoryId} onChange={handleSelectMainCategoryId} getOptionLabel={(opt) => opt.name} getOptionValue={(opt) => opt.id} tooltipDescription={"Choose the main category that this subcategory belongs to. This helps organize your items logically."} showTooltip={showMainCategoryTooltip} ariaDescribedBy={"dropdown-help"} onShowTooltip={handleShowMainCategoryTooltip}/>
+            {showCategoriesPopulate &&  <SelectDropdown id="main-category" label="Main category" options={categories} value={selectedMainCategoryId} onChange={handleSelectMainCategoryId} getOptionLabel={(opt) => opt.name} getOptionValue={(opt) => opt.id} tooltipDescription={"Choose the main category that this subcategory belongs to. This helps organize your items logically."} showTooltip={showMainCategoryTooltip} ariaDescribedBy={"dropdown-help"} onShowTooltip={handleShowMainCategoryTooltip}/>
+}
         </AddModal>       
     );
 }

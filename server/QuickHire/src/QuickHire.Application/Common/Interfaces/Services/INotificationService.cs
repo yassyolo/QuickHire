@@ -1,12 +1,13 @@
-﻿using QuickHire.Domain.Users;
+﻿using QuickHire.Application.Common.Interfaces.Factories.Notification;
+using QuickHire.Domain.Users;
 using QuickHire.Domain.Users.Enums;
 
 namespace QuickHire.Application.Common.Interfaces.Services;
 
 public interface INotificationService
 {
-    public Task MarkNotificationAsRead(int id);
-    public Task MakeNotification(string userId, NotificationType type, Dictionary<string, string>? placeholders = null);
-    public Task<IEnumerable<Notification>> GetUserNotifications(string userId);
+    Task MarkNotificationAsRead(int id);
+    Task MakeNotification(int recipientId, NotificationRecipientType recipientType, NotificationType type, Dictionary<string, string>? placeholders = null);
+    Task<IEnumerable<Notification>> GetUserNotifications(bool buyer);
 
 }

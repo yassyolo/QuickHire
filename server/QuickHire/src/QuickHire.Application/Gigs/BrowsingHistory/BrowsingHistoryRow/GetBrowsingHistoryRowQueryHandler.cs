@@ -20,7 +20,7 @@ public class GetBrowsingHistoryRowQueryHandler : IQueryHandler<GetBrowsingHistor
 
     public async Task<IEnumerable<BrowsingHistoryRowModel>> Handle(GetBrowsingHistoryRowQuery request, CancellationToken cancellationToken)
     {
-        var buyerId = await _userService.GetBuyerIdByUserIdAsync();
+        /*var buyerId = await _userService.GetBuyerIdByUserIdAsync();
 
         var favouriteGigsQueryable = _repository.GetAllReadOnly<FavouriteGig>().Where(x => x.BuyerId == buyerId);
         var favouriteGigsIdsList = await _repository.ToListAsync<FavouriteGig>(favouriteGigsQueryable);
@@ -36,7 +36,25 @@ public class GetBrowsingHistoryRowQueryHandler : IQueryHandler<GetBrowsingHistor
                 Title = x.Gig.Title,
                 ImageUrl = x.Gig.ImageUrls.FirstOrDefault(),
                 Liked = favouriteGigsIdsList.Any(fg => fg.GigId == x.GigId)
-            }).ToList();
+            }).ToList();*/
+
+        return new List<BrowsingHistoryRowModel>
+        {
+            new BrowsingHistoryRowModel
+            {
+                Id = 1,
+                Title = "Sample Gig",
+                ImageUrl = "https://picsum.photos/200/300",
+                Liked = true
+            },
+            new BrowsingHistoryRowModel
+            {
+                Id = 2,
+                Title = "Another Gig",
+                ImageUrl = "https://picsum.photos/200/300",
+                Liked = false
+            }
+        }.Adapt<IEnumerable<BrowsingHistoryRowModel>>();
                 
     }
 }

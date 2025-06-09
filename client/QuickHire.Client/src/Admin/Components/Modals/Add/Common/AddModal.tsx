@@ -1,7 +1,7 @@
 import React from "react";
 import './AddModal.css';
 import { Modal } from "../../Common/Modal";
-import { ActionButton } from "../../../../../Shared/Buttons/ActionButton";
+import { ActionButton } from "../../../../../Shared/Buttons/ActionButton/ActionButton";
 import { ModalActions } from "../../Common/ModalActions";
 
 export interface AddModalProps {

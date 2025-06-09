@@ -5,7 +5,9 @@ import axios from "axios";
 import { PageTitle } from "../../../../Admin/Pages/Common/PageTitle";
 import { EditFavouriteListModal } from "../../../../Admin/Components/Modals/Edit/EditFavouriteListModal";
 import { DeactivateFavouriteList } from "../../../../Admin/Components/Modals/Deactivate/DeactivateFavouriteList";
-import { GigCard } from "../../../Gigs/GigCard/GigCard";
+import { GigCard } from "../../../../Gigs/GigCard/GigCard";
+import { SellerPage } from "../../../Seller/Pages/Common/SellerPage";
+import './FavouriteListPage.css';
 
 
  interface FavouriteList{
@@ -69,7 +71,8 @@ import { GigCard } from "../../../Gigs/GigCard/GigCard";
             if (favouriteListId) {
              const fetchFavouriteList = async () => {
                      try {
-                         const response = await axios.get<FavouriteList>(`https://localhost:7267/favourite-lists/page/${favouriteListId}`);
+                        const url = `https://localhost:7267/buyers/favourite-gigs/lists/${favouriteListId}`;
+                         const response = await axios.get<FavouriteList>(url);
                          setFavouriteList(response.data);
                      } catch (error) {
                          console.error("Error fetching favourite list:", error);
@@ -78,9 +81,19 @@ import { GigCard } from "../../../Gigs/GigCard/GigCard";
                  fetchFavouriteList();
              }
          }, [favouriteListId]);
+
+        const onSetLiked = (liked: boolean, gigId: number) => {
+            if (favouriteList && favouriteList.gigs) {
+                const updatedGigs = favouriteList.gigs.map(gig => 
+                    gig.id === gigId ? { ...gig, liked } : gig
+                );
+                setFavouriteList({ ...favouriteList, gigs: updatedGigs });
+            }
+        }
     
         return (
-            <div className="favourite-list-page d-flex flex-column">
+            <SellerPage>
+                <div className="favourite-list-page d-flex flex-column">
                 <div className="favourites-page-title-button d-flex flex-row">
                           <PageTitle title={favouriteList ? favouriteList.name : "Favourite List"}
                             description="View and manage your favourite gigs in this list."
@@ -122,7 +135,7 @@ import { GigCard } from "../../../Gigs/GigCard/GigCard";
                         <div className="favourite-list-ietms">
                             {favouriteList?.gigs && favouriteList.gigs.length > 0 ? 
                                 favouriteList.gigs.map((gig) => (
-                                    <GigCard gig={gig} showSeller={false}/>
+                                    <GigCard gig={gig} showSeller={true} setLiked={onSetLiked}/>
                                 )) : (  
                                     <div className="no-gigs-message">
                                         No gigs found in this favourite list.
@@ -131,5 +144,6 @@ import { GigCard } from "../../../Gigs/GigCard/GigCard";
                             }
                         </div>
             </div>
+            </SellerPage>
         );
     }

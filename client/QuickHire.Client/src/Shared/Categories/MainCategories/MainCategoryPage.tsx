@@ -3,11 +3,11 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { MostPopularInMainCategory } from "./MostPopularInMainCategory";
 import { ExploreSubcategoriesInMainCategory } from "./ExploreSubcategoriesInMainCategory";
-import { FAQList } from "../../FAQ/FAQList";
 import { TagList } from "../../../Gigs/Tags/TagList";
 import "./MainCategoryPage.css";
 import { SellerPage } from "../../../Users/Seller/Pages/Common/SellerPage";
 import { BrowsingHistoryRow } from "../../../Users/Buyer/BrowsingHistory/BrowsingHistoryRow/BrowsingHistoryRow";
+import { FAQList } from "../../FAQ/FAQList/FAQList";
 
 export interface MainCategory{
     id: number;

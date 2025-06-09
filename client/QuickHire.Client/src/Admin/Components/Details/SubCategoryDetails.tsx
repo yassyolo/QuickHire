@@ -8,9 +8,10 @@ import { AddSubSubCategoryModal } from "../Modals/Add/AddSubSubCategoryModal";
 import { CategoryActions } from "./Common/CategoryActions";
 import { CategoryDetails } from "./Common/CategoryDetails";
 import { SubCategoriesTableSection } from "./Common/SubCategoriesTableSection";
-import { IconButton } from "../../../Shared/Buttons/IconButton";
-import { AdminPage } from "../../Pages/Common/AdminPage";
+import { IconButton } from "../../../Shared/Buttons/IconButton/IconButton";
 import { DeactivateSubCategoryModal } from "../Modals/Deactivate/DeactivateSubCategoryModal";
+import { SellerPage } from "../../../Users/Seller/Pages/Common/SellerPage";
+import { SideNavigation } from "../../../Shared/SideNavigation/SideNavigation";
 
 export interface SubCategoryDetails {
     id: number;
@@ -34,6 +35,8 @@ export function SubCategoryDetails() {
     const [details, setDetails] = useState<SubCategoryDetails | null>(null);
     const [subSubCategories, setSubSubCategories] = useState<SubSubCategoriesInSubCategory[]>([]);
     const [isLoading, setIsLoading] = useState(false);
+      const [view, setView] = useState<"details" | "subSubCategories">("details");
+
 
     const [showAddSubSubCategoryModal, setShowAddSubSubCategoryModal] = useState(false);
     const [showEditSubCategoryModal, setShowEditSubCategoryModal] = useState(false);
@@ -42,7 +45,6 @@ export function SubCategoryDetails() {
     const [editSubSubCategoryId, setEditSubSubCategoryId] = useState<number | null>(null);
     const userNavigate = useNavigate();
 
-    // FETCH LOGIC (updated like in MainCategoryDetails)
     useEffect(() => {
         if (isNaN(parsedId)) return;
 
@@ -68,8 +70,8 @@ export function SubCategoryDetails() {
         fetchSubCategoryDetails();
     }, [parsedId]);
 
-    const handleEditSubCategoryModalVisibility = () => setShowEditSubCategoryModal(prev => !prev);
-    const handleDeactivateSubCategoryModalVisibility = () => setShowDeactivateSubCategoryModal(prev => !prev);
+    const handleEditSubCategoryModalVisibility = () => setShowEditSubCategoryModal(!showEditSubCategoryModal);
+    const handleDeactivateSubCategoryModalVisibility = () => setShowDeactivateSubCategoryModal(!showDeactivateSubCategoryModal);
 
     const handleEditSubCategorySucess = (id: number, newName: string, newImageUrl: string | undefined) =>
         setDetails(prev => prev ? { ...prev, name: newName, imageUrl: newImageUrl } : null);
@@ -81,9 +83,11 @@ export function SubCategoryDetails() {
     };
 
     const handleAddSubSubCategoryModalVisibility = () => setShowAddSubSubCategoryModal(prev => !prev);
-    const handleAddSubSubCategorySuccess = () => {
-        // trigger re-fetch or push new item
-    };
+    const handleAddSubSubCategorySuccess = (id: number, name: string) => {
+        setSubSubCategories(prev => [...prev, { id, name }]);
+        setDetails(prev => prev ? { ...prev, subSubCategories: [...(prev.subSubCategories || []), { id, name }] } : null);
+        setShowAddSubSubCategoryModal(false);
+    }
 
     const handleEditSubSubCategoryButtonClick = (id: number) => setEditSubSubCategoryId(id);
     const handleEditSubSubCategoryModalClose = () => setEditSubSubCategoryId(null);
@@ -101,35 +105,41 @@ export function SubCategoryDetails() {
     };
 
     return (
-        <AdminPage>
-            <div className="main-category-details">
+        <SellerPage>
+            <div className="main-category-details d-flex flex-row">
+                <div className="breadcrumb-side-nav" style={{marginRight: "30px"}}>
                 <Breadcrumb items={[
                     { label: <i className="bi bi-house-door"></i> },
                     { label: "Sub Categories", to: "/admin/sub-categories" }
                 ]} />
+                <SideNavigation items={[{ label: "Details", onClick: () => setView("details") }, { label: "Sub sub categories", onClick: () => setView("subSubCategories") }]} />
+                </div>
 
                 {isLoading && <div>Loading...</div>}
 
-                {!isLoading && details && (
+                {view === "details" && details &&(
+                    <div className="d-flex flex-row">
+                        <CategoryDetails details={details} showFAQ={false} faqMainCategoryId={parsedId} />
+                        <CategoryActions onEditModalVisibility={handleEditSubCategoryModalVisibility}
+                            onDeactivateModalVisibility={handleDeactivateSubCategoryModalVisibility}
+                        />
+                        {showEditSubCategoryModal && <EditSubCategoryModal
+                            showModal={true}
+                            onClose={handleEditSubCategoryModalVisibility} id={parsedId}
+                            onEditSuccess={handleEditSubCategorySucess}
+                            name={details?.name ?? ""}
+                            imageUrl={details?.imageUrl ?? ""}
+                        />}
+                        <DeactivateSubCategoryModal showModal={showDeactivateSubCategoryModal}
+                            onClose={handleDeactivateSubCategoryModalVisibility}
+                            id={parsedId}
+                            onDeactivateSuccess={handleDeactivateSubCategorySuccess}
+                        />
+                    </div>
+                )}
+
+                {view === "subSubCategories"  && details && (
                     <>
-                        <div className="d-flex flex-row">
-                            <CategoryDetails details={details} showFAQ={false} faqMainCategoryId={parsedId} />
-                            <CategoryActions onEditModalVisibility={handleEditSubCategoryModalVisibility}
-                                onDeactivateModalVisibility={handleDeactivateSubCategoryModalVisibility}
-                            />
-                            <EditSubCategoryModal
-                                showModal={showEditSubCategoryModal}
-                                onClose={handleEditSubCategoryModalVisibility} id={parsedId}
-                                onEditSuccess={handleEditSubCategorySucess}
-                                name={details.name}
-                                imageUrl={details.imageUrl ?? ""}
-                            />
-                            <DeactivateSubCategoryModal showModal={showDeactivateSubCategoryModal}
-                                onClose={handleDeactivateSubCategoryModalVisibility}
-                                id={parsedId}
-                                onDeactivateSuccess={handleDeactivateSubCategorySuccess}
-                            />
-                        </div>
 
                         <SubCategoriesTableSection title="Sub Sub Categories"
                             addButtonLabel="CREATE A NEW CATEGORY"
@@ -140,8 +150,7 @@ export function SubCategoryDetails() {
                                     showModal={showAddSubSubCategoryModal}
                                     onClose={handleAddSubSubCategoryModalVisibility}
                                     onAddSubSubCategorySuccess={handleAddSubSubCategorySuccess}
-                                    title="Sub Sub Category"
-                                />
+                                    title="Sub Sub Category" showCategoriesPopulate={false} submitedSubCategoryId={parsedId}                                />
                             }
                             renderActions={(item) => (
                                 <>
@@ -190,6 +199,6 @@ export function SubCategoryDetails() {
                     </>
                 )}
             </div>
-        </AdminPage>
+        </SellerPage>
     );
 }

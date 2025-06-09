@@ -22,6 +22,10 @@ export function EditSubSubCategoryModal({onEditSuccess, showModal, id, onClose, 
       setNewName(name);
       setValidationErrors({});
     }
+    else {
+      setNewName("");
+      setValidationErrors({});
+    }
   }, [showModal, name]);
 
   const handleNameChange = useCallback((event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => { setNewName(event.target.value); }, []);
@@ -38,6 +42,10 @@ export function EditSubSubCategoryModal({onEditSuccess, showModal, id, onClose, 
     await axios.put(url, formData);
     
           onEditSuccess(id, newName);
+          onClose();
+          setNewName("");
+    setValidationErrors({});
+
         }  catch (error: unknown) {
       if (axios.isAxiosError(error) && error.response?.status === 400) {
         setValidationErrors({
@@ -53,7 +61,7 @@ export function EditSubSubCategoryModal({onEditSuccess, showModal, id, onClose, 
 
   return (
     <EditModal onClose={onClose} id={id} onContinue={onEditSuccessInternal}>
-      <FormGroup id={"new-main-category-name"} label={"New Name"} tooltipDescription={"Use a clear, descriptive name."} type={"text"} value={newName} onChange={handleNameChange} placeholder={"Enter Name"} ariaDescribedBy={"name-help"} onShowTooltip={handleShowNameTooltip} showTooltip={showNameTooltip} error={validationErrors.Name}></FormGroup>
+      <FormGroup id={"new-sub-sub-category-name"} label={"New Name"} tooltipDescription={"Use a clear, descriptive name."} type={"text"} value={newName} onChange={handleNameChange} placeholder={"Enter Name"} ariaDescribedBy={"name-help"} onShowTooltip={handleShowNameTooltip} showTooltip={showNameTooltip} error={validationErrors.Name}></FormGroup>
     </EditModal>
   );
 };

@@ -25,7 +25,7 @@ public class ViewStatisticsQueryHandler : IQueryHandler<ViewStatisticsQuery, Sta
             throw new NotFoundException(nameof(Gig), request.Id);
         }*/
 
-        var browsingHistory = _repository.GetAllReadOnly<BrowsingHistory>().Where(x => x.GigId == request.Id);
+        var browsingHistory = _repository.GetAllReadOnly<QuickHire.Domain.Users.BrowsingHistory>().Where(x => x.GigId == request.Id);
         var browsingHistoryList = await _repository.ToListAsync(browsingHistory);
 
         var totalItem = new TotalItemModel

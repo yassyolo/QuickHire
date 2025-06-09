@@ -17,7 +17,7 @@ export function TagList({ mainCategoryId, gigId }: TagListProps) {
 
     useEffect(() => {
         fetchTags();
-    }, [gigId, mainCategoryId]);
+    }, []);
 
     const fetchTags = async () => {
         setLoading(true);
@@ -28,7 +28,7 @@ export function TagList({ mainCategoryId, gigId }: TagListProps) {
             } else if (mainCategoryId) {
                 params.append("MainCategoryId", mainCategoryId.toString());
             }
-            const url = `https://localhost:7267/tags/${params.toString()}`;
+const url = `https://localhost:7267/tags?${params.toString()}`;
             const response = await fetch(url, {
                 method: 'GET',
                 headers: {
@@ -49,7 +49,6 @@ export function TagList({ mainCategoryId, gigId }: TagListProps) {
     };
     return (
         <div className="tag-list" aria-label="tag-list">
-            <div className="tags-list-header">Tags</div>
             {loading ? (
                 <div className="loading" aria-label="loading">
                     <div id={"loading"} className="loading-text">Loading...</div>

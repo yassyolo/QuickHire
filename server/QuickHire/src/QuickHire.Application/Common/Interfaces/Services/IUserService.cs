@@ -1,13 +1,19 @@
 ﻿
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using QuickHire.Application.Admin.Models.Filters;
+using QuickHire.Application.Admin.Models.Shared;
+using QuickHire.Application.Admin.Models.Users;
+using QuickHire.Application.Admin.Users.SearchUsers;
 using QuickHire.Application.Users.Models.Authentication;
+using QuickHire.Application.Users.Models.NewSEller;
+using QuickHire.Application.Users.Models.Profile;
 
 namespace QuickHire.Application.Common.Interfaces.Services;
 
 public interface IUserService
 {
-    Task AssignJwtToken(ApplicationUserModel applicationUserModel);
+    Task AssignJwtTokens(ApplicationUserModel applicationUserModel, string mode);
     Task AssignRefreshToken(ApplicationUserModel applicationUserModel);
     Task<bool> CheckPasswordAsync(ApplicationUserModel applicationUserModel, string password);
     Task<CreatedUserResultModel> CreateUserAsync(string email, string password);
@@ -27,4 +33,29 @@ public interface IUserService
     Task<ExternalLoginInfo> GetExternalLoginInfoAsync();
     Task<ApplicationUserModel?> FindByExternalLoginAsync(string loginProvider, string providerKey);
     Task<CreatedUserResultModel> CreateUserForExternalLoginAsync(ExternalLoginInfo externalLoginInfo);
+    Task<int> GetBuyerIdByUserIdAsync();
+    Task<int> GetSellerIdByUserIdAsync();
+    Task<(string name, string profileImageUrl, bool topRated)> GetSellerDetailsForGigCardByIdAsync(int sellerId);
+    Task ChangePasswordAsync(string newPassword);
+    Task<(string username, int userId, bool isSuccess)> UpdateCurrentUser(string? fullName, string? email, string? username, int? countryId, string? city, string? zipCode, string? street);
+    Task<(string profilePictureUrl, string name, string username)> GetSellerDashboardInfoAsync(int sellerId);
+    Task<(string Id, string ProfilePictureUrl, string FullName ,string Country ,string Username , string Description)> GetSellerProfileDetails(string userId);
+    Task UpdateUserDescriptionAsync(string description);
+    Task<BuyerProfileModel> GetBuyerProfileAsync();
+    Task<string> UpdateBuyerDetailsAsync(string description, IFormFile image);
+    Task<(string fullName, bool repeatBuyer, string countryName, string profileImageUrl)> GetBuyerReviewDetailsAsync(int buyerId, int sellerId);
+    Task<(string Industry, string MemberSince)> GetSellerDetailsForBuyer(int sellerId);
+    Task<PaginatedResultModel<UserForAdminModel>> GetUsersForAdminAsync(SearchUsersQuery request);
+    Task<UserForAdminModel> GetSellerForGigAsync(int id);
+    Task<int> GetSellerIdByExistingsUserIdAsync(string userId);
+    Task DeactivateUserAsync(string userId);
+    Task<string> GetUserEmailByUserIdAsync(string userId);
+    Task<string> GetGigSellerEmailAsync(int id);
+    Task<string> GetUserModerationStatusAsync(string? userId);
+    Task<string> GetUsernameByUserIdAsync(int buyerId);
+    Task<GetExistingUserInfoModel> GetExistingUserInfoAsync();
+    Task<(string BuyerName, string BuyerProfilePictureUrl,  string MemberSince ,string Location, string[] Languages)> GetBuyerInfoForProjectBriefAsync(int buyerId);
+    Task<AboutUserModel> GetAboutCurrentUserAsync();
+    (string UserId, string Mode) GetCurrentUserIdAndModeAsync();
+    Task<(string ProfilePictureUrl, string Username)> GetUsernameAndProfilePictureAsync(string participantBId);
 }

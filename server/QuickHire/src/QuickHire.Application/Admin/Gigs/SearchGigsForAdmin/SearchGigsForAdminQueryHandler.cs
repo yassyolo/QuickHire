@@ -96,7 +96,7 @@ public class SearchGigsForAdminQueryHandler : IQueryHandler<SearchGigsForAdminQu
                 Service = x.Title,
                 Orders = x.Orders.Count(),
                 Revenue = x.Orders.Sum(x => x.TotalPrice),
-                //AvgReview = x.Orders.Select(x => x.Reviews).Count() > 0 ? x.Orders.Select(x => x.Reviews).Average(x => x.Select(x => x.Rating)) : 0,
+                AvgReview = x.Orders.SelectMany(o => o.Reviews).Any()? x.Orders.SelectMany(o => o.Reviews).Average(r => r.Rating): 0,
                 Clicks = x.Clicks,
                 SubSubCategoryName = x.SubSubCategory.Name,
                 Status = x.ModerationStatus.ToString(),               

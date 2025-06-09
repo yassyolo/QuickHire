@@ -29,19 +29,15 @@ public class AddReviewCommandHandler : ICommandHandler<AddReviewCommand, Unit>
         }
 
         var user = await _userService.GetCurrentUserAsync();
-
+        //todo:add notif
         var review = new Review
         {
             OrderId = order.Id,
-            CreatorUserId = user.Id,
+            UserId = user.Id,
             Rating = request.Rating,
             Comment = request.Comment,
             CreatedOn = DateTime.Now
-        };
-
-        var buyerUserId = await _userService.GetUserIdByBuyerIdAsync(order.BuyerId);
-        var sellerUserId = await _userService.GetUserIdBySellerIdAsync(order.SellerId);
-        review.ReceiverUserId = sellerUserId == user.Id ? buyerUserId : sellerUserId;
+        };      
 
         await _repository.AddAsync(review);
         await _repository.SaveChangesAsync();

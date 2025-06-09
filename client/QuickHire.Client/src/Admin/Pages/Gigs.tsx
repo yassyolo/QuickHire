@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
-import {Pagination} from "../../Shared/Pagination/Pagination";
+import {Pagination} from "../../Shared/Pagination/Pagination/Pagination";
 import { DataTable } from "../Components/Tables/Common/AdminDataTable";
 import { GigsFilter } from "../Components/Filters/PageFilters/GigsFilter";
-import { GigActions } from "../Components/Tables/GigActions";
+import { GigActions } from "../Components/Tables/TableActions/GigActions";
 import { AdminPage } from "./Common/AdminPage";
 import { PageTitle } from "./Common/PageTitle";
 import { TitleFilterSelector } from "./Common/TitleFilterSection";
@@ -97,6 +97,17 @@ export function Gigs (){
     }
     , [id, keyword, currentPage, subCategoryId, subSubCategoryId, priceRangeId, moderationStatusId, fetchGigs]);
 
+    const handleOnDeactivateSuccess = () => {
+        setKeyword('');
+        setId(undefined);
+        setCurrentPage(1);
+        setSubCategoryId(0);
+        setSubSubCategoryId(0);
+        setPriceRangeId(0);
+        setModerationStatusId(0);
+        fetchGigs();
+    }
+
     return(
         <AdminPage>
           <div className="filter-table">
@@ -107,7 +118,7 @@ export function Gigs (){
               {loading ? (<div className="loading">Loading...</div>
               ) : (
                 <><TitleFilterSelector selectedId={moderationStatusId} setSelectedId={handleSelectedModerationStatusId} endpoint="https://localhost:7267/admin/filters/moderation-status" /><div className="categories-list">
-                <DataTable data={gigs} columns={["id", "createdOn", "service", "orders", "revenue", "clicks", "avgReview"]} headers={tableHeaders} renderActions={(row: GigRow) => (<GigActions gig={row} />)} />
+                <DataTable data={gigs} columns={["id", "createdOn", "service", "orders", "revenue", "clicks", "avgReview"]} headers={tableHeaders} renderActions={(row: GigRow) => (<GigActions gig={row} onDeactivateSuccess={handleOnDeactivateSuccess} />)} />
               </div></>
               )}
             </div>

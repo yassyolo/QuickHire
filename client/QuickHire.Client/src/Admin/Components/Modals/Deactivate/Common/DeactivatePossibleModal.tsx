@@ -1,5 +1,5 @@
 import './DeactivatePossibleModal.css';
-import { ActionButton } from '../../../../../Shared/Buttons/ActionButton';
+import { ActionButton } from '../../../../../Shared/Buttons/ActionButton/ActionButton';
 import { Modal } from '../../Common/Modal';
 import { FormGroup } from '../../../../../Shared/Forms/FormGroup';
 import { ChangeEvent, useCallback } from 'react';

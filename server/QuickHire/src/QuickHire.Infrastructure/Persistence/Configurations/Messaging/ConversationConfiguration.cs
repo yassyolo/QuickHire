@@ -14,9 +14,9 @@ internal class ConversationConfiguration : IEntityTypeConfiguration<Conversation
 
         builder.Property(x => x.LastMessageAt).IsRequired();
 
-        builder.Property(x => x.IsStarredByBuyer).IsRequired();
+        builder.Property(x => x.IsStarredByParticipantA).IsRequired();
 
-        builder.Property(x => x.IsStarredBySeller).IsRequired();
+        builder.Property(x => x.IsStarredByParticipantB).IsRequired();
 
         builder.HasOne(x => x.Order)
             .WithOne(x => x.Conversation)

@@ -1,0 +1,23 @@
+.faq-list{
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+}
+
+.faq-list-header-wrapper {
+    flex: 1; 
+    text-align: center;
+}
+.faq-list-item{
+    border-bottom: 1px solid #ddd;
+}
+
+.faq-list-header{
+    font-size: 19px;
+    font-weight: bold;
+    color: var(--text-black-color);
+    margin-bottom: 10px;
+    justify-content: center;
+    display: flex;
+}

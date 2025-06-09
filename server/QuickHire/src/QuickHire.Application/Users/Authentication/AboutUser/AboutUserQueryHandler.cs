@@ -15,15 +15,10 @@ internal class AboutUserQueryHandler : IQueryHandler<AboutUserQuery, AboutUserMo
         _userService = userService;
     }
 
+
     public async Task<AboutUserModel> Handle(AboutUserQuery request, CancellationToken cancellationToken)
     {
-        var user = await _userService.GetCurrentUserAsync();
-        if (user == null)
-        {
-            throw new NotFoundException("User not found", "User not found.");
-        }
-
-        return user.Adapt<AboutUserModel>();
+        return await _userService.GetAboutCurrentUserAsync();
     }
 }
 

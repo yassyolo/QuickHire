@@ -10,15 +10,19 @@ export interface RolePopulateProps {
 }
 
 export function RolePopulate({ show, setShow, setSelectedId, selectedId }: RolePopulateProps) {
-  const [populatedData, setPopulatedData] = useState<Item[]>([]);
+  const [populatedData, setPopulatedData] = useState<Item<number>[]>([]);
 
   useEffect(() => {
     if (!show) return;
   const fetchData = async () => {
     try {
       const url = "https://localhost:7267/admin/filters/role";
-      const response = await axios.get<Item[]>(url);
-      setPopulatedData(response.data);
+      const response = await axios.get<Item<string>[]>(url);
+      const mappedData: Item<number>[] = response.data.map(item => ({
+        ...item,
+        id: Number(item.id)
+      }));
+      setPopulatedData(mappedData);
     } catch (error) {
       console.error("Error fetching role options:", error);
     }

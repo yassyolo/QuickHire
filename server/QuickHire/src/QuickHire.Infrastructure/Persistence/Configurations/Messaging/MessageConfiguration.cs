@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using QuickHire.Domain.Messaging;
 using static QuickHire.Domain.Shared.Constants.EntityPropertyLength.Message;
 using static QuickHire.Domain.Shared.Constants.EntityPropertyLength.Files;
+using QuickHire.Domain.Messaging.Enums;
 
 namespace QuickHire.Infrastructure.Persistence.Configurations.Messaging;
 
@@ -23,5 +24,8 @@ internal class MessageConfiguration : IEntityTypeConfiguration<Message>
         builder.Property(x => x.IsRead).IsRequired();
 
         builder.Property(x => x.AttachmentUrl).HasMaxLength(FileUrlMaxLength);
+
+        builder.Property(x => x.Type)
+            .HasConversion( x => x.ToString(),x => (MessageType)Enum.Parse(typeof(MessageType), x));
     }
 }

@@ -24,7 +24,7 @@ export interface FiltersInSubSubCategory {
 
 export interface FilterItem {
     id: number;
-    name: string;
+    value: string;
 }
 
 export function DeactivateSubSubCategoryModal({showModal, onClose, onDeactivateSuccess, id,}: DeactivateSubSubCategoryModalProps) {
@@ -77,7 +77,7 @@ export function DeactivateSubSubCategoryModal({showModal, onClose, onDeactivateS
   <>
     {showModal && subSubCategory && (
       (subSubCategory.subSubCategoryFilters?.length ?? 0) > 0 ? (
-        <DeactivateSubSubCategoryNotPossible gigs={subSubCategory.gigs} id={id} onClose={onClose} filters={subSubCategory.subSubCategoryFilters ?? []}/>
+        <DeactivateSubSubCategoryNotPossible id={id} onClose={onClose} filters={subSubCategory.subSubCategoryFilters ?? []}/>
       ) : (
         <DeactivateModal id={id} onClose={onClose} onDeactivateSuccess={handleContinue} reason={reason} setReason={setReason} error={showReasonError}        />
       )

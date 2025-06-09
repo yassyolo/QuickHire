@@ -18,8 +18,7 @@ public class GetSubCategoryForDeleteQueryHandler : IQueryHandler<GetSubCategoryF
 
     public async Task<GetSubCategoryForDeleteModel> Handle(GetSubCategoryForDeleteQuery request, CancellationToken cancellationToken)
     {
-        var subCategoryQueryable =  _repository.GetAllReadOnly<QuickHire.Domain.Categories.SubCategory>().Where(x => x.Id == request.Id);
-        subCategoryQueryable = _repository.GetAllIncluding<SubCategory>(x => x.SubSubCategories);
+        var subCategoryQueryable = _repository.GetAllIncluding<QuickHire.Domain.Categories.SubCategory>(x => x.SubSubCategories).Where(x => x.Id == request.Id);
         var subCategory = await _repository.FirstOrDefaultAsync<QuickHire.Domain.Categories.SubCategory>(subCategoryQueryable);
 
         if (subCategory == null)

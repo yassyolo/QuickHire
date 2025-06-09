@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
-import {Pagination} from "../../Shared/Pagination/Pagination";
-import { ActionButton } from "../../Shared/Buttons/ActionButton";
+import {Pagination} from "../../Shared/Pagination/Pagination/Pagination";
+import { ActionButton } from "../../Shared/Buttons/ActionButton/ActionButton";
 import { DataTable } from "../Components/Tables/Common/AdminDataTable";
 import { SubSubCategoriesFilter } from "../Components/Filters/PageFilters/SubSubCategoriesFilter";
-import { SubSubCategoryActions } from "../Components/Tables/SubSubCategoryActions";
+import { SubSubCategoryActions } from "../Components/Tables/TableActions/SubSubCategoryActions";
 import axios from "axios";
 import { AdminPage } from "./Common/AdminPage";
 import { PageTitle } from "./Common/PageTitle";
@@ -61,7 +61,7 @@ export function SubSubCategories (){
     const handleCloseModal = () => setShowAddModal(false);
     const handleDeactivateSuccess = (id: number) => setSubSubCategories(prev => prev.filter(cat => cat.id !== id));
     const handleEditSuccess = (id: number, newName: string) => {
-        setSubSubCategories(prev => prev.map(cat => cat.id === id ? { ...cat, Name: newName } : cat));
+        setSubSubCategories(prev => prev.map(cat => cat.id === id ? { ...cat, name: newName } : cat));
     }
     const handleSubCategoryIdSelect = (id: number) => {
         setSubCategoryId(id);
@@ -111,7 +111,7 @@ export function SubSubCategories (){
                  <SubSubCategoriesFilter setId={setId} setKeyword={setKeyword} setSelectedSubCategoryId={handleSubCategoryIdSelect} selectedSubCategoryId={subCategoryId} />
                  <ActionButton onClick={handleAddClick} text={"CREATE A NEW CATEGORY"} className="add-category-button"ariaLabel={"Add Sub Sub Category Button"}/>
               </div>
-              <AddSubSubCategoryModal showModal={showAddModal} onClose={handleCloseModal} onAddSubSubCategorySuccess={handleAddSubSubCategorySucess} title={"Sub Sub Category"} />
+            <AddSubSubCategoryModal showModal={showAddModal} onClose={handleCloseModal} onAddSubSubCategorySuccess={handleAddSubSubCategorySucess} title={"Sub Sub Category"} showCategoriesPopulate={true} submitedSubCategoryId={0} />
               {loading ? (
                 <div className="loading">Loading...</div>
               ) : (

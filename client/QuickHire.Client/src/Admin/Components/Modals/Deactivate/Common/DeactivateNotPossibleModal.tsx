@@ -1,4 +1,4 @@
-import { ActionButton } from "../../../../../Shared/Buttons/ActionButton";
+import { ActionButton } from "../../../../../Shared/Buttons/ActionButton/ActionButton";
 import { Modal } from "../../Common/Modal";
 import './DeactivateNotPossibleModal.css';
 

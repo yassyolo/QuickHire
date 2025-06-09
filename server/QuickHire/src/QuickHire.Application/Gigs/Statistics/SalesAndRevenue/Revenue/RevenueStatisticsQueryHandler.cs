@@ -18,7 +18,7 @@ public class RevenueStatisticsQueryHandler : IQueryHandler<RevenueStatisticsQuer
 
     public async Task<StatisticsLineChartModel> Handle(RevenueStatisticsQuery request, CancellationToken cancellationToken)
     {
-        var gig = await _repository.GetByIdAsync<Gig, int>(request.Id);
+        /*var gig = await _repository.GetByIdAsync<Gig, int>(request.Id);
         if (gig == null)
         {
             throw new NotFoundException(nameof(Gig), request.Id);

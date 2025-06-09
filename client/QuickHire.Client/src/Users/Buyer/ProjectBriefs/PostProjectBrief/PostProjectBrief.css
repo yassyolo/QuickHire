@@ -1,0 +1,43 @@
+.brief-welcome-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+    gap: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    margin: 40px auto;
+}
+
+.brief-welcome-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: var(--text-black-color);
+}
+
+.brief-welcome-description {
+    font-size: 16px;
+    color: var(--text-grey-color);
+    text-align: center;
+    margin: 0 20px;
+}
+
+.brief-welcome-list {
+    list-style-type: none;
+    padding-left: 20px;
+    color: var(--text-black-color);
+    gap: 10px;
+}
+
+.brief-welcome-list-item {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+
+.bi-check-all {
+    color: var(--fiverr-green-color);
+    margin-right: 5px;
+}

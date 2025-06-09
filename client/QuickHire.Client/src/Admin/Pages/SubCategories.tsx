@@ -1,13 +1,13 @@
 import { useCallback, useEffect, useState } from "react";
-import {Pagination} from "../../Shared/Pagination/Pagination";
-import { ActionButton } from "../../Shared/Buttons/ActionButton";
-import { SubCategoryActions } from "../Components/Tables/SubCategoryActions";
+import {Pagination} from "../../Shared/Pagination/Pagination/Pagination";
+import { ActionButton } from "../../Shared/Buttons/ActionButton/ActionButton";
 import { DataTable } from "../Components/Tables/Common/AdminDataTable";
 import { AddSubCategoryModal } from "../Components/Modals/Add/AddSubCategoryModal";
 import { SubCategoriesFilter } from "../Components/Filters/PageFilters/SubCategoriesFilter";
 import axios from "axios";
 import { AdminPage } from "./Common/AdminPage";
 import { PageTitle } from "./Common/PageTitle";
+import { SubCategoryActions } from "../Components/Tables/TableActions/SubCategoryActions";
 
 export interface SubCategoryRow{
 id: number;
@@ -94,9 +94,9 @@ export function SubCategories (){
         setMainCategoryId(0);
         setCurrentPage(1);
     }  
-      const handleEditSuccess = (id: number, newName: string) => {
-        setSubCategories(prev => prev.map(cat => cat.id === id ? { ...cat, Name: newName } : cat));
-    }
+      const handleEditSuccess = (id: number, newName: string, newImageUrl: string)  => {
+        setSubCategories(prev => prev.map(sc => sc.id === id ? { ...sc, name: newName, imageUrl: newImageUrl } : sc));
+    };
     const handleMainCategoryIdSelect = (id: number) => setMainCategoryId(id);
 
 
@@ -109,7 +109,7 @@ export function SubCategories (){
                  <SubCategoriesFilter setId={setId} setKeyword={setKeyword} setSelectedMainCategoryId={handleMainCategoryIdSelect} selectedMainCategoryId={mainCategoryId} />
                  <ActionButton onClick={handleAddModalVisbility}text={"CREATE A NEW CATEGORY"} className="add-category-button" ariaLabel={"Add Sub Category Button"}/>
               </div>
-              <AddSubCategoryModal showModal={showAddModal} onClose={handleAddModalVisbility} onAddSubCategorySuccess={handleAddSubCategorySucess} />
+              <AddSubCategoryModal showModal={showAddModal} onClose={handleAddModalVisbility} onAddSubCategorySuccess={handleAddSubCategorySucess} showCategoriesPopulate={true} submitedMainCategoryId={0} />
               {loading ? ( <div className="loading">Loading...</div>
               ) : (
                 <div className="categories-list">

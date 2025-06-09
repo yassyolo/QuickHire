@@ -17,20 +17,12 @@ public class CountriesFilterQueryHandler : IQueryHandler<CountriesFilterQuery, F
 
     public async Task<FilterItemModel[]> Handle(CountriesFilterQuery request, CancellationToken cancellationToken)
     {
-        /*var countries = _repository.GetAllReadOnly<Country>();
+        var countries = _repository.GetAllReadOnly<Country>();
 
         var countriesList = await _repository.ToListAsync(countries);
 
-        return countriesList.Adapt<FilterItemModel[]>();*/
+        return countriesList.Adapt<FilterItemModel[]>();
 
-        return new FilterItemModel[]
-        {
-            new() { Id = 1, Name = "United States" },
-            new() { Id = 2, Name = "Canada" },
-            new() { Id = 3, Name = "United Kingdom" },
-            new() { Id = 4, Name = "Australia" },
-            new() { Id = 5, Name = "Germany" }
-        };
     }
 }
 

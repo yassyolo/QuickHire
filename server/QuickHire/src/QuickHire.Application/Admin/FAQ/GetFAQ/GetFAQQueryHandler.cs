@@ -29,7 +29,7 @@ public class GetFAQQueryHandler : IQueryHandler<GetFAQQuery, List<FAQResponseMod
         }
 
         var faqsList = await _repository.ToListAsync<QuickHire.Domain.Categories.FAQ>(faqs);
-        return faqsList.Adapt<List<FAQResponseModel>>();
+        return faqsList.Adapt<List<FAQResponseModel>>();       
     }
 }
 

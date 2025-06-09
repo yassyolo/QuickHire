@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ActionButton } from "../../../Shared/Buttons/ActionButton";
+import { ActionButton } from "../../../Shared/Buttons/ActionButton/ActionButton";
 import './CategoriesActionButton.css';
 
 interface CategoriesActionButtonProps {

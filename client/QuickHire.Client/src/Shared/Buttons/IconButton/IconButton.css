@@ -1,0 +1,91 @@
+
+.notifications-icon, .inbox-icon, .inbox-button, .report-button{
+    background-color: var(--white-color) !important;
+  color: var(--text-grey-color) !important;
+  box-shadow: none !important;
+  transition: var(--transition-ease) !important;
+    padding: 8px 10px;
+    border-radius: 5px;
+}
+
+.notifications-icon i, .inbox-icon i, .back-to-register i, .inbox-button i, .details-modal-close-button i{
+  font-size: 20px;
+}
+
+.back-to-register, .details-modal-close-button {
+  background-color: var(--white-color) !important;
+  color: var(--text-black-color) !important;
+  box-shadow: none !important;
+  border-radius: 5px;
+}
+
+.notifications-icon:hover, .inbox-icon:hover, .back-to-register:hover, .inbox-button:hover, .details-modal-close-button:hover {
+  color: var(--text-black-color) !important;
+  background-color: #ececec !important;
+  box-shadow: none !important;
+  transform: translateY(-2px);
+}
+
+.edit-language-button {
+  background-color: var(--white-color) !important;
+  color: var(--text-black-color) !important;
+  box-shadow: none !important;
+  border-radius: 5px;
+  padding: 0px !important;
+  margin-left: 5px;
+}
+
+.icon-button-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.hover-text {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--text-black-color);
+  color: white;
+  padding: 7px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  margin-top: 4px;
+  z-index: 5000;
+}
+
+.icon-button-wrapper:hover .hover-text {
+  display: block;
+}
+
+.like-button, .unlike-button, .report-button{
+    background-color: transparent !important;
+    box-shadow: none !important;
+    cursor: pointer !important;
+}
+
+.like-button:hover, .unlike-button:hover{
+    background-color: transparent !important;
+    box-shadow: none !important;
+    transform: none !important;
+    transition: none !important;
+}
+
+.like-button i{
+    font-size: 20px;
+    color: var(--text-grey-color) !important;
+}
+
+.unlike-button i{
+    font-size: 20px;
+    color: var(--red-color) !important;
+}
+
+.add-new-list{
+    background-color: transparent!important;
+    color: var(--text-black-color) !important;
+    padding: 4px 8px !important;
+    box-shadow: none !important;
+    border-radius: 5px;
+}

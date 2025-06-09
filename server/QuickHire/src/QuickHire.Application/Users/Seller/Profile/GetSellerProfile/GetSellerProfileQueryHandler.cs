@@ -83,6 +83,8 @@ public class GetSellerProfileQueryHandler : IQueryHandler<GetSellerProfileQuery,
             Languages = userLanguageModel,
             Skills = skillsModel,
             Education = educationModel,
+            Certifications = certificationModel,
+            Portfolios = portfolioModel,
 
         };
     }

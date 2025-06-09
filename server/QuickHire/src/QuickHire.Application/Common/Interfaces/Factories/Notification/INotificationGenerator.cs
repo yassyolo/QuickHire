@@ -7,5 +7,11 @@ public interface INotificationGenerator
     public NotificationType Type { get; }
     public string Title { get; set; }
     public string Message { get; set; }
-    Notification Generate(string userId, Dictionary<string, string>? placeholders = null);
+    Notification Generate(int recipientId, NotificationRecipientType recipientType, Dictionary<string, string>? placeholders = null);
+}
+
+public enum NotificationRecipientType
+{
+    Buyer,
+    Seller
 }

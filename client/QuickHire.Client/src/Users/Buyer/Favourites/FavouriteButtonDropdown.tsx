@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { IconButton } from "../../../Shared/Buttons/IconButton";
+import { IconButton } from "../../../Shared/Buttons/IconButton/IconButton";
 import axios from "axios";
 import { FavouriteListItem } from "./FavouriteListItem";
 import { AddFavouriteListModal } from "../../../Admin/Components/Modals/Add/AddFavouriteList";
@@ -8,6 +8,7 @@ import './FavouriteButtonDropdown.css';
 interface FavouriteButtonDropdownProps {
     gigId: number;
     liked: boolean;
+    setLiked: (liked: boolean, id: number) => void;
 }
 
 interface FavouriteListItem {
@@ -15,7 +16,7 @@ interface FavouriteListItem {
     name: string;
 }
 
-export function FavouriteButtonDropdown({ liked , gigId}: FavouriteButtonDropdownProps) {
+export function FavouriteButtonDropdown({ liked , gigId, setLiked}: FavouriteButtonDropdownProps) {
     const [showLikeDropdown, setShowLikeDropdown] = useState(false);
     const [favouriteList, setFavouriteList] = useState<FavouriteListItem[]>([]);
     const [selectedFavouriteListId, setSelectedFavouriteListId] = useState<number | null>(null);
@@ -25,7 +26,7 @@ export function FavouriteButtonDropdown({ liked , gigId}: FavouriteButtonDropdow
         setShowAddNewListModal(true);
     };
 
-    /*const fetchFavouriteList = async () => {    
+    const fetchFavouriteList = async () => {    
         
         try {
             const response = await axios.get<FavouriteListItem[]>('https://localhost:7267/buyers/favourite-gigs/lists/populate');
@@ -33,17 +34,12 @@ export function FavouriteButtonDropdown({ liked , gigId}: FavouriteButtonDropdow
         } catch (error) {
             console.error("Error fetching favourite list:", error);
         }
-    }*/
+    }
 
-        useEffect(() => {
-            const mockFavouriteList: FavouriteListItem[] = [
-                { id: 1, name: "My Favourite Gigs" },
-                { id: 2, name: "Top Picks" },
-                { id: 3, name: "Must Watch" }
-            ];
-            setFavouriteList(mockFavouriteList);
-        }
-        , []);
+    useEffect(() => {
+        fetchFavouriteList();
+    }, []);
+
 
     const handleAddToOldList = async (id: number) => {
         if (selectedFavouriteListId !== null) {
@@ -67,19 +63,25 @@ export function FavouriteButtonDropdown({ liked , gigId}: FavouriteButtonDropdow
         setShowLikeDropdown(false);
     };
 
-    /*useEffect(() => {
-        fetchFavouriteList();
-    }, []);*/
-
     const handleLikeDropdownVisibility = () => {
         setShowLikeDropdown(!showLikeDropdown);
+    };
+
+    const handleRemoveLikedGig = async () => {
+        try {
+            await axios.put(`https://localhost:7267/buyers/favourite-gigs/unfavourite/${gigId}`);
+            setShowLikeDropdown(false);
+            setLiked(false, gigId);
+        } catch (error) {
+            console.error("Error removing liked gig:", error);
+        }
     };
 
 
     return (
         <div className="favourite-button-dropdown-container">
-            {liked ? (<IconButton icon={<i className="fa-solid fa-heart"></i>} onClick={() => {}} className={'unlike-button'} ariaLabel={'Unlike'} ></IconButton>) :
-                (<IconButton icon={<i className="fa-regular fa-heart"></i>} onClick={handleLikeDropdownVisibility} className={'like-button'} ariaLabel={'Like'} ></IconButton>)}
+            {liked ? (<IconButton icon={<i className="fa-solid fa-heart"></i>} onClick={handleRemoveLikedGig} className={'unlike-button'} ariaLabel={'Unlike'} buttonInfo={"Unlike"}></IconButton>) :
+                (<IconButton icon={<i className="fa-regular fa-heart"></i>} onClick={handleLikeDropdownVisibility} className={'like-button'} ariaLabel={'Like'} buttonInfo={"Like"} ></IconButton>)}
              {showLikeDropdown &&
              <div className="favourite-dropdown">
                 <div className="favourite-dropdown-title">

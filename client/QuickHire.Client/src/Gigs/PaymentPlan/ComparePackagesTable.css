@@ -1,0 +1,95 @@
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #ccc;
+  border-radius: 2px;
+}
+
+.compare-table th,
+.compare-table td {
+  padding: 12px;
+  text-align: center;
+  border-right: 1px solid #ccc;
+}
+
+.compare-table th:last-child,
+.compare-table td:last-child {
+  border-right: none;
+}
+.feature-name.package, .package-title.package{
+    font-weight: 600 !important;
+    font-size: 14px;
+    color: var(--text-black-color) !important;
+}
+
+.feature-name{
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-grey-color);
+}
+
+.header-row {
+  background-color: var(--white-color);;
+  height: 150px;
+}
+
+.package-title {
+   vertical-align: top;
+  text-align: center;
+}
+
+.package-cell {
+  vertical-align: top;
+  text-align: center;
+}
+.feature-name {
+  width: 100px;
+  min-width: 100px;
+  max-width: 100px;
+  text-align: left;
+  font-weight: 500;
+  box-sizing: border-box;
+  word-wrap: break-word;
+}
+.package-cell {
+  width: 100px;
+  vertical-align: top;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.package-price {
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--text-black-color);
+  margin-bottom: 5px;
+}
+
+.package-description {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-black-color);
+  margin-top: 10px;
+}
+
+.feature-row:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.feature-name {
+  text-align: left;
+  font-weight: 500;
+}
+
+.check-icon {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.included {
+  color: black;
+}
+
+.excluded {
+  color: #ccc;
+}

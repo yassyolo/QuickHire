@@ -1,20 +1,20 @@
 import axios from "../../../../axiosInstance";
 import {  useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { DetailsComponent } from '../../Components/Details/Common/Forms/DetailsContainer';
+import { DetailsComponent } from './DetailsCard/DetailsContainer';
 import { SkillsTag } from './Tags/Skills/SkillsTag';
 import './SellerProfile.css';
-import { AddOrEditDetailsModal } from '../../Components/Details/Common/EditOrDelete/AddOrEditDetailsModal';
+import { AddOrEditDetailsModal } from './Modals/EditOrDeleteModal/AddOrEditDetailsModal';
 import { DescriptionTag } from './Tags/Description/DescriptionTag';
-import { EditDescriptionModalForm } from '../../Components/Details/Common/Edit/EditDescriptionModalForm';
+import { EditDescriptionModalForm } from './Forms/EditDescriptionModalForm';
 import { CertificationTag } from './Tags/Certification/CertificationTag';
 import { EducationTag } from './Tags/Education/EducationTag';
-import { Certification, EditCertificationModalForm } from '../../Components/Details/Common/Edit/EditCErtificationModalForm';
-import { EditEducationModalForm, Education } from '../../Components/Details/Common/Edit/EditEducationModalForm';
-import { EditSkillsModalForm } from '../../Components/Details/Common/Edit/EditSkillModalForm';
+import { Certification, EditCertificationModalForm } from './Forms/EditCErtificationModalForm';
+import { EditEducationModalForm, Education } from './Forms/EditEducationModalForm';
+import { EditSkillsModalForm } from './Forms/EditSkillModalForm';
 import { ActionButton } from '../../../../Shared/Buttons/ActionButton/ActionButton';
 import { PortfolioTag } from './Tags/Portfolio/PortfolioTag';
-import { EditProjectPortfolioModalForm } from '../../Components/Details/Common/Edit/EditPortfolioModalForm';
+import { EditProjectPortfolioModalForm } from './Forms/EditPortfolioModalForm';
 import { SellerInfoCard } from './SellerProfileCard/SellerInfoCard';
 import { SellerPage } from '../Common/SellerPage';
 
@@ -79,6 +79,7 @@ export function SellerProfile() {
                 const response = await axios.get<SellerDetails>('https://localhost:7267/seller/profile');
                 if (response.status === 200) {
                     setSellerDetails(response.data);
+                    console.log("Seller details fetched successfully:", response.data);
                     
                 }
             } catch (error) {

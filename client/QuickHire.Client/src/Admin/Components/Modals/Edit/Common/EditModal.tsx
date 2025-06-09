@@ -1,4 +1,4 @@
-import { ActionButton } from '../../../../../Shared/Buttons/ActionButton';
+import { ActionButton } from '../../../../../Shared/Buttons/ActionButton/ActionButton';
 import './EditModal.css'; 
 import { Modal } from '../../Common/Modal';
 import { ModalActions } from '../../Common/ModalActions';

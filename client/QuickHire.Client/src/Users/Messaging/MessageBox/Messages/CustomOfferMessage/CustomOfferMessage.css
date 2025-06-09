@@ -1,0 +1,82 @@
+.custom-offer-message {
+  display: flex;
+  flex-direction: column;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+}
+
+.custom-offer-message-top{
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+}
+
+.custom-offer-message-gig-title{
+    font-size: 15px;
+    font-weight: bold;
+    color: var(--text-black-color);
+    flex-grow: 1;
+}
+
+.custom-offer-message-gig-price{
+    font-size: 15px;
+    font-weight: bold;
+    color: var(--text-black-color);
+}
+
+.view-gig-container{
+    padding: 10px 20px;
+    background-color: var(--white-color);
+    color:var(--text-black-color    );
+    cursor: pointer;
+    border-bottom: 1px solid #ccc;
+
+}
+
+.gig-link{
+    text-decoration: underline;
+    cursor: pointer;
+    color: var(--text-black-color);
+}
+
+.offer-includes-container{
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+.offer-includes-label{
+    font-size: 15px;
+    font-weight: bold;
+    color: var(--text-black-color);
+}
+
+.offer-includes-list{
+    display: flex;
+    gap: 5px;
+}
+
+.offer-include-item{
+    display: flex;
+    flex-direction: row;
+    padding: 5px 10px;
+    background-color: var(--white-color);
+    border-radius: 5px;
+    font-size: 14px;
+    color: var(--text-black-color);
+    border: 1px solid #ccc;
+    justify-content: center;
+    align-items: center;
+}
+
+.offer-actions{
+    padding: 20px;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: flex-end;
+}

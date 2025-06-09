@@ -7,9 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Gigs\BrowsingHistory\" />
-    <Folder Include="Gigs\FavouriteLists\" />
-    <Folder Include="Gigs\Statistics\OrderFulfillment\" />
+    <Folder Include="Admin\Models\Users\NewFolder\" />
+    <Folder Include="Users\Models\NewFolder\" />
   </ItemGroup>
 
   <ItemGroup>

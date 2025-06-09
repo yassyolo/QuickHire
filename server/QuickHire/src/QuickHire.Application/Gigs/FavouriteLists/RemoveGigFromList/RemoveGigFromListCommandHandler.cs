@@ -21,14 +21,14 @@ public class RemoveGigFromListCommandHandler : ICommandHandler<RemoveGigFromList
 
     public async Task<Unit> Handle(RemoveGigFromListCommand request, CancellationToken cancellationToken)
     {
-       var favouriteGig = await _repository.GetByIdAsync<FavouriteGig, int>(request.FavouriteGigId);
+        /*var favouriteGig = await _repository.GetByIdAsync<FavouriteGig, int>(request.FavouriteGigId);
         if (favouriteGig == null)
         {
             throw new NotFoundException(nameof(FavouriteGig), request.FavouriteGigId);
         }
 
         await _repository.DeleteAsync(favouriteGig);
-        await _repository.SaveChangesAsync();
+        await _repository.SaveChangesAsync();*/
 
         return Unit.Value;
     }

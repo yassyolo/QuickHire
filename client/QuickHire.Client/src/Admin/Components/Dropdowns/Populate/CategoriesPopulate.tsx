@@ -11,20 +11,20 @@ export interface CategoryPopulateProps {
 }
 
 export function CategoriesPopulate({ show, setShow, setSelectedId, type, selectedId}: CategoryPopulateProps) {
-  const [populatedData, setPopulatedData] = useState<Item[]>([]);
+  const [populatedData, setPopulatedData] = useState<Item<number>[]>([]);
 
   useEffect(() => {
     if (!show) return;
     const fetchData = async () => {
       try {
         if (type === "Main") {
-          const response = await axios.get<Item[]>("https://localhost:7267/admin/main-categories/populate");
+          const response = await axios.get<Item<number>[]>("https://localhost:7267/admin/main-categories/populate");
           setPopulatedData(response.data);
         } else if (type === "Sub") {
-           const response = await axios.get<Item[]>(`https://localhost:7267/admin/sub-categories/populate`);
+           const response = await axios.get<Item<number>[]>(`https://localhost:7267/admin/sub-categories/populate`);
           setPopulatedData(response.data);
         } else if (type === "Sub Sub") {
-            const response = await axios.get<Item[]>(`https://localhost:7267/admin/sub-sub-categories/populate`);
+            const response = await axios.get<Item<number>[]>(`https://localhost:7267/admin/sub-sub-categories/populate`);
           setPopulatedData(response.data);
         }
       } catch (error) {

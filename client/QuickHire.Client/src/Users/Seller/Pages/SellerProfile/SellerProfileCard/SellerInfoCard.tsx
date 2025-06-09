@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
-import { EditLanguageModalForm, UserLanguage } from "../../../Components/Details/Common/Edit/EditLanguageModalForm";
+import { EditLanguageModalForm, UserLanguage } from "../Forms/EditLanguageModalForm";
 import { LanguageTag } from "../Tags/Language/LanguageTag";
 import "./SellerInfoCard.css";
 import { GigCardRating } from "../../../../../Gigs/GigCard/GigCardRating/GigCardRating";
-import { AddOrEditDetailsModal } from "../../../Components/Details/Common/EditOrDelete/AddOrEditDetailsModal";
+import { AddOrEditDetailsModal } from "../Modals/EditOrDeleteModal/AddOrEditDetailsModal";
 
 
 interface SellerInfoCardProps {
@@ -42,7 +42,7 @@ export function SellerInfoCard ({
         className="profile-picture"
       />
       <div className="names-country-languages d-flex flex-column">
-        <div className="username-full-name d-flex flex-row">
+        <div className="username-full-name d-flex flex-column">
           <Link to="/buyer/settings" className="seller-full-name">
             {sellerDetails?.fullName}
           </Link>
@@ -71,11 +71,15 @@ export function SellerInfoCard ({
           </div>
         )}
 
+
         <div className="country-languages d-flex flex-row">
+                  {sellerDetails?.country && 
+
           <div className="seller-country">
             <i className="bi bi-geo-alt"></i>
             {sellerDetails?.country}
           </div>
+        }
 
 <div className="seller-langiages">
     {sellerDetails?.languages?.map((language, index) => (

@@ -18,8 +18,7 @@ public class SearchSubSubCategoriesQueryHandler : IQueryHandler<SearchSubSubCate
 
     public async Task<PaginatedResultModel<SubSubCategoryRowModel>> Handle(SearchSubSubCategoriesQuery request, CancellationToken cancellationToken)
     {
-        var subSubCategoriesQuery = _repository.GetAllReadOnly<SubSubCategory>();
-        subSubCategoriesQuery = _repository.GetAllIncluding<SubSubCategory>(x => x.Gigs, x => x.GigFilters);
+        var subSubCategoriesQuery = _repository.GetAllIncluding<SubSubCategory>(x => x.Gigs, x => x.GigFilters);
 
         if (!string.IsNullOrEmpty(request.Keyword))
         {

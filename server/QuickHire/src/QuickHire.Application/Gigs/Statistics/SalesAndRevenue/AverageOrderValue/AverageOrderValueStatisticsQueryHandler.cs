@@ -19,7 +19,7 @@ public class AverageOrderValueStatisticsQueryHandler : IQueryHandler<AverageOrde
 
     public async Task<StatisticsLineChartModel> Handle(AverageOrderValueStatisticsQuery request, CancellationToken cancellationToken)
     {
-        var gig = await _repository.GetByIdAsync<Gig, int>(request.Id);
+        /*var gig = await _repository.GetByIdAsync<Gig, int>(request.Id);
         if (gig == null)
         {
             throw new NotFoundException(nameof(Gig), request.Id);

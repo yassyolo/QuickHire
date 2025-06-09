@@ -18,7 +18,7 @@ interface StatisticsSectionProps {
 
 export function StatisticsSection({ statisticCards, lines, data, onRangeChange,}: StatisticsSectionProps) {
   return (
-    <div className="statistics-section">
+    <div className="statistics-section" style={{margin: "10px 0 50px 0"}}>
       <StatisticsCardRow>
         {statisticCards.map((card, index) => (
           <React.Fragment key={index}>

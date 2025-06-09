@@ -17,7 +17,7 @@ public class DeleteSubCategoryQueryHandler : IQueryHandler<DeleteSubCategoryQuer
 
     public async Task<Unit> Handle(DeleteSubCategoryQuery request, CancellationToken cancellationToken)
     {
-        var subCategoruQueryable = _repository.GetAllReadOnly<SubCategory>().Where(x => x.Id == request.Id);
+        var subCategoruQueryable = _repository.GetAllIncluding<SubCategory>(x => x.SubSubCategories).Where(x => x.Id == request.Id);
         var subCategory = await _repository.FirstOrDefaultAsync<SubCategory>(subCategoruQueryable);
 
         if (subCategory == null)

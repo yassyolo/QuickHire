@@ -30,7 +30,7 @@ public class PopularSubCategoriesQueryHandler : IQueryHandler<PopularSubcategori
                 SubCategory = x,
                 GigsCount = gigsCountPerSubCategory.TryGetValue(x.Id, out var count) ? count : 0
             })
-            .OrderByDescending(x => x.GigsCount).Select(x => x.SubCategory).ToList();
+            .OrderByDescending(x => x.GigsCount).Select(x => x.SubCategory).Take(5).ToList();
 
         return sorted.Adapt<IEnumerable<PopularSubCategoriesResponseModel>>();
     }

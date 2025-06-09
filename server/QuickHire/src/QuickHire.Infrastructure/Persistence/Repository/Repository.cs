@@ -92,4 +92,14 @@ internal class Repository : IRepository
 
         return query;
     }
+
+    public IQueryable<T> Include<T>(IQueryable<T> query, params Expression<Func<T, object>>[] includes) where T : class
+    {
+        foreach (var include in includes)
+        {
+            query = query.Include(include);
+        }
+
+        return query;
+    }
 }

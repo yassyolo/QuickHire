@@ -9,7 +9,7 @@ using QuickHire.Domain.Shared.Exceptions;
 
 namespace QuickHire.Application.Admin.SubCategories.EditSubCategory;
 
-public class EditSubCategoryCommandHandler : ICommandHandler<EditSubCategoryCommand, Unit>
+public class EditSubCategoryCommandHandler : ICommandHandler<EditSubCategoryCommand, AddSubCategoryReturnModel>
 {
     private readonly IRepository _repository;
     private readonly ICloudinaryService _cloudinaryService;
@@ -20,7 +20,7 @@ public class EditSubCategoryCommandHandler : ICommandHandler<EditSubCategoryComm
         _cloudinaryService = cloudinaryService;
     }
 
-    public async Task<Unit> Handle(EditSubCategoryCommand request, CancellationToken cancellationToken)
+    public async Task<AddSubCategoryReturnModel> Handle(EditSubCategoryCommand request, CancellationToken cancellationToken)
     {
         var subCategory = await _repository.GetByIdAsync<SubCategory, int>(request.Id);
         if (subCategory == null)
@@ -28,10 +28,7 @@ public class EditSubCategoryCommandHandler : ICommandHandler<EditSubCategoryComm
             throw new NotFoundException(nameof(SubCategory), request.Id);
         }
 
-        if(subCategory.Name != request.Name)
-        {
-            subCategory.Name = request.Name;
-        }
+        subCategory.Name = request.Name;
 
         if(request.Image != null)
         {
@@ -44,10 +41,14 @@ public class EditSubCategoryCommandHandler : ICommandHandler<EditSubCategoryComm
             subCategory.ImageUrl = imagePath;
         }
 
-        await _repository.AddAsync(subCategory);
+        await _repository.UpdateAsync(subCategory);
         await _repository.SaveChangesAsync();
 
-        return Unit.Value;
+        return new AddSubCategoryReturnModel
+        {
+            Id = subCategory.Id,
+            ImageUrl = subCategory.ImageUrl
+        };
     }
 }
 

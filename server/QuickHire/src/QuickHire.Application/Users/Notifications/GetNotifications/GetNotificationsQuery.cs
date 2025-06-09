@@ -3,4 +3,4 @@ using QuickHire.Application.Common.Interfaces.Abstractions;
 
 namespace QuickHire.Application.Users.Notifications.GetNotifications;
 
-public record GetNotificationsQuery : IQuery<IEnumerable<GetNotificationsResponseModel>>;
+public record GetNotificationsQuery(bool Buyer) : IQuery<IEnumerable<GetNotificationsResponseModel>>;

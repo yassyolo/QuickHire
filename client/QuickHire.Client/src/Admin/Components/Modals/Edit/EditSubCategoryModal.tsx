@@ -11,7 +11,7 @@ export interface EditSubCategoryModalProps {
     name: string;
     imageUrl: string;
     onClose: () => void;
-    onEditSuccess: (id: number, newName: string, newImageUrl?: string) => void;
+    onEditSuccess: (id: number, newName: string, newImageUrl: string) => void;
 }
 
 export function EditSubCategoryModal({ onEditSuccess, showModal, id, onClose, name, imageUrl}: EditSubCategoryModalProps) {
@@ -47,7 +47,7 @@ export function EditSubCategoryModal({ onEditSuccess, showModal, id, onClose, na
 
     const onEditSuccessInternal = useCallback(async () => {
      try {
-          const url = `https://localhost:7267/admin/sub-categories/edit`;
+          const url = `https://localhost:7267/admin/sub-categories`;
 
     const formData = new FormData();
     formData.append("Id", id.toString());
@@ -55,10 +55,15 @@ export function EditSubCategoryModal({ onEditSuccess, showModal, id, onClose, na
 if (newImageFile) {
   formData.append("Image", newImageFile);
 }
-    await axios.put(url, formData);
-
-    onEditSuccess(id, newName, newImagePreviewUrl);
+    const result = await axios.put(url, formData);
     onClose();
+
+    onEditSuccess(id, newName, result.data.imageUrl || newImagePreviewUrl);
+    setNewName("");
+    setNewImageFile(null);
+    setNewImagePreviewUrl("");
+  setNameValidationErrors([]);
+
     } catch (error: unknown) {
     if (axios.isAxiosError(error) && error.response && error.response.status === 400) {
       setNameValidationErrors(error.response.data.errors?.Name || []);
@@ -69,7 +74,6 @@ if (newImageFile) {
   }
 }, [id, newName, newImageFile, onEditSuccess, newImagePreviewUrl, onClose]);
 
-    if (!showModal) return null;
 
     return (
         <EditModal id={id} onClose={onClose} onContinue={onEditSuccessInternal}>

@@ -1,4 +1,4 @@
-import { ActionButton } from "../../../../Shared/Buttons/ActionButton";
+import { ActionButton } from "../../../../Shared/Buttons/ActionButton/ActionButton";
 import './Dropdown.css';
 
 interface DropdownProps {

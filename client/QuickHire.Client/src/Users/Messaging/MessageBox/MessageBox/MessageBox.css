@@ -1,0 +1,62 @@
+.message-box-contents {
+  display: flex;
+  flex-direction: column;
+  width: 850px;
+  height: 70vh;
+  padding: 10px 16px 16px 16px;
+  box-sizing: border-box;
+}
+
+.messages{
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+  flex-grow: 1;
+  height: 80%;
+}
+
+.message-box-top{
+  background-color: #f0f0f0;
+  padding: 16px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+
+.participant-b-info-order {
+  display: flex;
+  flex-direction: row;
+  width: 220px;
+  gap: 20px;
+}
+
+.current-order-header {
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--text-black-color);
+}
+
+.current-order-status {
+  font-size: 15px;
+  color: var(--text-black-color);
+  padding: 5px 10px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+}
+
+.current-order-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.current-order-price {
+  font-size: 15px;
+  font-weight: bold;
+  color: var(--text-black-color);
+}

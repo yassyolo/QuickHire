@@ -1,0 +1,79 @@
+.inbox-messages-item {
+  display: flex;
+  flex-direction: row;
+  padding: 12px;
+  border-bottom: 1px solid #e0e0e0;
+  width: 330px; 
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.message-item {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  gap: 12px;
+}
+
+.sender-profile-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  flex-shrink: 0; 
+}
+
+.date-star i{
+  cursor: pointer;
+}
+
+.message-content {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  min-width: 0;
+}
+
+.username-date {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.sender-username {
+  font-weight: bold;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 150px; 
+}
+
+.date-star {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #888;
+  white-space: nowrap;
+  flex-shrink: 0; 
+}
+
+.message-text {
+  font-size: 13px;
+  white-space: nowrap;       
+  overflow: hidden;          
+  text-overflow: ellipsis;
+  margin-top: 5px;  
+}
+
+.message-text.read {
+  color: #888;
+  font-weight: normal;
+}
+
+.message-text.unread {
+  font-weight: bold;
+  color: var(--text-black-color);
+}

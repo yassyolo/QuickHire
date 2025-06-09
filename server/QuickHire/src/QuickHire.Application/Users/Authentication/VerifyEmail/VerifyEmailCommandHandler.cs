@@ -37,7 +37,9 @@ internal class VerifyEmailCommandHandler : IRequestHandler<VerifyEmailCommand, U
             throw new BadRequestException("Invalid token", string.Join(";", result.Errors.Select(x => x.ToString())));
         }
 
-        await _notificationService.MakeNotification( user.Id, Domain.Users.Enums.NotificationType.ProfileMade, 
+        var buyerId = await _userService.GetBuyerIdByUserIdAsync();
+
+        await _notificationService.MakeNotification( buyerId, Common.Interfaces.Factories.Notification.NotificationRecipientType.Buyer, Domain.Users.Enums.NotificationType.ProfileMade, 
             new Dictionary<string, string> { { "UserName", user.UserName! } });
 
         return Unit.Value;

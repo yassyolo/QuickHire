@@ -9,13 +9,7 @@
 .tags{
     display: flex;
     flex-direction: row;
-    gap: 10px;
+    gap: 15px;
     padding: 5px;
 }
 
-.tags-list-header{
-    font-size: 19px;
-    font-weight: bold;
-    color: var(--text-black-color);
-    margin-bottom: 10px;
-}

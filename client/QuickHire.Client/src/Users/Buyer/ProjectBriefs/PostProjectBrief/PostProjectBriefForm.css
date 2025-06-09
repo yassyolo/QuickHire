@@ -1,0 +1,26 @@
+.brief-description-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-black-color);
+  margin-bottom: 10px;
+}
+
+.wizard-form {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  width: 50%;
+}
+
+.subcategories-choices {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.project-brief-wizard{
+    position: relative;
+    z-index: 10001;
+    top: -41px;
+}

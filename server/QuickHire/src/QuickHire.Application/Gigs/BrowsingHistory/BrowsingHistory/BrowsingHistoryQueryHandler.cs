@@ -19,7 +19,7 @@ public class BrowsingHistoryQueryHandler : IQueryHandler<BrowsingHistoryQuery, I
 
     public async Task<IEnumerable<GigCardModel>> Handle(BrowsingHistoryQuery request, CancellationToken cancellationToken)
     {
-        var buyerId = await _userService.GetBuyerIdByUserIdAsync();
+        /*var buyerId = await _userService.GetBuyerIdByUserIdAsync();
 
         var favouriteGigsQueryable = _repository.GetAllReadOnly<FavouriteGig>().Where(x => x.BuyerId == buyerId);
         var favouriteGigsIdsList = await _repository.ToListAsync<FavouriteGig>(favouriteGigsQueryable);
@@ -54,7 +54,39 @@ public class BrowsingHistoryQueryHandler : IQueryHandler<BrowsingHistoryQuery, I
             result.Add(gigCardModel);
         }
 
-        return result;
+        return result;*/
+
+        return new List<GigCardModel>
+        {
+            new GigCardModel
+            {
+                Id = 1,
+                Title = "Sample Gig",
+                FromPrice = 100,
+                ImageUrls = new List<string> { "https://picsum.photos/200/300" },
+                SellerName = "John Doe",
+                SellerId = 1,
+                SellerProfileImageUrl = "https://picsum.photos/50/50",
+                TopRatedSeller = true,
+                ReviewsCount = 10,
+                AverageRating = 4.5f,
+                Liked = true
+            },
+            new GigCardModel
+            {
+                Id = 2,
+                Title = "Another Gig",
+                FromPrice = 200,
+                ImageUrls = new List<string> { "https://picsum.photos/200/300" },
+                SellerName = "Jane Smith",
+                SellerId = 2,
+                SellerProfileImageUrl = "https://picsum.photos/50/50",
+                TopRatedSeller = false,
+                ReviewsCount = 5,
+                AverageRating = 3.8f,
+                Liked = false
+            }
+        };   
     }
 }
 

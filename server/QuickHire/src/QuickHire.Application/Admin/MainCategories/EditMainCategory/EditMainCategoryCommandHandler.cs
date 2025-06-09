@@ -28,15 +28,8 @@ public class EditMainCategoryCommandHandler : ICommandHandler<EditMainCategoryCo
             throw new NotFoundException(nameof(MainCategory), request.Id);
         }
 
-        if (mainCategory.Name != request.Name)
-        {
-            mainCategory.Name = request.Name;
-        }
-
-        if (mainCategory.Description != request.Description)
-        {
-            mainCategory.Description = request.Description;
-        }
+        mainCategory.Name = request.Name;
+        mainCategory.Description = request.Description;
 
         await _repository.SaveChangesAsync();
 

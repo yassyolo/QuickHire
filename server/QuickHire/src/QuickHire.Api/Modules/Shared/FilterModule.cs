@@ -2,6 +2,7 @@
 using MediatR;
 using QuickHire.Application.Admin.Filters.CountriesFilter;
 using QuickHire.Application.Admin.Filters.ModerationStatusFilter;
+using QuickHire.Application.Admin.Filters.OrderStatusFilter;
 using QuickHire.Application.Admin.Filters.PriceFilter;
 using QuickHire.Application.Admin.Filters.RoleFilter;
 using QuickHire.Application.Admin.Models.Filters;
@@ -43,7 +44,7 @@ public class FilterModule : CarterModule
         .Produces<FilterItemModel[]>(StatusCodes.Status200OK)
         .WithDescription("Gets the countries for filtering.");
 
-        app.MapGet("/admin/filters/roles", async (IMediator mediator) =>
+        app.MapGet("/admin/filters/role", async (IMediator mediator) =>
         {
             var result = await mediator.Send(new RoleFilterQuery());
             return Results.Ok(result);
@@ -52,6 +53,16 @@ public class FilterModule : CarterModule
          .WithTags("Filters")
          .Produces<FilterItemModel[]>(StatusCodes.Status200OK)
          .WithDescription("Gets the roles for filtering.");
+
+        app.MapGet("/admin/filters/order-status", async (IMediator mediator) =>
+        {
+            var result = await mediator.Send(new OrderStatusQuery());
+            return Results.Ok(result);
+        })
+            .WithName("GetOrderStatus")
+            .WithTags("Filters")
+            .Produces<FilterItemModel[]>(StatusCodes.Status200OK)
+            .WithDescription("Gets the order status for filtering.");
 
         #endregion
     }

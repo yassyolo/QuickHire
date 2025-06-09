@@ -46,7 +46,7 @@ public class EditSkillCommandHandler : ICommandHandler<EditSkillCommand, List<Sk
                 Name = skill.Name,
                 SellerId = sellerId
             };
-            await _repository.AddAsync(skill);
+            await _repository.AddAsync(newSkill);
         }
 
         var deletedSkills = existingSkills.Where(x => !incomingIds.Contains(x.Id));

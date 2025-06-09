@@ -18,8 +18,7 @@ public class SearchMainCategoriesQueryHandler : IQueryHandler<SearchMainCategori
 
     public async Task<PaginatedResultModel<MainCategoryRowModel>> Handle(SearchMainCategoriesQuery request, CancellationToken cancellationToken)
     {
-        var mainCategoriesQuery = _repository.GetAllReadOnly<MainCategory>();
-        mainCategoriesQuery = _repository.GetAllIncluding<MainCategory>(x => x.SubCategories);
+        var mainCategoriesQuery = _repository.GetAllIncluding<MainCategory>(x => x.SubCategories);
 
         if (request.Id != null)
         {
@@ -28,7 +27,7 @@ public class SearchMainCategoriesQueryHandler : IQueryHandler<SearchMainCategori
 
         if (!string.IsNullOrWhiteSpace(request.Keyword))
         {
-            mainCategoriesQuery = mainCategoriesQuery.Where(x => x.Name.ToLower().Contains(request.Keyword.ToLower()));
+            mainCategoriesQuery = mainCategoriesQuery.Where(x => x.Name.ToLower().Contains(request.Keyword.ToLower()) || x.Description.ToLower().Contains(request.Keyword.ToLower()));
         }
 
         var totalCount = mainCategoriesQuery.Count();

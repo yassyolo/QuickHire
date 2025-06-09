@@ -20,7 +20,7 @@ public class SaveGigToOldListCommandHandler : ICommandHandler<SaveGigToOldListCo
 
     public async Task<Unit> Handle(SaveGigToOldListCommand request, CancellationToken cancellationToken)
     {
-        var buyerId = await _userService.GetBuyerIdByUserIdAsync();
+        /*var buyerId = await _userService.GetBuyerIdByUserIdAsync();
         var favouriteGigList = await _repository.GetByIdAsync<QuickHire.Domain.Users.FavouriteGigsList, int>(request.FavouriteListId);
         if (favouriteGigList == null)
         {
@@ -47,7 +47,7 @@ public class SaveGigToOldListCommandHandler : ICommandHandler<SaveGigToOldListCo
         };
 
         await _repository.AddAsync(newFavouriteGig);
-        await _repository.SaveChangesAsync();
+        await _repository.SaveChangesAsync();*/
 
         return Unit.Value;
 

@@ -1,5 +1,5 @@
 import React from "react";
-import { ActionButton } from "../../../../Shared/Buttons/ActionButton";
+import { ActionButton } from "../../../../Shared/Buttons/ActionButton/ActionButton";
 import { Th } from "../../Tables/Common/Th";
 import './SubCategoriesTableSection.css';
 

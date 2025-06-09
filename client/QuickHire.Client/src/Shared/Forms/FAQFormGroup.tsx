@@ -1,5 +1,5 @@
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
-import { ActionButton } from "../Buttons/ActionButton";
+import { ActionButton } from "../Buttons/ActionButton/ActionButton";
 import "./FAQFormGroup.css";
 import { FormLabel } from "./FormLabel";
 

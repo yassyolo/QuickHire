@@ -41,14 +41,15 @@ export function MainCategoriesHeaderDropdown({ id, show }: MainCategoriesHeaderD
     }
     return (
         <div className="main-categories-header-dropdown">
-            <div className="sub-categories-list">
-                {subCategories.map((subCategory) => (
-                    <MainCategoriesHeaderDropdownItem key={subCategory.id}
-                        data={subCategory} 
-                        />
-                ))}
-            </div>
-           
-        </div>
+    <div className="sub-categories-list two-column-grid">
+        {subCategories.map((subCategory) => (
+            <MainCategoriesHeaderDropdownItem
+                key={subCategory.id}
+                data={subCategory}
+            />
+        ))}
+    </div>
+</div>
+
     );
 }

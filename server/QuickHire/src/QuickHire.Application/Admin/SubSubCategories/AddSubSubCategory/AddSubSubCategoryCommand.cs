@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MediatR;
+using QuickHire.Application.Admin.Models.SubSubCategories;
+using QuickHire.Application.Common.Interfaces.Abstractions;
 
-namespace QuickHire.Application.Admin.SubSubCategories.AddSubSubCategory
-{
-    internal class AddSubSubCategoryCommand
-    {
-    }
-}
+namespace QuickHire.Application.Admin.SubSubCategories.AddSubSubCategory;
+
+public record AddSubSubCategoryCommand(string Name, AddGigFiltersModel[] Filters, int SubCategoryId) : ICommand<Unit>;
+

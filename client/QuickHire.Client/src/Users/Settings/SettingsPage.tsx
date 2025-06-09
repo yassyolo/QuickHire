@@ -1,23 +1,50 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SideNavigation } from "../../Shared/SideNavigation/SideNavigation";
-import { AccountSettings } from "./AccountSettings";
+import { AccountSettings } from "./AccountSettings/AccountSettings";
 import "./SettingsPage.css";
-import { SecuritySettings } from "./SecuritySettings";
-import { NotificationSettings } from "./NotifictionSettings";
-import { SellerPage } from "../Seller/SellerPage";
+import { SecuritySettings } from "./SecuritySettings/SecuritySettings";
+import { SellerPage } from "../Seller/Pages/Common/SellerPage";
+import { Breadcrumb } from "../../Shared/Breadcrumb/Breadcrumb";
 
+interface SettingsPageProps {
+    homeUrl: string;
+}
 
-export function SettingsPage() {
-      const [view, setView] = useState<"account" | "security" | "notifications">("account");
+export function SettingsPage({ homeUrl }: SettingsPageProps) {
+      const [view, setView] = useState<"account" | "security">("account");
+      const [breadcrumbs, setBreadcrumbs] = useState<{ label: React.ReactNode; to?: string }[]>([]);
 
     const handleOnSaveChanges = () => {
         setView("account");
     }
+
+    useEffect(() => {
+
+        if (view === "account") {
+            setBreadcrumbs([
+                { label: <i className="bi bi-house-door"></i>, to: `/${homeUrl}/dashboard` },
+                { label: "Settings", to: `/${homeUrl}/settings` },
+                { label: "Account" }
+            ]);
+        }
+
+        if (view === "security") {
+            setBreadcrumbs([
+                { label: <i className="bi bi-house-door"></i>, to: `/${homeUrl}/dashboard` },
+                { label: "Settings", to: `/${homeUrl}/settings` },
+                { label: "Security" }
+            ]);
+        }
+
+    }, [view, homeUrl]);
     
     return (
         <SellerPage>
+            <Breadcrumb items={breadcrumbs}></Breadcrumb>
+            
+            
         <div className="settings-page-container">
-            <SideNavigation items={[{ label: "Account", onClick: () => setView("account") }, { label: "Security", onClick: () => setView("security") }, { label: "Notifications", onClick: () => setView("notifications") }]} />
+            <SideNavigation items={[{ label: "Account", onClick: () => setView("account") }, { label: "Security", onClick: () => setView("security") } ]}/>
                 <div className="settings-page-items">
             {view === "account" && (
                 <div className="account-view">
@@ -29,12 +56,6 @@ export function SettingsPage() {
                 <div className="security-view">
                     <SecuritySettings onSaveChanges={handleOnSaveChanges}/>
                </div>
-            )}
-
-            {view === "notifications" && (
-                <div className="notifications-view">
-                    <NotificationSettings />
-                </div>
             )}
             </div>
 

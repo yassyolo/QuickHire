@@ -1,7 +1,10 @@
 ﻿using Carter;
 using CloudinaryDotNet;
 using MediatR;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
+using QuickHire.Application.Admin.Gigs.DeactivateGigAdmin;
+using QuickHire.Application.Admin.Gigs.SellerForGig;
 using QuickHire.Application.Admin.MainCategories.AddMainCategory;
 using QuickHire.Application.Admin.MainCategories.DeleteMainCategory;
 using QuickHire.Application.Admin.MainCategories.EditMainCategory;
@@ -14,6 +17,8 @@ using QuickHire.Application.Admin.MainCategories.SearchMainCategories;
 using QuickHire.Application.Admin.Models.MainCategories;
 using QuickHire.Application.Admin.Models.SubCategories;
 using QuickHire.Application.Admin.Models.SubSubCategories;
+using QuickHire.Application.Admin.Reporting.Report;
+using QuickHire.Application.Admin.Reporting.ReportTables;
 using QuickHire.Application.Admin.SubCategories.AddSubCategory;
 using QuickHire.Application.Admin.SubCategories.DeleteSubCategory;
 using QuickHire.Application.Admin.SubCategories.EditSubCategory;
@@ -24,11 +29,20 @@ using QuickHire.Application.Admin.SubCategories.SearchSubCategories;
 using QuickHire.Application.Admin.SubCategories.SubCategoriesHeader;
 using QuickHire.Application.Admin.SubCategories.SubCategoriesInMainCategory;
 using QuickHire.Application.Admin.SubCategories.SubCategoryDetails;
+using QuickHire.Application.Admin.SubSubCategories.AddSubSubCategory;
 using QuickHire.Application.Admin.SubSubCategories.DeleteSubSubCategory;
+using QuickHire.Application.Admin.SubSubCategories.EditFilter;
+using QuickHire.Application.Admin.SubSubCategories.EditFilterOption;
 using QuickHire.Application.Admin.SubSubCategories.EditSubSubCategory;
+using QuickHire.Application.Admin.SubSubCategories.GetFilterOptionForDelete;
+using QuickHire.Application.Admin.SubSubCategories.GetGigFilterForDelete;
 using QuickHire.Application.Admin.SubSubCategories.GetSubSubCategoryForDelete;
 using QuickHire.Application.Admin.SubSubCategories.PopulateSubSubCategories;
 using QuickHire.Application.Admin.SubSubCategories.SearchSubSubCategories;
+using QuickHire.Application.Admin.SubSubCategories.SubSubCategoryDetails;
+using QuickHire.Application.Admin.Users.DeactivateUser;
+using QuickHire.Application.Admin.Users.GetGigsForUser;
+using QuickHire.Application.Admin.Users.SearchUsers;
 using System;
 
 namespace QuickHire.Api.Modules.Admin;
@@ -157,15 +171,14 @@ public class CategoriesModule : CarterModule
         .ProducesValidationProblem()
         .WithDescription("Searches through sub categories by id and keyword and main category and returns paginated result");
 
-        app.MapPut("/admin/sub-categories/edit", async ([FromForm] EditSubCategoryCommand command, IMediator mediator) =>
+        app.MapPut("/admin/sub-categories", async ([FromForm] EditSubCategoryCommand command, IMediator mediator) =>
         {
-            await mediator.Send(command);
-            return Results.NoContent();
+           var result = await mediator.Send(command);
+            return Results.Ok(result);
         })
        .WithName("EditSubCategory")
        .WithTags("Sub Categories")
        .DisableAntiforgery()
-       .Produces<Unit>(StatusCodes.Status204NoContent)
        .Produces(StatusCodes.Status404NotFound)
        .ProducesValidationProblem()
        .WithDescription("Edits an existing sub category by Id.");
@@ -304,6 +317,18 @@ public class CategoriesModule : CarterModule
         .Produces<PopulateSubCategoriesModel[]>(StatusCodes.Status200OK)
         .WithDescription("Populates sub sub categories.");
 
+        app.MapPost("/admin/sub-sub-categories/add", async ([FromBody] AddSubSubCategoryCommand command, IMediator mediator) =>
+        {
+            var result = await mediator.Send(command);
+            return Results.NoContent();
+        })
+            .WithName("AddSubSubCategory")
+            .WithTags("Sub Sub Categories")
+            .Produces<int>(StatusCodes.Status204NoContent)
+            .Produces(StatusCodes.Status400BadRequest)
+            .ProducesValidationProblem()
+            .WithDescription("Adds a new sub sub category.");
+
 
         app.MapGet("/admin/sub-sub-categories", async([AsParameters] SearchSubSubCategoriesQuery query, IMediator mediator) =>
         {
@@ -316,7 +341,7 @@ public class CategoriesModule : CarterModule
         .WithDescription("Searches through sub sub categories by id and keyword and main category and returns paginated result");
 
        
-        app.MapPut("/admin/sub-sub-categories/edit", async([FromBody] EditSubSubCategoryCommand command, IMediator mediator) =>
+        app.MapPut("/admin/sub-sub-categories/edit", async([FromForm] EditSubSubCategoryCommand command, IMediator mediator) =>
         {
             await mediator.Send(command);
             return Results.NoContent();
@@ -324,9 +349,145 @@ public class CategoriesModule : CarterModule
         .WithName("EditSubSubCategory")
         .Produces<Unit>(StatusCodes.Status204NoContent)
         .Produces(StatusCodes.Status404NotFound)
+        .DisableAntiforgery()
         .ProducesValidationProblem()
         .WithDescription("Edits an existing sub sub category by Id.");
+
+        app.MapPut("/admin/sub-sub-categories/filters", async([FromForm] EditFilterCommand command, IMediator mediator) =>
+        {
+            await mediator.Send(command);
+            return Results.NoContent();
+        })
+            .WithName("EditSubSubCategoryFilters")
+            .WithTags("Sub Sub Categories")
+            .Produces<Unit>(StatusCodes.Status204NoContent)
+            .Produces(StatusCodes.Status404NotFound)
+            .ProducesValidationProblem()
+            .WithDescription("Edits filters for an existing sub sub category by Id.");
+
+        app.MapPut("/admin/sub-sub-categories/filters/delete", async ([FromBody] GetGigFilterForDeleteQuery command, IMediator mediator) =>
+        {
+            await mediator.Send(command);
+            return Results.NoContent();
+        })
+            .WithName("DeleteSubSubCategoryFilter")
+            .WithTags("Sub Sub Categories")
+            .Produces<Unit>(StatusCodes.Status204NoContent)
+            .Produces(StatusCodes.Status404NotFound)
+            .ProducesValidationProblem()
+            .WithDescription("Deletes a filter for an existing sub sub category by Id.");
+
+        app.MapGet("/admin/sub-sub-categories/{id}", async ([AsParameters] SubSubCategoryDetailsQuery query, IMediator mediator) =>
+        {
+            var result = await mediator.Send(query);
+            return Results.Ok(result);
+        })
+            .WithName("GetSubSubCategoryById")
+            .WithTags("Sub Sub Categories")
+            .Produces<SubSubCategoryDetailsModel>(StatusCodes.Status200OK)
+            .Produces(StatusCodes.Status404NotFound)
+            .ProducesValidationProblem()
+            .WithDescription("Gets a sub sub category by Id.");
+        app.MapGet("/admin/sub-sub-categories/filters/delete/{Id}", async([AsParameters] GetFilterOptionForDeleteQuery query, IMediator mediator) =>
+        {
+            var result = await mediator.Send(query);
+            return Results.Ok(result);
+        })
+            .WithName("GetSubSubCategoryFilterForDelete")
+            .WithTags("Sub Sub Categories")
+            .Produces(StatusCodes.Status404NotFound)
+            .ProducesValidationProblem()
+            .WithDescription("Gets a filter for deletion by Id.");
+
+        app.MapPut("/admin/sub-sub-categories/filters/options", async ([FromBody] EditFilterOptionCommand command, IMediator mediator) =>
+        {
+            await mediator.Send(command);
+            return Results.NoContent();
+        })
+            .WithName("EditSubSubCategoryFilterOptions")
+            .WithTags("Sub Sub Categories")
+            .Produces<Unit>(StatusCodes.Status204NoContent)
+            .Produces(StatusCodes.Status404NotFound)
+            .ProducesValidationProblem()
+            .WithDescription("Edits filter options for an existing sub sub category by Id.");
+
         #endregion
+
+        #region Users
+        app.MapGet("/admin/users", async ([AsParameters] SearchUsersQuery query, IMediator mediator) => {
+        var result = await mediator.Send(query);
+        return Results.Ok(result);
+        })
+    .WithName("SearchUsers")
+        .WithTags("Users")
+        .Produces(StatusCodes.Status200OK)
+            .ProducesValidationProblem()
+            .WithDescription("Searches through users by id and keyword and returns paginated result");
+
+        app.MapPost("/admin/users/deactivate", async ([AsParameters] DeactivateUserCommand query, IMediator mediator) => {
+            var result = await mediator.Send(query);
+            return Results.NoContent();
+        })
+            .WithName("DeactivateUser")
+            .WithTags("Users")
+            .Produces<Unit>(StatusCodes.Status204NoContent)
+            .Produces(StatusCodes.Status404NotFound)
+            .ProducesValidationProblem()
+            .WithDescription("Deactivates a user by Id.");
+
+        app.MapGet("/admin/users/gigs", async ([AsParameters] GetGigsForUserQuery query, IMediator mediator) => {
+            var result = await mediator.Send(query);
+            return Results.Ok(result);
+        })
+            .WithName("GetGigsForUser")
+            .WithTags("Users")
+            .ProducesValidationProblem()
+            .WithDescription("Gets gigs for a user by Id and returns paginated result");
+        app.MapGet("/admin/gigs/seller", async ([AsParameters] GetSellerForGigQuery query, IMediator mediator) => {
+            var result = await mediator.Send(query);
+            return Results.Ok(result);
+        })
+            .WithName("GetSellerForGig")
+            .WithTags("Users")
+            .Produces(StatusCodes.Status404NotFound)
+            .ProducesValidationProblem()
+            .WithDescription("Gets seller for a gig by Id.");
+        #endregion
+
+        app.MapPost("/admin/gigs/deactivate", async ([AsParameters] DeactivateGigAdminCommand query, IMediator mediator) => {
+            var result = await mediator.Send(query);
+            return Results.NoContent();
+        })
+            .WithName("DeactivateGig")
+            .WithTags("Gigs")
+            .Produces<Unit>(StatusCodes.Status204NoContent)
+            .Produces(StatusCodes.Status404NotFound)
+            .ProducesValidationProblem()
+            .WithDescription("Deactivates a gig by Id.");
+
+        ///admin/report
+        app.MapPost("/admin/report", async ([AsParameters] ReportItemCommand query, IMediator mediator) =>
+        {
+            await mediator.Send(query);
+            return Results.NoContent();
+        })
+            .WithName("ReportItem")
+            .WithTags("Report")
+            .Produces<Unit>(StatusCodes.Status204NoContent)
+            .Produces(StatusCodes.Status404NotFound)
+            .ProducesValidationProblem()
+            .WithDescription("Reports an item (gig, user, etc.) by Id.");
+
+        app.MapGet("/admin/report", async ([AsParameters] GetReportTablesQuery query, IMediator mediator) =>
+        {
+            var result = await mediator.Send(query);
+            return Results.Ok(result);
+        })
+            .WithName("GetReport")
+            .WithTags("Report")
+            .Produces(StatusCodes.Status200OK)
+            .ProducesValidationProblem()
+            .WithDescription("Gets report details by Id.");
 
 
 

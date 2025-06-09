@@ -16,14 +16,13 @@ public class FAQModule : CarterModule
         #region FAQs 
         
         //faqs/add
-        app.MapPost("/faqs", async([FromForm] AddFAQCommand command, IMediator mediator) =>
+        app.MapPost("/faqs", async([FromBody] AddFAQCommand command, IMediator mediator) =>
         {
-            await mediator.Send(command);
-            return Results.NoContent();
+            var result = await mediator.Send(command);
+            return Results.Ok(result);
         })
             .WithName("AddFAQ")
             .WithTags("FAQs")
-            .Produces<Unit>(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status404NotFound)
             .ProducesValidationProblem()
             .WithDescription("Adds a new FAQ for a gig or main category.");

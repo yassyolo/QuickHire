@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { PageTitle } from "../../Admin/Pages/Common/PageTitle";
-import { PageSelector } from "./PageSelector";
+import { PageSelector } from "../../Shared/PageSelector/PageSelector";
 import { BillingHistory } from "./BillingHistory/BillingHistory";
 import { SellerPage } from "../Seller/Pages/Common/SellerPage";
 import { BillingInfo } from "./BillingInfo/BillingInfo";

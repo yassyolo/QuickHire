@@ -26,10 +26,6 @@ internal class MainCategoryDetailsQueryHandler : IQueryHandler<MainCategoryDetai
             throw new NotFoundException(nameof(MainCategory), request.Id);
         }
 
-        mainCategory.Clicks++;
-        await _repository.UpdateAsync(mainCategory);
-        await _repository.SaveChangesAsync();
-
         var mainCategoryDetails = mainCategory.Adapt<MainCategoryDetailsModel>();
 
         mainCategoryDetails.SubCategories = mainCategory.SubCategories.Select(x => x.Adapt<SubCategoriesInMainCategoryModel>()).ToList();

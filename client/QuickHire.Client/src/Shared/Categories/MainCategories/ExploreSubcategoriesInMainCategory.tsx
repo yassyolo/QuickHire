@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import './ExploreSubcategoriesInMainCategory.css';
+import { Link } from "react-router-dom";
 
 interface ExploreSubcategoriesInMainCategoryProps {
     mainCategoryId: number;
@@ -46,7 +47,7 @@ export function ExploreSubcategoriesInMainCategory({ mainCategoryId, mainCategor
                         <ul className="explore-subcategories-subsubcategories">
                             {subcategory.subSubCategories.map(subSubCategory => (
                                 <li key={subSubCategory.id}>
-                                    <span>{subSubCategory.name}</span>
+                                    <Link className="itemm" to={`/sub-sub-categories/${subSubCategory.id}`} style={{textDecoration:'none'}}>{subSubCategory.name}</Link>
                                 </li>
                             ))}
                         </ul>

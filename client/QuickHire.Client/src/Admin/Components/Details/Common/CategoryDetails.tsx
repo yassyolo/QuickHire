@@ -1,8 +1,8 @@
 // MainCategoryDetails.tsx
 import React from "react";
 import { DetailsRow } from "./DetailsRow";
-import { FAQList } from "../../../../Shared/FAQ/FAQList";
 import './CategoryDetails.css';
+import { FAQList } from "../../../../Shared/FAQ/FAQList/FAQList";
 
 interface MainCategoryDetailsProps {
   details: {

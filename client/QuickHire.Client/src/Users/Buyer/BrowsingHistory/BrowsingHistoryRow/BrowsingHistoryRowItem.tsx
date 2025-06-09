@@ -6,9 +6,10 @@ interface BrowsingHistoryRowItemProps {
     title: string;
     imageUrl: string; 
     liked: boolean;
+    setLiked: (liked: boolean, id: number) => void;
 }
 
-export function BrowsingHistoryRowItem({ id, title, imageUrl, liked }: BrowsingHistoryRowItemProps) {
+export function BrowsingHistoryRowItem({ id, title, imageUrl, liked, setLiked }: BrowsingHistoryRowItemProps) {
     const navigate = useNavigate();
 
     const handleBrowsingHistoryRowClick = () => {
@@ -19,7 +20,7 @@ export function BrowsingHistoryRowItem({ id, title, imageUrl, liked }: BrowsingH
             <div className="browsing-history-image-wrapper">
                 <img className="browsing-history-image"  src={imageUrl}></img>  
                 <div className="like-button-wrapper">
-                     <FavouriteButtonDropdown liked={liked} gigId={id} />             
+                     <FavouriteButtonDropdown liked={liked} gigId={id} setLiked={setLiked} />             
                 </div>
             </div>
             <div className="browsing-history-title" onClick={handleBrowsingHistoryRowClick}>{title}</div>

@@ -42,8 +42,7 @@ public class GoogleLoginCommandHandler : ICommandHandler<GoogleLoginCommand, Uni
             var createdUserResult = await _userService.CreateUserForExternalLoginAsync(externalInfo);
         }
 
-        await _userService.AssignJwtToken(user);
-        await _userService.AssignRefreshToken(user);
+        await _userService.AssignJwtTokens(user, "buyer");
 
         return Unit.Value;
     }

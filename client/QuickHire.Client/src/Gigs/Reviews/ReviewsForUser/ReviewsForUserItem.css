@@ -1,0 +1,37 @@
+.reviews-for-user-item {
+  display: flex;
+  gap: 10px;
+  padding: 20px;
+  border-radius: 5px;
+  background-color: var(--white-color);
+  border: 1px solid #ddd;
+  width: 100%;}
+
+  .riviews-for-user-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .info-comment {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .reviews-for-user-name {
+    font-size: 16px;
+    color: var(--text-black-color);
+    font-weight: 600;
+  }
+
+.reviews-for-user-date {
+    font-size: 14px;
+    color: var(--text-grey-color);
+  }
+
+.reviews-for-user-comment {
+    font-size: 14px;
+    color: var(--text-grey-color);
+  }

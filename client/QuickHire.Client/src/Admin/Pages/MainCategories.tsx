@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
 import { AddMainCategoryModal } from "../Components/Modals/Add/AddMainCategoryModal";
-import { MainCategoryActions } from "../Components/Tables/MainCategoryActions";
 import { DataTable } from "../Components/Tables/Common/AdminDataTable";
-import { ActionButton } from "../../Shared/Buttons/ActionButton";
+import { ActionButton } from "../../Shared/Buttons/ActionButton/ActionButton";
 import { MainCategoriesFilter } from "../Components/Filters/PageFilters/MainCategoriesFilter";
-import { Pagination } from "../../Shared/Pagination/Pagination";
+import { Pagination } from "../../Shared/Pagination/Pagination/Pagination";
 import { PageTitle } from "./Common/PageTitle";
 import { AdminPage } from "./Common/AdminPage";
+import { MainCategoryActions } from "../Components/Tables/TableActions/MainCategoryActions";
 
 export interface MainCategoryRowModel {
     id: number;

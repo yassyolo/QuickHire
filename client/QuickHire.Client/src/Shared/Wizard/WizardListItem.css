@@ -1,0 +1,56 @@
+
+
+.wizard-list-item-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-grey-color);
+}
+
+.wizard-list-item-step {
+  font-size: 13px;
+  font-weight: 600;
+  width: 25px;
+  height: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background-color:var(--text-grey-color);
+  color: var(--white-color);
+  margin-bottom: 5px;
+}
+
+.wizard-list-item-step.active {
+  color: var(--white-color);
+  background-color: var(--fiverr-green-color);
+}
+
+
+.wizard-list-item-step-title.valid {
+  color: var(--fiverr-green-color);
+}
+
+.wizard-list-item-step-title.valid .wizard-list-item-title {
+  color: var(--fiverr-green-color);
+}
+
+.wizard-list-item-step-title{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.wizard-list-item-step-title.active {
+  cursor: pointer;
+}
+
+.wizard-list-contents {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+    align-items: center;
+  gap: 20px;
+}

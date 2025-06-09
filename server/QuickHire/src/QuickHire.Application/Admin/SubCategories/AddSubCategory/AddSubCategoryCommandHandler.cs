@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using QuickHire.Application.Admin.Models.SubCategories;
 using QuickHire.Application.Common.Interfaces.Abstractions;
 using QuickHire.Application.Common.Interfaces.Repository;
 using QuickHire.Application.Common.Interfaces.Services;
@@ -7,7 +8,7 @@ using QuickHire.Domain.Shared.Exceptions;
 
 namespace QuickHire.Application.Admin.SubCategories.AddSubCategory;
 
-public class AddSubCategoryCommandHandler : ICommandHandler<AddSubCategoryCommand, int>
+public class AddSubCategoryCommandHandler : ICommandHandler<AddSubCategoryCommand, AddSubCategoryReturnModel>
 {
     private readonly IRepository _repository;
     private readonly ICloudinaryService _cloudinaryService;
@@ -18,7 +19,7 @@ public class AddSubCategoryCommandHandler : ICommandHandler<AddSubCategoryComman
         _cloudinaryService = cloudinaryService;
     }
 
-    public async Task<int> Handle(AddSubCategoryCommand request, CancellationToken cancellationToken)
+    public async Task<AddSubCategoryReturnModel> Handle(AddSubCategoryCommand request, CancellationToken cancellationToken)
     {
         var mainCategory = await _repository.GetByIdAsync<MainCategory, int>(request.MainCategoryId);
         if (mainCategory == null)
@@ -45,7 +46,11 @@ public class AddSubCategoryCommandHandler : ICommandHandler<AddSubCategoryComman
         await _repository.AddAsync(subCategory);
         await _repository.SaveChangesAsync();
 
-        return subCategory.Id;
+        return new AddSubCategoryReturnModel
+        {
+            Id = subCategory.Id,
+            ImageUrl = subCategory.ImageUrl,
+        };
     }
 }
 

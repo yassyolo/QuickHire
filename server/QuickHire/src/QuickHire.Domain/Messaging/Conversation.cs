@@ -13,8 +13,8 @@ public class Conversation : BaseSoftDeletableEntity<int>
     public string ParticipantBMode { get; set; }  = string.Empty;
     public DateTime CreatedAt { get; set; } 
     public DateTime LastMessageAt { get; set; } 
-    public bool IsStarredByBuyer { get; set; }
-    public bool IsStarredBySeller { get; set; }
+    public bool IsStarredByParticipantA { get; set; }
+    public bool IsStarredByParticipantB { get; set; }
     public int? OrderId { get; set; }
     public Order? Order { get; set; } = null!;
     public IEnumerable<Message> Messages { get; set; } = new List<Message>();

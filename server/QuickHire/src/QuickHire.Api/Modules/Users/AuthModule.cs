@@ -6,11 +6,13 @@ using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using QuickHire.Application.Users.Authentication.AboutUser;
+using QuickHire.Application.Users.Authentication.ChangePassword;
 using QuickHire.Application.Users.Authentication.GoogleLogin;
 using QuickHire.Application.Users.Authentication.Login;
 using QuickHire.Application.Users.Authentication.Logout;
 using QuickHire.Application.Users.Authentication.RefreshToken;
 using QuickHire.Application.Users.Authentication.Register;
+using QuickHire.Application.Users.Authentication.SwitchMode;
 using QuickHire.Application.Users.Authentication.VerifyEmail;
 using QuickHire.Application.Users.Models.Authentication;
 using QuickHire.Infrastructure.Persistence.Identity;
@@ -89,10 +91,23 @@ public class AuthModule : CarterModule
         .Produces(StatusCodes.Status404NotFound)
         .WithDescription("Retrieves information about the currently authenticated user. If the user is not authenticated, returns a 401 Unauthorized status. If the user is not found, returns a 404 Not Found status.");
 
-        app.MapPost("auth/refresh-token", async ([FromBody] RefreshTokenCommand command, IMediator mediator) =>
-        {
+            app.MapPost("auth/switch-mode", async (SwitchModeCommand command, IMediator mediator) =>
+            {
+            await mediator.Send(command);
 
-            var result = await mediator.Send(command);
+            return Results.NoContent();
+        })
+            .WithName("SwitchMode")
+            .Produces(StatusCodes.Status204NoContent)
+            .ProducesProblem(StatusCodes.Status401Unauthorized)
+                
+            .WithDescription("Switches the mode of the currently authenticated user. If the user is not authenticated, returns a 401 Unauthorized status. This endpoint allows users to switch between different modes (e.g., buyer/seller).");
+
+        app.MapPost("auth/refresh-token", async (HttpContext httpContext, IMediator mediator) =>
+        {
+            var refreshToken = httpContext.Request.Cookies["REFRESH_TOKEN"];
+
+            var result = await mediator.Send(new RefreshTokenCommand(refreshToken));
 
             return Results.Ok(result);
         })
@@ -122,5 +137,18 @@ public class AuthModule : CarterModule
         .Produces(StatusCodes.Status204NoContent)
         .Produces(StatusCodes.Status400BadRequest)
         .WithDescription("Logs out the user by clearing the authentication cookies.");
+
+        //auth/change-password
+        app.MapPost("/auth/change-password", async([FromBody] ChangePasswordCommand command, IMediator mediator) =>
+        {
+            await mediator.Send(command);
+            return Results.NoContent();
+        })
+            .WithName("ChangePassword")
+            .Produces(StatusCodes.Status204NoContent)
+            .Produces(StatusCodes.Status400BadRequest)
+            .Produces(StatusCodes.Status401Unauthorized)
+            .WithDescription("Changes the password for the currently authenticated user. Requires the user to be authenticated and provides the new password in the request body.");
+
     }
 }

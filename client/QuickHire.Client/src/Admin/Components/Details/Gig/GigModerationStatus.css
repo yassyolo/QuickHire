@@ -1,0 +1,29 @@
+.user-moderation{
+    gap: 20px;
+    width: 100%;
+}
+
+.user-moderation-item{
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 10px;
+    background-color: var(--white-color);
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 150px;
+    align-content: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.user-moderation-item-label, .user-moderation-table-header{
+    font-size: 16px;
+    color: var(--text-black-color);
+    font-weight: 600;
+}
+
+.user-moderation-top{
+    gap: 50px;
+}
+

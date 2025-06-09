@@ -12,6 +12,14 @@ using QuickHire.Application.Gigs.Models.Tags;
 using QuickHire.Domain.Users;
 using QuickHire.Application.Admin.Models.Filters;
 using QuickHire.Application.Admin.Models.Users.Notifications;
+using QuickHire.Application.Gigs.Models.FavouriteLists;
+using QuickHire.Application.Users.Models.BillingsAndFinancialDocuments;
+using System.Security.Cryptography.X509Certificates;
+using QuickHire.Domain.Orders;
+using QuickHire.Application.Users.Models.Dashboard;
+using QuickHire.Application.Users.Models.ProjectBriefs;
+using QuickHire.Domain.ProjectBriefs;
+using QuickHire.Application.Users.Models.Profile;
 
 namespace QuickHire.Application.Common.Mapping;
 
@@ -19,13 +27,9 @@ internal static class MapsterConfiguration
 {
     internal static void RegisterMapsterConfiguration(this IServiceCollection services, Assembly assembly)
     {
-        TypeAdapterConfig<ApplicationUserModel, AboutUserModel>.NewConfig()
-            .Map(dest => dest.UserId, src => src.Id)
-            .Map(dest => dest.UserName, src => src.UserName);
-
         TypeAdapterConfig<MainCategory, MainCategoryRowModel>.NewConfig()
             .Map(dest => dest.Id, src => src.Id)
-            .Map(dest => dest.CreatedOn, src => src.CreatedOn.ToString("yyyy-MM-dd HH:mm:ss"))
+            .Map(dest => dest.CreatedOn, src => src.CreatedOn.ToString("yyyy-MM-dd"))
             .Map(dest => dest.Name, src => src.Name)
             .Map(dest => dest.Description, src => src.Description)
             .Map(dest => dest.SubCategories, src => src.SubCategories.Count())
@@ -150,6 +154,39 @@ internal static class MapsterConfiguration
             .Map(dest => dest.Name, src => src.Name)
             .Map(dest => dest.ImageUrl, src => src.ImageUrl);
 
+        TypeAdapterConfig<FavouriteGigsList, PopulateFavouriteGigListModel>.NewConfig()
+            .Map(dest => dest.Id, src => src.Id)
+            .Map(dest => dest.Name, src => src.Name);
+
+        TypeAdapterConfig<BillingDetails, GetBillingInfoModel>.NewConfig()
+            .Map(dest => dest.Id, src => src.Id)
+            .Map(dest => dest.FullName, src => src.FullName)
+            .Map(dest => dest.CompanyName, src => src.CompanyName)
+            .Map(dest => dest.City, src => src.Address.City)
+            .Map(dest => dest.Country, src => src.Address.Country.Name)
+            .Map(dest => dest.ZipCode, src => src.Address.ZipCode)
+            .Map(dest => dest.Street, src => src.Address.Street)
+            .Map(dest => dest.CountryId, src => src.Address.CountryId);
+
+        TypeAdapterConfig<Invoice, FinancialDocumentRowModel>.NewConfig()
+            .Map(dest => dest.Id, src => src.Id)
+            .Map(dest => dest.Date, src => src.CreatedAt.ToString("yyyy-MM-dd"))
+            .Map(dest => dest.DocumentNumber, src => src.InvoiceNumber)
+            .Map(dest => dest.Service, src => src.Order.Gig.Title)
+            .Map(dest => dest.OrderNumber, src => src.OrderId.ToString())
+            .Map(dest => dest.Total, src => src.TotalAmount.ToString("C"))
+            .Map(dest => dest.PdfLink, src => src.SourceUrl);
+
+        TypeAdapterConfig<Order, SellerDashboardOrderModel>.NewConfig()
+            .Map(dest => dest.Id, src => src.Id)
+            .Map(dest => dest.ImageUrl, src => src.Gig.ImageUrls.FirstOrDefault())
+            .Map(dest => dest.Title, src => src.Gig.Title)
+            .Map(dest => dest.Status, src => src.Status.ToString())
+            .Map(dest => dest.DueIn, src =>((src.CreatedAt.AddDays(src.SelectedPaymentPlan.DeliveryTimeInDays) - DateTime.UtcNow).TotalDays).ToString("F0"));
+
+            TypeAdapterConfig<Language, PopulationModel>.NewConfig()
+            .Map(dest => dest.Id, src => src.Id)
+            .Map(dest => dest.Name, src => src.Name);
         TypeAdapterConfig.GlobalSettings.Scan(assembly);
     }
 }
