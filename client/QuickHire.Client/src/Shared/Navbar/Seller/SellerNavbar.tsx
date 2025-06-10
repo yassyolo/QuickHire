@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { SellerOrAdminNavbarItem } from '../Common/SellerOrAdminNavbarItem';
 import { SellerOrAdminNavbar } from '../Common/SellerOrAdminNavbar';
 import { IconButton } from '../../Buttons/IconButton/IconButton';
@@ -9,13 +9,17 @@ import { Footer } from '../../Footer/Footer';
 import './SellerNavbar.css';
 
 export function SellerNavbar() {
+  const navigate = useNavigate();
+  const handleShowinbox = () => {
+    navigate('/seller/inbox');
+  };
   return (
     <div className="page-container">
         <SellerOrAdminNavbar  navLinks={<><SellerOrAdminNavbarItem to="/seller/dashboard" label="Dashboard" /><SellerOrAdminNavbarItem hasDropdown={true} label="My Business" /><SellerOrAdminNavbarItem to="/seller/analytics" label="Analytics" /></>}
          navIcons={
             <>
                 <NotificationButtonDropdown buyer={false}/>
-                <IconButton buttonInfo="Messages" icon={<i className="fa-regular fa-envelope"></i>} onClick={() => {}} className={"inbox-button"} ariaLabel={"MessagesButton"}></IconButton>
+                <IconButton buttonInfo="Messages" icon={<i className="fa-regular fa-envelope"></i>} onClick={handleShowinbox} className={"inbox-button"} ariaLabel={"MessagesButton"}></IconButton>
                 <ProfileIconDropdown><SellerProfileDropdown /></ProfileIconDropdown>
             </>}>      
           

@@ -39,8 +39,8 @@ export function MainCategoriesHeader() {
           <div
             className="category-hover-wrapper" 
             key={category.id}
-            onMouseEnter={() => {setHoveredCategoryId(category.id); console.log("Hovered Category ID:", category.id);}}
-            onMouseLeave={() => {setHoveredCategoryId(null); console.log("Mouse left category:", category.id);}}
+            onMouseEnter={() => {setHoveredCategoryId(category.id);}}
+            onMouseLeave={() => {setHoveredCategoryId(null);}}
           >
             <div className="category-item">
               <Link to={`/buyer/main-categories/${category.id}`} className="category-link">

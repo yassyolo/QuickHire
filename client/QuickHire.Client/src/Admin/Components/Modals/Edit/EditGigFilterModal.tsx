@@ -9,10 +9,11 @@ export interface EditFilterModalProps {
   showModal: boolean;
   onClose: () => void;
   onEditSuccess(id: number, name: string): void;
+  onEditSuccessAndClose() : void;
   name: string; 
 }
 
-export function EditFiterModal({onEditSuccess, showModal, id, onClose, name} : EditFilterModalProps) {
+export function EditFiterModal({onEditSuccess, showModal, id, onClose, name, onEditSuccessAndClose} : EditFilterModalProps) {
   const [newName, setNewName] = useState<string>("");
   const [showNameTooltip, handleShowNameTooltip] = useTooltip();
   const [validationErrors, setValidationErrors] = useState<{ Name?: string[];}>({});
@@ -38,6 +39,8 @@ export function EditFiterModal({onEditSuccess, showModal, id, onClose, name} : E
     await axios.put(url, formData);
     
           onEditSuccess(id, newName);
+          onClose();
+          onEditSuccessAndClose();
         }  catch (error: unknown) {
       if (axios.isAxiosError(error) && error.response?.status === 400) {
         setValidationErrors({

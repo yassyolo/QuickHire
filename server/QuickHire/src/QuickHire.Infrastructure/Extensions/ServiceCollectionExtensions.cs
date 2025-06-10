@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -44,38 +45,63 @@ public static class ServiceCollectionExtensions
     {
         services.AddAuthentication(options =>
         {
-            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme; 
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;    
+            options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme; 
+        })
+.AddCookie(options =>
+{
+    options.Cookie.Name = "Google_Cookie";
+    options.SlidingExpiration = true;
+    options.Cookie.SameSite = SameSiteMode.None; 
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always; 
+})
+.AddJwtBearer(options =>
+{
+    var section = configuration.GetSection(JwtOptions.JwtOptionsKey);
 
-        }).AddCookie(options =>
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = section["Issuer"],
+        ValidAudience = section["Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(section["Secret"])),
+    };
+
+    options.Events = new JwtBearerEvents
+    {
+        OnMessageReceived = context =>
         {
-            options.Cookie.Name = "ACCESS_TOKEN";  
-            options.SlidingExpiration = true;
-        }).AddJwtBearer(options =>
-        {
-            var section = configuration.GetSection(JwtOptions.JwtOptionsKey);           
+            var accessToken = context.Request.Cookies["ACCESS_TOKEN"];
 
-            options.TokenValidationParameters = new TokenValidationParameters
+            var path = context.HttpContext.Request.Path;
+            if (string.IsNullOrEmpty(accessToken) &&
+                path.StartsWithSegments("/chathub"))
             {
-                ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidateLifetime = true,
-                ValidateIssuerSigningKey = true,
-                ValidIssuer = section["Issuer"],
-                ValidAudience = section["Audience"],
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(section["Secret"])),
-            };
+                accessToken = context.Request.Query["access_token"];
+            }
 
-            options.Events = new JwtBearerEvents
-            {
-                OnMessageReceived = (context) =>
-                {
-                    context.Token = context.Request.Cookies["ACCESS_TOKEN"];
-                    return Task.CompletedTask;
-                }
-            };
-        });
+            context.Token = accessToken;
+
+            return Task.CompletedTask;
+        }
+    };
+})
+.AddGoogle(options =>
+{
+    options.ClientId = configuration["GoogleAuthenticationOptions:ClientId"];
+    options.ClientSecret = configuration["GoogleAuthenticationOptions:ClientSecret"];
+    options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme; 
+    options.SaveTokens = true;
+    options.CallbackPath = "/google-redirect";
+
+    options.CorrelationCookie.SameSite = SameSiteMode.None;
+    options.CorrelationCookie.SecurePolicy = CookieSecurePolicy.Always;
+
+});
 
         return services;
     }
@@ -128,7 +154,6 @@ public static class ServiceCollectionExtensions
 
     private static IServiceCollection AddNotificationFactory(this IServiceCollection services)
     {
-        // Register concrete notification generators
         services.TryAddScoped<NewProjectBriefMadeNotificationGenerator>();
         services.AddScoped<CustomOfferReceivedNotificationGenerator>();
         services.AddScoped<CustomOfferAcceptedNotificationGenerator>();
@@ -148,7 +173,6 @@ public static class ServiceCollectionExtensions
         services.AddScoped<ReportedUserNotificationGenerator>();
         services.AddScoped<ReportedGigNotificationGEnerator>();
 
-        // Then register the factory that depends on those generators
         services.TryAddScoped<INotificationGeneratorFactory>(provider =>
         {
             var notificationGenerators = new Dictionary<NotificationType, INotificationGenerator>

@@ -13,6 +13,7 @@ using ApplicationUser = QuickHire.Infrastructure.Persistence.Identity.Applicatio
 using FAQ = QuickHire.Domain.Categories.FAQ;
 using MainCategory = QuickHire.Domain.Categories.MainCategory;
 using Language = QuickHire.Domain.Users.Language;
+using Gig = QuickHire.Domain.Gigs.Gig;
 using UserLanguage = QuickHire.Domain.Users.UserLanguage;
 using Certification = QuickHire.Domain.Users.Certification;
 using Education = QuickHire.Domain.Users.Education;
@@ -22,11 +23,18 @@ using Portfolio = QuickHire.Domain.Users.Portfolio;
 using BillingDetails = QuickHire.Domain.Users.BillingDetails;
 using GigFilter = QuickHire.Domain.Categories.GigFilter;
 using FilterOption = QuickHire.Domain.Categories.FilterOption;
+using PaymentPlanInclude = QuickHire.Domain.Gigs.PaymentPlanInclude;
+using PaymentPlan = QuickHire.Domain.Gigs.PaymentPlan;
+using GigRequirement = QuickHire.Domain.Gigs.GigRequirement;
+
 using System.Runtime.CompilerServices;
 using Microsoft.AspNetCore.Http.HttpResults;
 using QuickHire.Domain.Categories.Enums;
 using QuickHire.Infrastructure.Persistence.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using QuickHire.Domain.Moderation;
+using QuickHire.Domain.Gigs;
+using static System.Net.WebRequestMethods;
 
 namespace QuickHire.Infrastructure.Persistence.Seed;
 
@@ -573,6 +581,19 @@ public class SeedData
     public ApplicationRole UserRole2 { get; set; } = null!;
     public ApplicationRole UserRole3 { get; set; } = null!;
 
+    public ReportedItem ReportedItem1 { get; set; } = null!;
+    public ReportedItem ReportedItem2 { get; set; } = null!;
+    public ReportedItem ReportedItem3 { get; set; } = null!;
+    public ReportedItem ReportedItem4 { get; set; } = null!;
+
+    public Gig Gig1 { get; set; } = null!;
+    public Gig Gig2 { get; set; } = null!;
+    public Gig Gig3 { get; set; } = null!;
+    public Gig Gig4 { get; set; } = null!;
+    public Gig Gig5 { get; set; } = null!;
+    public Gig Gig6 { get; set; } = null!;
+    public Gig Gig7 { get; set; } = null!;
+    public Gig Gig8 { get; set; } = null!;
 
 
     public async Task SeedAsync()
@@ -595,6 +616,8 @@ public class SeedData
         await SeedCertifications();
         await SeedSkills();
         await SeedPortfolios();
+        await SeedReportedItems();
+       // await SeedGigs();
     }
 
     private async Task SeedApplicationUsers()
@@ -742,6 +765,31 @@ public class SeedData
                     throw new Exception($"Failed to create user {user.UserName}: {errors}");
                 }
             }
+        }
+    }
+
+    private async Task SeedReportedItems()
+    {
+        if(!_context.ReportedItems.Any())
+        {
+            ReportedItem1 = new ReportedItem
+            {              
+                Reason = "Inappropriate content",
+                ReportedUserId = User2.Id,
+                ReportedById = User1.Id,
+                CreatedAt = DateTime.Now
+            };
+            ReportedItem2 = new ReportedItem
+            {
+                Reason = "I dont like this user",
+                ReportedUserId = User2.Id,
+                ReportedById = User3.Id,
+                CreatedAt = DateTime.Now
+            };
+           
+
+            _context.ReportedItems.AddRange(ReportedItem1, ReportedItem2);
+            await _context.SaveChangesAsync();
         }
     }
 
@@ -4114,20 +4162,261 @@ GigFilter3ForSubSubCategory1ForSubCategory1ForMainCategory1 = new GigFilter
             await _context.SaveChangesAsync();
         }
     }
-  /*  private async Task SeedGigRequirements()
+  private async Task SeedGigs()
     {
-        if(!_context.GigRequirements.Any())
-        {
-            GigRequirement1 = new GigRequirement
-            {
-                GigId = 123,                    // example gig ID
-                Gig = someGigInstance,          // assign an existing Gig instance here
-                IsFileUpload = false,           // or true if the requirement expects a file upload
-                Question = "Please describe your project requirements in detail."
-            };
 
-            await _context.GigRequirements.AddAsync(GigRequirement1);
-            await _context.SaveChangesAsync();
-        }
-    }*/
+        var gig1 = new Gig
+        {
+            Title = "I will design seamless, intuitive user flows that drive engagement in your mobile app",
+            Description = "Struggling to keep users engaged with your mobile app? I specialize in crafting intuitive, user-centered flow designs that guide your audience effortlessly through your product. With a focus on clarity, simplicity, and user psychology, I’ll ensure every tap and swipe makes sense, increasing retention, satisfaction, and overall app success. Let’s transform your app’s usability together.",
+            SellerId = Seller1.Id,
+            SubSubCategoryId = SubSubCategory3ForSubCategory2ForMainCategory1.Id,
+            CreatedAt = DateTime.UtcNow,
+            Clicks = 120,
+            ModerationStatus = ModerationStatus.Active,
+            ImageUrls = new List<string> { "https://fiverr-res.cloudinary.com/images/t_main1,q_auto,f_auto,q_auto,f_auto/gigs/350317870/original/124775437d2adef5dde293b4632d79417fab3ece/do-ux-wireframe-mockup-design-and-user-flow-for-mobile-and-web.jpg" }
+        };
+
+        var gig2 = new Gig
+        {
+            Title = "I will develop detailed, research-driven user personas to supercharge your UX strategy",
+            Description = "Great user experiences start with knowing your users. I’ll provide you with in-depth, research-backed user personas tailored specifically to your target market. These personas will help your team make smarter design and business decisions, ensuring every feature you build aligns with real user needs. Don’t guess who your users are—know them, and design accordingly.",
+            SellerId = Seller1.Id,
+            SubSubCategoryId = SubSubCategory3ForSubCategory2ForMainCategory1.Id,
+            CreatedAt = DateTime.UtcNow,
+            Clicks = 95,
+            ModerationStatus = ModerationStatus.Active,
+            ImageUrls = new List<string> { "https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs/434229210/original/29c6b3244d558741f37be55d02c830ab9949d613/perform-a-detailed-ux-ui-audit-of-your-app.png" }
+        };
+
+        var gig3 = new Gig
+        {
+            Title = "I will create high-fidelity wireframes that bring your web application ideas to life",
+            Description = "Want to see your web app before investing in development? My expertly crafted wireframes offer a clear, visual blueprint of your entire platform. Whether you need low-fidelity sketches for brainstorming or detailed mockups for stakeholder presentations, I’ll help translate your concepts into powerful visual structures that make development faster, smoother, and more successful.",
+            SellerId = Seller1.Id,
+            SubSubCategoryId = SubSubCategory3ForSubCategory2ForMainCategory1.Id,
+            CreatedAt = DateTime.UtcNow.AddYears(-1),
+            Clicks = 160,
+            ModerationStatus = ModerationStatus.Active,
+            ImageUrls = new List<string> { "https://fiverr-res.cloudinary.com/images/t_main1,q_auto,f_auto,q_auto,f_auto/gigs/371794379/original/37e15b1ade683a0235768ecb7129d0b53c379de4/do-web-ui-ux-app-ui-ux-and-dahboard-ui-ux-design-in-figma.png" }
+        };
+
+        var gig4 = new Gig
+        {
+            Title = "I will deliver an expert UX audit to uncover hidden issues on your website",
+            Description = "Is your website underperforming? I’ll conduct a thorough, expert-level UX audit to uncover pain points, bottlenecks, and missed opportunities that frustrate your users. You’ll receive a detailed report with actionable insights to improve navigation, accessibility, and user satisfaction. Perfect for startups, SaaS products, or established websites ready for a serious UX upgrade.",
+            SellerId = Seller1.Id,
+            SubSubCategoryId = SubSubCategory3ForSubCategory2ForMainCategory1.Id,
+            CreatedAt = DateTime.UtcNow.AddMonths(-3),
+            Clicks = 75,
+            ModerationStatus = ModerationStatus.Active,
+            ImageUrls = new List<string> { "https://fiverr-res.cloudinary.com/images/q_auto,f_auto/gigs/265069114/original/707a1be825dbbd97a4f52f6ce28b98b7264d7a97/provide-professional-ui-ux-audit-for-websites-landing-pages-apps.png" }
+        };
+
+        await _context.Gigs.AddRangeAsync(gig1, gig2, gig3, gig4);
+       await _context.SaveChangesAsync();
+
+       await SeedGigDetails(_context, gig1, gig2, gig3, gig4);
+    }
+
+    private async Task SeedGigDetails(ApplicationDbContext context, Gig gig1, Gig gig2, Gig gig3, Gig gig4)
+    {
+        context.FAQs.AddRange(
+            new FAQ { GigId = gig1.Id, Question = "Do you provide wireframes?", Answer = "Yes, I will provide wireframes in Figma or Adobe XD." },
+            new FAQ { GigId = gig1.Id, Question = "Can you redesign my existing app?", Answer = "Absolutely, I specialize in revamping old interfaces." },
+
+            new FAQ { GigId = gig2.Id, Question = "How do you collect user data?", Answer = "Through surveys, interviews, and competitive research." },
+
+            new FAQ { GigId = gig3.Id, Question = "Do you deliver in Figma or XD?", Answer = "I primarily use Figma, but XD is available on request." },
+
+            new FAQ { GigId = gig4.Id, Question = "Can you audit e-commerce sites?", Answer = "Yes, I specialize in UX audits for e-commerce platforms." }
+        );
+
+        await context.GigRequirements.AddRangeAsync(
+            new GigRequirement { GigId = gig1.Id, Question = "Please describe your app's primary functionality.", IsFileUpload = false },
+            new GigRequirement { GigId = gig2.Id, Question = "Provide details about your target market or ideal customer.", IsFileUpload = false },
+            new GigRequirement { GigId = gig3.Id, Question = "Share your website objectives and target audience.", IsFileUpload = false },
+            new GigRequirement { GigId = gig4.Id, Question = "Provide your website URL and goals for the audit.", IsFileUpload = false }
+        );
+
+        var paymentPlan1Basic = new PaymentPlan
+        {
+            GigId = gig1.Id,
+            Name = "Basic",
+            Price = 150,
+            DeliveryTimeInDays = 3,
+            Revisions = 2,
+            Description = "User flow for up to 3 screens."
+        };
+        var paymentPlan1Standard = new PaymentPlan
+        {
+            GigId = gig1.Id,
+            Name = "Standard",
+            Price = 300,
+            DeliveryTimeInDays = 5,
+            Revisions = 3,
+            Description = "User flow for up to 6 screens."
+        };
+        var paymentPlan1Premium = new PaymentPlan
+        {
+            GigId = gig1.Id,
+            Name = "Premium",
+            Price = 500,
+            DeliveryTimeInDays = 7,
+            Revisions = 5,
+            Description = "User flow for up to 10 screens with feedback sessions."
+        };
+
+        var paymentPlan2Basic = new PaymentPlan
+        {
+            GigId = gig2.Id,
+            Name = "Basic",
+            Price = 100,
+            DeliveryTimeInDays = 2,
+            Revisions = 1,
+            Description = "1 user persona profile."
+        };
+        var paymentPlan2Standard = new PaymentPlan
+        {
+            GigId = gig2.Id,
+            Name = "Standard",
+            Price = 200,
+            DeliveryTimeInDays = 4,
+            Revisions = 2,
+            Description = "3 detailed personas."
+        };
+        var paymentPlan2Premium = new PaymentPlan
+        {
+            GigId = gig2.Id,
+            Name = "Premium",
+            Price = 350,
+            DeliveryTimeInDays = 6,
+            Revisions = 3,
+            Description = "5 personas with market analysis."
+        };
+
+        var paymentPlan3Basic = new PaymentPlan
+        {
+            GigId = gig3.Id,
+            Name = "Basic",
+            Price = 120,
+            DeliveryTimeInDays = 2,
+            Revisions = 1,
+            Description = "Wireframes for up to 3 web pages."
+        };
+        var paymentPlan3Standard = new PaymentPlan
+        {
+            GigId = gig3.Id,
+            Name = "Standard",
+            Price = 240,
+            DeliveryTimeInDays = 4,
+            Revisions = 2,
+            Description = "Wireframes for up to 6 web pages."
+        };
+        var paymentPlan3Premium = new PaymentPlan
+        {
+            GigId = gig3.Id,
+            Name = "Premium",
+            Price = 400,
+            DeliveryTimeInDays = 6,
+            Revisions = 3,
+            Description = "Wireframes for 10+ web pages with consultation."
+        };
+
+        var paymentPlan4Basic = new PaymentPlan
+        {
+            GigId = gig4.Id,
+            Name = "Basic",
+            Price = 180,
+            DeliveryTimeInDays = 3,
+            Revisions = 1,
+            Description = "UX audit of 1 landing page with a report."
+        };
+        var paymentPlan4Standard = new PaymentPlan
+        {
+            GigId = gig4.Id,
+            Name = "Standard",
+            Price = 350,
+            DeliveryTimeInDays = 5,
+            Revisions = 2,
+            Description = "UX audit of up to 3 key pages."
+        };
+        var paymentPlan4Premium = new PaymentPlan
+        {
+            GigId = gig4.Id,
+            Name = "Premium",
+            Price = 600,
+            DeliveryTimeInDays = 7,
+            Revisions = 3,
+            Description = "UX audit of 5+ pages with actionable recommendations."
+        };
+
+       await context.PaymentPlans.AddRangeAsync(
+            paymentPlan1Basic, paymentPlan1Standard, paymentPlan1Premium,
+            paymentPlan2Basic, paymentPlan2Standard, paymentPlan2Premium,
+            paymentPlan3Basic, paymentPlan3Standard, paymentPlan3Premium,
+            paymentPlan4Basic, paymentPlan4Standard, paymentPlan4Premium
+        );
+
+        await context.SaveChangesAsync();
+
+        await context.PaymentPlanIncludes.AddRangeAsync(
+            // Gig 1
+            new PaymentPlanInclude { PaymentPlanId = paymentPlan1Basic.Id, Name = "Screens", Value = "3" },
+            new PaymentPlanInclude { PaymentPlanId = paymentPlan1Basic.Id, Name = "Format", Value = "Figma" },
+
+            new PaymentPlanInclude { PaymentPlanId = paymentPlan1Standard.Id, Name = "Screens", Value = "6" },
+            new PaymentPlanInclude { PaymentPlanId = paymentPlan1Standard.Id, Name = "Format", Value = "Figma + PDF" },
+
+            new PaymentPlanInclude { PaymentPlanId = paymentPlan1Premium.Id, Name = "Screens", Value = "10" },
+            new PaymentPlanInclude { PaymentPlanId = paymentPlan1Premium.Id, Name = "Consultations", Value = "2 video calls" },
+
+            // Gig 2
+            new PaymentPlanInclude { PaymentPlanId = paymentPlan2Basic.Id, Name = "Personas", Value = "1" },
+            new PaymentPlanInclude { PaymentPlanId = paymentPlan2Standard.Id, Name = "Personas", Value = "3" },
+            new PaymentPlanInclude { PaymentPlanId = paymentPlan2Premium.Id, Name = "Personas", Value = "5" },
+            new PaymentPlanInclude { PaymentPlanId = paymentPlan2Premium.Id, Name = "Includes", Value = "Market Analysis PDF" },
+
+            // Gig 3
+            new PaymentPlanInclude { PaymentPlanId = paymentPlan3Basic.Id, Name = "Pages", Value = "3" },
+            new PaymentPlanInclude { PaymentPlanId = paymentPlan3Standard.Id, Name = "Pages", Value = "6" },
+            new PaymentPlanInclude { PaymentPlanId = paymentPlan3Premium.Id, Name = "Pages", Value = "10+" },
+            new PaymentPlanInclude { PaymentPlanId = paymentPlan3Premium.Id, Name = "Includes", Value = "30-minute consultation" },
+
+            // Gig 4
+            new PaymentPlanInclude { PaymentPlanId = paymentPlan4Basic.Id, Name = "Pages Audited", Value = "1" },
+            new PaymentPlanInclude { PaymentPlanId = paymentPlan4Standard.Id, Name = "Pages Audited", Value = "3" },
+            new PaymentPlanInclude { PaymentPlanId = paymentPlan4Premium.Id, Name = "Pages Audited", Value = "5+" },
+            new PaymentPlanInclude { PaymentPlanId = paymentPlan4Premium.Id, Name = "Includes", Value = "Action Plan Document" }
+        );
+
+        var gigMetadata = new List<GigMetadata>
+{
+    // Gig 1 Metadata
+    new GigMetadata { Gig = gig1, FilterOptionId = FilterOption1ForGigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1.Id }, // Mobile App (iOS/Android)
+    new GigMetadata { Gig = gig1, FilterOptionId = FilterOption1ForGigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1.Id }, // Figma
+    new GigMetadata { Gig = gig1, FilterOptionId = FilterOption1ForGigFilter3ForSubSubCategory3ForSubCategory2ForMainCategory1.Id }, // User Flow Diagrams
+
+    // Gig 2 Metadata
+    new GigMetadata { Gig = gig2, FilterOptionId = FilterOption2ForGigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1.Id }, // Web Application
+    new GigMetadata { Gig = gig2, FilterOptionId = FilterOption2ForGigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1.Id }, // Adobe XD
+    new GigMetadata { Gig = gig2, FilterOptionId = FilterOption4ForGigFilter3ForSubSubCategory3ForSubCategory2ForMainCategory1.Id }, // UI Style Guide
+
+    // Gig 3 Metadata
+    new GigMetadata { Gig = gig3, FilterOptionId = FilterOption2ForGigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1.Id }, // Web Application
+    new GigMetadata { Gig = gig3, FilterOptionId = FilterOption3ForGigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1.Id   }, // Sketch
+    new GigMetadata { Gig = gig3, FilterOptionId = FilterOption2ForGigFilter3ForSubSubCategory3ForSubCategory2ForMainCategory1.Id }, // Wireframes
+
+    // Gig 4 Metadata
+    new GigMetadata { Gig = gig4, FilterOptionId = FilterOption6ForGigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1.Id    }, // Landing Page / Marketing Site
+    new GigMetadata { Gig = gig4, FilterOptionId = FilterOption4ForGigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1.Id }, // Adobe Photoshop
+    new GigMetadata { Gig = gig4, FilterOptionId = FilterOption3ForGigFilter3ForSubSubCategory3ForSubCategory2ForMainCategory1.Id }, // Interactive Prototypes
+};
+
+        await context.GigMetadatas.AddRangeAsync(gigMetadata);
+
+
+        await context.SaveChangesAsync();
+    }
+
 }

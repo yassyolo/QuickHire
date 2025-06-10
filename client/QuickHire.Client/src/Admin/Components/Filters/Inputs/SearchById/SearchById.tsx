@@ -1,44 +1,64 @@
 import { ChangeEvent, useState } from 'react';
-import './SearchById.css'; 
+import './SearchById.css';
 
 interface SearchByIdProps {
     setId: (id: number | undefined) => void;
 }
 
-export function SearchById({setId} : SearchByIdProps) {
-    const [id, setLocalId] = useState<string | undefined>(undefined);
+export function SearchById({ setId }: SearchByIdProps) {
+    const [inputValue, setInputValue] = useState<string>('');
     const [isValid, setIsValid] = useState<boolean>(true);
 
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value;
-        setLocalId(value);
+        setInputValue(value);
+        setIsValid(true); // Reset validation feedback
 
-        if(value === '') {
-            setIsValid(true);
+        if (value.trim() === '') {
             setId(undefined);
         }
-    }
+    };
 
     const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
-            event.preventDefault();           
-            if (/^\d+$/.test(id ?? '')) {
-                const numericValue = Number(id);
+            event.preventDefault();
+            const trimmed = inputValue.trim();
+
+            if (trimmed === '') {
+                setIsValid(false);
+                setId(undefined);
+                return;
+            }
+
+            if (/^\d+$/.test(trimmed)) {
                 setIsValid(true);
-                setId(numericValue);
+                setId(Number(trimmed));
             } else {
                 setIsValid(false);
+                setId(undefined);
             }
         }
-    }
+    };
 
-   return(
-    <div className="search-by-id">
-        <div className="validation-input">
-         <input id="id-input" aria-invalid={!isValid} type="text" className={`form-control ${isValid ? '' : 'invalid'}`} value={id === undefined ? '' : id} onChange={handleInputChange} onKeyDown={handleKeyDown} placeholder='Enter ID'/>
-         <div className={`invalid-feedback d-block ${isValid ? 'invisible' : ''}`}> Not a valid number.</div>
+    return (
+        <div className="search-by-id">
+            <div className="validation-input">
+                <input
+                    id="id-input"
+                    type="text"
+                    inputMode="numeric"
+                    pattern="\d*"
+                    className={`form-control ${isValid ? '' : 'invalid'}`}
+                    value={inputValue}
+                    onChange={handleInputChange}
+                    onKeyDown={handleKeyDown}
+                    placeholder="Enter ID"
+                    aria-invalid={!isValid}
+                />
+                <div className={`invalid-feedback d-block ${isValid ? 'invisible' : ''}`}>
+                    Please enter a valid numeric ID.
+                </div>
+            </div>
         </div>
-    </div>
-   );
-};
-
+    );
+}

@@ -21,7 +21,15 @@ public class SearchGigsForAdminQueryHandler : IQueryHandler<SearchGigsForAdminQu
         _repository = repository;
         _userService = userService;
     }
-
+    public int Id { get; set; }
+    public string CreatedOn { get; set; } = string.Empty;
+    public string Service { get; set; } = string.Empty;
+    public int Orders { get; set; }
+    public decimal Revenue { get; set; }
+    public int Clicks { get; set; }
+    public double AvgReview { get; set; }
+    public string SubSubCategoryName { get; set; } = string.Empty;
+    public string Status { get; set; } = string.Empty;
     public async Task<PaginatedResultModel<SearchGigsForAdminModel>> Handle(SearchGigsForAdminQuery request, CancellationToken cancellationToken)
     {
         var gigsQueryable = _repository.GetAllReadOnly<Gig>();
@@ -32,11 +40,6 @@ public class SearchGigsForAdminQueryHandler : IQueryHandler<SearchGigsForAdminQu
             var parsedStatus = (ModerationStatus)request.ModerationStatusId.Value;
             gigsQueryable = gigsQueryable.Where(x => x.ModerationStatus == parsedStatus);
         }
-
-        /*if (request.PriceRangeId != null)
-        {
-            gigs = gigs.Where(x => x.PriceRangeId == request.PriceRangeId);
-        }*/
 
         if (request.SubCategoryId != null)
         {
@@ -79,28 +82,25 @@ public class SearchGigsForAdminQueryHandler : IQueryHandler<SearchGigsForAdminQu
             gigsList = await _repository.ToListAsync(pagedQuery);
         }
 
-       /* return new PaginatedResultModel<MainCategoryRowModel>()
-        {
-            Data = gigsList.Adapt<List<MainCategoryRowModel>>(),
-            TotalPages = (int)Math.Ceiling(totalCount / (double)request.ItemsPerPage)
-        };*/
-
-       
-    
-        return new PaginatedResultModel<SearchGigsForAdminModel>()
-        {
-            Data = gigsList.Select(x => new SearchGigsForAdminModel
+        var gigsForAdminModels = gigsList
+            .Select(x => new SearchGigsForAdminModel
             {
                 Id = x.Id,
-                CreatedOn = x.CreatedAt.ToString("yyyy-MM-dd"), 
+                CreatedOn = x.CreatedAt.ToString("yyyy-MM-dd"),
                 Service = x.Title,
                 Orders = x.Orders.Count(),
                 Revenue = x.Orders.Sum(x => x.TotalPrice),
-                AvgReview = x.Orders.SelectMany(o => o.Reviews).Any()? x.Orders.SelectMany(o => o.Reviews).Average(r => r.Rating): 0,
+                AvgReview = x.Orders.SelectMany(x => x.Reviews).Any() ? x.Orders.SelectMany(x => x.Reviews).Average(x => x.Rating) : 0,
                 Clicks = x.Clicks,
                 SubSubCategoryName = x.SubSubCategory.Name,
-                Status = x.ModerationStatus.ToString(),               
-            }).ToList(),
-        };
+                Status = x.ModerationStatus.ToString()
+            });
+           
+
+        return new PaginatedResultModel<SearchGigsForAdminModel>()
+        {
+            Data = gigsForAdminModels,
+            TotalPages = (int)Math.Ceiling(totalCount / (double)request.ItemsPerPage)
+        };     
 }
 }

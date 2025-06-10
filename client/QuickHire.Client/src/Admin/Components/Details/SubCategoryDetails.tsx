@@ -10,7 +10,6 @@ import { CategoryDetails } from "./Common/CategoryDetails";
 import { SubCategoriesTableSection } from "./Common/SubCategoriesTableSection";
 import { IconButton } from "../../../Shared/Buttons/IconButton/IconButton";
 import { DeactivateSubCategoryModal } from "../Modals/Deactivate/DeactivateSubCategoryModal";
-import { SellerPage } from "../../../Users/Seller/Pages/Common/SellerPage";
 import { SideNavigation } from "../../../Shared/SideNavigation/SideNavigation";
 
 export interface SubCategoryDetails {
@@ -82,7 +81,7 @@ export function SubCategoryDetails() {
         userNavigate("/admin/sub-categories");
     };
 
-    const handleAddSubSubCategoryModalVisibility = () => setShowAddSubSubCategoryModal(prev => !prev);
+    const handleAddSubSubCategoryModalVisibility = () => setShowAddSubSubCategoryModal(!showAddSubSubCategoryModal);
     const handleAddSubSubCategorySuccess = (id: number, name: string) => {
         setSubSubCategories(prev => [...prev, { id, name }]);
         setDetails(prev => prev ? { ...prev, subSubCategories: [...(prev.subSubCategories || []), { id, name }] } : null);
@@ -105,7 +104,6 @@ export function SubCategoryDetails() {
     };
 
     return (
-        <SellerPage>
             <div className="main-category-details d-flex flex-row">
                 <div className="breadcrumb-side-nav" style={{marginRight: "30px"}}>
                 <Breadcrumb items={[
@@ -199,6 +197,5 @@ export function SubCategoryDetails() {
                     </>
                 )}
             </div>
-        </SellerPage>
     );
 }

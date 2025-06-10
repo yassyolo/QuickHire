@@ -12,21 +12,29 @@ export function SearchByKeyword({setKeyword} : SearchByKeywordProps) {
         const value = event.target.value;
         setLocalKeyword(value);
 
-        if(value === '') {
+        if(value.trim() === '') {
             setLocalKeyword(undefined);
         }
     }
 
-    const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
             event.preventDefault();
-            setKeyword(keyword?.trim() || '');
+
+            const trimmed = (keyword ?? '').trim();
+
+            if (trimmed === '') {
+                setKeyword(undefined);
+                setLocalKeyword('');
+            } else {
+                setKeyword(trimmed);
+            }
         }
-    }
+    };
 
     return(
         <div className="search-by-keyword">
-           <input id="keyword-input" type="text" className="form-control" value={keyword === undefined ? '' : keyword} onChange={handleInputChange} onKeyDown={handleKeyPress} placeholder='Search by keyword' />
+           <input id="keyword-input" type="text" className="form-control" value={keyword === undefined ? '' : keyword} onChange={handleInputChange} onKeyDown={handleKeyDown} placeholder='Search by keyword' />
         </div>
     )
 

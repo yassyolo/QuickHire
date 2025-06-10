@@ -12,7 +12,6 @@ import { AddSubCategoryModal } from "../Modals/Add/AddSubCategoryModal";
 import { CategoryActions } from "./Common/CategoryActions";
 import { CategoryDetails } from "./Common/CategoryDetails";
 import { SubCategoriesTableSection } from "./Common/SubCategoriesTableSection";
-import { SellerPage } from "../../../Users/Seller/Pages/Common/SellerPage";
 
 export interface MainCategoryDetails {
   id: number;
@@ -106,8 +105,7 @@ export function MainCategoryDetails() {
   const handleSeeSubCategory = (id: number) => navigate(`/admin/sub-categories/${id}`);
 
   return (
-    <SellerPage>
-      <div className="category-details-page d-flex flex-row" >
+      <div className="category-details-page d-flex flex-row" style={{ height: "70vh" }}>
         <div className="breadcrumb-side-nav" style={{marginRight: "30px"}}>
           <Breadcrumb items={[ { label: <i className="bi bi-house-door" /> }, { label: "Main categories", to: "/admin/main-categories" }
           ]} />
@@ -178,6 +176,5 @@ export function MainCategoryDetails() {
           />
         )}
       </div>
-    </SellerPage>
   );
 }

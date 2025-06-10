@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import {Pagination} from "../../Shared/Pagination/Pagination/Pagination";
 import { DataTable } from "../Components/Tables/Common/AdminDataTable";
-import { AdminPage } from "./Common/AdminPage";
 import { PageTitle } from "./Common/PageTitle";
 import { UsersFilter } from "../Components/Filters/PageFilters/UsersFilter";
 import { TitleFilterSelector } from "./Common/TitleFilterSection";
@@ -38,7 +37,7 @@ export function Users (){
     const [moderationStatusId, setModerationStatusId] = useState<number>(0);
     const [gigs, setGigs] = useState<UserRow[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
-    const itemsPerPage = 2;
+    const itemsPerPage = 10;
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [totalPages, setTotalPages] = useState<number>(0);
     
@@ -98,23 +97,20 @@ export function Users (){
     , [id, keyword, currentPage, moderationStatusId, selectedRoleId, fetchGigs]);
 
     return(
-        <AdminPage>
-          <div className="filter-table">
-              <PageTitle title="Users"   description="View, filter, manage and monitor user activity to maintain platform integrity."breadcrumbs={[{ label: <i className="bi bi-house-door"></i>, to: "/admin" }, { label: "Users" }]}/>         
-              <div className="d-flex flex-column">
-                <UsersFilter setId={setId} setKeyword={setKeyword} setSelectedRoleId={handleSelectedRoleId}  selectedRoleId={selectedRoleId}></UsersFilter>
-              </div>
-              {loading ? (<div className="loading">Loading...</div>
-              ) : (
-                    <>
+          <><div className="filter-table">
+            <PageTitle title="Users" description="View, filter, manage and monitor user activity to maintain platform integrity." breadcrumbs={[{ label: <i className="bi bi-house-door"></i>, to: "/admin" }, { label: "Users" }]} />
+            <div className="d-flex flex-column">
+                <UsersFilter setId={setId} setKeyword={setKeyword} setSelectedRoleId={handleSelectedRoleId} selectedRoleId={selectedRoleId}></UsersFilter>
+            </div>
+            {loading ? (<div className="loading">Loading...</div>
+            ) : (
+                <>
                     <TitleFilterSelector selectedId={moderationStatusId} setSelectedId={handleSelectedModerationStatusId} endpoint="https://localhost:7267/admin/filters/moderation-status" />
-                    <DataTable data={gigs} columns={["id", "joined", "username", "roles", "status"]} headers={tableHeaders} renderActions={(row: UserRow) => (<UserActions user={row} onDeactivateSuccess={hanldeDeactivateSuccess } />)} /></>            
-              )}
-            </div>
-            <div className="pagination-container">
+                    <DataTable data={gigs} columns={["id", "joined", "username", "roles", "status"]} headers={tableHeaders} renderActions={(row: UserRow) => (<UserActions user={row} onDeactivateSuccess={hanldeDeactivateSuccess} />)} /></>
+            )}
+        </div><div className="pagination-container">
                 <Pagination totalPages={totalPages} currentPage={currentPage} onPageChange={handlePageChange}></Pagination>
-            </div>
-        </AdminPage>
+            </div></>
 );
 
 }

@@ -15,8 +15,10 @@ const tableHeaders = {
   clicks: "Clicks",
   avgReview: "Avg Review",
 };
-
-export function GigsForUser (){
+interface GigsForUserProps {
+  userId: string;
+}
+export function GigsForUser ({ userId }: GigsForUserProps) {
     const [gigs, setGigs] = useState<GigRow[]>([]);
     const itemsPerPage = 2;
     const [currentPage, setCurrentPage] = useState<number>(1);
@@ -29,6 +31,9 @@ export function GigsForUser (){
                 const params = new URLSearchParams();               
                 params.append("CurrentPage", currentPage.toString());
                 params.append("ItemsPerPage", itemsPerPage.toString());
+                if (userId) {
+                    params.append("UserId", userId);
+                }
     
                 const url = `https://localhost:7267/admin/users/gigs?${params.toString()}`;
     

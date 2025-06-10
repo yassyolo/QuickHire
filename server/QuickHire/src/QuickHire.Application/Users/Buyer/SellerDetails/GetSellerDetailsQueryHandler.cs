@@ -20,7 +20,7 @@ public class GetSellerDetailsQueryHandler : IQueryHandler<GetSellerDetailsQuery,
     
     public async Task<SellerDetailsForBuyerModel> Handle(GetSellerDetailsQuery request, CancellationToken cancellationToken)
     {
-        /*var sellerId = 0;
+        var sellerId = 0;
         var userId = string.Empty;
         if (request.Id.HasValue)
         {
@@ -36,8 +36,7 @@ public class GetSellerDetailsQueryHandler : IQueryHandler<GetSellerDetailsQuery,
 
         var sellerUser = await _userService.GetSellerProfileDetails(userId);
 
-        var userLanguageQueryable = _repository.GetAllReadOnly<QuickHire.Domain.Users.UserLanguage>().Where(x => x.UserId == sellerUser.Id);
-        userLanguageQueryable = _repository.GetAllIncluding<QuickHire.Domain.Users.UserLanguage>(x => x.Language);
+        var userLanguageQueryable = _repository.GetAllIncluding<QuickHire.Domain.Users.UserLanguage>(x => x.Language).Where(x => x.UserId == sellerUser.Id);
         var userLanguageList = await _repository.ToListAsync<QuickHire.Domain.Users.UserLanguage>(userLanguageQueryable);
         var userLanguageModel = userLanguageList.Select(x => new UserLanguageModel
         {
@@ -53,8 +52,7 @@ public class GetSellerDetailsQueryHandler : IQueryHandler<GetSellerDetailsQuery,
             Name = x.Name,
         }).ToList();
 
-        var educationQueryable = _repository.GetAllReadOnly<QuickHire.Domain.Users.Education>().Where(x => x.SellerId == sellerId);
-        educationQueryable = _repository.GetAllIncluding<QuickHire.Domain.Users.Education>(x => x.Degree);
+        var educationQueryable = _repository.GetAllIncluding<QuickHire.Domain.Users.Education>().Where(x => x.SellerId == sellerId);
         var educationList = await _repository.ToListAsync<QuickHire.Domain.Users.Education>(educationQueryable);
         var educationModel = educationList.Select(x => new EducationModel
         {
@@ -75,8 +73,7 @@ public class GetSellerDetailsQueryHandler : IQueryHandler<GetSellerDetailsQuery,
             Date = x.IssuedAt.ToString("dd-MM-yyyy")        
         }).ToList();
 
-        var portfolioQueryable = _repository.GetAllReadOnly<QuickHire.Domain.Users.Portfolio>().Where(x => x.SellerId == sellerId);
-        portfolioQueryable = _repository.GetAllIncluding<QuickHire.Domain.Users.Portfolio>(x => x.MainCategory);
+        var portfolioQueryable = _repository.GetAllIncluding<QuickHire.Domain.Users.Portfolio>(x => x.MainCategory).Where(x => x.SellerId == sellerId);
         var portfolioList = await _repository.ToListAsync<QuickHire.Domain.Users.Portfolio>(portfolioQueryable);
         var portfolioModel = portfolioList.Select(x => new PortfolioModel
         {
@@ -88,8 +85,7 @@ public class GetSellerDetailsQueryHandler : IQueryHandler<GetSellerDetailsQuery,
             MainCategoryName = x.MainCategory.Name
         }).ToList();
 
-        var ordersQueryable = _repository.GetAllReadOnly<QuickHire.Domain.Orders.Order>().Where(x => x.SellerId == sellerId);
-        ordersQueryable = _repository.GetAllIncluding<QuickHire.Domain.Orders.Order>(x => x.Reviews);
+        var ordersQueryable = _repository.GetAllIncluding<QuickHire.Domain.Orders.Order>(x => x.Reviews).Where(x => x.SellerId == sellerId);
         var ordersList = await _repository.ToListAsync<QuickHire.Domain.Orders.Order>(ordersQueryable);
 
         var averageRating = ordersList.Any() ? ordersList.Average(x => x.Reviews.Any() ? x.Reviews.Average(r => r.Rating) : 0) : 0;
@@ -117,44 +113,6 @@ public class GetSellerDetailsQueryHandler : IQueryHandler<GetSellerDetailsQuery,
         Industry = sellerDetailsForBuyer.Industry,
         MemberSince = sellerDetailsForBuyer.MemberSince,
         TotalReviews = totalReviews
-
-        };*/
-
-        return new SellerDetailsForBuyerModel
-        {
-            ProfilePictureUrl = "https://example.com/profile.jpg",
-            FullName = "John Doe",
-            Country = "USA",
-            Username = "johndoe",
-            Description = "Experienced software developer specializing in web applications.",
-            Languages = new List<UserLanguageModel>
-            {
-                new UserLanguageModel { LanguageId = 1, LanguageName = "English" },
-                new UserLanguageModel {LanguageId = 2, LanguageName = "Spanish" }
-            },
-            Skills = new List<SkillModel>
-            {
-                new SkillModel { Id = 1, Name = "C#" },
-                new SkillModel { Id = 2, Name = "JavaScript" }
-            },
-            Education = new List<EducationModel>
-            {
-                new EducationModel { Id = 1, Major = "Computer Science", Institution = "University A", EndYear = "2020-05-15", Degree = "Bachelor" }
-            },
-            Certifications = new List<CertificationModel>
-            {
-                new CertificationModel { Id = 1, Certification = "Certified .NET Developer", Issuer = "Microsoft", Date = "2021-06-01" }
-            },
-            Portfolios = new List<PortfolioModel>
-            {
-                new PortfolioModel { Id = 1, Title = "Portfolio Project 1", Description = "Description of project 1", ImageUrl = "https://picsum.photos/200/300", MainCategoryId = 1, MainCategoryName = "category1" },
-                new PortfolioModel { Id = 2, Title = "Portfolio Project 2", Description = "Description of project 2", ImageUrl = "https://picsum.photos/200/300", MainCategoryId = 1, MainCategoryName = "category1" }
-            },
-            AverageRating = 4.5,
-            TopRated = true,
-            Industry = "Software Development",
-            MemberSince = "2020-01-01",
-            TotalReviews = 100
 
         };
     }

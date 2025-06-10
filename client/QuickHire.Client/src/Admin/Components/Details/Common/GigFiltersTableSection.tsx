@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { ActionButton } from "../../../../Shared/Buttons/ActionButton/ActionButton";
 import { Th } from "../../Tables/Common/Th";
 import './SubCategoriesTableSection.css';
@@ -10,14 +10,13 @@ import { DeactivateGigFilterModal } from "../../Modals/Deactivate/DeactivateGigF
 import { EditFiterOptionModal } from "../../Modals/Edit/EditFilterOption";
 import { DeactivateFilterOptionsModal } from "../../Modals/Deactivate/DeactivateFilterOption";
 
-
 interface SubCategoryTableSectionProps {
   items: GigFilter[];
   onAddGigFilterSuccess: (newFilter: GigFilter) => void;
   onEditGigFilterSuccess: (id: number, newTitle: string) => void;
   onDeactivateGigFilterSuccess: (id: number) => void;
-    onEditFilterOptionSuccess: (id: number, newValue: string) => void;
-    onDeactivateFilterOptionSuccess: (id: number) => void;
+  onEditFilterOptionSuccess: (id: number, newValue: string) => void;
+  onDeactivateFilterOptionSuccess: (id: number) => void;
 }
 
 export function SubSubCategoriesTableSection({
@@ -26,15 +25,18 @@ export function SubSubCategoriesTableSection({
   onEditGigFilterSuccess,
   onDeactivateGigFilterSuccess,
   onEditFilterOptionSuccess,
-    onDeactivateFilterOptionSuccess
+  onDeactivateFilterOptionSuccess
 }: SubCategoryTableSectionProps) {
   const [showAddGigFilterModal, setShowAddGigFilterModal] = useState(false);
   const [editingGigFilterId, setEditingGigFilterId] = useState<number | null>(null);
   const [deactivatingGigFilterId, setDeactivatingGigFilterId] = useState<number | null>(null);
   const [editingOptionId, setEditingOptionId] = useState<number | null>(null);
   const [deactivatingOptionId, setDeactivatingOptionId] = useState<number | null>(null);
+  const [showEditFilterModal, setShowEditFilterModal] = useState(false);
 
-
+  const handleOnEditSuccessAndClose = () => {
+    setShowEditFilterModal(!showEditFilterModal);
+  }
 
   return (
     <div className="sub-categories-section">
@@ -83,23 +85,22 @@ export function SubSubCategoriesTableSection({
                     ariaLabel="Edit Gig Filter Button"
                   />
 
-                  {/* Gig Filter Edit Modal */}
                   {editingGigFilterId === item.id && (
                     <EditFiterModal
                       id={item.id}
-                      showModal={true}
+                      showModal={editingGigFilterId === item.id}
+                      onEditSuccessAndClose={handleOnEditSuccessAndClose}
                       onClose={() => setEditingGigFilterId(null)}
                       onEditSuccess={onEditGigFilterSuccess}
                       name={item.title}
                     />
                   )}
 
-                  {/* Gig Filter Deactivate Modal */}
                   {deactivatingGigFilterId === item.id && (
                     <DeactivateGigFilterModal
                       onClose={() => setDeactivatingGigFilterId(null)}
                       onDeactivateSuccess={onDeactivateGigFilterSuccess}
-                      showModal={true}
+                      showModal={deactivatingGigFilterId === item.id}
                       id={item.id}
                     />
                   )}
@@ -111,27 +112,28 @@ export function SubSubCategoriesTableSection({
                       <span className="option-value flex-grow-1">{option.value}</span>
 
                       <IconButton
-                        icon={<i className="bi bi-x text-danger fs-5" />}
+                        icon={<i className="bi bi-x" style={{ fontSize: "20px", color: "red" }} />}
                         onClick={() => setDeactivatingOptionId(option.id)}
-                        className="option-delete-button"
+                        className="faq-delete-button"
                         ariaLabel={`Delete option ${option.value}`}
                       />
 
                       <IconButton
-                        icon={<i className="bi bi-pencil fs-5" />}
+                        icon={<i className="bi bi-pencil" style={{ fontSize: "18px" }} />}
                         onClick={() => setEditingOptionId(option.id)}
-                        className="option-edit-button"
+                        className="faq-edit-button"
                         ariaLabel={`Edit option ${option.value}`}
                       />
 
-                      {editingOptionId === option.id && (
+                      {editingOptionId === option.id && showEditFilterModal && (
                         <EditFiterOptionModal
-                                  id={option.id}
-                                  showModal={true}
-                                  onClose={() => setEditingOptionId(null)}
-                                  onEditSuccess={onEditFilterOptionSuccess} name={option.value}
+                          id={option.id}
+                          showModal={true}
+                          onClose={() => setEditingOptionId(null)}
+                          onEditSuccess={onEditFilterOptionSuccess}
+                          name={option.value}
                         />
-                      )} 
+                      )}
 
                       {deactivatingOptionId === option.id && (
                         <DeactivateFilterOptionsModal
@@ -140,7 +142,7 @@ export function SubSubCategoriesTableSection({
                           showModal={true}
                           id={option.id}
                         />
-                      )} 
+                      )}
                     </div>
                   ))}
                 </td>

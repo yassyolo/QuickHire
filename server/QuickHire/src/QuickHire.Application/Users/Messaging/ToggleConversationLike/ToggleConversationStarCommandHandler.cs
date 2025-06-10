@@ -22,7 +22,7 @@ public class ToggleConversationStarCommandHandler : ICommandHandler<ToggleConver
 
     public async Task<Unit> Handle(ToggleConversationStarCommand request, CancellationToken cancellationToken)
     {
-        var currentUserIdAndMode = _userService.GetCurrentUserIdAndModeAsync();
+        var currentUserIdAndMode = _userService.GetCurrentUserIdAndMode();
 
         var conversationsQueryable = _repository.GetAllIncluding<Conversation>(x => x.Messages)
             .Where(x => (x.ParticipantAId == currentUserIdAndMode.UserId && x.ParticipantAMode == currentUserIdAndMode.Mode) || (x.ParticipantBId == currentUserIdAndMode.UserId && x.ParticipantBMode == currentUserIdAndMode.Mode));

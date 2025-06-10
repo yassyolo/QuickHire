@@ -23,7 +23,7 @@ public class DeactivateUserCommandHandler : ICommandHandler<DeactivateUserComman
 
     public async Task<Unit> Handle(DeactivateUserCommand request, CancellationToken cancellationToken)
     {
-        var sellerId = await _userService.GetSellerIdByExistingsUserIdAsync(request.UserId);
+        var sellerId = await _userService.GetSellerIdByExistingsUserIdAsync(request.Id);
         var gigsQueryable = _repository.GetAllReadOnly<Gig>().Where(x => x.SellerId == sellerId);
         var gigs = await _repository.ToListAsync<Gig>(gigsQueryable);
 
@@ -32,12 +32,12 @@ public class DeactivateUserCommandHandler : ICommandHandler<DeactivateUserComman
             gig.ModerationStatus = Domain.Moderation.Enums.ModerationStatus.Deactivated;
         }
 
-        var existingReportQueryable = _repository.GetAllReadOnly<ReportedItem>().Where(x => x.ReportedUserId == request.UserId);
+        var existingReportQueryable = _repository.GetAllReadOnly<ReportedItem>().Where(x => x.ReportedUserId == request.Id);
         var existingReport = await _repository.FirstOrDefaultAsync<ReportedItem>(existingReportQueryable);
 
         var deactivationRecord = new DeactivatedRecord()
         {
-            UserId = request.UserId,
+            UserId = request.Id,
             Reason = request.Reason,
             CreatedAt = DateTime.UtcNow,
         };
@@ -45,8 +45,8 @@ public class DeactivateUserCommandHandler : ICommandHandler<DeactivateUserComman
         await _repository.AddAsync(deactivationRecord);
         await _repository.SaveChangesAsync();
 
-        await _userService.DeactivateUserAsync(request.UserId);
-        var userEmail = await _userService.GetUserEmailByUserIdAsync(request.UserId);
+        await _userService.DeactivateUserAsync(request.Id);
+        var userEmail = await _userService.GetUserEmailByUserIdAsync(request.Id);
 
         var emailModel = new EmailModel
         {

@@ -7,6 +7,8 @@ import { MessageFilterDropdown } from "./MessagesFilter";
 import "./AllMessages.css";
 
 interface AllMessagesProps {
+  setSelectedMessageId: (id: number | null) => void;
+  onMessageClick: (messageId: number) => void;
     messages: AllMessagesItem[];
     selectedOrderStatusIds: number[];
   filterByCustomOffer: boolean;
@@ -18,7 +20,7 @@ interface AllMessagesProps {
   }) => void;
 }
 
-export function AllMessages({ messages, selectedOrderStatusIds, filterByCustomOffer, filterByStarred, onApply }: AllMessagesProps) {
+export function AllMessages({ messages, selectedOrderStatusIds, filterByCustomOffer, filterByStarred, onApply, setSelectedMessageId, onMessageClick }: AllMessagesProps) {
 
     const [showFilterDropdown, setShowFilterDropdown] = useState(false);
     const handleFilterDropdownVisibility = () => {
@@ -34,7 +36,7 @@ export function AllMessages({ messages, selectedOrderStatusIds, filterByCustomOf
             </ButtonDropdownContainer>
             <div className="all-messages-container">
                  {messages.map((message) => (
-               <AllMessagesItemComponent key={message.id} message={message}/>
+               <AllMessagesItemComponent key={message.id} message={message} setSelectedMessageId={setSelectedMessageId} onMessageClick={onMessageClick}/>
             ))}
             </div>
            

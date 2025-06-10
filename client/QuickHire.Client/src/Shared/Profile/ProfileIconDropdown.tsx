@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import './ProfileIconDropdown.css';
 import { useAuth } from "../../AuthContext"; 
 
@@ -9,9 +9,6 @@ interface ProfileIconDropdownProps {
 export function ProfileIconDropdown({ children }: ProfileIconDropdownProps) {
     const user = useAuth(); 
 
-    useEffect(() => {
-        console.log("User in ProfileIconDropdown:", user);
-    }, [user]);
     const [showDropdown, setShowDropdown] = useState(false);
     const handleDropdownVisibility = () => setShowDropdown(!showDropdown);
 

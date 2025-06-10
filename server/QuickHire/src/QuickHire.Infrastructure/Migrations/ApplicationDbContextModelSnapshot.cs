@@ -459,9 +459,6 @@ namespace QuickHire.Infrastructure.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("VideoUrl")
-                        .HasColumnType("nvarchar(max)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("SellerId");
@@ -493,8 +490,9 @@ namespace QuickHire.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GigId")
-                        .IsUnique();
+                    b.HasIndex("FilterOptionId");
+
+                    b.HasIndex("GigId");
 
                     b.ToTable("GigMetadatas");
                 });
@@ -660,10 +658,10 @@ namespace QuickHire.Infrastructure.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsStarredByBuyer")
+                    b.Property<bool>("IsStarredByParticipantA")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("IsStarredBySeller")
+                    b.Property<bool>("IsStarredByParticipantB")
                         .HasColumnType("bit");
 
                     b.Property<DateTime>("LastMessageAt")
@@ -747,6 +745,10 @@ namespace QuickHire.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
@@ -2063,8 +2065,8 @@ namespace QuickHire.Infrastructure.Migrations
             modelBuilder.Entity("QuickHire.Domain.Gigs.GigMetadata", b =>
                 {
                     b.HasOne("QuickHire.Domain.Categories.FilterOption", "FilterOption")
-                        .WithOne()
-                        .HasForeignKey("QuickHire.Domain.Gigs.GigMetadata", "GigId")
+                        .WithMany()
+                        .HasForeignKey("FilterOptionId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 

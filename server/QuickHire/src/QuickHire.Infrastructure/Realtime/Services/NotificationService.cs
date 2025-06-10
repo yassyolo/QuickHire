@@ -6,7 +6,6 @@ using QuickHire.Application.Common.Interfaces.Services;
 using QuickHire.Application.Users.Models.Notifications;
 using QuickHire.Domain.Users;
 using QuickHire.Domain.Users.Enums;
-using QuickHire.Infrastructure.Realtime.Hubs;
 
 namespace QuickHire.Infrastructure.Realtime.Services;
 

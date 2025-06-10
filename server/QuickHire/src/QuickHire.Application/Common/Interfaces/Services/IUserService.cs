@@ -6,6 +6,7 @@ using QuickHire.Application.Admin.Models.Shared;
 using QuickHire.Application.Admin.Models.Users;
 using QuickHire.Application.Admin.Users.SearchUsers;
 using QuickHire.Application.Users.Models.Authentication;
+using QuickHire.Application.Users.Models.Messaging;
 using QuickHire.Application.Users.Models.NewSEller;
 using QuickHire.Application.Users.Models.Profile;
 
@@ -56,6 +57,7 @@ public interface IUserService
     Task<GetExistingUserInfoModel> GetExistingUserInfoAsync();
     Task<(string BuyerName, string BuyerProfilePictureUrl,  string MemberSince ,string Location, string[] Languages)> GetBuyerInfoForProjectBriefAsync(int buyerId);
     Task<AboutUserModel> GetAboutCurrentUserAsync();
-    (string UserId, string Mode) GetCurrentUserIdAndModeAsync();
+    (string UserId, string Mode) GetCurrentUserIdAndMode();
     Task<(string ProfilePictureUrl, string Username)> GetUsernameAndProfilePictureAsync(string participantBId);
+    Task<ParticipantBInfoModel> GetParticipantInfoAsync(string participantBId);
 }

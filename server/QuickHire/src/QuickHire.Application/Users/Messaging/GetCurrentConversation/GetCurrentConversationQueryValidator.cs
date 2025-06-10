@@ -1,11 +1,11 @@
 ﻿using FluentValidation;
 using static QuickHire.Application.Common.Constants.ValidationMessages;
 
-namespace QuickHire.Application.Users.Messaging.GetMessagesForConversation;
+namespace QuickHire.Application.Users.Messaging.GetCurrentConversation;
 
-public class GetMessagesForConversationQueryValidator : AbstractValidator<GetMessagesForConversationQuery>
+public class GetCurrentConversationQueryValidator : AbstractValidator<GetCurrentConversationQuery>
 {
-    public GetMessagesForConversationQueryValidator()
+    public GetCurrentConversationQueryValidator()
     {
         RuleFor(x => x.Id)
             .NotEmpty()

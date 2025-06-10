@@ -17,7 +17,7 @@ export function DeactivateUser({ id, deactivateUser, onClose }: DeactivateFavour
         try {
 
             const url = `https://localhost:7267/admin/users/deactivate`;
-             await axios.delete(url, { data: { id, reason}});
+             await axios.post(url, { id, reason});
             deactivateUser(id);
         }
         catch (error : unknown) {

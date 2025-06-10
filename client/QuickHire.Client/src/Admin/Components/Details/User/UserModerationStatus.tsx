@@ -59,12 +59,12 @@ export function UserModerationStatus ({ userId }: UserModerationStatusProps) {
         };
 
         fetchModerationStatus();
-    })
+    }, [userId]);
 
     return(
         <>
             <div className="user-moderation d-flex flex-column" >
-                <div className="d-flex flex-row user-moderation-top justify-content-between">
+                <div className="d-flex flex-row user-moderation-top">
                     <div className="user-moderation-item">
                     <div className="user-moderation-item-label">Status</div>
                     <div className="user-moderation-item-value">{moderationStatusDetails ? moderationStatusDetails.status : "Loading..."}</div>

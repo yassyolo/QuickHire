@@ -39,8 +39,8 @@ export function UserInfo() {
                 const fetchSellerDetails = async () => {
             try {
                 const params = new URLSearchParams();
-                if (id !== undefined) {
-                    params.append('userId', id.toString());
+                if( id) {
+                  params.append('userId', id);
                 }
                 const url = `https://localhost:7267/gigs/seller?${params.toString()}`;
                 const response = await axios.get<SellerDetails>(url);
@@ -69,6 +69,7 @@ export function UserInfo() {
                     </div>
                     </div>
                     
+                    {sellerDetails?.skills && sellerDetails.skills.length > 0 &&
                     <div className="d-flex flex-column seller-details-dex-skills-item" style={{marginTop: '20px'}}>
                         <div className="seller-details-dex-skills-item-header">Skills</div>
                         <div className="seller-details-dex-skills-item-content-skills">
@@ -76,7 +77,8 @@ export function UserInfo() {
                                 <SkillsTag key={index} skill={skill.name} />
                             ))}
                         </div>
-                    </div>
+                    </div> }
+                    
 
                 </div>               
                 

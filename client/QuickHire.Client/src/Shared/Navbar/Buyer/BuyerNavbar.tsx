@@ -17,6 +17,10 @@ export function BuyerNavbar() {
         navigate('/buyer/favourite-gigs');
     };
 
+    const handleInboxIconClcik = () => {
+        navigate('/buyer/inbox');
+    };
+
   return (
     <div className="page-container">
         <nav className="top-seller-navbar">
@@ -29,7 +33,7 @@ export function BuyerNavbar() {
                 <IconButton buttonInfo="Favourites" icon={<i className="fa-regular fa-heart"></i>} onClick={handleFavouritesIconClick} className={"inbox-button"} ariaLabel={"FavoritesButton"}></IconButton>
 
                 <NotificationButtonDropdown buyer={true}/>
-                <IconButton buttonInfo="Messages" icon={<i className="fa-regular fa-envelope"></i>} onClick={() => {}} className={"inbox-button"} ariaLabel={"MessagesButton"}></IconButton>
+                <IconButton buttonInfo="Messages" icon={<i className="fa-regular fa-envelope"></i>} onClick={handleInboxIconClcik} className={"inbox-button"} ariaLabel={"MessagesButton"}></IconButton>
                 <ProfileIconDropdown> <BuyerProfileDropdown /></ProfileIconDropdown>
             </div>
         </nav>      

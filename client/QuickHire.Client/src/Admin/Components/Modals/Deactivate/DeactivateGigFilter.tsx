@@ -16,13 +16,6 @@ export function DeactivateGigFilterModal({showModal, onClose, onDeactivateSucces
   const [showReasonError, setShowReasonError] = useState<string[]>([]);
 
   useEffect(() => {
-    if(!showModal) {
-      setReason("");
-      setAffectedItems([]);
-      setShowReasonError([]);
-      return;
-    }
-
     const fetchMainCategoryForDelete = async () => {
       try {
         const url = `https://localhost:7267/admin/sub-sub-categories/filters/delete/${id}`;
@@ -55,17 +48,22 @@ export function DeactivateGigFilterModal({showModal, onClose, onDeactivateSucces
     }
   };
 
+  const handleClose = () => {
+  console.log("DeactivateGigFilterModal onClose called");
+  onClose();
+};
+
  return (
   <>
     {showModal && (
       (affectedItems?.length ?? 0) > 0 ? (
-        <DeactivateModalNotPossible id={id} onClose={onClose} affectedItems={"Filters"}>
+        <DeactivateModalNotPossible id={id} onClose={handleClose} affectedItems={"options"}>
             {affectedItems.map((item, index) => (
                 <li key={index}>{item}</li>
             ))}
         </DeactivateModalNotPossible>
       ) : (
-        <DeactivateModal error={showReasonError} id={id} onClose={onClose} onDeactivateSuccess={handleContinue} reason={reason} setReason={setReason}/>
+        <DeactivateModal error={showReasonError} id={id} onClose={handleClose} onDeactivateSuccess={handleContinue} reason={reason} setReason={setReason}/>
       )
     )}
   </>

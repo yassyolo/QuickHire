@@ -13,9 +13,5 @@ internal class GigMetadataConfiguration : IEntityTypeConfiguration<GigMetadata>
         builder.HasOne(x => x.Gig)
             .WithMany(x => x.Metadata)
             .HasForeignKey(x => x.GigId);
-
-        builder.HasOne(x => x.FilterOption)
-            .WithOne()
-            .HasForeignKey<GigMetadata>(x => x.GigId);
     }
 }

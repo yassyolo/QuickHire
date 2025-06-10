@@ -1,5 +1,8 @@
-﻿namespace QuickHire.Application.Common.Interfaces.Services;
+﻿using QuickHire.Application.Users.Models.Messaging;
 
-internal interface IChatService
+namespace QuickHire.Application.Common.Interfaces.Services;
+
+public interface IChatService
 {
+    Task<MessagesForConversationModel> CreateNewMessage(NewMessageModel newMessageModel);
 }

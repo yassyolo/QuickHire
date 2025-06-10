@@ -1,4 +1,11 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+  useRef,
+} from "react";
 import axios from "./axiosInstance";
 import { useNavigate } from "react-router-dom";
 import * as signalR from "@microsoft/signalr";
@@ -11,6 +18,23 @@ type User = {
   profilePictureUrl: string;
 };
 
+type CustomOfferPayloadModel = {
+  gigTitle: string;
+  gigId: number;
+  offerAmount: string;
+  includes: string[];
+  offerId: number;
+  senderUsername: string;
+};
+
+type NewMessage = {
+  text: string;
+  conversationId?: number;
+  receiverId: string;
+  payload?: CustomOfferPayloadModel | null;
+  attachmentUrl?: string | null;
+};
+
 type AuthContextType = {
   user: User | null;
   loading: boolean;
@@ -18,99 +42,154 @@ type AuthContextType = {
   logout: () => void;
   switchMode: (mode: "buyer" | "seller") => void;
   signalRConnection: signalR.HubConnection | null;
+  sendMessage: (message: NewMessage) => Promise<void>;
+  registerOnReceiveMessage: (callback: (message: unknown) => void) => void;
+    fetchUser: () => Promise<void>;
+
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
-
 export const useAuth = () => useContext(AuthContext)!;
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
-  const [connection, setConnection] = useState<signalR.HubConnection | null>(null);
+  const connectionRef = useRef<signalR.HubConnection | null>(null);
+  const onReceiveMessageCallbackRef = useRef<((message: unknown) => void) | null>(null);
+
   const navigate = useNavigate();
 
-  const startSignalRConnection = async () => {
-  if (connection?.state === signalR.HubConnectionState.Connected || connection?.state === signalR.HubConnectionState.Connecting) {
-    return;
-  }
+  const registerOnReceiveMessage = useCallback((callback: (message: unknown) => void) => {
+    onReceiveMessageCallbackRef.current = callback;
+  }, []);
 
-  try {
-    const conn = new signalR.HubConnectionBuilder()
-      .withUrl("https://localhost:7267/hubs/chat", {
-        withCredentials: true
-      })
-      .withAutomaticReconnect()
-      .build();
-
-    conn.on("ReceiveMessage", (message) => {
-      console.log("Received message:", message);
-    });
-
-    await conn.start();
-    console.log("SignalR connected");
-    setConnection(conn);
-  } catch (error) {
-    console.error("SignalR connection error:", error);
-  }
-};
-
-
-  const stopSignalRConnection = async () => {
-    if (connection) {
-      await connection.stop();
-      setConnection(null);
-      console.log("SignalR disconnected");
+  const startSignalRConnection = useCallback(async () => {
+    if (connectionRef.current) {
+      if (
+        connectionRef.current.state === signalR.HubConnectionState.Connected ||
+        connectionRef.current.state === signalR.HubConnectionState.Connecting
+      ) {
+        return; // Already connected or connecting
+      }
     }
-  };
 
-  const fetchUser = async () => {
     try {
-      const url = "https://localhost:7267/auth/me";
-      const res = await axios.get(url);
+      const conn = new signalR.HubConnectionBuilder()
+        .withUrl("https://localhost:7267/hubs/chat", { withCredentials: true })
+        .withAutomaticReconnect()
+        .build();
+
+      conn.on("ReceiveMessage", (message) => {
+        console.log("📨 New message received:", message);
+        onReceiveMessageCallbackRef.current?.(message);
+      });
+
+      conn.onreconnected(() => {
+        console.log("🔁 SignalR reconnected");
+      });
+
+      await conn.start();
+      console.log("✅ SignalR connected");
+      connectionRef.current = conn;
+    } catch (error) {
+      console.error("❌ SignalR connection error:", error);
+    }
+  }, []);
+
+  const stopSignalRConnection = useCallback(async () => {
+    if (connectionRef.current) {
+      try {
+        await connectionRef.current.stop();
+        console.log("SignalR disconnected");
+      } catch (err) {
+        console.error("Error disconnecting SignalR:", err);
+      }
+      connectionRef.current = null;
+    }
+  }, []);
+
+  const fetchUser = useCallback(async () => {
+    try {
+      const res = await axios.get("https://localhost:7267/auth/me");
       setUser(res.data);
-      await startSignalRConnection(); 
+      await startSignalRConnection();
     } catch {
       setUser(null);
       await stopSignalRConnection();
     } finally {
       setLoading(false);
     }
-  };
+  }, [startSignalRConnection, stopSignalRConnection]);
 
-  useEffect(() => {
-  if (window.location.pathname !== "/login") {
-    fetchUser();
-  } else {
-    setLoading(false);
-  }
+  const login = useCallback(
+    async (email: string, password: string) => {
+      await axios.post(
+        "https://localhost:7267/auth/login",
+        { emailOrUsername: email, password },
+        { withCredentials: true }
+      );
+      await fetchUser();
+      navigate("/buyer");
+    },
+    [fetchUser, navigate]
+  );
 
-  return () => {
-    stopSignalRConnection();
-  };
-}, []);
-
-
-  const login = async (email: string, password: string) => {
-    const url = "https://localhost:7267/auth/login";
-    await axios.post(url, { emailOrUsername: email, password }, { withCredentials: true });
-    await fetchUser(); 
-    navigate("/buyer");
-  };
-
-  const logout = async () => {
-    const url = "https://localhost:7267/auth/logout";
-    await axios.post(url, {}, { withCredentials: true });
+  const logout = useCallback(async () => {
+    await axios.post("https://localhost:7267/auth/logout", {}, { withCredentials: true });
     setUser(null);
     await stopSignalRConnection();
     navigate("/login");
-  };
+  }, [stopSignalRConnection, navigate]);
 
-  const switchMode = async (mode: "buyer" | "seller") => {
-    const url = "https://localhost:7267/auth/switch-mode";
-    await axios.post(url, { mode }, { withCredentials: true });
-    await fetchUser();
-  };
+  const switchMode = useCallback(
+    async (mode: "buyer" | "seller") => {
+      await axios.post(
+        "https://localhost:7267/auth/switch-mode",
+        { mode },
+        { withCredentials: true }
+      );
+      await fetchUser();
+    },
+    [fetchUser]
+  );
+
+  const sendMessage = useCallback(
+    async (message: NewMessage) => {
+      const conn = connectionRef.current;
+      if (conn?.state !== signalR.HubConnectionState.Connected) {
+        console.error("SignalR not connected. Message not sent.");
+        return;
+      }
+
+      try {
+        await conn.invoke(
+          "SendMessage",
+          message.text,
+          message.conversationId ?? null,
+          message.attachmentUrl ?? null,
+          message.payload ?? null,
+          message.receiverId
+        );
+      } catch (error) {
+        console.error("Error sending message:", error);
+      }
+    },
+    []
+  );
+
+  useEffect(() => {
+    if (window.location.pathname !== "/login") {
+      fetchUser();
+    } else {
+      setLoading(false);
+    }
+
+    return () => {
+      stopSignalRConnection();
+    };
+  }, [fetchUser, stopSignalRConnection]);
 
   return (
     <AuthContext.Provider
@@ -120,7 +199,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         login,
         logout,
         switchMode,
-        signalRConnection: connection,
+        signalRConnection: connectionRef.current,
+        sendMessage,
+        registerOnReceiveMessage,
+        fetchUser,
       }}
     >
       {children}

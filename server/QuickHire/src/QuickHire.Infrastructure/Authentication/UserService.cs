@@ -1,4 +1,5 @@
 ﻿using Azure.Core;
+using CloudinaryDotNet.Actions;
 using Mapster;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -12,6 +13,7 @@ using QuickHire.Application.Admin.Users.SearchUsers;
 using QuickHire.Application.Common.Interfaces.Repository;
 using QuickHire.Application.Common.Interfaces.Services;
 using QuickHire.Application.Users.Models.Authentication;
+using QuickHire.Application.Users.Models.Messaging;
 using QuickHire.Application.Users.Models.NewSEller;
 using QuickHire.Application.Users.Models.Profile;
 using QuickHire.Domain.Gigs;
@@ -179,7 +181,7 @@ internal class UserService : IUserService
     public async Task DeactivateUserAsync(string userId)
     {
         var user = await GetUserByIdAsync(userId);
-        user.ModerationStatus = ModerationStatus.Deactivated;
+        user.ModerationStatus = QuickHire.Domain.Moderation.Enums.ModerationStatus.Deactivated;
 
         await _repository.UpdateAsync(user);
     }
@@ -527,8 +529,13 @@ internal class UserService : IUserService
 
         if(request.ModerationStatusId != null)
         {
-            var moderationStatus = (ModerationStatus)request.ModerationStatusId;
+            var moderationStatus = (QuickHire.Domain.Moderation.Enums.ModerationStatus)request.ModerationStatusId;
             usersQueryable = usersQueryable.Where(x => x.ModerationStatus == moderationStatus);
+        }
+
+        if(request.Id != null)
+        {
+            usersQueryable = usersQueryable.Where(x => x.Id == $"{request.Id}");
         }
 
         var totalCount = usersQueryable.Count();
@@ -585,7 +592,7 @@ internal class UserService : IUserService
 
     public async Task LogoutUserAsync(ApplicationUserModel user)
     {
-        var appUser = await GetUserByIdAsync(user.Id);
+        var appUser = await _repository.GetAll<ApplicationUser>().Where(x => x.Id == user.Id).FirstOrDefaultAsync();
 
         appUser.RefreshToken = null;
         appUser.RefreshTokenExpiresAt = null;
@@ -739,7 +746,7 @@ internal class UserService : IUserService
         };
     }
 
-    public (string UserId, string Mode) GetCurrentUserIdAndModeAsync()
+    public (string UserId, string Mode) GetCurrentUserIdAndMode()
     {
         var userId = GetCurrentUserIdAsync();
         var mode = _httpContextAccessor.HttpContext?.User.FindFirst("mode")?.Value ?? "buyer"; 
@@ -751,5 +758,33 @@ internal class UserService : IUserService
         var user =  await _repository.GetAllReadOnly<ApplicationUser>().Where(x => x.Id == participantBId).Select(x => new { x.ProfileImageUrl, x.UserName }).FirstOrDefaultAsync();
 
         return user != null ? (user.ProfileImageUrl ?? string.Empty, user.UserName) : (string.Empty, string.Empty);
+    }
+
+    public async Task<ParticipantBInfoModel> GetParticipantInfoAsync(string participantBId)
+    {
+        var user = await _repository.GetAllReadOnly<ApplicationUser>().Where(x => x.Id == participantBId).FirstOrDefaultAsync();
+
+        var userLanguages = await _repository.GetAllReadOnly<UserLanguage>()
+            .Where(ul => ul.UserId == participantBId)
+            .Include(ul => ul.Language)
+            .Select(ul => ul.Language.Name)
+            .ToArrayAsync();
+
+        return new ParticipantBInfoModel
+
+        {
+               Id = user.Id,
+            ProfilePictureUrl = user.ProfileImageUrl ?? string.Empty,
+            FullName = user.FullName,
+            Country = await _repository.GetAllReadOnly<Address>()
+                .Where(a => a.UserId == user.Id)
+                .Include(a => a.Country)
+                .Select(a => a.Country.Name)
+                .FirstOrDefaultAsync() ?? "Unknown",
+            Username = user.UserName,
+            Languages = userLanguages,
+            MemberSince = user.JoinedAt.ToString("MMMM dd, yyyy")
+        };
+           
     }
 }

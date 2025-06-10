@@ -49,10 +49,10 @@ export function AddGigFilterModal({
   };
 
   const handleFilterNameChange = (id: number, value: string) => {
-    setFilters((prev) =>
-      prev.map((f) => (f.id === id ? { ...f, name: value } : f))
-    );
-  };
+  setFilters((prev) =>
+    prev.map((f) => (f.id === id ? { ...f, title: value } : f))
+  );
+};
 
   const handleAddFilterOption = (filterId: number) => {
     const newOption: FilterItem = { id: counterRef.current++, value: "" };

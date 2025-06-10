@@ -7,7 +7,6 @@ import { GigDetails } from "./GigInfo";
 import { GigStatistics } from "./GigStatistics";
 import './GigDetailsPage.css';
 import { ReviewsList } from "../../../../Gigs/Reviews/ReviewsList/ReviewsList";
-import { AdminPage } from "../../../Pages/Common/AdminPage";
 import { UserForGig } from "./UserForGig";
 import { RatingDistribution } from "../../../../Gigs/Reviews/RatingDistrbution/RatingDistribution";
 import { GigModerationStatus } from "./GigModeration";
@@ -98,8 +97,7 @@ export function GigDetailsForAdmin() {
         }, [id]);
 
     return(
-        <AdminPage>
-            <div className="gig-details-page">
+            <div className="gig-details-page-admin d-flex flex-row">
             <div className="breadcrumb-side-nav">
                  <Breadcrumb items={[{ label: <i className="bi bi-house-door"></i> }, { label: "Gigs", to: "/admin/gigs" }]}/>
                  <SideNavigation items={[{ label: "Details", onClick: handleGigDetailsVisibility }, { label: "Reviews", onClick: handleReviewsVisibility }, { label: "Seller", onClick: handleUserVisibility }, { label: "Statistics", onClick: handleStatisticsVisibility }, { label: "Moderation", onClick: handleGigModerationVisibility }]}></SideNavigation> 
@@ -120,6 +118,5 @@ export function GigDetailsForAdmin() {
             {showGigModeration && <GigModerationStatus gigId={gigId}/>}
             </div>   
         </div>
-        </AdminPage>
     );
 }

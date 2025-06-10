@@ -4,4 +4,4 @@ using QuickHire.Application.Common.Interfaces.Abstractions;
 
 namespace QuickHire.Application.Admin.Users.GetGigsForUser;
 
-public record GetGigsForUserQuery(int CurrentPage, int ItemsPerPage) : IQuery<PaginatedResultModel<SearchGigsForAdminModel>>;
+public record GetGigsForUserQuery(int CurrentPage, int ItemsPerPage, string UserId) : IQuery<PaginatedResultModel<SearchGigsForAdminModel>>;

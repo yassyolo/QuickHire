@@ -22,7 +22,7 @@ export function AuthenticationCard({ children }: AuthenticationCardProps) {
             </div>
             <div className="card-content">           
                 {children}
-               <div className="card-bottom">By joining, you agree to the Fiverr Terms of Service and to occasionally receive emails from us.</div>   
+               <div className="card-bottom">By joining, you agree to the QuickHire Terms of Service and to occasionally receive emails from us.</div>   
             </div>   
         </div>
         </Modal>

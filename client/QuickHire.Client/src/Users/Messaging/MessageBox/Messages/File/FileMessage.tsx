@@ -1,4 +1,4 @@
-import { MessageItem } from "./Common/MessageItem";
+import { MessageItem } from "../Common/MessageItem";
 import "./FileMessage.css";
 
 interface FileMessageProps {

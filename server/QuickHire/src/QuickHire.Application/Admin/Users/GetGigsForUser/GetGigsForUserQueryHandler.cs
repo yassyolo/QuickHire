@@ -23,9 +23,8 @@ public class GetGigsForUserQueryHandler : IQueryHandler<GetGigsForUserQuery, Pag
 
     public async Task<PaginatedResultModel<SearchGigsForAdminModel>> Handle(GetGigsForUserQuery request, CancellationToken cancellationToken)
     {
-        /*var sellerId = await _userService.GetSellerIdByUserIdAsync();
-        var gigsQueryable = _repository.GetAllReadOnly<Gig>().Where(x => x.SellerId == sellerId);
-        gigsQueryable = _repository.GetAllIncluding<Gig>(x => x.Orders, x => x.SubSubCategory);        
+        var sellerId = await _userService.GetSellerIdByExistingsUserIdAsync(request.UserId);
+        var gigsQueryable = _repository.GetAllIncluding<Gig>(x => x.Orders, x => x.SubSubCategory).Where(x => x.SellerId == sellerId);
 
         var totalCount = gigsQueryable.Count();
         IEnumerable<Gig> gigsList;
@@ -60,39 +59,7 @@ public class GetGigsForUserQueryHandler : IQueryHandler<GetGigsForUserQuery, Pag
          {
              Data = gigsForAdminModels,
              TotalPages = (int)Math.Ceiling(totalCount / (double)request.ItemsPerPage)
-         };*/
-
-        return new PaginatedResultModel<SearchGigsForAdminModel>
-        {
-            Data = new List<SearchGigsForAdminModel>
-            {
-                new SearchGigsForAdminModel
-                {
-                    Id = 1,
-                    CreatedOn = DateTime.Now.ToString("yyyy-MM-dd"),
-                    Service = "Sample Gig",
-                    Orders = 5,
-                    Revenue = 1000,
-                    AvgReview = 4.5,
-                    Clicks = 150,
-                    SubSubCategoryName = "Web Development",
-                    Status = ModerationStatus.Active.ToString()
-                },
-                new SearchGigsForAdminModel
-                {
-                    Id = 2,
-                    CreatedOn = DateTime.Now.AddDays(-10).ToString("yyyy-MM-dd"),
-                    Service = "Another Gig",
-                    Orders = 3,
-                    Revenue = 500,
-                    AvgReview = 4.0,
-                    Clicks = 80,
-                    SubSubCategoryName = "Graphic Design",
-                    Status = ModerationStatus.PendingReview.ToString()
-                }
-            },
-            TotalPages = 1
-        };
+         };
     }
 }
 

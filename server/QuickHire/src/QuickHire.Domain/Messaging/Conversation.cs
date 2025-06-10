@@ -17,5 +17,5 @@ public class Conversation : BaseSoftDeletableEntity<int>
     public bool IsStarredByParticipantB { get; set; }
     public int? OrderId { get; set; }
     public Order? Order { get; set; } = null!;
-    public IEnumerable<Message> Messages { get; set; } = new List<Message>();
+    public IEnumerable<Message>? Messages { get; set; } = new List<Message>();
 }

@@ -3,6 +3,7 @@ using QuickHire.Application.Common.Interfaces.Abstractions;
 using QuickHire.Application.Common.Interfaces.Repository;
 using QuickHire.Application.Common.Interfaces.Services;
 using QuickHire.Domain.Moderation;
+using System.Text.RegularExpressions;
 
 namespace QuickHire.Application.Admin.Reporting.ReportTables;
 
@@ -18,7 +19,7 @@ public class GetReportTablesQueryHandler : IQueryHandler<GetReportTablesQuery, M
     }
     public async Task<ModerationStatusResponseModel> Handle(GetReportTablesQuery request, CancellationToken cancellationToken)
     {
-        /*var reportedItemsQueryable = _repository.GetAllReadOnly<ReportedItem>();
+        var reportedItemsQueryable = _repository.GetAllReadOnly<ReportedItem>();
 
         if (request.GigId.HasValue)
         {
@@ -60,22 +61,13 @@ public class GetReportTablesQueryHandler : IQueryHandler<GetReportTablesQuery, M
         return new ModerationStatusResponseModel
         {
             ModerationStatus = reportTable.ToList(),
-            Status = status
-        };*/
-
-        return new ModerationStatusResponseModel()
-        {
-            Status = "Test",
-            ModerationStatus = new List<ReportTableModel>
-            {
-                new ReportTableModel()
-                {
-                    Id = 1,
-                    Reason = "Inappropriate content",
-                    CreatedBy = "johndoe",
-                    CreatedOn = DateTime.Now.ToString("yyyy-MM-dd")
-                }
-            }
+            Status = SplitPascalCase(status)
         };
+
+    }
+
+    private string SplitPascalCase(string input)
+    {
+        return Regex.Replace(input, @"(?<=[a-z])(?=[A-Z])", " ");
     }
 }

@@ -10,7 +10,7 @@ import { SubSubCategoryDetails } from './Admin/Components/Details/SubSubCategory
 import { Users } from './Admin/Pages/Users'
 import { MainCategoryDetails } from './Admin/Components/Details/MainCategoryDetails'
 import { MainCategoryPage } from './Shared/Categories/MainCategories/MainCategoryPage'
-import { AuthentionCardChild } from './Users/Authtentication/AuthenticationCardChild'
+import { AuthentionCardChild } from './Users/Authtentication/AuthenticationCard/Children/AuthenticationCardChild'
 import { BillingAndPaymentsPage } from './Users/BillingAndPayments/BillingAndPaymentsPage'
 import { SellerNavbar } from './Shared/Navbar/Seller/SellerNavbar'
 import { SettingsPage } from './Users/Settings/SettingsPage'
@@ -35,6 +35,7 @@ import { SellerOrders } from './Users/Seller/Pages/SellerOrders/SellerOrders'
 import { SellerProjectBriefs } from './Users/Seller/Pages/SellerProjectBriefs/SellerProjectBriefs'
 import { AuthProvider } from './AuthContext'
 import { InboxPage } from './Users/Messaging/InboxPage'
+import GoogleLoginRedirect from './Users/Authtentication/GoogleLoginRetirect'
 
 export function App() {
   return (
@@ -87,6 +88,7 @@ export function App() {
 
           <Route path="*" element={<div>Page Not Found</div>} />
                                 <Route path="/login" element={<AuthentionCardChild />} />
+          <Route path="/google-redirect" element={<GoogleLoginRedirect />} />
         </Routes>
             </AuthProvider>
 

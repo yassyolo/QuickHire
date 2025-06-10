@@ -6,7 +6,6 @@ import { SellerPage } from "../../Seller/Pages/Common/SellerPage";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { SellerInfoCard } from "../../Seller/Pages/SellerProfile/SellerProfileCard/SellerInfoCard";
-import { ActionButton } from "../../../Shared/Buttons/ActionButton/ActionButton";
 import { SkillsTag } from "../../Seller/Pages/SellerProfile/Tags/Skills/SkillsTag";
 import { Gig } from "../BrowsingHistory/BrowsingHistory/BrowsingHistory";
 import { GigCard } from "../../../Gigs/GigCard/GigCard";
@@ -16,6 +15,9 @@ import "./SellerDetailsPage.css";
 import { CertificationTag } from "../../Seller/Pages/SellerProfile/Tags/Certification/CertificationTag";
 import { EducationTag } from "../../Seller/Pages/SellerProfile/Tags/Education/EducationTag";
 import { PortfolioTag } from "../../Seller/Pages/SellerProfile/Tags/Portfolio/PortfolioTag";
+import { ContactMe } from "./ContactMe/ContactMe";
+
+
 
 interface SellerDetails{
     profilePictureUrl: string;
@@ -34,6 +36,7 @@ interface SellerDetails{
     memberSince: string;
     totalReviews: number;
 }
+
 
 
 export function SellerDetailsPage() {
@@ -106,11 +109,7 @@ export function SellerDetailsPage() {
                     </div>
 
                 </div>
-                <div className="contact-me-container">
-                    <div className="contact-me-description">If you have any questions or want to discuss a project, feel free to reach out!</div>
-                    <ActionButton  text={<><i className="bi bi-send"></i> Contact me</>}
- onClick={() => {}} className={"contact-me-button"} ariaLabel={"Contact Buyer button"}></ActionButton>
-                </div>
+                <ContactMe/>
                 
             </div>
 {sellerDetails?.certifications && sellerDetails.certifications.length > 0 && (

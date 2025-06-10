@@ -59,7 +59,7 @@ export function DeactivateFilterOptionsModal({showModal, onClose, onDeactivateSu
   <>
     {showModal && (
       (affectedItems?.length ?? 0) > 0 ? (
-        <DeactivateModalNotPossible id={id} onClose={onClose} affectedItems={"Gigs"}>
+        <DeactivateModalNotPossible id={id} onClose={onClose} affectedItems={"gigs"}>
            {affectedItems} 
         </DeactivateModalNotPossible>
       ) : (

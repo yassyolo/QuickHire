@@ -1,13 +1,13 @@
 import { useState } from "react";
-import { AuthenticationCard } from "./AuthenticationCard/AuthenticationCard";
-import { FormGroup } from "../../Shared/Forms/FormGroup";
-import { useTooltip } from "../../Shared/Tooltip/Tooltip";
+import { AuthenticationCard } from "../AuthenticationCard";
+import { FormGroup } from "../../../../Shared/Forms/FormGroup";
+import { useTooltip } from "../../../../Shared/Tooltip/Tooltip";
 import axios from "axios";
 import './AuthenticationCardChild.css';
-import { IconActionButton } from "../../Shared/Buttons/IconActionButton";
-import { IconButton } from "../../Shared/Buttons/IconButton/IconButton";
-import { PasswordCheckItem } from "./PasswordCheckItem";
-import { useAuth } from "../../AuthContext";
+import { IconActionButton } from "../../../../Shared/Buttons/IconActionButton";
+import { IconButton } from "../../../../Shared/Buttons/IconButton/IconButton";
+import { PasswordCheckItem } from "../../PasswordCheckItem";
+import { useAuth } from "../../../../AuthContext";
 
 export function AuthentionCardChild() {
     const [showSignInModal, setShowSignInModal] = useState(false);
@@ -47,9 +47,10 @@ export function AuthentionCardChild() {
     };
 
     const handleContinueWithGoogleClick = () => {
-        const returnUrl = encodeURIComponent("http://localhost:5173/users/welcome");
-        window.location.href = `https://localhost:7267/auth/google?returnUrl=${returnUrl}`;
-    };
+  const returnUrl = encodeURIComponent("http://localhost:5173/google-redirect");
+  window.location.href = `https://localhost:7267/auth/google?returnUrl=${returnUrl}`;
+};
+
 
     const handleRegistration = async () => {
         setValidationErrors({});
@@ -119,7 +120,7 @@ export function AuthentionCardChild() {
                         <div className="card-title">Create a new account</div>
                         <div className="card-subtitle">
                             Already have an account?{" "}
-                            <span className="sign-in-button" onClick={handleSignInModalVisibility}>
+                            <span className="sign-in-button" style={{cursor: 'pointer'}} onClick={handleSignInModalVisibility}>
                                 Sign in
                             </span>
                         </div>
@@ -259,7 +260,7 @@ export function AuthentionCardChild() {
                             ariaDescribedBy="password-help"
                         />
                         <button
-                            className="btn btn-primary"
+                            className="continue-button-email"
                             onClick={handleLogin}
                             disabled={handleContinueButtonDisability}
                         >

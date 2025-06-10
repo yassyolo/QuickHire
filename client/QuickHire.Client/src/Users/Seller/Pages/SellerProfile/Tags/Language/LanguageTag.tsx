@@ -2,7 +2,7 @@ import { IconButton } from "../../../../../../Shared/Buttons/IconButton/IconButt
 
 interface LanguageTagProps {
     languageName: string;
-    onButtonClick: () => void;
+    onButtonClick?: () => void;
     showActions: boolean;
 }
 
@@ -10,8 +10,14 @@ export function LanguageTag({ languageName, onButtonClick, showActions }: Langua
     return (
         <div className="language-tag">
             <span className="language-name"> <i className="bi bi-chat"></i> {languageName}</span>
-            {showActions && <IconButton icon={<i className="bi bi-pencil"></i>} onClick={onButtonClick} className={"edit-language-button"} ariaLabel={"EditLanguageButton"}    />  
-}
+{showActions && (
+    <IconButton
+        icon={<i className="bi bi-pencil"></i>}
+        onClick={onButtonClick ?? (() => {})}
+        className={"edit-language-button"}
+        ariaLabel={"EditLanguageButton"}
+    />
+)}
         </div>
     );
 }

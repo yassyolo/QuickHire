@@ -51,7 +51,8 @@ export function SellerInfoCard ({
 
         {averageRating && totalReviews && topRated &&
         <div className="seller-rating-top-rated-badge d-flex flex-row">
-            <GigCardRating reviewsCount={totalReviews} averageRating={averageRating}/>
+          {averageRating > 0 &&             <GigCardRating reviewsCount={totalReviews} averageRating={averageRating}/>
+}
             <div className="seller-ratin-top-rated-divider"></div>
             <span className="top-rated-seller-badge">Top rated</span>
         </div>      

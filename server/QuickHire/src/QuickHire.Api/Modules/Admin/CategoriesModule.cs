@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using QuickHire.Application.Admin.Gigs.DeactivateGigAdmin;
+using QuickHire.Application.Admin.Gigs.SearchGigsForAdmin;
 using QuickHire.Application.Admin.Gigs.SellerForGig;
 using QuickHire.Application.Admin.MainCategories.AddMainCategory;
 using QuickHire.Application.Admin.MainCategories.DeleteMainCategory;
@@ -30,6 +31,7 @@ using QuickHire.Application.Admin.SubCategories.SubCategoriesHeader;
 using QuickHire.Application.Admin.SubCategories.SubCategoriesInMainCategory;
 using QuickHire.Application.Admin.SubCategories.SubCategoryDetails;
 using QuickHire.Application.Admin.SubSubCategories.AddSubSubCategory;
+using QuickHire.Application.Admin.SubSubCategories.DeleteGigFilterCommand;
 using QuickHire.Application.Admin.SubSubCategories.DeleteSubSubCategory;
 using QuickHire.Application.Admin.SubSubCategories.EditFilter;
 using QuickHire.Application.Admin.SubSubCategories.EditFilterOption;
@@ -362,10 +364,11 @@ public class CategoriesModule : CarterModule
             .WithTags("Sub Sub Categories")
             .Produces<Unit>(StatusCodes.Status204NoContent)
             .Produces(StatusCodes.Status404NotFound)
+            .DisableAntiforgery()
             .ProducesValidationProblem()
             .WithDescription("Edits filters for an existing sub sub category by Id.");
 
-        app.MapPut("/admin/sub-sub-categories/filters/delete", async ([FromBody] GetGigFilterForDeleteQuery command, IMediator mediator) =>
+        app.MapDelete("/admin/sub-sub-categories/filters/delete", async ([FromBody] DeleteGigFilterCommand command, IMediator mediator) =>
         {
             await mediator.Send(command);
             return Results.NoContent();
@@ -388,7 +391,7 @@ public class CategoriesModule : CarterModule
             .Produces(StatusCodes.Status404NotFound)
             .ProducesValidationProblem()
             .WithDescription("Gets a sub sub category by Id.");
-        app.MapGet("/admin/sub-sub-categories/filters/delete/{Id}", async([AsParameters] GetFilterOptionForDeleteQuery query, IMediator mediator) =>
+        app.MapGet("/admin/sub-sub-categories/filters/delete/{Id}", async([AsParameters] GetGigFilterForDeleteQuery query, IMediator mediator) =>
         {
             var result = await mediator.Send(query);
             return Results.Ok(result);
@@ -418,13 +421,14 @@ public class CategoriesModule : CarterModule
         var result = await mediator.Send(query);
         return Results.Ok(result);
         })
+           
     .WithName("SearchUsers")
         .WithTags("Users")
         .Produces(StatusCodes.Status200OK)
             .ProducesValidationProblem()
             .WithDescription("Searches through users by id and keyword and returns paginated result");
 
-        app.MapPost("/admin/users/deactivate", async ([AsParameters] DeactivateUserCommand query, IMediator mediator) => {
+        app.MapPost("/admin/users/deactivate", async ([FromBody] DeactivateUserCommand query, IMediator mediator) => {
             var result = await mediator.Send(query);
             return Results.NoContent();
         })
@@ -452,9 +456,19 @@ public class CategoriesModule : CarterModule
             .Produces(StatusCodes.Status404NotFound)
             .ProducesValidationProblem()
             .WithDescription("Gets seller for a gig by Id.");
+
+        app.MapGet("/admin/gigs", async([AsParameters] SearchGigsForAdminQuery query, IMediator mediator) =>
+        {
+            var result = await mediator.Send(query);
+            return Results.Ok(result);
+        })
+            .WithName("GetGigsForAdmin")
+            .Produces(StatusCodes.Status200OK)
+            .ProducesValidationProblem()
+            .WithDescription("Gets gigs for admin and returns paginated result");
         #endregion
 
-        app.MapPost("/admin/gigs/deactivate", async ([AsParameters] DeactivateGigAdminCommand query, IMediator mediator) => {
+       app.MapPost("/admin/gigs/deactivate", async ([AsParameters] DeactivateGigAdminCommand query, IMediator mediator) => {
             var result = await mediator.Send(query);
             return Results.NoContent();
         })

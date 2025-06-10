@@ -13,7 +13,6 @@ using QuickHire.Application.Users.Authentication.Register;
 using QuickHire.Application.Users.Authentication.VerifyEmail;
 using QuickHire.Infrastructure.Options;
 using QuickHire.Infrastructure.Persistence.Seed;
-using QuickHire.Infrastructure.Realtime.Hubs;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -51,18 +50,6 @@ builder.Services.AddAuthorization();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddExceptionHandler<CustomExceptionHandling>();
 
-builder.Services.Configure<GoogleAuthenticationOptions>(options => builder.Configuration.GetSection(GoogleAuthenticationOptions.GoogleAuthenticationOptionsKey).Bind(options));
-
-var serviceProvider = builder.Services.BuildServiceProvider();
-var googleAuthenticationOptions = serviceProvider.GetRequiredService<IOptions<GoogleAuthenticationOptions>>().Value;
-
-builder.Services.AddAuthentication().AddGoogle(options =>
-{
-    options.ClientId = googleAuthenticationOptions.ClientId;
-    options.ClientSecret = googleAuthenticationOptions.ClientSecret;
-    options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme; 
-    options.SaveTokens = true; 
-});
 
 builder.Services.AddAntiforgery(options =>
 {
@@ -89,12 +76,6 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-app.Use(async (context, next) =>
-{
-    context.Request.Headers.Remove("X-XSRF-TOKEN");
-    await next();
-});
-
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -106,6 +87,9 @@ app.UseHttpsRedirection();
 app.UseCors("AllowLocalhost");
 app.UseAuthentication();    
 app.UseAuthorization();
+
+
+app.MapHub<ChatHub>("/hubs/chat");
 
 app.MapCarter();
 

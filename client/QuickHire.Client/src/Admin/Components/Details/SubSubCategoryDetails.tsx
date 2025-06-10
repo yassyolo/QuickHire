@@ -4,7 +4,6 @@ import { Breadcrumb } from "../../../Shared/Breadcrumb/Breadcrumb";
 import { CategoryActions } from "./Common/CategoryActions";
 import { CategoryDetails } from "./Common/CategoryDetails";
 import { DeactivateSubSubCategoryModal, FilterItem } from "../Modals/Deactivate/DeactivateSubSubCategoryModal";
-import { SellerPage } from "../../../Users/Seller/Pages/Common/SellerPage";
 import { SubSubCategoriesTableSection } from "./Common/GigFiltersTableSection";
 import { EditSubSubCategoryModal } from "../Modals/Edit/EditSubSubCategoryModal";
 import { SideNavigation } from "../../../Shared/SideNavigation/SideNavigation";
@@ -63,25 +62,29 @@ export function SubSubCategoryDetails(){
         });
     }
 
-    const handleEditGigFilterSuccess = (id: number, newTitle: string) => {
-        if (!details) return;
-        const updatedGigFilters = details.gigFilters.map(filter => 
-            filter.id === id ? { ...filter, title: newTitle } : filter
-        );
-        setDetails({
-            ...details,
-            gigFilters: updatedGigFilters
-        });
-    }
+   const handleEditGigFilterSuccess = (id: number, newTitle: string) => {
+  if (!details || !details.gigFilters) return;
 
-    const onDeactivateGigFilterSuccess = (id: number) => {
-        if (!details) return;
-        const updatedGigFilters = details.gigFilters.filter(filter => filter.id !== id);
-        setDetails({
-            ...details,
-            gigFilters: updatedGigFilters
-        });
-    }
+  const updatedGigFilters = details.gigFilters.map(filter =>
+    filter.id === id ? { ...filter, title: newTitle } : filter
+  );
+
+  setDetails(prevDetails => ({
+    ...prevDetails!,
+    gigFilters: updatedGigFilters,
+  }));
+};
+
+const onDeactivateGigFilterSuccess = (id: number) => {
+  if (!details || !details.gigFilters) return;
+
+  const updatedGigFilters = details.gigFilters.filter(filter => filter.id !== id);
+
+  setDetails(prevDetails => ({
+    ...prevDetails!,
+    gigFilters: updatedGigFilters,
+  }));
+};
 
     const handleDeactivateFilterOptionsSuccess = (id: number) => {
         if (!details) return;
@@ -129,7 +132,7 @@ export function SubSubCategoryDetails(){
             fetchSubCategoryDetails();
         }, [parsedId]);
     return (
-        <SellerPage>
+        <>
             <div className="main-category-details d-flex flex-row">
                 <div className="breadcrumb-sidenav" style={{marginRight: "30px"}}>
                      <Breadcrumb items={[{ label:<i className="bi bi-house-door"></i>}, { label: "Sub sub categories", to: "/admin/sub-sub-categories" }]}/>
@@ -149,6 +152,6 @@ export function SubSubCategoryDetails(){
         
            </div>
            {showEditSubSubCategoryModal && <EditSubSubCategoryModal id={parsedId} showModal={true} onClose={handleEditSubSubCategoryModalVisibility} onEditSuccess={handleEditSubSubCategorySuccess} name={details?.name ?? ""}/>}
-        </SellerPage>
+        </>
     );
 }

@@ -6,6 +6,24 @@
     width: 80px;
 }
 
+.continue-button-email{
+    background-color: var(--text-black-color) !important;
+    color: var(--white-color) !important;
+    padding: 8px 15px;
+    width: 100%;
+    border-radius: 5px !important;
+}
+
+.send-button{
+    background-color: var(--fiverr-green-color) !important;
+    color: var(--white-color) !important;
+    padding: 8px 15px;
+    box-shadow: none !important;
+    width: 80px;
+    border-radius: 5px !important;
+    font-size: 14px !important;
+}
+
 .add-button:hover{
     background-color: #4BFF6D !important;
 }

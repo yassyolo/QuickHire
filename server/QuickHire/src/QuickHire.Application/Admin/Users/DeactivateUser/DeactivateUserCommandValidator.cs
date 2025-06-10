@@ -8,7 +8,7 @@ public class DeactivateUserCommandValidator : AbstractValidator<DeactivateUserCo
 {
     public DeactivateUserCommandValidator()
     {
-        RuleFor(x => x.UserId)
+        RuleFor(x => x.Id)
         .NotEmpty()
         .WithMessage(string.Format(Required, "UserId"));
 

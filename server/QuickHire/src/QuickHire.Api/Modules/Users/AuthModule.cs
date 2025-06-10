@@ -2,6 +2,7 @@
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -36,32 +37,34 @@ public class AuthModule : CarterModule
         .ProducesValidationProblem()
         .WithDescription("Authenticates a buyer using email or username and password.");
 
-        app.MapGet("/auth/google", (HttpContext context, LinkGenerator linkGenerator, SignInManager<ApplicationUser> signInManager) =>
+
+        app.MapGet("/auth/google", (HttpContext context, SignInManager<ApplicationUser> signInManager) =>
         {
             var returnUrl = context.Request.Query["returnUrl"].ToString();
+            if (string.IsNullOrEmpty(returnUrl))
+                returnUrl = "/";
 
-            var properties = signInManager.ConfigureExternalAuthenticationProperties("Google", "/signin-google");
-            properties.Items["returnUrl"] = returnUrl;
+            var redirectUrl = $"/signin-google?returnUrl={Uri.EscapeDataString(returnUrl)}";
+            var properties = signInManager.ConfigureExternalAuthenticationProperties("Google", redirectUrl);
+
             return Results.Challenge(properties, new[] { "Google" });
         })
-            .WithName("GoogleLogin")
-            .Produces(StatusCodes.Status302Found)
-            .Produces(StatusCodes.Status400BadRequest)
-            .WithDescription("Redirects to Google for authentication. After successful authentication, redirects back to the specified return URL.");
-
+.WithName("GoogleLogin");
         app.MapGet("/signin-google", async (HttpContext context, IMediator mediator) =>
         {
+            var googleAuthResult = await context.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
+            var cookieAuthResult = await context.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            var externalAuthResult = await context.AuthenticateAsync(IdentityConstants.ExternalScheme);
+            Console.WriteLine($"Google Auth Result: {googleAuthResult?.Principal?.Identity?.Name}");
+            Console.WriteLine($"Cookie Auth Result: {cookieAuthResult?.Principal?.Identity?.Name}");
             var returnUrl = context.Request.Query["returnUrl"].ToString() ?? "/";
             await mediator.Send(new GoogleLoginCommand(context, returnUrl));
 
-            return Results.Ok();
+            context.Response.Redirect(returnUrl);
         })
-            .WithName("GoogleLoginCallback")
             .Produces(StatusCodes.Status302Found)
             .Produces(StatusCodes.Status400BadRequest)
-            .Produces(StatusCodes.Status401Unauthorized)
-            .WithDescription("Handles the callback from Google after authentication. This endpoint is called by Google after the user has authenticated. It processes the authentication result and redirects the user accordingly.");
-
+            .Produces(StatusCodes.Status401Unauthorized);
         app.MapPost("auth/register", async ([FromBody] RegisterBuyerCommand command, IMediator mediator) =>
         {
             var result = await mediator.Send(command);

@@ -89,7 +89,7 @@ export function UserDetailsForAdmin() {
             </div>
            
             {showUserDetails && <UserInfo/>}  
-            {showGigs && (<GigsForUser/>)}
+            {showGigs && (<GigsForUser userId={id ?? ""}/>)}
             {showStatistics && <UserStatisticsForAdmin/> }
             {showModeration && <UserModerationStatus userId={id ?? ""} />}
         </div>

@@ -5,7 +5,6 @@ import { ActionButton } from "../../Shared/Buttons/ActionButton/ActionButton";
 import { MainCategoriesFilter } from "../Components/Filters/PageFilters/MainCategoriesFilter";
 import { Pagination } from "../../Shared/Pagination/Pagination/Pagination";
 import { PageTitle } from "./Common/PageTitle";
-import { AdminPage } from "./Common/AdminPage";
 import { MainCategoryActions } from "../Components/Tables/TableActions/MainCategoryActions";
 
 export interface MainCategoryRowModel {
@@ -44,7 +43,7 @@ export function MainCategories() {
     const handleAddModalVisbility = () => setShowAddModal(!showAddModal);
     const handleAddMainCategorySuccess = () => {
         setShowAddModal(false);
-        setKeyword('');
+        setKeyword("");
         setId(undefined);
         setCurrentPage(1);
     };
@@ -100,31 +99,28 @@ export function MainCategories() {
     }, [id, keyword, currentPage, setCurrentPage, fetchCategories]);
 
     return (
-        <AdminPage>
-            <div className="filter-table">
-                <PageTitle title="Main Categories" description="Manage and organize your platform’s main categories efficiently." breadcrumbs={[{ label: <i className="bi bi-house-door"></i>, to: "/admin" }, { label: "Main Categories" }]}/>
-                <div className="d-flex flex-column">
-                    <MainCategoriesFilter setId={setId} setKeyword={setKeyword} />
-                    <ActionButton text={"CREATE A NEW CATEGORY"} onClick={handleAddModalVisbility} className="add-category-button" ariaLabel={"Add Main Category Button"} />
+            <><div className="filter-table">
+            <PageTitle title="Main Categories" description="Manage and organize your platform’s main categories efficiently." breadcrumbs={[{ label: <i className="bi bi-house-door"></i>, to: "/admin" }, { label: "Main Categories" }]} />
+            <div className="d-flex flex-column">
+                <MainCategoriesFilter setId={setId} setKeyword={setKeyword} />
+                <ActionButton text={"CREATE A NEW CATEGORY"} onClick={handleAddModalVisbility} className="add-category-button" ariaLabel={"Add Main Category Button"} />
+            </div>
+            <AddMainCategoryModal title={"Main Category"} showModal={showAddModal} onClose={handleAddModalVisbility} onAddMainCategorySuccess={handleAddMainCategorySuccess} />
+            {loading ? (
+                <div className="loading">Loading...</div>
+            ) : (
+                <div className="categories-list">
+                    <DataTable data={categories} columns={["id", "name", "description", "subCategories", "clicks", "createdOn"]} headers={tableHeaders}
+                        renderActions={(row: MainCategoryRowModel) => (
+                            <MainCategoryActions category={row} onEditSuccess={handleEditSuccess} onDeactivateSuccess={handleDeactivateSuccess} details={{
+                                name: row.name,
+                                description: row.description,
+                            }} />
+                        )} />
                 </div>
-                <AddMainCategoryModal title={"Main Category"} showModal={showAddModal} onClose={handleAddModalVisbility} onAddMainCategorySuccess={handleAddMainCategorySuccess} />
-                {loading ? (
-                    <div className="loading">Loading...</div>
-                ) : (
-                    <div className="categories-list">
-                        <DataTable data={categories} columns={["id", "name", "description", "subCategories", "clicks", "createdOn"]} headers={tableHeaders}
-                            renderActions={(row: MainCategoryRowModel) => (
-                                <MainCategoryActions category={row} onEditSuccess={handleEditSuccess} onDeactivateSuccess={handleDeactivateSuccess} details={{
-                                    name: row.name,
-                                    description: row.description,
-                                }} />
-                            )}/>
-                    </div>
-                )}
-            </div>
-            <div className="pagination-container">
+            )}
+        </div><div className="pagination-container">
                 <Pagination totalPages={totalPages} currentPage={currentPage} onPageChange={handlePageChange} />
-            </div>
-        </AdminPage>
+            </div></>
     );
 }
