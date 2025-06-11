@@ -1,6 +1,6 @@
 
-import axios from "axios";
-import { DeactivateModal } from "./Common/DeactivatePossibleModal";
+import axios from "../../../../axiosInstance";
+import { isAxiosError } from "axios";import { DeactivateModal } from "./Common/DeactivatePossibleModal/DeactivatePossibleModal";
 import { useState } from "react";
 
 interface DeactivateFavouriteListProps {
@@ -21,7 +21,7 @@ export function DeactivateUser({ id, deactivateUser, onClose }: DeactivateFavour
             deactivateUser(id);
         }
         catch (error : unknown) {
-            if (axios.isAxiosError(error) && error.response && error.response.status === 400) {
+            if (isAxiosError(error) && error.response && error.response.status === 400) {
                 setShowReasonError(error.response.data.errors?.Reason || []);
             } else {
                 console.error("Error deactivating user:", error);

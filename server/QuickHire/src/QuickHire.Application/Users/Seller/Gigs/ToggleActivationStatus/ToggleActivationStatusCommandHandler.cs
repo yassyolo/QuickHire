@@ -21,7 +21,7 @@ public class ToggleActivationStatusCommandHandler : ICommandHandler<ToggleActiva
             throw new Domain.Shared.Exceptions.NotFoundException(nameof(Domain.Gigs.Gig), request.Id);
         }
 
-        if(request.Paused)
+        if(request.Paused == false)
         {
             gig.ModerationStatus = Domain.Moderation.Enums.ModerationStatus.Paused;
         }

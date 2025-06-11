@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Checkbox } from '../../../Admin/Components/Dropdowns/Common/Checkbox';
-import { Dropdown } from '../../../Admin/Components/Dropdowns/Common/Dropdown';
+import { Checkbox } from '../../../Shared/Dropdowns/Common/Checkbox/Checkbox';
+import { Dropdown } from '../../../Shared/Dropdowns/Common/Dropdown/Dropdown';
 import axios from '../../../axiosInstance';
-import { Item } from '../../../Admin/Components/Dropdowns/Common/PopulateDropdown';
+import { Item } from '../../../Shared/Dropdowns/Common/PopulateDropdown';
 import './MessageFilterDropdown.css';
 
 interface MessageFilterDropdownProps {

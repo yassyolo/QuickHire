@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { SideNavigation } from "../../Shared/SideNavigation/SideNavigation";
+import { SideNavigation } from "../../Shared/PageItems/SideNavigation/SideNavigation";
 import { AccountSettings } from "./AccountSettings/AccountSettings";
 import "./SettingsPage.css";
 import { SecuritySettings } from "./SecuritySettings/SecuritySettings";
 import { SellerPage } from "../Seller/Pages/Common/SellerPage";
-import { Breadcrumb } from "../../Shared/Breadcrumb/Breadcrumb";
+import { Breadcrumb } from "../../Shared/PageItems/Breadcrumb/Breadcrumb";
 
 interface SettingsPageProps {
     homeUrl: string;

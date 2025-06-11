@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FormGroup } from "../../../Shared/Forms/FormGroup";
+import { FormGroup } from "../../../Shared/Forms/FormGroup/FormGroup";
 import { PasswordCheckItem } from "../../Authtentication/PasswordCheckItem";
 import { ActionButton } from "../../../Shared/Buttons/ActionButton/ActionButton";
 import axios from "axios";

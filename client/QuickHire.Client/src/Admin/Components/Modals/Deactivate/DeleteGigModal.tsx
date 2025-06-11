@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
-import { DeactivateModalNotPossible } from "./Common/DeactivateNotPossibleModal";
+import axios from "../../../../axiosInstance";
+import { DeactivateModalNotPossible } from "./Common/DeactivateNotPossibleModal/DeactivateNotPossibleModal";
 import { Modal } from "../Common/Modal";
 import { ModalActions } from "../Common/ModalActions";
 import { ActionButton } from "../../../../Shared/Buttons/ActionButton/ActionButton";

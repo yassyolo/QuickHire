@@ -1,6 +1,6 @@
-import { FormGroup } from "../../../../../Shared/Forms/FormGroup";
+import { FormGroup } from "../../../../../Shared/Forms/FormGroup/FormGroup";
 import { ActionButton } from "../../../../../Shared/Buttons/ActionButton/ActionButton";
-import { useTooltip } from "../../../../../Shared/Tooltip/Tooltip";
+import { useTooltip } from "../../../../../Shared/Forms/Common/Tooltips/Tooltip";
 import { NewAddedCertification } from "../../SellerProfile/NewAddedItems/Certification/NewAddedCertification";
 import { NewAddedSkill } from "../../SellerProfile/NewAddedItems/Skill/NewAddedSkill";
 import { NewAddedEducation } from "../../SellerProfile/NewAddedItems/Education/NewAddedEducation";

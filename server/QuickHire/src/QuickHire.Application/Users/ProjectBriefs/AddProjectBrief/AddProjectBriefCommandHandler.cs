@@ -46,9 +46,9 @@ public class AddProjectBriefCommandHandler : ICommandHandler<AddProjectBriefComm
         var buyer = await _userService.GetCurrentUserAsync();
 
 
-        await _notificationService.MakeNotification(buyerId, Common.Interfaces.Factories.Notification.NotificationRecipientType.Buyer, Domain.Users.Enums.NotificationType.NewProjectBriefMade, new Dictionary<string, string> {{ "UserName", buyer.UserName! }, { "ProjectTitle", projectBrief.ProjectBriefNumber },   { "ProjectBriefId", projectBrief.Id.ToString() }    });
+        await _notificationService.MakeNotification(buyerId, Common.Interfaces.Factories.Notification.NotificationRecipientType.Buyer, Domain.Users.Enums.NotificationType.NewProjectBriefMade, new Dictionary<string, string> {{ "UserName", buyer.UserName! }, { "ProjectTitle", projectBrief.ProjectBriefNumber }    });
 
-        var gigScore = await _gigScoringService.GetTopScoringGigsAsync(request.AboutBuyer, request.Description, request.SubSubCategoryId, request.Budget, request.DeliveryDays);
+        var gigScore = await _gigScoringService.GetTopScoringGigsAsync(buyerId, request.AboutBuyer, request.Description, request.SubSubCategoryId, request.Budget, request.DeliveryDays);
 
         foreach (var gig in gigScore)
         {
@@ -61,7 +61,7 @@ public class AddProjectBriefCommandHandler : ICommandHandler<AddProjectBriefComm
 
             await _repository.AddAsync(suitableSeller);
 
-            await _notificationService.MakeNotification(gig.SellerId, Common.Interfaces.Factories.Notification.NotificationRecipientType.Seller, Domain.Users.Enums.NotificationType.ProjectBriefReceived, new Dictionary<string, string> { { "UserName", buyer.UserName! }, { "ProjectNumber", projectBrief.ProjectBriefNumber }, { "ProjectBriefId", projectBrief.Id.ToString() } });
+            await _notificationService.MakeNotification(gig.SellerId, Common.Interfaces.Factories.Notification.NotificationRecipientType.Seller, Domain.Users.Enums.NotificationType.ProjectBriefReceived, new Dictionary<string, string> { { "UserName", buyer.UserName! }, { "ProjectBriefNumber", projectBrief.ProjectBriefNumber } });
         }
 
         await _repository.SaveChangesAsync();

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { PageTitle } from "../../../../Admin/Pages/Common/PageTitle";
+import { PageTitle } from "../../../../Shared/PageItems/PageTitle/PageTitle";
 import { GigCard } from "../../../../Gigs/GigCard/GigCard";
 import { SellerPage } from "../../../Seller/Pages/Common/SellerPage";
 import './BrowsingHistory.css';

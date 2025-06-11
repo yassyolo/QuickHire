@@ -3,7 +3,7 @@ import "./SellerDashboardOrders.css";
 import axios from "../../../../../axiosInstance";
 import { SellerDashboardOrder } from "../SellerDashboard";
 import { SellerDashboardOrderItem } from "./SellerDashboardOrderItem";
-import { SortBy } from "../../../../../Admin/Components/Dropdowns/Common/Sort/SortBy";
+import { SortBy } from "../../../../../Shared/Dropdowns/Common/Sort/SortBy";
 
 export function SellerDashboardOrders() {
   const [orders, setOrders] = useState<SellerDashboardOrder[]>([]);

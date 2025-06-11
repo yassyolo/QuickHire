@@ -1,19 +1,15 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axios from "../../../../axiosInstance";
 import { useParams } from "react-router-dom";
-import { Breadcrumb } from "../../../../Shared/Breadcrumb/Breadcrumb";
-import { SideNavigation } from "../../../../Shared/SideNavigation/SideNavigation";
-import { GigDetails } from "./GigInfo";
-import { GigStatistics } from "./GigStatistics";
+import { Breadcrumb } from "../../../../Shared/PageItems/Breadcrumb/Breadcrumb";
+import { SideNavigation } from "../../../../Shared/PageItems/SideNavigation/SideNavigation";
+import { GigDetails } from "./GigInfo/GigInfo";
+import { GigStatistics } from "./Statistics/GigStatistics";
 import './GigDetailsPage.css';
 import { ReviewsList } from "../../../../Gigs/Reviews/ReviewsList/ReviewsList";
-import { UserForGig } from "./UserForGig";
+import { UserForGig } from "./UserForGig/UserForGig";
 import { RatingDistribution } from "../../../../Gigs/Reviews/RatingDistrbution/RatingDistribution";
-import { GigModerationStatus } from "./GigModeration";
-
-/*export interface GigDetailsProps {
-    
-}*/
+import { GigModerationStatus } from "./Moderation/GigModeration";
 
 
 export function GigDetailsForAdmin() { 
@@ -24,14 +20,17 @@ export function GigDetailsForAdmin() {
      const [showReviews, setShowReviews] = useState(false);
      const [showUser, setShowUser] = useState(false);
      const [showGigModeration, setShowGigModeration] = useState(false);
+     const [view, setView] = useState<"details" | "statistics" | "reviews" | "user" | "moderation">("details");
 
      useEffect(() => {
         if (id) {
             handleGigDetailsVisibility();
+            setView("details"); 
         }
     }, [id]);
 
         const handleGigModerationVisibility = () => {
+            setView("moderation");
             setShowGigModeration(!showGigModeration);
             setShowGigDetails(false);
             setShowStatistics(false);
@@ -40,6 +39,7 @@ export function GigDetailsForAdmin() {
         }
 
      const handleGigDetailsVisibility = () => {
+        setView("details");
         setShowGigDetails(!showGigDetails);
         setShowStatistics(false);
         setShowReviews(false);
@@ -48,6 +48,7 @@ export function GigDetailsForAdmin() {
      };
 
      const handleReviewsVisibility = () => {
+        setView("reviews");
         setShowReviews(!showReviews);
         setShowGigDetails(false);
         setShowStatistics(false);
@@ -56,6 +57,7 @@ export function GigDetailsForAdmin() {
     };
 
      const handleStatisticsVisibility = () => {
+        setView("statistics");
         setShowStatistics(!showStatistics);
         setShowGigDetails(false);
         setShowReviews(false);
@@ -63,7 +65,8 @@ export function GigDetailsForAdmin() {
         setShowUser(false);
     };
 
-    const handleUserVisibility = () => {    
+    const handleUserVisibility = () => { 
+        setView("user");   
         setShowUser(!showUser);
         setShowGigDetails(false);
         setShowReviews(false);
@@ -100,11 +103,17 @@ export function GigDetailsForAdmin() {
             <div className="gig-details-page-admin d-flex flex-row">
             <div className="breadcrumb-side-nav">
                  <Breadcrumb items={[{ label: <i className="bi bi-house-door"></i> }, { label: "Gigs", to: "/admin/gigs" }]}/>
-                 <SideNavigation items={[{ label: "Details", onClick: handleGigDetailsVisibility }, { label: "Reviews", onClick: handleReviewsVisibility }, { label: "Seller", onClick: handleUserVisibility }, { label: "Statistics", onClick: handleStatisticsVisibility }, { label: "Moderation", onClick: handleGigModerationVisibility }]}></SideNavigation> 
+                <SideNavigation items={[
+                    { label: "Details", onClick: handleGigDetailsVisibility, value: 'details' },
+                    { label: "Reviews", onClick: handleReviewsVisibility, value: 'reviews' },
+                    { label: "Seller", onClick: handleUserVisibility, value: 'user' },
+                    { label: "Statistics", onClick: handleStatisticsVisibility, value: 'statistics' },
+                    { label: "Moderation", onClick: handleGigModerationVisibility, value: 'moderation' }
+                ]} active={view}></SideNavigation> 
             </div>
            
            <div className="gig-details-modals">
-            {showGigDetails && (<GigDetails id={gigId}></GigDetails>)}  
+            {showGigDetails && (<GigDetails></GigDetails>)}  
 
             {showReviews && (              
                 <div className="ratings-in-gig d-flex flex-row " >

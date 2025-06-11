@@ -1,10 +1,10 @@
 import { useState } from "react";
 import axios from "axios";
 import { Modal } from "../../Admin/Components/Modals/Common/Modal";
-import { FormGroup } from "../Forms/FormGroup";
+import { FormGroup } from "../Forms/FormGroup/FormGroup";
 import { ModalActions } from "../../Admin/Components/Modals/Common/ModalActions";
 import { ActionButton } from "../Buttons/ActionButton/ActionButton";
-import { useTooltip } from "../Tooltip/Tooltip";
+import { useTooltip } from "../Forms/Common/Tooltips/Tooltip";
 
 interface ReportModalProps {
     gigId?: number;

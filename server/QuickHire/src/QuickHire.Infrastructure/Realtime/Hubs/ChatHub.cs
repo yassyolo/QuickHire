@@ -98,6 +98,7 @@ public class ChatHub : Hub
 
         var preview = new GetAllMessagesItemModel
         {
+            Id = conversationId,
             Content = message.Content,
             Timestamp = message.Timestamp,
             IsRead = false,

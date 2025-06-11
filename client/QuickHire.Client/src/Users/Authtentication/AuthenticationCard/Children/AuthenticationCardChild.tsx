@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { AuthenticationCard } from "../AuthenticationCard";
-import { FormGroup } from "../../../../Shared/Forms/FormGroup";
-import { useTooltip } from "../../../../Shared/Tooltip/Tooltip";
+import { FormGroup } from "../../../../Shared/Forms/FormGroup/FormGroup";
+import { useTooltip } from "../../../../Shared/Forms/Common/Tooltips/Tooltip";
 import axios from "axios";
 import './AuthenticationCardChild.css';
-import { IconActionButton } from "../../../../Shared/Buttons/IconActionButton";
+import { IconActionButton } from "../../../../Shared/Buttons/IconActionButton/IconActionButton";
 import { IconButton } from "../../../../Shared/Buttons/IconButton/IconButton";
 import { PasswordCheckItem } from "../../PasswordCheckItem";
 import { useAuth } from "../../../../AuthContext";

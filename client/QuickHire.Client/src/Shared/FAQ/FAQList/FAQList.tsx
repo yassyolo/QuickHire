@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import "./FAQList.css";
 import { ActionButton } from "../../Buttons/ActionButton/ActionButton";
-import { AddFAQModal } from "../../../Admin/Components/Modals/Add/AddFAQModal";
+import { AddFAQModal } from "../../../Admin/Components/Modals/Add/FAQ/AddFAQModal";
 import { FAQ } from "../FAQItem/FAQ";
+import axios from "../../../axiosInstance";
 
 
 export interface FAQListProps {
@@ -42,8 +43,15 @@ export function FAQList({ mainCategoryId, gigId, userId, showActions, title }: F
 
             url = url.slice(0, -1);
 
-            const response = await fetch(url);
-            const data = await response.json();
+            const response = await axios.get<FAQ[]>(url);
+            if (response.status !== 200) {
+                throw new Error(`Failed to fetch FAQs: ${response.statusText}`);
+            }
+            const data = response.data.map((faq) => ({
+                id: faq.id,
+                question: faq.question,
+                answer: faq.answer,
+            }));
             setFaqs(data);
         } catch (error) {
             console.error("Error fetching FAQs:", error);

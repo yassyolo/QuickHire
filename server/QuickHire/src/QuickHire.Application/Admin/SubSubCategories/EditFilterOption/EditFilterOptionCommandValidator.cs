@@ -15,9 +15,9 @@ public class EditFilterOptionCommandValidator : AbstractValidator<EditFilterOpti
         RuleFor(x => x.Name)
             .NotEmpty()
             .WithMessage(string.Format(Required, "Name"))
-            .MinimumLength(NameMaxLength)
+            .MinimumLength(NameMinLength)
             .WithMessage(string.Format(StringLength, "Name", NameMinLength, NameMaxLength))
-            .MaximumLength(NameMinLength)
+            .MaximumLength(NameMaxLength)
             .WithMessage(string.Format(StringLength, "Name", NameMinLength, NameMaxLength));
     }
 }

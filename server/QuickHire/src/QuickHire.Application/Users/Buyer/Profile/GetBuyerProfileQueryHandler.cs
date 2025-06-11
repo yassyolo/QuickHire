@@ -16,22 +16,7 @@ public class GetBuyerProfileQueryHandler : IQueryHandler<GetBuyerProfileQuery, B
     }
     public async Task<BuyerProfileModel> Handle(GetBuyerProfileQuery request, CancellationToken cancellationToken)
     {
-        //return await _userService.GetBuyerProfileAsync();
-
-        return new BuyerProfileModel
-        {
-            ProfilePictureUrl = "https://example.com/images/profile123.jpg",
-            FullName = "John Doe",
-            Username = "johndoe87",
-            Description = "Creative buyer passionate about branding and visual storytelling.",
-            MemberSince = DateTime.Now.AddYears(-2).ToString("MMMM yyyy"),
-            Location = "New York, USA",
-            Languages = new[]
-    {
-        new UserLanguageModel { LanguageId = 1, LanguageName = "English" },
-        new UserLanguageModel { LanguageId = 2, LanguageName = "Spanish" }
-    }
-        };
+        return await _userService.GetBuyerProfileAsync();
     }
 }
 

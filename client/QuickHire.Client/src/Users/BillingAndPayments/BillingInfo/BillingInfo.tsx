@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { FormGroup } from "../../../Shared/Forms/FormGroup";
-import { useTooltip } from "../../../Shared/Tooltip/Tooltip";
+import { FormGroup } from "../../../Shared/Forms/FormGroup/FormGroup";
+import { useTooltip } from "../../../Shared/Forms/Common/Tooltips/Tooltip";
 import { ActionButton } from "../../../Shared/Buttons/ActionButton/ActionButton";
-import axios from "axios";
+import axios from "../../../axiosInstance";
 import './BillingInfo.css';
-import { SelectDropdown } from "../../../Shared/Select/SelectDropdown";
-import { Item } from "../../../Admin/Components/Dropdowns/Common/PopulateDropdown";
+import { isAxiosError } from "axios";
+import { SelectDropdown } from "../../../Shared/Dropdowns/Select/SelectDropdown";
+import { Item } from "../../../Shared/Dropdowns/Common/PopulateDropdown";
 
 interface BillingInfoDetails{
     fullName: string;
@@ -106,7 +107,7 @@ export function BillingInfo() {
                 });
                 alert("Billing information saved successfully.");
             }catch(error: unknown) {
-                if (axios.isAxiosError(error)) {
+                if (isAxiosError(error)) {
                     const response = error.response;
                     if (response && response.status === 400 && response.data) {
                         setValidationErrors({
@@ -142,7 +143,7 @@ export function BillingInfo() {
             fetchBillingInfo();
         }
         catch (error: unknown) {
-            if (axios.isAxiosError(error)) {
+            if (isAxiosError(error)) {
                 const response = error.response;
                 if (response && response.status === 400 && response.data) {
                     setValidationErrors({

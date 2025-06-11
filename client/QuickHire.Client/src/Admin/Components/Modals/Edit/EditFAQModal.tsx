@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { EditModal } from "./Common/EditModal";
 import axios from "axios";
-import { useTooltip } from "../../../../Shared/Tooltip/Tooltip";
-import { FormGroup } from "../../../../Shared/Forms/FormGroup";
+import { useTooltip } from "../../../../Shared/Forms/Common/Tooltips/Tooltip";
+import { FormGroup } from "../../../../Shared/Forms/FormGroup/FormGroup";
 
 export interface EditFAQModalModalProps {
   id: number;

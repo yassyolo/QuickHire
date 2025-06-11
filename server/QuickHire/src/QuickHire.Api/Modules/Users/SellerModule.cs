@@ -6,6 +6,8 @@ using QuickHire.Application.Users.Models.Dashboard;
 using QuickHire.Application.Users.Models.Profile;
 using QuickHire.Application.Users.Models.Statistics;
 using QuickHire.Application.Users.ProjectBriefs.ProjectBriefPreview;
+using QuickHire.Application.Users.Seller.CustomOffers.ChooseFromGigs;
+using QuickHire.Application.Users.Seller.CustomOffers.ChooseFromInclusives;
 using QuickHire.Application.Users.Seller.Dashboard.GetSellerDashboard;
 using QuickHire.Application.Users.Seller.Dashboard.GetSellerDashboardOrders;
 using QuickHire.Application.Users.Seller.Gigs.DeleteGig;
@@ -272,7 +274,7 @@ public class SellerModule : CarterModule
             .Produces(StatusCodes.Status404NotFound)
             .WithDescription("Get gig details for deletion confirmation.");
 
-        app.MapPut("/seller/gigs/activate", async([FromBody] ToggleActivationStatusCommand command, IMediator mediator) =>
+        app.MapPut("/seller/gigs/activate", async([AsParameters] ToggleActivationStatusCommand command, IMediator mediator) =>
         {
              await mediator.Send(command);
             return Results.NoContent();
@@ -347,5 +349,25 @@ public class SellerModule : CarterModule
             .WithTags("Seller")
             .Produces(StatusCodes.Status404NotFound)
             .WithDescription("Get the preview of a project brief by its ID.");
+
+        #region Custom Offers
+         app.MapGet("/seller/choose-from-gigs", async([AsParameters] ChooseFromGigsQuery query, IMediator mediator) =>
+         {
+            var result = await mediator.Send(query);
+            return Results.Ok(result);
+})
+            .WithName("ChooseFromGigs")
+            .WithTags("Custom Offers")
+            .WithDescription("Get a list of gigs to choose from for custom offers.");
+
+        app.MapGet("/seller/choose-from-inclusives", async ([AsParameters] ChooseFromInclusivesQuery query, IMediator mediator) =>
+        {
+            var result = await mediator.Send(query);
+            return Results.Ok(result);
+        })
+   .WithName("ChooseFromInclusives")
+   .WithTags("Custom Offers")
+   .WithDescription("Get a list of gigs to choose from for custom offers.");
+        #endregion
     }
 }

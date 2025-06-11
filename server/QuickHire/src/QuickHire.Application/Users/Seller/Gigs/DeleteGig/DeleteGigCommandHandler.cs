@@ -20,8 +20,7 @@ public class DeleteGigCommandHandler : ICommandHandler<DeleteGigCommand, Unit>
 
     public async Task<Unit> Handle(DeleteGigCommand request, CancellationToken cancellationToken)
     {
-        var gigQueryable = _repository.GetAllReadOnly<Gig>().Where(x => x.Id == request.Id);
-        gigQueryable = _repository.GetAllIncluding<Gig>(x => x.Orders,x => x.Requirements, x => x.FAQs, x=> x.Metadata, x => x.Tags, x => x.PaymentPlans);
+        var gigQueryable = _repository.GetAllIncluding<Gig>(x => x.Orders, x => x.Requirements, x => x.FAQs, x => x.Metadata, x => x.Tags, x => x.PaymentPlans).Where(x => x.Id == request.Id);
         var gig = await _repository.FirstOrDefaultAsync(gigQueryable);
         if (gig == null)
         {

@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from "react";
 import { SellerPage } from "../Common/SellerPage";
-import { PageTitle } from "../../../../Admin/Pages/Common/PageTitle";
-import { TitleFilterSelector } from "../../../../Admin/Pages/Common/TitleFilterSection";
+import { PageTitle } from "../../../../Shared/PageItems/PageTitle/PageTitle";
+import { TitleFilterSelector } from "../../../../Shared/PageItems/TitleFilterSection/TitleFilterSection";
 import { DataTable } from "../../../../Admin/Components/Tables/Common/AdminDataTable";
 import { SellerGigActions } from "../../../../Admin/Components/Tables/TableActions/SellerGigActions";
-
+import axios from "../../../../axiosInstance";
 export interface GigRow{
   id: number;
   clicks: number;
@@ -29,6 +29,10 @@ export function SellerGigs (){
    
     const handleSelectedModerationStatusId = (id: number) => setModerationStatusId(id);
 
+    useEffect(() => {
+        setModerationStatusId(1);
+    }, []);
+
     const fetchGigs = useCallback(async () => {
             setLoading(true);
             try {
@@ -37,16 +41,18 @@ export function SellerGigs (){
     
                 const url = `https://localhost:7267/seller/gigs/table?${params.toString()}`;
     
-                const response = await fetch(url, {
-                    method: 'GET',
-                    headers: {
-                        'Accept': '*/*',
-                    },
-                });
-                if (!response.ok) {
-                    throw new Error("Failed to fetch gigs");
+                const response = await axios.get<GigRow[]>(url);
+                if (response.status !== 200) {
+                    throw new Error(`Failed to fetch gigs, status code: ${response.status}`);
                 }
-                const r = await response.json() as GigRow[];
+                const r = response.data.map((gig) => ({
+                    id: gig.id,
+                    clicks: gig.clicks,
+                    title: gig.title,
+                    likes: gig.likes,
+                    orders: gig.orders,
+                    revenue: gig.revenue
+                }));
     
                 setGigs(r);
             } catch (error) {

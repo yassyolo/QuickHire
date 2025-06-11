@@ -4,6 +4,7 @@ import { LanguageTag } from "../Tags/Language/LanguageTag";
 import "./SellerInfoCard.css";
 import { GigCardRating } from "../../../../../Gigs/GigCard/GigCardRating/GigCardRating";
 import { AddOrEditDetailsModal } from "../Modals/EditOrDeleteModal/AddOrEditDetailsModal";
+import { useEffect } from "react";
 
 
 interface SellerInfoCardProps {
@@ -35,28 +36,31 @@ export function SellerInfoCard ({
     showActions 
 } : SellerInfoCardProps) {
   return (
+    useEffect(() => {
+      console.log(averageRating, totalReviews, topRated, industry, memberSince);
+    }, [averageRating, totalReviews, topRated, industry, memberSince]),
     <div className="seller-info">
       <img
         src={sellerDetails?.profilePictureUrl}
         alt="Profile"
-        className="profile-picture"
+        className="profile-picture-image"
       />
       <div className="names-country-languages d-flex flex-column">
         <div className="username-full-name d-flex flex-column">
-          <Link to="/buyer/settings" className="seller-full-name">
+          <Link to="/buyer/settings" className="seller-full-name-link">
             {sellerDetails?.fullName}
           </Link>
           <div className="seller-username">@{sellerDetails?.username}</div>
         </div>
 
-        {averageRating && totalReviews && topRated &&
-        <div className="seller-rating-top-rated-badge d-flex flex-row">
-          {averageRating > 0 &&             <GigCardRating reviewsCount={totalReviews} averageRating={averageRating}/>
-}
-            <div className="seller-ratin-top-rated-divider"></div>
-            <span className="top-rated-seller-badge">Top rated</span>
-        </div>      
-        }
+        {(averageRating !== undefined && totalReviews !== undefined && averageRating > 0 && totalReviews > 0) && (
+  <div className="seller-rating-top-rated-badge d-flex flex-row">
+    <GigCardRating reviewsCount={totalReviews} averageRating={averageRating} />
+    <div className="seller-ratin-top-rated-divider"></div>
+    <span className="top-rated-seller-badge">Top rated</span>
+  </div>
+)}
+
 
         {industry && (
           <div className="seller-industry">

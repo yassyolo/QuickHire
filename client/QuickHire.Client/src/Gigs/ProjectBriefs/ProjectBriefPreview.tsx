@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { IconButton } from "../../Shared/Buttons/IconButton/IconButton";
 import "./ProjectBriefPreview.css";
+import axios from "../../axiosInstance";
 
 
  interface ProjectBriefPreview{
@@ -31,11 +32,12 @@ import "./ProjectBriefPreview.css";
     useEffect(() => {
         const fetchProjectBrief = async () => {
             try {
-                const response = await fetch(`https://localhost:7267/project-brief/preview/${id}`);
-                if (!response.ok) {
-                    throw new Error("Failed to fetch project brief");
+                const url = `https://localhost:7267/project-brief/preview/${id}`;
+                const response = await axios.get<ProjectBriefPreview>(url);
+                if (response.status !== 200) {
+                    throw new Error(`Failed to fetch project brief, status code: ${response.status}`);
                 }
-                const data: ProjectBriefPreview = await response.json();
+                const data = response.data;
                 setProjectBrief(data);
             } catch (error) {
                 console.error("Error fetching project brief:", error);
@@ -50,8 +52,7 @@ import "./ProjectBriefPreview.css";
     return (
         <div className="project-overlay">
             <div className="project-page d-flex flex-row">
-            <IconButton icon={<i className="bi bi-x"></i>} onClick={onClose} className={"Close project brief preview"} ariaLabel={"Close project brief preview"} />
-                
+               
          <div className="project-page-preview">
             <div className="project-number-status d-flex flex-row">
             <div className="project-number">#{projectBrief.projectBriefNumber} </div>
@@ -102,6 +103,8 @@ import "./ProjectBriefPreview.css";
             
            
             </div>
+                        <IconButton icon={<i className="bi bi-x"></i>} onClick={onClose} className={"close-button"} ariaLabel={"Close project brief preview"} />
+
             </div>
                    </div>
         

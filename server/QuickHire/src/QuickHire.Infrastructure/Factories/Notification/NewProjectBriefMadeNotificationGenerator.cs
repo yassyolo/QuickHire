@@ -10,7 +10,7 @@ internal class NewProjectBriefMadeNotificationGenerator : INotificationGenerator
     public NotificationType Type => NotificationType.NewProjectBriefMade;
 
     public string Title { get; set; } = "A New Project Brief Has Been Created!";
-    public string Message { get; set; } = "Hello, {UserName}! Project brief with No '{ProjectTitle}' has been created. Please review it and provide your feedback: {ProjectBriefId}.";
+    public string Message { get; set; } = "Hello, {UserName}! Project brief with No '{ProjectTitle}' has been created. We are working on sending it out to suitable freelancers.";
 
     public Domain.Users.Notification Generate(int recipientId, NotificationRecipientType recipientType, Dictionary<string, string>? placeholders = null)
     {

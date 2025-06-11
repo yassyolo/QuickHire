@@ -20,19 +20,25 @@ public class WithdrawProjectBriefCommandHandler : ICommandHandler<WithdrawProjec
 
     public async Task<Unit> Handle(WithdrawProjectBriefCommand request, CancellationToken cancellationToken)
     {
-        var projectBriefQueryable = _repository.GetAll<Domain.ProjectBriefs.ProjectBrief>().Where(x => x.Id == request.Id);
-        projectBriefQueryable = _repository.GetAllIncluding<Domain.ProjectBriefs.ProjectBrief>(x => x.CustomOffers);
+        var projectBriefQueryable = _repository.GetAllIncluding<Domain.ProjectBriefs.ProjectBrief>(x => x.CustomOffers).Where(x => x.Id == request.Id);
         var projectBrief = await _repository.FirstOrDefaultAsync<Domain.ProjectBriefs.ProjectBrief>(projectBriefQueryable); 
         if (projectBrief == null)
         {
             throw new NotFoundException(nameof(Domain.ProjectBriefs.ProjectBrief), request.Id);
         }
 
+        var suitableSellerProjectBriefQueryable = _repository.GetAllIncluding<Domain.ProjectBriefs.SuitableSellerProjectBrief>(x => x.ProjectBrief).Where(x => x.ProjectBrief.Id == request.Id);
+        var suitableSellerProjectBrief = await _repository.ToListAsync<Domain.ProjectBriefs.SuitableSellerProjectBrief>(suitableSellerProjectBriefQueryable);
+        foreach (var suitableSeller in suitableSellerProjectBrief)
+        {
+            suitableSeller.ProjectBrief.IsDeleted = true;
+            suitableSeller.ProjectBrief.DeletedAt = DateTime.Now;
+
+            await _repository.UpdateAsync(suitableSeller.ProjectBrief);
+        }
+
         bool isAssociatedWithOrder = projectBrief.Status == ProjectBriefStatus.OrderPlaced ||
-       projectBrief.CustomOffers.Any(x =>
-           x.Status == Domain.CustomOffers.Enums.CustomOfferStatus.Accepted &&
-           x.Order != null &&
-           x.Order.Status == Domain.Orders.Enums.OrderStatus.InProgress);
+        projectBrief.CustomOffers.Any(x =>x.Status == Domain.CustomOffers.Enums.CustomOfferStatus.Accepted && x.Order != null && x.Order.Status == Domain.Orders.Enums.OrderStatus.InProgress);
 
         if (isAssociatedWithOrder)
         {

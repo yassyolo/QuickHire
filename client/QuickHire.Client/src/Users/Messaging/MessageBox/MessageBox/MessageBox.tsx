@@ -46,8 +46,7 @@ interface CurrentOrder {
   status: string;
 }
 
-// DTO for SignalR incoming message
-interface NewMessageSignalRDto {
+export interface NewMessageSignalRDto {
   conversationId: number;
   message: MessageItem;
   conversationPreview: {

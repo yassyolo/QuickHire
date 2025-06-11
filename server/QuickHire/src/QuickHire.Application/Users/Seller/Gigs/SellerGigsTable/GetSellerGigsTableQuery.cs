@@ -3,5 +3,5 @@ using QuickHire.Application.Users.Models.Gigs;
 
 namespace QuickHire.Application.Users.Seller.Gigs.SellerGigsTable;
 
-public record GetSellerGigsTableQuery() : IQuery<List<SellerGigTableRowModel>>;
+public record GetSellerGigsTableQuery(int ModerationStatusId) : IQuery<List<SellerGigTableRowModel>>;
 

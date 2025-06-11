@@ -10,7 +10,7 @@ internal class ProjectBriefReceivedNotificationGenerator : INotificationGenerato
     public NotificationType Type => NotificationType.ProjectBriefReceived;
 
     public string Title { get; set; } = "You Received A New Project Brief!";
-    public string Message { get; set; } = "Hello, {UserName}! A new project brief with number {ProjectBriefNumber} has been received. Please review the details and start preparing your offer: {PtojectBriefId}.";
+    public string Message { get; set; } = "Hello, {UserName}! A new project brief with number {ProjectBriefNumber} has been received. Please review the details and start preparing your offer.";
 
     public Domain.Users.Notification Generate(int recipientId, NotificationRecipientType recipientType, Dictionary<string, string>? placeholders = null)
     {

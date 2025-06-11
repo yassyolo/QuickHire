@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { FormGroup } from "../../../../../Shared/Forms/FormGroup";
+import { FormGroup } from "../../../../../Shared/Forms/FormGroup/FormGroup";
 
 export interface EducationFormProps {
     institution: string;

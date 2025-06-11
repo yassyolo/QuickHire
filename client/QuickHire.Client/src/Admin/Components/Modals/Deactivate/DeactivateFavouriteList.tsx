@@ -1,6 +1,6 @@
 import { ActionButton } from "../../../../Shared/Buttons/ActionButton/ActionButton";
 import { Modal } from "../Common/Modal";
-import axios from "axios";
+import axios from "../../../../axiosInstance";
 import { ModalActions } from "../Common/ModalActions";
 import "./DeactivateFavouriteList.css";
 

@@ -15,7 +15,7 @@
 .project-page{
   background-color: var(--white-color) !important;
   border-radius: 10px !important;
-  padding: 20px;
+  padding: 30px 30px;
   max-width: 1100px;;
   max-height: 90vh;
   box-shadow: var(--default-shadow);
@@ -23,7 +23,7 @@
   z-index: 1001;
   display: flex;
   flex-direction: column;
-  gap: 50px;
+  gap: 10px;
 }
 
 .project-number-status {
@@ -130,4 +130,11 @@
   border-radius: 50%;
   object-fit: cover;
   margin-bottom: 10px;
+}
+
+.project-buyer-info{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
 }

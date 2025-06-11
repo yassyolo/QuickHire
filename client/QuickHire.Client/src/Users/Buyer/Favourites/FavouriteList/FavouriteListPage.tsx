@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Gig } from "../../BrowsingHistory/BrowsingHistory/BrowsingHistory";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import { PageTitle } from "../../../../Admin/Pages/Common/PageTitle";
+import { PageTitle } from "../../../../Shared/PageItems/PageTitle/PageTitle";
 import { EditFavouriteListModal } from "../../../../Admin/Components/Modals/Edit/EditFavouriteListModal";
 import { DeactivateFavouriteList } from "../../../../Admin/Components/Modals/Deactivate/DeactivateFavouriteList";
 import { GigCard } from "../../../../Gigs/GigCard/GigCard";

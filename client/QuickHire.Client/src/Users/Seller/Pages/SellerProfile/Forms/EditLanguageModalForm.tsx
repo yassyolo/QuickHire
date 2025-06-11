@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import axios from "../../../../../axiosInstance";
-import { useTooltip } from "../../../../../Shared/Tooltip/Tooltip";
+import { useTooltip } from "../../../../../Shared/Forms/Common/Tooltips/Tooltip";
 import { AddDetailsModal } from "./AddDetailsForm";
 import { DetailsModalButtons } from "../Modals/ModalButtons/DetailsModalButtons";
 import { NewAddedLanguage } from "../NewAddedItems/Language/NewAddedLanguage";
-import { SelectDropdown } from "../../../../../Shared/Select/SelectDropdown";
+import { SelectDropdown } from "../../../../../Shared/Dropdowns/Select/SelectDropdown";
 
 export interface Language {
   id: number;

@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { SellerPage } from "../Common/SellerPage";
-import { PageTitle } from "../../../../Admin/Pages/Common/PageTitle";
-import { PageSelector } from "../../../../Shared/PageSelector/PageSelector";
-import { GigPerformanceStatistics } from "../../../../Admin/Components/Charts/Users/GigPerformanceStatistics";
-import { RepeatBusinessStatistics } from "../../../../Admin/Components/Charts/Users/RepeatBusinessStatistics";
-import { OrderFullfillmentStatistics } from "../../../../Admin/Components/Charts/Users/OrderFullfillmentStatistics";
-import { UserEngagementStatistics } from "../../../../Admin/Components/Charts/Users/UserEngagementStatistics";
+import { PageTitle } from "../../../../Shared/PageItems/PageTitle/PageTitle";
+import { PageSelector } from "../../../../Shared/PageItems/PageSelector/PageSelector";
+import { GigPerformanceStatistics } from "../../../../Shared/Statistics/Users/GigPerformanceStatistics";
+import { RepeatBusinessStatistics } from "../../../../Shared/Statistics/Users/RepeatBusinessStatistics";
+import { OrderFullfillmentStatistics } from "../../../../Shared/Statistics/Users/OrderFullfillmentStatistics";
+import { UserEngagementStatistics } from "../../../../Shared/Statistics/Users/UserEngagementStatistics";
 
 export function SellerAnalytics() {
     const [showEngagementStatistics, setShowEngagementStatistics] = useState(false);

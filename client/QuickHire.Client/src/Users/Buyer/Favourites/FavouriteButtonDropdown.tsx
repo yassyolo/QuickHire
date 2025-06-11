@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { IconButton } from "../../../Shared/Buttons/IconButton/IconButton";
 import axios from "axios";
 import { FavouriteListItem } from "./FavouriteListItem";
-import { AddFavouriteListModal } from "../../../Admin/Components/Modals/Add/AddFavouriteList";
+import { AddFavouriteListModal } from "../../../Admin/Components/Modals/Add/FavouriteList/AddFavouriteList";
 import './FavouriteButtonDropdown.css';
 
 interface FavouriteButtonDropdownProps {

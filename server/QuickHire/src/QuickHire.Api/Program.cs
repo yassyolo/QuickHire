@@ -32,6 +32,7 @@ builder.Services.AddMediatR(cfg =>
 });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowLocalhost", policy =>

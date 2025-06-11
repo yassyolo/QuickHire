@@ -9,14 +9,10 @@ namespace QuickHire.Application.Users.Buyer.AddBuyerDetails;
 
 public class AddBuyerDetailsCommandHandler : ICommandHandler<AddBuyerDetailsCommand, AddBuyerDetailsResponseModel>
 {
-    private readonly IRepository _repository;
-    private readonly ICloudinaryService _cloudinaryService;
     private readonly IUserService _userService;
 
-    public AddBuyerDetailsCommandHandler(IRepository repository, ICloudinaryService cloudinaryService, IUserService userService)
+    public AddBuyerDetailsCommandHandler(IUserService userService)
     {
-        _repository = repository;
-        _cloudinaryService = cloudinaryService;
         _userService = userService;
     }
 

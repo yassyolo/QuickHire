@@ -12,6 +12,18 @@
   font-size: 20px;
 }
 
+.close-button {
+  background-color: var(--white-color) !important;
+  color: var(--text-black-color) !important;
+  box-shadow: none !important;
+  border-radius: 5px;
+}
+
+ .close-button i {
+  font-size: 25px;
+  font-weight: 600;
+ }
+
 .back-to-register, .details-modal-close-button {
   background-color: var(--white-color) !important;
   color: var(--text-black-color) !important;

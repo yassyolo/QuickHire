@@ -1,8 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
 import "./AddReview.css";
-import { FormLabel } from "../../../Shared/Forms/FormLabel";
-import { FormGroup } from "../../../Shared/Forms/FormGroup";
+import { FormLabel } from "../../../Shared/Forms/FormLabel/FormLabel";
+import { FormGroup } from "../../../Shared/Forms/FormGroup/FormGroup";
 import { ActionButton } from "../../../Shared/Buttons/ActionButton/ActionButton";
 import { StarRating } from "../../../Shared/Star/Star";
 import { useParams } from "react-router-dom";

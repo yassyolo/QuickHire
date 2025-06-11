@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { SellerPage } from "../Common/SellerPage";
-import { PageTitle } from "../../../../Admin/Pages/Common/PageTitle";
-import { TitleFilterSelector } from "../../../../Admin/Pages/Common/TitleFilterSection";
+import { PageTitle } from "../../../../Shared/PageItems/PageTitle/PageTitle";
+import { TitleFilterSelector } from "../../../../Shared/PageItems/TitleFilterSection/TitleFilterSection";
 import { DataTable } from "../../../../Admin/Components/Tables/Common/AdminDataTable";
 import { OrderActions } from "../../../../Admin/Components/Tables/TableActions/OrderActions";
 import axios from "../../../../axiosInstance";

@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { FormGroup } from "../../../Shared/Forms/FormGroup";
-import { useTooltip } from "../../../Shared/Tooltip/Tooltip";
+import { FormGroup } from "../../../Shared/Forms/FormGroup/FormGroup";
+import { useTooltip } from "../../../Shared/Forms/Common/Tooltips/Tooltip";
 import { ActionButton } from "../../../Shared/Buttons/ActionButton/ActionButton";
 import axios from "axios";
-import { SelectDropdown } from "../../../Shared/Select/SelectDropdown";
-import { Item } from "../../../Admin/Components/Dropdowns/Common/PopulateDropdown";
+import { SelectDropdown } from "../../../Shared/Dropdowns/Select/SelectDropdown";
+import { Item } from "../../../Shared/Dropdowns/Common/PopulateDropdown";
 import './AccountSettings.css';
 interface AccountSettingsProps {
     onSaveChanges: () => void;

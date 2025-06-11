@@ -75,7 +75,6 @@
     display: flex;
     flex-direction: row;
     gap: 5px;
-    align-items: center;
     margin-top: 10px;
 }
 
@@ -150,7 +149,7 @@
     box-shadow: var(--default-shadow);
     padding: 12px;
     border-radius: 5px;
-    width: 27%;
+    width: 30%;
     text-align: center;
 }
 
@@ -164,14 +163,14 @@
 .get-started-with-our-platform-item.item2{
     position: absolute;
     top: 80%;
-    left: 45%;
+    left: 50%;
     transform: translateX(-50%);
 }
 
 .get-started-with-our-platform-item.item3{
     position: absolute;
     top: 80%;
-    left: 75%;
+    left: 85%;
     transform: translateX(-50%);
 }
 
@@ -183,21 +182,3 @@
     font-weight: 600;
     margin-left: 4px;
 }
-
-.profile-checklist {
-    width: 70%;
-    padding: 20px;
-    background-color: var(--white-color);
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.profile-checklist-header {
-    font-size: 16px;
-    font-weight: bold;
-    color: var(--text-black-color);
-}
-

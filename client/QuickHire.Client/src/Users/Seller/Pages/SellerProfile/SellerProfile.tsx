@@ -61,6 +61,7 @@ export function SellerProfile() {
     const [showEditLanguagesModal, setShowEditLanguagesModal] = useState<boolean>(false);
     const [showEditPortfolioModal, setShowEditPortfolioModal] = useState<boolean>(false);
     const [showAddPortfolioModal, setShowAddPortfolioModal] = useState<boolean>(false);
+    const [showEditEducationModal, setShowEditEducationModal] = useState<boolean>(false);
 
     const handleShowEditPortfolioModalVisibility = () => {
         setShowEditPortfolioModal(!showEditPortfolioModal);
@@ -121,7 +122,7 @@ const handleOnEditCertification = (certifications: Certification[]) => {
             certifications: certifications
         });
     }
-    setShowEditDescriptionModal(false);
+    setShowEditCertificationModal(false);
 }
 
 const handleOnEditLanguagesSuccess = (languages: UserLanguage[]) => {
@@ -241,8 +242,8 @@ const handleOnEditPortfolioSucess = (portfolios: Portfolio[]) => {
                 noContent={"Add your educational background, including degrees, certifications, and relevant courses."}
                 onAddModalShow={() => setShowAddEducationModal(true)}
                 addModal={<AddOrEditDetailsModal title={'Education'} onClose={() => setShowAddEducationModal(false)} show={showAddEducationModal}><EditEducationModalForm onSuccess={handleOnEditEducation} existing={sellerDetails?.education ?? []} /></AddOrEditDetailsModal>}
-                editModal={<AddOrEditDetailsModal title={'Education'} onClose={() => setShowEditDescriptionModal(false)} show={showEditDescriptionModal}><EditEducationModalForm onSuccess={handleOnEditEducation} existing={sellerDetails?.education ?? []} /></AddOrEditDetailsModal>}
-                onEditModalShow={() => setShowEditDescriptionModal(false)}
+                editModal={<AddOrEditDetailsModal title={'Education'} onClose={() => setShowEditEducationModal(false)} show={showEditEducationModal}><EditEducationModalForm onSuccess={handleOnEditEducation} existing={sellerDetails?.education ?? []} /></AddOrEditDetailsModal>}
+                onEditModalShow={() => setShowEditEducationModal(true)}
             >
                 {sellerDetails?.education && sellerDetails.education.length > 0 ? (
                     sellerDetails.education.map((education, index) => (

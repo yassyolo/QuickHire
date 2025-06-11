@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./FAQ.css";
 import { IconButton } from "../../Buttons/IconButton/IconButton";
-import { DeactivateModal } from "../../../Admin/Components/Modals/Deactivate/Common/DeactivatePossibleModal";
+import { DeactivateModal } from "../../../Admin/Components/Modals/Deactivate/Common/DeactivatePossibleModal/DeactivatePossibleModal";
 import axios from "axios";
 import { EditFAQModal } from "../../../Admin/Components/Modals/Edit/EditFAQModal";
 

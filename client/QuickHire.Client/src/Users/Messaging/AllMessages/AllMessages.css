@@ -7,3 +7,21 @@
     overflow-y: scroll;
     overflow-x: hidden;
 }
+
+.no-messages-yet{
+    font-size: 16px;
+    color: var(--text-black-color);
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 20px;
+    margin-right: 50px;
+
+}
+
+.no-messages-yet-description{
+    font-size: 14px;
+    color: var(--text-grey-color);
+    text-align: center;
+    margin-bottom: 20px;
+        margin-right: 50px;
+}

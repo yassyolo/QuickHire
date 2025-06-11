@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import axios from "../../../axiosInstance";
 import { MainCategoriesHeaderDropdown } from "./MainCategoriesHeaderDropdown";
-import { CategoryLink } from "../../Footer/Footer";
+import { CategoryLink } from "../../Layout/Footer/Footer";
 import './MainCategoriesHeader.css';
 
 export function MainCategoriesHeader() {

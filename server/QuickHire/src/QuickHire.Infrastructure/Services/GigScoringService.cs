@@ -1,109 +1,102 @@
-﻿using QuickHire.Application.Common.Interfaces.Repository;
+﻿using Microsoft.EntityFrameworkCore;
+using QuickHire.Application.Common.Interfaces.Repository;
 using QuickHire.Application.Common.Interfaces.Services;
 using QuickHire.Application.Users.Models.ProjectBriefs;
 using QuickHire.Domain.Gigs;
-using QuickHire.Infrastructure.Persistence.EFHelpers;
-using QuickHire.Infrastructure.Persistence.Identity;
+using QuickHire.Domain.Users;
 
 namespace QuickHire.Infrastructure.Services;
 
 public class GigScoringService : IGigScoringService
-{ 
+{
     private readonly IRepository _repository;
     public GigScoringService(IRepository repository)
     {
         _repository = repository;
     }
 
-    public async Task<List<GigScoreModel>> GetTopScoringGigsAsync(string aboutBuyer, string description, int subSubCategoryId, decimal budget, int deliveryDays)
+    public async Task<List<GigScoreModel>> GetTopScoringGigsAsync(int buyerId, string aboutBuyer, string description, int subSubCategoryId, decimal budget, int deliveryDays)
     {
-        var gigsQueryable = _repository.GetAllReadOnly<Gig>().Where(x => x.ModerationStatus != Domain.Moderation.Enums.ModerationStatus.Deactivated && x.SubSubCategoryId == subSubCategoryId);
-        gigsQueryable = _repository.GetAllIncluding<Gig>(x => x.PaymentPlans, x => x.Tags, x => x.Seller);
+        var inputKeywords = (aboutBuyer + " " + description).Split(' ', StringSplitOptions.RemoveEmptyEntries).Select(x => x.ToLowerInvariant()).Distinct().ToList();
 
-        var gigList = await _repository.ToListAsync<Gig>(gigsQueryable);
-
-        var result = new List<GigScoreModel>();
-
-        foreach (var gig in gigList)
-        {
-            double score = 0;
-
-            var inputKeywords = (aboutBuyer + " " + description).Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).Distinct().ToList();
-            var inputSoundexes = inputKeywords.Select(SqlFunctions.Soundex).Where(x => x != null).ToHashSet();
-
-            var gigText = $"{gig.Title} {gig.Description}";
-            var gigWords = gigText.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).Distinct().ToList();
-
-            int matchCount = 0;
-
-            foreach (var word in gigWords)
+        var gigsWithScoresQuery = _repository.GetAllIncluding<Gig>(x => x.PaymentPlans, x => x.Tags, x => x.Seller.SoldOrders)
+            .Where(x => x.ModerationStatus != Domain.Moderation.Enums.ModerationStatus.Deactivated && x.SellerId != buyerId && x.SubSubCategoryId == subSubCategoryId)
+            .Select(x => new
             {
-                var soundex = SqlFunctions.Soundex(word);
-                if (soundex != null && inputSoundexes.Contains(soundex))
+                Gig = x,
+                Seller = x.Seller,
+                TitleLower = x.Title.ToLower(),
+                DescriptionLower = x.Description.ToLower(),
+                ScoreClicks = x.Clicks > 10 ? Math.Min(15, x.Clicks * 0.1) : 0,
+                ScoreBudget = x.PaymentPlans.Any(p => p.Price >= budget * 0.9m && p.Price <= budget * 1.1m) ? 10 : 0,
+                ScoreDelivery = x.PaymentPlans.Any(p => p.DeliveryTimeInDays <= deliveryDays) ? 10 : 0,
+                Tags = x.Tags.Select(t => t.Name),
+                SellerClicks = x.Seller.Clicks
+            });
+
+        var gigsData = await gigsWithScoresQuery.ToListAsync();
+
+        var results = new List<GigScoreModel>();
+
+        foreach (var item in gigsData)
+        {
+            double score = item.ScoreClicks + item.ScoreBudget + item.ScoreDelivery;
+
+            foreach (var keyword in inputKeywords)
+            {
+                if (item.TitleLower.Contains(keyword))
                 {
-                    matchCount++;
+                    score += 3; 
                 }
             }
 
-            score += Math.Min(20, matchCount * 2);
-
-            foreach (var tag in gig.Tags)
+            foreach (var keyword in inputKeywords)
             {
-                if (aboutBuyer.Contains(tag.Name, StringComparison.OrdinalIgnoreCase) || description.Contains(tag.Name, StringComparison.OrdinalIgnoreCase))
+                if (item.DescriptionLower.Contains(keyword))
+                {
+                    score += 1; 
+                }
+            }
+
+            foreach (var tagName in item.Tags)
+            {
+                if ((aboutBuyer + " " + description).IndexOf(tagName, StringComparison.OrdinalIgnoreCase) >= 0)
                 {
                     score += 5;
                 }
-            }            
-
-            if (gig.Clicks > 10)
-            {
-                score += Math.Min(15, gig.Clicks * 0.1);
             }
 
-            if (gig.PaymentPlans.Any(x => x.Price >= budget * 0.9m && x.Price <= budget * 1.1m))
+            var allReviews = item.Seller?.SoldOrders.SelectMany(o => o.Reviews).ToList();
+            if (allReviews != null && allReviews.Count > 0)
             {
-                score += 10;
-            }
-
-            if (gig.PaymentPlans.Any(x => x.DeliveryTimeInDays <= deliveryDays))
-            {
-                score += 10;
-            }
-
-            var seller = gig.Seller;
-            var user = await _repository.GetByIdAsync<ApplicationUser, string>(seller.UserId);
-
-            var sellerWords = user.Description?.Split(' ', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries).Distinct();
-
-                if (sellerWords != null)
+                var avgRating = allReviews.Average(r => r.Rating);
+                if (avgRating > 4.5)
                 {
-                    int sellerMatchCount = sellerWords.Count(word =>
-                    {
-                        var soundex = SqlFunctions.Soundex(word);
-                        return soundex != null && inputSoundexes.Contains(soundex);
-                    });
-
-                    score += Math.Min(10, sellerMatchCount * 1); 
+                    score += 10;
                 }
+            }
 
-                if (seller.Clicks > 0)
-                {
-                    score += Math.Min(10, seller.Clicks * 0.1); 
-                }
-
-            var matchingIndustrySkills = await _repository.ToListAsync(_repository.GetAllReadOnly<Domain.Users.IndustrySkillSeller>().Where(x => x.SellerId == seller.Id && x.IndustrySkillId == subSubCategoryId));
-
-            if (matchingIndustrySkills.Any()) score += 10;
-
-            result.Add(new GigScoreModel
+            if (item.Seller.Skills.Any())
             {
-                GigId = gig.Id,
-                Score = score,
-                Gig = gig,
-                SellerId = seller.Id,
+                score += item.Seller.Skills.Count(skill => inputKeywords.Any(keyword => skill.Name.Contains(keyword, StringComparison.OrdinalIgnoreCase))) * 2;
+            }
+
+            if (item.SellerClicks > 0)
+            {
+                score += Math.Min(10, item.SellerClicks * 0.1);
+            }
+
+            results.Add(new GigScoreModel
+            {
+                GigId = item.Gig.Id,
+                Gig = item.Gig,
+                SellerId = item.Seller.Id,
+                Score = score
             });
         }
 
-        return result.OrderByDescending(x => x.Score).Take(20).ToList();
+        var distinctGigsBySeller = results.GroupBy(x => x.SellerId).Select(x => x.OrderByDescending(x => x.Score).First()).OrderByDescending(x => x.Score).Take(20).ToList();
+
+        return distinctGigsBySeller;
     }
 }

@@ -22,7 +22,8 @@ public class ProjectBriefPreviewQueryHandler : IQueryHandler<ProjectBriefPreview
     }
     public async Task<ProjectBriefPreviewModel> Handle(ProjectBriefPreviewQuery request, CancellationToken cancellationToken)
     {
-        /*var projectBrief = await _repository.GetByIdAsync<ProjectBrief, int>(request.Id);
+        var projectBriefQueryable = _repository.GetAllIncluding<ProjectBrief>(x => x.SubSubCategory).Where(x => x.Id == request.Id);
+        var projectBrief = await _repository.FirstOrDefaultAsync(projectBriefQueryable);
         if (projectBrief == null)
         {
             throw new NotFoundException(nameof(Domain.ProjectBriefs.ProjectBrief), request.Id);
@@ -44,25 +45,7 @@ public class ProjectBriefPreviewQueryHandler : IQueryHandler<ProjectBriefPreview
             Status = projectBrief.Status.ToString(),
             Location = buyerInfo.Location,
             Languages = buyerInfo.Languages
-        };*/
-
-        return new ProjectBriefPreviewModel
-        {
-            ProjectBriefNumber = "PB-12345",
-            Description = "This is a sample project brief description.",
-            AboutBuyer = "About the buyer.",
-            Budget = 500,
-            DeliveryTimeInDays = 7,
-            SubSubCategoryName = "Web Development",
-            BuyerName = "John Doe",
-            BuyerProfilePictureUrl = "https://example.com/profile.jpg",
-            CreatedAt = DateTime.Now.ToString("yyyy-MM-dd"),
-            MemberSince = DateTime.Now.AddYears(-1).ToString("yyyy-MM-dd"),
-            Status = "Open",
-            Location = "USA",
-            Languages = new string[] { "test", "test2", "test3" }
         };
-
     }
 }
 

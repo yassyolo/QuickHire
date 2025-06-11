@@ -14,10 +14,6 @@ public class ToggleActivationStatusCommandValidator : AbstractValidator<ToggleAc
            .WithMessage(string.Format(Required, "Id"))
            .GreaterThan(0)
            .WithMessage(string.Format(GreaterThan, "Id", 0));
-
-        RuleFor(x => x.Paused)
-          .NotEmpty()
-          .WithMessage(string.Format(Required, "Paused"));
     }
 }
 

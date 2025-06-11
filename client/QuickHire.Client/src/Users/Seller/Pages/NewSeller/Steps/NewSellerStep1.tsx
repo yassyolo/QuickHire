@@ -1,11 +1,11 @@
 // components/forms/PersonalInfoStep.tsx
-import { FormGroup } from "../../../../../Shared/Forms/FormGroup";
+import { FormGroup } from "../../../../../Shared/Forms/FormGroup/FormGroup";
 import { ActionButton } from "../../../../../Shared/Buttons/ActionButton/ActionButton";
-import { SelectDropdown } from "../../../../../Shared/Select/SelectDropdown";
+import { SelectDropdown } from "../../../../../Shared/Dropdowns/Select/SelectDropdown";
 import { NewAddedLanguage } from "../../SellerProfile/NewAddedItems/Language/NewAddedLanguage";
 import { UserLanguage } from "../../SellerProfile/SellerProfile";
 import { Language } from "../../SellerProfile/Forms/EditLanguageModalForm";
-import { useTooltip } from "../../../../../Shared/Tooltip/Tooltip";
+import { useTooltip } from "../../../../../Shared/Forms/Common/Tooltips/Tooltip";
 
 interface Props {
   fullName: string;

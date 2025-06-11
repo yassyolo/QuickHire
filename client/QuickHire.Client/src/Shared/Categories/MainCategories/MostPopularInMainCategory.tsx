@@ -1,7 +1,7 @@
 import React from "react";
 import { MostPopularInMainCategoryItem } from "./MostPopularInMainCategoryItem";
 import './MostPopularInMainCategory.css';
-
+import axios from "../../../axiosInstance";
 interface MostPopularInMainCategoryProps {
     mainCategoryName: string;
     mainCategoryId: number;
@@ -19,8 +19,9 @@ export function MostPopularInMainCategory({ mainCategoryId, mainCategoryName }: 
     React.useEffect(() => {
         const fetchMostPopularItems = async () => {
             try {
-                const response = await fetch(`https://localhost:7267/admin/sub-categories/popular/${mainCategoryId}`);
-                const data: MostPopularInMainCategoryItems[] = await response.json();
+                const url = `https://localhost:7267/admin/sub-categories/popular/${mainCategoryId}`;
+                const response = await axios.get<MostPopularInMainCategoryItems[]>(url);
+                const data = response.data;
                 setMostPopularItems(data);
             } catch (error) {
                 console.error("Error fetching most popular items:", error);

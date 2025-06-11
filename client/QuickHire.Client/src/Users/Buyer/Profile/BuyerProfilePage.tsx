@@ -1,14 +1,16 @@
-import { Link } from "react-router-dom";
-import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 import "./BuyerProfilePage.css";
+import axios from "../../../axiosInstance";
 import { UserLanguage } from "../../Seller/Pages/SellerProfile/SellerProfile";
 import { useEffect, useState } from "react";
 import { LanguageTag } from "../../Seller/Pages/SellerProfile/Tags/Language/LanguageTag";
-import { ProfileChecklistItem } from "./ProfileChecklistItem";
 import { EditLanguageModalForm } from "../../Seller/Pages/SellerProfile/Forms/EditLanguageModalForm";
 import { SellerPage } from "../../Seller/Pages/Common/SellerPage";
 import { AddOrEditDetailsModal } from "../../Seller/Pages/SellerProfile/Modals/EditOrDeleteModal/AddOrEditDetailsModal";
-import { AddBuyerDetailsModal } from "../../../Admin/Components/Modals/Add/AddBuyerDetails";
+import { AddBuyerDetailsModal } from "../../../Admin/Components/Modals/Add/BuyerDetails/AddBuyerDetails";
+import { useAuth } from "../../../AuthContext";
+import { ProfileChecklist } from "./ProfileChecklist/ProfileChecklist";
+import { EditBuyerDetailsModal } from "../../../Admin/Components/Modals/Add/BuyerDetails/EditBuyerDetails";
 interface BuyerDetails{
     profilePictureUrl: string;
     fullName: string;
@@ -23,6 +25,18 @@ export function BuyerProfilePage() {
     const [buyerDetails, setBuyerDetails] = useState<BuyerDetails | null>(null);
     const [showEditLanguagesModal, setShowEditLanguagesModal] = useState(false);
     const [showAddBuyerDetailsModal, setShowAddBuyerDetailsModal] = useState(false);
+    const [showEditBuyerDetailsModal, setShowEditBuyerDetailsModal] = useState(false);
+
+    const handleEditBuyerDetailsModalVisbility = () => {
+        setShowEditBuyerDetailsModal(!showEditBuyerDetailsModal);
+    }
+
+      const { switchMode } = useAuth();  
+    const navigate = useNavigate();
+  const handleSwitchToSelling = () => {
+    switchMode("seller");
+    navigate("/seller/dashboard");
+  };
     const handleAddBuyerDetailsModalVisbility = () => {
         setShowAddBuyerDetailsModal(!showAddBuyerDetailsModal);
     }
@@ -49,6 +63,18 @@ export function BuyerProfilePage() {
         });
         setShowEditLanguagesModal(false);
     };
+
+    const handleEditBuyerDetailsSuccess = (image: string, description: string) => {
+        setBuyerDetails(prev => {
+            if (!prev) return prev;
+            return {
+                ...prev,
+                profilePictureUrl: image,
+                description: description
+            };
+        });
+        setShowEditBuyerDetailsModal(false);
+    }
 
     const onAddBuyerDetailsSuccess = (image: string, description: string) => {
         setBuyerDetails(prev => {
@@ -104,7 +130,10 @@ export function BuyerProfilePage() {
             <div className="buyer-profile-page-right">
                 <div className="currently-in-buyer-mode">
                     <div className="currently-in-buyer-mode-header">You are currently in client profile</div>
-                    <div className="currently-in-buyer-mode-description">Go to your seller profile by clicking <Link className="link-to-seller" to={"/seller/dashboard"}>here</Link></div>
+                    <div className="d-flex flex-row">
+                                            <div className="currently-in-buyer-mode-description">Go to your seller profile by clicking </div> <div className="link-to-seller" onClick={handleSwitchToSelling}>here</div>
+
+                    </div>
                 </div>
                 <div className="get-started-with-our-platform">
                     <div className="get-started-with-our-platform-header">Get started with our platform</div>
@@ -118,18 +147,21 @@ export function BuyerProfilePage() {
                         <Link className="link-to-create" to={"/buyer/dashboard"}> Start exploring <i className="bi bi-arrow-right"></i> </Link>
                     </div>
                 </div>
-                <div className="profile-checklist">
-                    <div className="profile-checklist-header">Profile checklist</div>
-                    {buyerDetails?.languages.length === 0 ?
-                    (<ProfileChecklistItem title={"Set communication preferences"} description={"Let people know languages do you speak"} buttonName={"Add"} onButtonClick={handleEditLanguagesModalShow}></ProfileChecklistItem>) : 
-                    (<ProfileChecklistItem title={"Set communication preferences"} description={"Let people know languages do you speak"} buttonName={"Edit"} onButtonClick={handleEditLanguagesModalShow}></ProfileChecklistItem>)}
-
-                     {!buyerDetails?.profilePictureUrl ?
-                    (<ProfileChecklistItem title={"Add details for your profile"} description={"Add photo and details for better personalization"} buttonName={"Add"} onButtonClick={handleAddBuyerDetailsModalVisbility}></ProfileChecklistItem>) :
-                    (<ProfileChecklistItem title={"Edit details for your profile"} description={"Add photo and details for better personalization"} buttonName={"Edit"} onButtonClick={() => console.log("Add profile picture")}></ProfileChecklistItem>)}
-                    
-                </div>
-            </div>
+                <ProfileChecklist
+                    buyerDetails={
+                        buyerDetails
+                            ? {
+                                ...buyerDetails,
+                                languages: buyerDetails.languages
+                                    ? buyerDetails.languages.map(lang => ({ language: lang.languageName }))
+                                    : []
+                            }
+                            : null
+                    }
+                    handleEditLanguagesModalShow={handleEditLanguagesModalShow}
+                    handleAddBuyerDetailsModalVisbility={handleAddBuyerDetailsModalVisbility}
+                    handleEditBuyerDetailsModalVisbility={handleEditBuyerDetailsModalVisbility}
+                />        </div>
 
         </div>
        </SellerPage>
@@ -140,6 +172,15 @@ export function BuyerProfilePage() {
             /></AddOrEditDetailsModal>            
         )}
                     {showAddBuyerDetailsModal && <AddBuyerDetailsModal showModal={true} onClose={handleAddBuyerDetailsModalVisbility} onAddBuyerDetailsSuccess={onAddBuyerDetailsSuccess}/>}
+                    {showEditBuyerDetailsModal && (
+                        <EditBuyerDetailsModal
+                            showModal={true}
+                            onClose={handleEditBuyerDetailsModalVisbility}
+                            onEditBuyerDetailsSuccess={handleEditBuyerDetailsSuccess}
+                            initialDescription={buyerDetails?.description ?? ""}
+                            initialImageUrl={buyerDetails?.profilePictureUrl ?? ""}
+                        />
+                    )}
 
         </>
     );

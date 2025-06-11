@@ -1,11 +1,11 @@
 import { useEffect, useState, ChangeEvent } from "react";
 import axios from "../../../../../axiosInstance";
-import { useTooltip } from "../../../../../Shared/Tooltip/Tooltip";
+import { useTooltip } from "../../../../../Shared/Forms/Common/Tooltips/Tooltip";
 import { AddDetailsModal } from "./AddDetailsForm";
-import { FormGroup } from "../../../../../Shared/Forms/FormGroup";
-import { SelectDropdown } from "../../../../../Shared/Select/SelectDropdown";
+import { FormGroup } from "../../../../../Shared/Forms/FormGroup/FormGroup";
+import { SelectDropdown } from "../../../../../Shared/Dropdowns/Select/SelectDropdown";
 import { DetailsModalButtons } from "../Modals/ModalButtons/DetailsModalButtons";
-import { Item } from "../../../../../Admin/Components/Dropdowns/Common/PopulateDropdown";
+import { Item } from "../../../../../Shared/Dropdowns/Common/PopulateDropdown";
 import { NewAddedPortfolio } from "../NewAddedItems/Portfolio/NewAddedPortfolio";
 import { Portfolio } from "../SellerProfile";
 

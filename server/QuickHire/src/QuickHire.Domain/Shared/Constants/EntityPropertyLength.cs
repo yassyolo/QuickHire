@@ -19,7 +19,7 @@ public static class EntityPropertyLength
     {
         public const int TitleMaxLength = 50;
         public const int TitleMinLength = 2;
-        public const int MessageMaxLength = 150;
+        public const int MessageMaxLength = 250;
         public const int MessageMinLength = 2;
     }
 

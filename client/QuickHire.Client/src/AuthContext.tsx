@@ -71,7 +71,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         connectionRef.current.state === signalR.HubConnectionState.Connected ||
         connectionRef.current.state === signalR.HubConnectionState.Connecting
       ) {
-        return; // Already connected or connecting
+        return; 
       }
     }
 
@@ -97,6 +97,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       console.error("❌ SignalR connection error:", error);
     }
   }, []);
+
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
 
   const stopSignalRConnection = useCallback(async () => {
     if (connectionRef.current) {

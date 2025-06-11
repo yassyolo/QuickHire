@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { PageTitle } from "../../../../Admin/Pages/Common/PageTitle";
+import { PageTitle } from "../../../../Shared/PageItems/PageTitle/PageTitle";
 import { ActionButton } from "../../../../Shared/Buttons/ActionButton/ActionButton";
 import { SellerPage } from "../../../Seller/Pages/Common/SellerPage";
 import './PostProjectBrief.css'
-import { PostProjectBriefForm } from "./PostProjectBriefForm";
+import { PostProjectBriefForm } from "./Form/PostProjectBriefForm";
 
 export function PostProjectBrief() {
     const [showProjectBriefForm, setShowProjectBriefForm] = useState(false);
@@ -16,7 +16,7 @@ export function PostProjectBrief() {
             !showProjectBriefForm ?
                 (
                     <SellerPage>
-                        <PageTitle title="Post project brief" description="Describe your project requirements and connect with qualified professionals to get the job done." breadcrumbs={[{ label: <i className="bi bi-house-door"></i>, to: "/buyer/dashboard" },
+                        <PageTitle title="Post project brief" description="Describe your project requirements and connect with qualified professionals to get the job done." breadcrumbs={[{ label: <i className="bi bi-house-door"></i>, to: "/buyer/profile" },
                             { label: "Post a project brief" }]} />
                         <div className="brief-welcome-container">
                             <h2 className="brief-welcome-title">Welcome! Ready to bring your idea to life?</h2>

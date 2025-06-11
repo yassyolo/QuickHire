@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { CategoriesActionButton } from "../CategoriesActionButton";
 import { EditMainCategoryModal } from "../../Modals/Edit/EditMainCategoryModal";
-import { DeactivateMainCategoryModal } from "../../Modals/Deactivate/DeactivateMainCategoryModal";
+import { DeactivateMainCategoryModal } from "../../Modals/Deactivate/MainCategory/DeactivateMainCategoryModal";
 export interface MainCategoryActionsProps {
     category: { id: number };
     details: { name: string; description: string };

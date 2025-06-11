@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useState } from "react";
 import { SellerPage } from "../Common/SellerPage";
-import { PageTitle } from "../../../../Admin/Pages/Common/PageTitle";
+import { PageTitle } from "../../../../Shared/PageItems/PageTitle/PageTitle";
 import { DataTable } from "../../../../Admin/Components/Tables/Common/AdminDataTable";
 import { ProjectBriefActions } from "../../../../Admin/Components/Tables/TableActions/ProjectBriefActions";
+import axios from "../../../../axiosInstance";
 
 export interface ProjectBriefRow{
   id: number;
@@ -30,17 +31,14 @@ export function SellerProjectBriefs (){
             try {    
                 const url = `https://localhost:7267/seller/project-briefs/table`;
     
-                const response = await fetch(url, {
-                    method: 'GET',
-                    headers: {
-                        'Accept': '*/*',
-                    },
-                });
-                if (!response.ok) {
-                    throw new Error("Failed to fetch orders");
+                const response = await axios.get<ProjectBriefRow[]>(url);
+                if (response.status !== 200) {
+                    throw new Error(`Failed to fetch gigs, status code: ${response.status}`);
                 }
-                const r = await response.json() as ProjectBriefRow[];
-    
+                const r = response.data.map((x: ProjectBriefRow) => ({
+                    ...x,
+                    deliveryTimeInDays: x.deliveryTimeInDays + " days",
+                }));
                 setOrders(r);
             } catch (error) {
                 console.error("Error fetching orders:", error);

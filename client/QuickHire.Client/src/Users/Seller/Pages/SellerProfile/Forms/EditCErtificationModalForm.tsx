@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "../../../../../axiosInstance";
-import { useTooltip } from "../../../../../Shared/Tooltip/Tooltip";
-import { FormGroup } from "../../../../../Shared/Forms/FormGroup";
+import { useTooltip } from "../../../../../Shared/Forms/Common/Tooltips/Tooltip";
+import { FormGroup } from "../../../../../Shared/Forms/FormGroup/FormGroup";
 import { DetailsModalButtons } from "../Modals/ModalButtons/DetailsModalButtons";
 import { AddDetailsModal } from "./AddDetailsForm";
 import { NewAddedCertification } from "../NewAddedItems/Certification/NewAddedCertification";
@@ -34,6 +34,7 @@ export function EditCertificationModalForm({ initialCertifications, onEditSucces
 
   useEffect(() => {
     setNewCertifications(initialCertifications);
+    console.log("Initial certifications set:", initialCertifications);
   }, [initialCertifications]);
 
   const clearForm = () => {
@@ -81,6 +82,7 @@ export function EditCertificationModalForm({ initialCertifications, onEditSucces
     setDate(cert.date);
   };
 
+
   const handleRemove = (cert: Certification) => {
     setNewCertifications((prev) => prev.filter((c) => c.id !== cert.id));
     if (certToEdit?.id === cert.id) clearForm();
@@ -93,12 +95,12 @@ export function EditCertificationModalForm({ initialCertifications, onEditSucces
     Id: c.id,
     Certification: c.certification,
     Issuer: c.issuer,
-    Date: c.date,
-  })),
+Date: c.date  })),
 });
 
       onEditSuccess(newCertifications);
       clearForm();
+    
     } catch (error) {
       console.error("Error saving certifications:", error);
     }

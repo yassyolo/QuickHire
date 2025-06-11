@@ -4,6 +4,7 @@ using QuickHire.Application.Common.Interfaces.Repository;
 using QuickHire.Application.Common.Interfaces.Services;
 using QuickHire.Application.Users.Models.ProjectBriefs;
 using QuickHire.Domain.ProjectBriefs.Enums;
+using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
 
 namespace QuickHire.Application.Users.ProjectBriefs.BuyerProjectBriefs;
 
@@ -20,18 +21,17 @@ public class GetBuyerProjectBriefsQueryHandler : IQueryHandler<GetBuyerProjectBr
 
     public async Task<IEnumerable<BuyerProjectBriefModel>> Handle(GetBuyerProjectBriefsQuery request, CancellationToken cancellationToken)
     {
-        /*var buyer = await _userService.GetBuyerIdByUserIdAsync();
+        var buyer = await _userService.GetBuyerIdByUserIdAsync();
 
-        var projectBriefsQueryable = _repository.GetAllReadOnly<QuickHire.Domain.ProjectBriefs.ProjectBrief>().Where(x => x.BuyerId == buyer);
-        projectBriefsQueryable = _repository.GetAllIncluding<QuickHire.Domain.ProjectBriefs.ProjectBrief>(x => x.CustomOffers);
+        var projectBriefsQueryable = _repository.GetAllIncluding<QuickHire.Domain.ProjectBriefs.ProjectBrief>(x => x.CustomOffers).Where(x => x.BuyerId == buyer);
 
-        if (request.FromDate != null && request.ToDate != null)
+        if (request.FromDate != null)
         {
             var fromDate = DateTime.ParseExact(request.FromDate, "yyyy-MM-dd", null);
             projectBriefsQueryable = projectBriefsQueryable.Where(x => x.CreatedAt >= fromDate);
         }
 
-        if (request.ToDate != null && request.FromDate != null)
+        if (request.ToDate != null)
         {
             var toDate = DateTime.ParseExact(request.ToDate, "yyyy-MM-dd", null);
             projectBriefsQueryable = projectBriefsQueryable.Where(x => x.CreatedAt <= toDate);
@@ -39,9 +39,8 @@ public class GetBuyerProjectBriefsQueryHandler : IQueryHandler<GetBuyerProjectBr
 
         if(request.Keyword != null && request.Keyword.Trim().Length > 0)
         {
-            projectBriefsQueryable = projectBriefsQueryable.Where(x => x.ProjectBriefNumber.Contains(request.Keyword.Trim(), StringComparison.OrdinalIgnoreCase) ||
-                                                                  x.Description.Contains(request.Keyword.Trim(), StringComparison.OrdinalIgnoreCase) ||
-                                                                  x.AboutBuyer.Contains(request.Keyword.Trim(), StringComparison.OrdinalIgnoreCase));
+            var keyword = request.Keyword.Trim();
+            projectBriefsQueryable = projectBriefsQueryable.Where(x => x.ProjectBriefNumber.ToLower().Contains(keyword) || x.Description.ToLower().Contains(keyword) || x.AboutBuyer.ToLower().Contains(keyword));
         }
         var projectBriefsList = await _repository.ToListAsync<QuickHire.Domain.ProjectBriefs.ProjectBrief>(projectBriefsQueryable);
         projectBriefsList = projectBriefsList.OrderByDescending(x => x.CreatedAt).ToList();
@@ -61,31 +60,8 @@ public class GetBuyerProjectBriefsQueryHandler : IQueryHandler<GetBuyerProjectBr
             TotalOffers = x.CustomOffers.Count(),
             Order = x.Status == ProjectBriefStatus.OrderPlaced,
             Status = x.Status.ToString()
-        });*/
-
-        return new List<BuyerProjectBriefModel>
-        {
-            new BuyerProjectBriefModel
-            {
-                Id = 1,
-                Date = "01 Jan 2023",
-                DocumentNumber = "PB-001",
-                SellersReached = 5,
-                TotalOffers = 3,
-                Order = true,
-                Status = ProjectBriefStatus.OrderPlaced.ToString()
-            },
-            new BuyerProjectBriefModel
-            {
-                Id = 2,
-                Date = "15 Feb 2023",
-                DocumentNumber = "PB-002",
-                SellersReached = 10,
-                TotalOffers = 7,
-                Order = false,
-                Status = ProjectBriefStatus.Delivered.ToString()
-            }
-        };
+        });
+       
     }
 }
 

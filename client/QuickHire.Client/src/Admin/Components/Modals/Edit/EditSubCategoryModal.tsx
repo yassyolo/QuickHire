@@ -1,9 +1,9 @@
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { EditModal } from "./Common/EditModal";
-import { ImagePreview } from "../../../../Shared/ImagePreview/ImagePreview";
-import { FormGroup } from "../../../../Shared/Forms/FormGroup";
-import { useTooltip } from "../../../../Shared/Tooltip/Tooltip";
+import { ImagePreview } from "../../../../Shared/Images/ImagePreview/ImagePreview";
+import { FormGroup } from "../../../../Shared/Forms/FormGroup/FormGroup";
+import { useTooltip } from "../../../../Shared/Forms/Common/Tooltips/Tooltip";
 
 export interface EditSubCategoryModalProps {
     id: number;

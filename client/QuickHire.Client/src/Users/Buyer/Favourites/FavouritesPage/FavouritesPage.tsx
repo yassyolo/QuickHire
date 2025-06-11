@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { PageTitle } from "../../../../Admin/Pages/Common/PageTitle";
+import { PageTitle } from "../../../../Shared/PageItems/PageTitle/PageTitle";
 import { SellerPage } from "../../../Seller/Pages/Common/SellerPage";
 import './FavouritesPage.css';
 import { ActionButton } from "../../../../Shared/Buttons/ActionButton/ActionButton";
-import { AddFavouriteListFillModal } from "../../../../Admin/Components/Modals/Add/AddFavouriteListFull";
+import { AddFavouriteListFillModal } from "../../../../Admin/Components/Modals/Add/FavouriteList/AddFavouriteListFull";
 import axios from "axios";
 import { FavouritePageListItem } from "./FavouritesPageItem/FavouritePageListItem";
 

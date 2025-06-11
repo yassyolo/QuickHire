@@ -1,12 +1,7 @@
-﻿using Azure.Core;
-using CloudinaryDotNet.Actions;
-using Mapster;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.JsonWebTokens;
 using QuickHire.Application.Admin.Models.Filters;
-using QuickHire.Application.Admin.Models.MainCategories;
 using QuickHire.Application.Admin.Models.Shared;
 using QuickHire.Application.Admin.Models.Users;
 using QuickHire.Application.Admin.Users.SearchUsers;
@@ -17,13 +12,11 @@ using QuickHire.Application.Users.Models.Messaging;
 using QuickHire.Application.Users.Models.NewSEller;
 using QuickHire.Application.Users.Models.Profile;
 using QuickHire.Domain.Gigs;
-using QuickHire.Domain.Moderation.Enums;
 using QuickHire.Domain.Orders;
 using QuickHire.Domain.Shared.Constants;
 using QuickHire.Domain.Shared.Exceptions;
 using QuickHire.Domain.Users;
 using QuickHire.Infrastructure.Authentication.Processors;
-using QuickHire.Infrastructure.CloudStorage;
 using QuickHire.Infrastructure.Persistence.Identity;
 using System.Security.Claims;
 using UnauthorizedAccessException = QuickHire.Domain.Shared.Exceptions.UnauthorizedAccessException;
@@ -613,6 +606,11 @@ internal class UserService : IUserService
         {
             throw new BadRequestException("Image upload failed", "Image upload failed.");
         }
+        user.ProfileImageUrl = imagePath;
+
+        await _repository.UpdateAsync(user);
+        await _repository.SaveChangesAsync();
+
         return imagePath;
     }
 
@@ -786,5 +784,17 @@ internal class UserService : IUserService
             MemberSince = user.JoinedAt.ToString("MMMM dd, yyyy")
         };
            
+    }
+
+    public async Task<string> UpdateBuyerDescriptionAsync(string description)
+    {
+        var currentUserId = GetCurrentUserIdAsync();
+        var user = _repository.GetAllReadOnly<ApplicationUser>().FirstOrDefault(x => x.Id == currentUserId);
+        user.Description = description;
+
+        await _repository.UpdateAsync(user);
+        await _repository.SaveChangesAsync();
+
+        return user.ProfileImageUrl ?? string.Empty;
     }
 }

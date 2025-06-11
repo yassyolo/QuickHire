@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import './ExploreSubcategoriesInMainCategory.css';
 import { Link } from "react-router-dom";
+import axios from "../../../axiosInstance";
 
 interface ExploreSubcategoriesInMainCategoryProps {
     mainCategoryId: number;
@@ -25,8 +26,13 @@ export function ExploreSubcategoriesInMainCategory({ mainCategoryId, mainCategor
     useEffect(() => {
         const fetchSubcategories = async () => {
             try {
-                const response = await fetch(`https://localhost:7267/admin/sub-categories-in-main-category/${mainCategoryId}`);
-                const data: Subcategory[] = await response.json();
+                const url = `https://localhost:7267/admin/sub-categories-in-main-category/${mainCategoryId}`;
+                const response = await axios.get<Subcategory[]>(url);
+                const data = response.data.map(subcategory => ({
+                    ...subcategory,
+                    subSubCategories: subcategory.subSubCategories || [] // Ensure subSubCategories is always an array
+                }));
+
                 setSubcategories(data);
             } catch (error) {
                 console.error("Error fetching subcategories:", error);

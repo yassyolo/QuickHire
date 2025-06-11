@@ -18,9 +18,8 @@ public class GetProjectBriefsTableQueryHandler : IQueryHandler<GetProjectBriefsT
 
     public async Task<List<SellerProjectBriefTableModel>> Handle(GetProjectBriefsTableQuery request, CancellationToken cancellationToken)
     {
-        /*var sellerId = await _userService.GetSellerIdByUserIdAsync();
-        var suitableProjectBriefsQueryable = _repository.GetAllReadOnly<Domain.ProjectBriefs.SuitableSellerProjectBrief>().Where(x => x.SellerId == sellerId);
-        suitableProjectBriefsQueryable = _repository.GetAllIncluding<Domain.ProjectBriefs.SuitableSellerProjectBrief>(x => x.ProjectBrief);
+        var sellerId = await _userService.GetSellerIdByUserIdAsync();
+        var suitableProjectBriefsQueryable = _repository.GetAllIncluding<Domain.ProjectBriefs.SuitableSellerProjectBrief>(x => x.ProjectBrief).Where(x => x.SellerId == sellerId);
         var suitableProjectBriefs = await _repository.ToListAsync<Domain.ProjectBriefs.SuitableSellerProjectBrief>(suitableProjectBriefsQueryable);
 
         var model =  await Task.WhenAll(suitableProjectBriefs.Select(async x => new SellerProjectBriefTableModel
@@ -33,27 +32,7 @@ public class GetProjectBriefsTableQueryHandler : IQueryHandler<GetProjectBriefsT
         }).ToList()
         );
 
-        return model.ToList();*/
-
-        return new List<SellerProjectBriefTableModel>
-        {
-            new SellerProjectBriefTableModel
-            {
-                Id = 1,
-                BuyerUsername = "buyer1",
-                Description = "Project brief description 1",
-                DeliveryTimeInDays = "7",
-                Budget = 1000.00m
-            },
-            new SellerProjectBriefTableModel
-            {
-                Id = 2,
-                BuyerUsername = "buyer2",
-                Description = "Project brief description 2",
-                DeliveryTimeInDays = "14",
-                Budget = 2000.00m
-            }
-        };
+        return model.ToList();
     }
 }
 

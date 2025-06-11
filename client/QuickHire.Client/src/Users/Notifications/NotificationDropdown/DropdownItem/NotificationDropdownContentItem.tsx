@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from '../../../../axiosInstance';
 import './NotificationDropdownContentItem.css';
 interface NotificationDropdownContentItemProps {
     id: number;
@@ -13,7 +13,8 @@ export function NotificationDropdownContentItem({ id, handleNotificationReadSucc
 
     const handleNotificationRead = async () => {
         try {
-            await axios.put(`/api/notifications/${id}/read`);
+            const url = `https://localhost:7267/notifications/${id}`;
+            await axios.put(url);
             handleNotificationReadSuccessful(id);
         } catch (error) {
             console.error("Error marking notification as read:", error);

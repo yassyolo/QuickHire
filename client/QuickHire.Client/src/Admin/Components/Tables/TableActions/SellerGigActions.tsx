@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ActionButton } from "../../../../Shared/Buttons/ActionButton/ActionButton";
-import axios from "axios";
+import axios from "../../../../axiosInstance";
 import { DeleteGigModal } from "../../Modals/Deactivate/DeleteGigModal";
 import { GigPreview } from "../../../../Gigs/Preview/GigPreview";
 import { GigStatisticsPage } from "../../../../Gigs/Details/Statistics/GigStatisticsPage";
@@ -31,30 +31,25 @@ export function SellerGigActions ({gig, paused, onActivateGigSuccess, onDeactiva
     };
 
     const handleActivateGig = () => {
-        const url = `https://localhost:7267/seller/gigs/activate`;
-        const params = new URLSearchParams();
-        params.append("id", gig.id.toString());
-        if(paused) {
-            params.append("paused", "true");
-        }
-        else {
-            params.append("paused", "false");
-        }
-        axios.put(url, null, { params })
-            .then(() => {
-                onActivateGigSuccess(gig.id);
-                if(paused) {
-                   onActivateGigSuccess(gig.id);
-                }
-                else {
-                    onDeactivateGigSuccess(gig.id);
-                }
-            })
-            .catch(error => {
-                console.error("Error activating gig:", error);
-            });
-        
+    const url = `https://localhost:7267/seller/gigs/activate`;
+    const params = {
+        Id: gig.id,
+        Paused: paused, 
     };
+
+    axios.put(url, null, { params })
+        .then(() => {
+            if (paused) {
+                onActivateGigSuccess(gig.id);
+            } else {
+                onDeactivateGigSuccess(gig.id);
+            }
+        })
+        .catch(error => {
+            console.error("Error activating gig:", error);
+        });
+};
+
     const handleEditModalVisibility = () => setShowEditModalVisibility(!onEditModalVisibility);
 
     const handleActionsDropdownVisibility = () => setShowActionsDropdown(!showActionsDropdown);

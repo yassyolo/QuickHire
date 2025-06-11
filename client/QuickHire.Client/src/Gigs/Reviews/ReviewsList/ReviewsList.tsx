@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { SortBy } from "../../../Admin/Components/Dropdowns/Common/Sort/SortBy";
+import { SortBy } from "../../../Shared/Dropdowns/Common/Sort/SortBy";
 import { ReviewRow } from "../ReviewsListItem/ReviewRow";
 import axios from "axios";
 import { ActionButton } from "../../../Shared/Buttons/ActionButton/ActionButton";

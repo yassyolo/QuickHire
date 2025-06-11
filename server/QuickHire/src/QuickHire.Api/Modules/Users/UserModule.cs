@@ -25,23 +25,16 @@ public class UserModule : CarterModule
             return Results.Ok(result);
         })
             .WithName("GetNotifications")
-            .WithTags("Users")
-            .Produces<IEnumerable<GetNotificationsResponseModel>>(StatusCodes.Status200OK)
-            .Produces(StatusCodes.Status404NotFound)
-            .ProducesValidationProblem()
+            .WithTags("Notifications")
             .WithDescription("Get notifications for the current user");
 
-        app.MapPost("/notifications/{Id}/mark-as-read", async (int Id, IMediator mediator) =>
+        app.MapPut("/notifications/{Id}", async([AsParameters]MarkAsReadQuery query, IMediator mediator) =>
         {
-            var command = new MarkAsReadQuery(Id);
-            await mediator.Send(command);
+            await mediator.Send(query);
             return Results.NoContent();
         })
             .WithName("MarkNotificationAsRead")
-            .WithTags("Users")
-            .Produces<Unit>(StatusCodes.Status204NoContent)
-            .Produces(StatusCodes.Status404NotFound)
-            .ProducesValidationProblem()
+            .WithTags("Notifications")
             .WithDescription("Marks a notification as read by Id.");
         #endregion
 

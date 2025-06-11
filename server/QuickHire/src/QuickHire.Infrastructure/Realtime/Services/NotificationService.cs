@@ -15,10 +15,11 @@ internal class NotificationService : INotificationService
     private readonly INotificationGeneratorFactory _notificationGeneratorFactory;
     private readonly IUserService _userService;
 
-    public NotificationService(INotificationGeneratorFactory notificationGeneratorFactory, IRepository repository)
+    public NotificationService(IRepository repository, INotificationGeneratorFactory notificationGeneratorFactory, IUserService userService)
     {
-        _notificationGeneratorFactory = notificationGeneratorFactory;
         _repository = repository;
+        _notificationGeneratorFactory = notificationGeneratorFactory;
+        _userService = userService;
     }
 
     public async Task MakeNotification(int recipientId, NotificationRecipientType recipientType, NotificationType type, Dictionary<string, string>? placeholders = null)

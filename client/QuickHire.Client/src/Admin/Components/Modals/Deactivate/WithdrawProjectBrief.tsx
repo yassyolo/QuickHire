@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../../../../axiosInstance";
 import { Modal } from "../Common/Modal";
 import { ModalActions } from "../Common/ModalActions";
 import { ActionButton } from "../../../../Shared/Buttons/ActionButton/ActionButton";

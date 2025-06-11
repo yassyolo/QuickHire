@@ -47,7 +47,7 @@ public class GetSellerProfileQueryHandler : IQueryHandler<GetSellerProfileQuery,
             Id = x.Id,
             Major = x.Major,
             Institution = x.Institution,
-            EndYear = x.GraduationYear.ToString("dd-MM-yyyy"),
+            EndYear = x.GraduationYear.ToString(),
             Degree = x.Degree.ToString()
         }).ToList();
 

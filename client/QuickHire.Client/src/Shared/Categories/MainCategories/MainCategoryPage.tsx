@@ -1,6 +1,6 @@
 import {  useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
+import axios from "../../../axiosInstance";
 import { MostPopularInMainCategory } from "./MostPopularInMainCategory";
 import { ExploreSubcategoriesInMainCategory } from "./ExploreSubcategoriesInMainCategory";
 import { TagList } from "../../../Gigs/Tags/TagList";

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import axios from "../../../axiosInstance";
 import { IconButton } from "../../../Shared/Buttons/IconButton/IconButton";
 import './NotificationButtonDropdown.css';
 import { NotificationDropdown } from "./Dropdown/NotificationDropdown";
@@ -44,10 +44,14 @@ export function NotificationButtonDropdown({ buyer }: NotificationButtonDropdown
 
     const handleShowNotificationsDropdown = () => setShowNotificationsDropdown(prev => !prev);
 
-    const handleNotificationReadSuccessful = (id: number) => {
-        setNotifications(prev => prev.filter(n => n.id !== id));
-        setHasNotifications(prev => prev && notifications.length - 1 > 0);
-    };
+   const handleNotificationReadSuccessful = (id: number) => {
+  setNotifications(prev => {
+    const updated = prev.filter(n => n.id !== id);
+    setHasNotifications(updated.length > 0);
+    return updated;
+  });
+};
+
 
     return (
         <div className="notification-button-dropdown">

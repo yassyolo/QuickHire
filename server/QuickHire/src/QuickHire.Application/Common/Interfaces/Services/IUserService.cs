@@ -60,4 +60,5 @@ public interface IUserService
     (string UserId, string Mode) GetCurrentUserIdAndMode();
     Task<(string ProfilePictureUrl, string Username)> GetUsernameAndProfilePictureAsync(string participantBId);
     Task<ParticipantBInfoModel> GetParticipantInfoAsync(string participantBId);
+    Task<string> UpdateBuyerDescriptionAsync(string description);
 }

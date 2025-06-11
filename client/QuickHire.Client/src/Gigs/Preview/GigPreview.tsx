@@ -1,10 +1,8 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axios from "../../axiosInstance";
 import { FAQList } from "../../Shared/FAQ/FAQList/FAQList";
 import { ComparePackagesTable } from "../PaymentPlan/PaymentPlan";
 import { TagList } from "../Tags/TagList";
-import { Breadcrumb } from "../../Shared/Breadcrumb/Breadcrumb";
-import PaymentPlansCard from "../PaymentPlan/PaymentPlansCard";
 import "./GigPreview.css";
 import { GigInfo } from "../Details/GigDetails/GigInfo";
 import { IconButton } from "../../Shared/Buttons/IconButton/IconButton";
@@ -69,13 +67,7 @@ export function GigPreview({ gigId, onGigPreviewClose }: GigPreviewProps) {
     return (
         <div className="gig-preview-overlay">
           <div className="gig-details-page d-flex flex-row justify-content-between">
-            <IconButton icon={<i className="bi bi-x"></i>} onClick={onGigPreviewClose} className={"Close gig preview"} ariaLabel={"Close gig preview"} />
-            <div className="gig-preview-info d-flex flex-column">
-                <Breadcrumb items={[
-                        { label: <i className="bi bi-house-door" />, to: "/buyer" },
-                        { label: gigDetails?.mainCategoryName, to: `/buyer/main-categories/${gigDetails?.mainCategoryId}` },
-                        { label: gigDetails?.subCategoryName, to: `/buyer/sub-categories/${gigDetails?.subCategoryId}` },
-                    ]} />
+            <div className="gig-preview-info d-flex flex-column">               
                         <GigInfo
                             description={gigDetails?.description ?? ""}
                             title={gigDetails?.title ?? ""}
@@ -83,14 +75,18 @@ export function GigPreview({ gigId, onGigPreviewClose }: GigPreviewProps) {
                             ordersInQueue={gigDetails?.ordersInQueue ?? 0}
                             gigMetadata={gigDetails?.gigMetaData ?? []}
                         />
-                        
+                        <div className="gig-preview-compare-packages">
+                            <div className="gig-preview-tags-header" style={{marginBottom: '10px'}}>Compare ackages</div>
                         <ComparePackagesTable plans={gigDetails?.paymentPlans ?? []} />     
-                        <FAQList title={gigDetails?.title ?? ""} gigId={gigId ?? undefined} />
-                        <TagList gigId={gigId ?? undefined} />
+                        </div>
+                        <FAQList title={""} gigId={gigId ?? undefined} />
+                        <div className="gig-preview-tags">
+                            <div className="gig-preview-tags-header">Tags</div>
+                                                    <TagList gigId={gigId ?? undefined} />
+                        </div>
             </div>
-                        <PaymentPlansCard plans={gigDetails?.paymentPlans ?? []} />
-
-                                       
+                             <IconButton icon={<i className="bi bi-x"></i>} onClick={onGigPreviewClose} className={"close-button"} ariaLabel={"Close gig preview"} />
+                      
           </div>  
         </div>
     );

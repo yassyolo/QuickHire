@@ -20,15 +20,14 @@ public class GetSellerGigsQueryHandler : IQueryHandler<GetSellerGigsQuery, IEnum
 
     public async Task<IEnumerable<GigCardModel>> Handle(GetSellerGigsQuery request, CancellationToken cancellationToken)
     {
-        /*var sellerId = await _userService.GetSellerIdByUserIdAsync();
+        var sellerId = await _userService.GetSellerIdByUserIdAsync();
         var buyerId = await _userService.GetBuyerIdByUserIdAsync();
 
-        var gigsQueryable = _repository.GetAllReadOnly<Gig>().Where(g => g.SellerId == sellerId);
-        gigsQueryable = _repository.GetAllIncluding<Gig>(g => g.ImageUrls, g => g.PaymentPlans, g => g.Orders);
+        var gigsQueryable = _repository.GetAllIncluding<Gig>(x => x.ImageUrls, x => x.PaymentPlans, x => x.Orders).Where(x => x.SellerId == sellerId);
         var gigsList = await _repository.ToListAsync<Gig>(gigsQueryable);
 
-var favouriteGigsQueryable = _repository.GetAllReadOnly<FavouriteGig>().Where(x => x.BuyerId == buyerId);
-var favouriteGigsIdsList = await _repository.ToListAsync<FavouriteGig>(favouriteGigsQueryable);
+        var favouriteGigsQueryable = _repository.GetAllReadOnly<FavouriteGig>().Where(x => x.BuyerId == buyerId);
+        var favouriteGigsIdsList = await _repository.ToListAsync<FavouriteGig>(favouriteGigsQueryable);
 
 var result = new List<GigCardModel>();  
 
@@ -55,39 +54,7 @@ foreach(var gig in gigsList)
     result.Add(gigCardModel);
 }
 
-return result;*/
-
-        return new List<GigCardModel>
-        {
-            new GigCardModel
-            {
-                Id = 1,
-                Title = "Sample Gig",
-                FromPrice = 100,
-                ImageUrls = new List<string> { "https://picsum.photos/200/300" },
-                SellerName = "John Doe",
-                SellerId = 1,
-                SellerProfileImageUrl = "https://picsum.photos/50/50",
-                TopRatedSeller = true,
-                ReviewsCount = 10,
-                AverageRating = 4.5f,
-                Liked = true
-            },
-            new GigCardModel
-            {
-                Id = 2,
-                Title = "Another Gig",
-                FromPrice = 200,
-                ImageUrls = new List<string> { "https://picsum.photos/200/300" },
-                SellerName = "Jane Smith",
-                SellerId = 2,
-                SellerProfileImageUrl = "https://picsum.photos/50/50",
-                TopRatedSeller = false,
-                ReviewsCount = 5,
-                AverageRating = 3.8f,
-                Liked = false
-            }
-        };
+     return result;
     }
 }
 

@@ -1,7 +1,7 @@
 import './GigCard.css';
 import { GigCardSeller } from "./GigCardSeller/GigCardSeller";
 import { GigCardRating } from "./GigCardRating/GigCardRating";
-import { ImageCarrousel } from "../../Shared/ImageCarrousel/ImageCarrousel";
+import { ImageCarrousel } from "../../Shared/Images/ImageCarrousel/ImageCarrousel";
 import { FavouriteButtonDropdown } from '../../Users/Buyer/Favourites/FavouriteButtonDropdown';
 
  interface GigCardProps {

@@ -1,18 +1,19 @@
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { EditModal } from "./Common/EditModal"; 
 import axios from "axios";
-import { FormGroup } from "../../../../Shared/Forms/FormGroup";
-import { useTooltip } from "../../../../Shared/Tooltip/Tooltip";
+import { FormGroup } from "../../../../Shared/Forms/FormGroup/FormGroup";
+import { useTooltip } from "../../../../Shared/Forms/Common/Tooltips/Tooltip";
 
 export interface EditFilterModalProps {
   id: number;
   showModal: boolean;
   onClose: () => void;
   onEditSuccess(id: number, name: string): void;
+  onEditClose: () => void;
   name: string; 
 }
 
-export function EditFiterOptionModal({onEditSuccess, showModal, id, onClose, name} : EditFilterModalProps) {
+export function EditFiterOptionModal({onEditSuccess, showModal, id, onClose, name, onEditClose} : EditFilterModalProps) {
   const [newName, setNewName] = useState<string>("");
   const [showNameTooltip, handleShowNameTooltip] = useTooltip();
   const [validationErrors, setValidationErrors] = useState<{ Name?: string[];}>({});
@@ -38,6 +39,7 @@ export function EditFiterOptionModal({onEditSuccess, showModal, id, onClose, nam
     await axios.put(url, formData);
     
           onEditSuccess(id, newName);
+          onEditClose();
         }  catch (error: unknown) {
       if (axios.isAxiosError(error) && error.response?.status === 400) {
         setValidationErrors({

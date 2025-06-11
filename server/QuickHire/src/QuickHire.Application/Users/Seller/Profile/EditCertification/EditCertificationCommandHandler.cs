@@ -4,6 +4,7 @@ using QuickHire.Application.Common.Interfaces.Repository;
 using QuickHire.Application.Common.Interfaces.Services;
 using QuickHire.Application.Users.Models.Profile;
 using QuickHire.Domain.Users;
+using System.Globalization;
 
 namespace QuickHire.Application.Users.Seller.Profile.EditCertification;
 
@@ -40,7 +41,7 @@ public class EditCertificationCommandHandler : ICommandHandler<EditCertification
             {
                 existingCertification.Name = certification.Certification;
                 existingCertification.Issuer = certification.Issuer;
-                existingCertification.IssuedAt = DateTime.Parse(certification.Date);
+                existingCertification.IssuedAt = DateTime.ParseExact(certification.Date, "dd-MM-yyyy", CultureInfo.InvariantCulture);
                 await _repository.UpdateAsync(existingCertification);
             }
             else

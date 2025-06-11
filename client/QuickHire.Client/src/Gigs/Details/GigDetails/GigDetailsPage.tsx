@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { FAQList } from "../../../Shared/FAQ/FAQList/FAQList";
 import axios from "axios";
 import { SellerPage } from "../../../Users/Seller/Pages/Common/SellerPage";
-import { Breadcrumb } from "../../../Shared/Breadcrumb/Breadcrumb";
+import { Breadcrumb } from "../../../Shared/PageItems/Breadcrumb/Breadcrumb";
 import { GigSellerDetails } from "../SellerDetails/SellerDetails";
 import { ReviewsList } from "../../Reviews/ReviewsList/ReviewsList";
 import { FavouriteButtonDropdown } from "../../../Users/Buyer/Favourites/FavouriteButtonDropdown";

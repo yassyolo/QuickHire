@@ -6,7 +6,7 @@ internal static class PlaceholderExtension
     {
         foreach (var kvp in placeholders)
         {
-            text.Replace($"{{{kvp.Key}}}", kvp.Value);
+            text = text.Replace($"{{{kvp.Key}}}", kvp.Value);
         }
         return text;
     }

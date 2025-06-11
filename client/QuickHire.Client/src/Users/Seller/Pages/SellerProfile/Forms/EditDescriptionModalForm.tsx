@@ -1,7 +1,7 @@
 import { useCallback, useState, useEffect } from "react";
 import axios from "../../../../../axiosInstance";
-import { useTooltip } from "../../../../../Shared/Tooltip/Tooltip";
-import { FormGroup } from "../../../../../Shared/Forms/FormGroup";
+import { useTooltip } from "../../../../../Shared/Forms/Common/Tooltips/Tooltip";
+import { FormGroup } from "../../../../../Shared/Forms/FormGroup/FormGroup";
 import { DetailsModalButtons } from "../Modals/ModalButtons/DetailsModalButtons";
 import { NewAddedDescription } from "../NewAddedItems/Description/NewAddedDescription";
 import { AddDetailsModal } from "./AddDetailsForm";

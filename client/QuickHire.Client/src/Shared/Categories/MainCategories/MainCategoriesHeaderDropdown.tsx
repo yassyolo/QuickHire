@@ -1,7 +1,7 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { MainCategoriesHeaderDropdownItem } from "./MainCategoriesHeaderDropdownItem";
 import './MainCategoriesHeaderDropdown.css';
+import axios from "../../../axiosInstance";
 interface MainCategoriesHeaderDropdownProps {
     id: number;
     show: boolean;
@@ -22,7 +22,7 @@ export function MainCategoriesHeaderDropdown({ id, show }: MainCategoriesHeaderD
     const [subCategories, setSubCategories] = useState<SubCategoryInMainCategory[]>([]);
     const fetchSubCategories = async () => {
         try {
-            const url = `https://localhost:7267/admin/sub-categories/header/${id}`;
+            const url = `https://localhost:7267/sub-categories/header/${id}`;
             const response = await axios.get<SubCategoryInMainCategory[]>(url);
             setSubCategories(response.data);
         } catch (error) {

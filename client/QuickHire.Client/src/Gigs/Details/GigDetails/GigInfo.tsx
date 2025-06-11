@@ -1,4 +1,5 @@
-import { ImageCarrousel } from "../../../Shared/ImageCarrousel/ImageCarrousel";
+import { ImageCarrousel } from "../../../Shared/Images/ImageCarrousel/ImageCarrousel";
+import "./GigInfo.css";
 
 interface GigInfoProps {
     description: string;
@@ -15,7 +16,7 @@ interface GigMetadata {
 
 export function GigInfo({ description, title, imageUrls, ordersInQueue, gigMetadata }: GigInfoProps) {
     return (
-        <div className="gig-info">
+        <div className="gig-info d-flex flex-column">
             <h1 className="gig-title">{title}</h1>
                         <div className="orders-in-queue">Orders in Queue: {ordersInQueue}</div>
                                     <ImageCarrousel images={imageUrls ?? []}/>
@@ -27,11 +28,11 @@ export function GigInfo({ description, title, imageUrls, ordersInQueue, gigMetad
                 {gigMetadata.map((meta, index) => (
                     <div key={index} className="metadata-section d-flex flex-column">
                         <div className="metadata-title">{meta.title}</div>
-                        <ul>
+                        <div className="metadata-items list-unstyled">
                             {meta.items.map((item, itemIndex) => (
                                 <li className="metadata-item" key={itemIndex}>{item}</li>
                             ))}
-                        </ul>
+                        </div>
                     </div>
                 ))}
             </div>

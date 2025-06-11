@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { SellerPage } from "../../../Seller/Pages/Common/SellerPage";
-import { PageTitle } from "../../../../Admin/Pages/Common/PageTitle";
-import { SearchByKeyword } from "../../../../Admin/Components/Filters/Inputs/SearchByKeyword/SearchByKeyword";
-import { ButtonDropdownContainer } from "../../../../Admin/Components/Dropdowns/Common/ButtonDropdownContainer";
+import { PageTitle } from "../../../../Shared/PageItems/PageTitle/PageTitle";
+import { SearchByKeyword } from "../../../../Shared/SearchInputs/SearchByKeyword/SearchByKeyword";
+import { ButtonDropdownContainer } from "../../../../Shared/Dropdowns/Common/Dropdown/ButtonDropdownContainer";
 import { ActionButton } from "../../../../Shared/Buttons/ActionButton/ActionButton";
-import { DateRange } from "../../../../Admin/Components/Dropdowns/Populate/DateRange";
+import { DateRange } from "../../../../Shared/Dropdowns/Populate/DateRange/DateRange";
 import { DataTable } from "../../../../Admin/Components/Tables/Common/AdminDataTable";
-import axios from "axios";
-
+import axios from "../../../../axiosInstance";
+import { ProjectBriefActions } from "../../../../Admin/Components/Tables/TableActions/ProjectBriefActions";
 interface ProjectBriefRowModel{
     id: number;
     date: string;
@@ -70,6 +70,10 @@ export function MyProjectBriefs() {
         setShowDropdown(false);
         fetchProjectBriefs();
     }
+
+    const handleWithdrawProjectBriefSuccess = (id: number) => {
+        setPtojectBriefs(prev => prev.filter(x => x.id === id));
+    };
     return (
         <SellerPage>
             <PageTitle title="My project briefs"   description="View your billing history, manage payment methods, and keep your account information up to date."  breadcrumbs={[{ label: <i className="bi bi-house-door"></i>, to: `/buyer/dashboard` },{ label: "Billing and Payments" }]}/>            
@@ -82,7 +86,7 @@ export function MyProjectBriefs() {
                      </div>
                  </ButtonDropdownContainer>
                </div>
-               <DataTable data={projectBriefs} columns={["id", "date", "documentNumber", "sellersReaced", "order", "status", "totalOffers"]} headers={headers} />
+               <DataTable data={projectBriefs} columns={["id", "date", "documentNumber", "sellersReaced", "order", "status", "totalOffers"]} headers={headers}     renderActions={(row: ProjectBriefRowModel) => (<ProjectBriefActions project={row} showNuyerInfo={false} onWithdrawSuccess={handleWithdrawProjectBriefSuccess}  />)} />
            </div>
         </SellerPage>
     );

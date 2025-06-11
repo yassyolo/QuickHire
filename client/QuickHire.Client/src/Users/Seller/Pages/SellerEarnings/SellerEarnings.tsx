@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { PageTitle } from "../../../../Admin/Pages/Common/PageTitle";
-import { PageSelector } from "../../../../Shared/PageSelector/PageSelector";
+import { PageTitle } from "../../../../Shared/PageItems/PageTitle/PageTitle";
+import { PageSelector } from "../../../../Shared/PageItems/PageSelector/PageSelector";
 import { FinancialDocuments } from "../../../BillingAndPayments/BillingHistory/FinancialDocuments/FinancialDocuments";
 import { SellerPage } from "../Common/SellerPage";
-import { EarningsStatistics } from "../../../../Admin/Components/Charts/Users/EarningsStatistics";
+import { EarningsStatistics } from "../../../../Shared/Statistics/Users/EarningsStatistics";
 
 
 export function SellerEarnings() {
