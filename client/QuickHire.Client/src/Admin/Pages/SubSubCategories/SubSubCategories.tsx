@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import {Pagination} from "../../../Shared/Pagination/Pagination/Pagination";
+import {Pagination} from "../../../Shared/PageItems/Pagination/Pagination/Pagination";
 import { ActionButton } from "../../../Shared/Buttons/ActionButton/ActionButton";
 import { DataTable } from "../../Components/Tables/Common/AdminDataTable";
 import { SubSubCategoriesFilter } from "../PageFilters/SubSubCategoriesFilter";

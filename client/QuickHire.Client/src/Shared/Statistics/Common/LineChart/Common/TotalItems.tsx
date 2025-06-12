@@ -1,5 +1,5 @@
 import React from 'react';
-import { DetailsRow } from '../../../../../Admin/Components/Details/Common/CategoryDetails/DetailsRow/DetailsRow';
+import { DetailsRow } from '../../../../../Admin/Pages/Details/Common/DetailsRow/DetailsRow';
 import './TotalItems.css';  
 export interface TotalItemsProps {
     label: string;

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import {Pagination} from "../../../Shared/Pagination/Pagination/Pagination";
+import {Pagination} from "../../../Shared/PageItems/Pagination/Pagination/Pagination";
 import { DataTable } from "../../Components/Tables/Common/AdminDataTable";
 import { GigsFilter } from "../PageFilters/GigsFilter";
 import { GigActions } from "../../Components/Tables/TableActions/GigActions";

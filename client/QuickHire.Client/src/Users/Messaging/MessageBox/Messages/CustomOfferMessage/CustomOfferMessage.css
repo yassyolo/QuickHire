@@ -1,7 +1,8 @@
 .custom-offer-message {
   display: flex;
   flex-direction: column;
-  background-color: #f9f9f9;
+  background-color: #f0f0f0;
+  width: 90%;
   border-radius: 5px;
 }
 
@@ -17,6 +18,7 @@
     font-size: 15px;
     font-weight: bold;
     color: var(--text-black-color);
+    max-width: 70%;
     flex-grow: 1;
 }
 
@@ -57,18 +59,19 @@
 
 .offer-includes-list{
     display: flex;
-    gap: 5px;
+    gap: 7px;
+    padding: 0;
+    list-style: none;
+    width: 100%;
+    flex-wrap: wrap;
 }
 
 .offer-include-item{
     display: flex;
     flex-direction: row;
-    padding: 5px 10px;
-    background-color: var(--white-color);
     border-radius: 5px;
     font-size: 14px;
     color: var(--text-black-color);
-    border: 1px solid #ccc;
     justify-content: center;
     align-items: center;
 }

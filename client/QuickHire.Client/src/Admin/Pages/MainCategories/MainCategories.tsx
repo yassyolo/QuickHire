@@ -3,7 +3,7 @@ import { AddMainCategoryModal } from "../../Components/Modals/Add/MainCategory/A
 import { DataTable } from "../../Components/Tables/Common/AdminDataTable";
 import { ActionButton } from "../../../Shared/Buttons/ActionButton/ActionButton";
 import { MainCategoriesFilter } from "../PageFilters/MainCategoriesFilter";
-import { Pagination } from "../../../Shared/Pagination/Pagination/Pagination";
+import { Pagination } from "../../../Shared/PageItems/Pagination/Pagination/Pagination";
 import { PageTitle } from "../../../Shared/PageItems/PageTitle/PageTitle";
 import { MainCategoryActions } from "../../Components/Tables/TableActions/MainCategoryActions";
 import axios from "../../../axiosInstance";

@@ -10,7 +10,7 @@ internal class CustomOfferReceivedNotificationGenerator : INotificationGenerator
     public NotificationType Type => NotificationType.CustomOfferReceived;
 
     public string Title { get; set; } = "You Have Received a New Custom Offer!";
-    public string Message { get; set; } = "Hello, {UserName}! You have received new custom offer with numberL {CustomOfferNumber}. Check out your messages with {SellerUserName}!";
+    public string Message { get; set; } = "You have received new custom offer. Check out your messages with {SellerUserName}!";
 
     public Domain.Users.Notification Generate(int recipientId, NotificationRecipientType recipientType, Dictionary<string, string>? placeholders = null)
     {

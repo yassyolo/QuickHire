@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
-import {Pagination} from "../../../Shared/Pagination/Pagination/Pagination";
+import {  useCallback, useEffect, useState } from "react";
+import {Pagination} from "../../../Shared/PageItems/Pagination/Pagination/Pagination";
 import { DataTable } from "../../Components/Tables/Common/AdminDataTable";
 import { PageTitle } from "../../../Shared/PageItems/PageTitle/PageTitle";
 import { UsersFilter } from "../PageFilters/UsersFilter";
@@ -43,6 +43,10 @@ export function Users (){
     
     const handlePageChange = (page: number) => setCurrentPage(page);
 
+    useEffect(() => {
+                setModerationStatusId(1);
+    }
+    , []);
     useEffect(() => {
         setCurrentPage(1);
     }

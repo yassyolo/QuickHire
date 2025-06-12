@@ -1,0 +1,14 @@
+.inbox-page{
+    padding: 20px;
+}
+
+.inbox-messages-all-preview {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    max-height: 80vh;
+}
+
+.message-box-container{
+    width: 100%
+}

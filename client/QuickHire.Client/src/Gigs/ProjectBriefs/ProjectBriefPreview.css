@@ -35,7 +35,7 @@
 .project-number {
   font-size: 18px;
   font-weight: 600;
-  color: var(--text-black-color);
+  color: var(--fiverr-green-color);
 }
 
 .project-status {
@@ -126,7 +126,6 @@
   height: 50px;
   justify-content: center;
     align-items: center;
-    margin:auto;
   border-radius: 50%;
   object-fit: cover;
   margin-bottom: 10px;

@@ -1,0 +1,15 @@
+.no-data-td {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--text-grey-color);
+    padding: 20px 0;
+}
+
+.no-data-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-black-color);
+    margin-top: 20px;
+}

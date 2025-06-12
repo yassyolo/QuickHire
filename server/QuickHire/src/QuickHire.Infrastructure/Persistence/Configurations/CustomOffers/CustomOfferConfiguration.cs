@@ -32,17 +32,9 @@ internal class CustomOfferConfiguration : IEntityTypeConfiguration<CustomOffer>
 
         builder.Property(x => x.WithdrawalReason).HasMaxLength(RejectionReasonMaxLength);
 
-        builder.HasMany(x => x.InclusiveServices)
-            .WithOne(x => x.CustomOffer)
-            .HasForeignKey(x => x.CustomOfferId);
-
         builder.HasOne(x => x.Gig)
             .WithMany(x => x.CustomOffers)
             .HasForeignKey(x => x.GigId);
-
-        builder.HasOne(x => x.Message)
-            .WithOne()
-            .HasForeignKey<CustomOffer>(x => x.MessageId);
 
         builder.HasOne(x => x.Order)
             .WithOne(x => x.CustomOffer)

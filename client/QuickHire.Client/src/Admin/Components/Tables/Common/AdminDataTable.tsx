@@ -1,5 +1,5 @@
 import './AdminDataTable.css';
-import { NoDataTd } from './NoDataTd';
+import { NoDataTd } from './NoData/NoDataTd';
 import { Th } from './Th';
 
 export interface DataTableProps<T extends { id: number | string }> {

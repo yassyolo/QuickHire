@@ -25,7 +25,7 @@ public class GetProjectBriefsTableQueryHandler : IQueryHandler<GetProjectBriefsT
         var model =  await Task.WhenAll(suitableProjectBriefs.Select(async x => new SellerProjectBriefTableModel
         {
             Id = x.ProjectBrief.Id,
-            BuyerUsername = await _userService.GetUsernameByUserIdAsync(x.ProjectBrief.BuyerId),
+            BuyerUsername = await _userService.GetUsernameByBuyerIdAsync(x.ProjectBrief.BuyerId),
             Description = x.ProjectBrief.Description,
             DeliveryTimeInDays = x.ProjectBrief.DeliveryTimeInDays.ToString(),
             Budget = x.ProjectBrief.Budget

@@ -6,7 +6,7 @@ import { ImagePreview } from "../../../../../Shared/Images/ImagePreview/ImagePre
 import { FormGroup } from "../../../../../Shared/Forms/FormGroup/FormGroup";
 import { SelectDropdown } from "../../../../../Shared/Dropdowns/Select/SelectDropdown";
 import { useTooltip } from "../../../../../Shared/Forms/Common/Tooltips/Tooltip";
-import { SubCategoriesInMainCategory } from "../../../Details/Categories/MainCategory/MainCategoryDetails";
+import { SubCategoriesInMainCategory } from "../../../../Pages/Details/Categories/MainCategory/MainCategoryDetails";
 
 export interface AddSubCategoryModalProps {
     showModal: boolean;

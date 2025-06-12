@@ -1,4 +1,5 @@
-﻿using QuickHire.Application.Common.Interfaces.Abstractions;
+﻿using Microsoft.Extensions.Logging.Abstractions;
+using QuickHire.Application.Common.Interfaces.Abstractions;
 using QuickHire.Application.Common.Interfaces.Repository;
 using QuickHire.Application.Common.Interfaces.Services;
 using QuickHire.Application.Users.Models.Messaging;
@@ -32,12 +33,8 @@ public class GetAllMessagesQueryHandler : IQueryHandler<GetAllMessagesQuery, Lis
         }
 
         if (request.HasCustomOffer.HasValue && request.HasCustomOffer.Value)
-        {
-            var conversationsWithCustomOffers = _repository.GetAllIncluding<CustomOffer>(x => x.Message.Conversation)
-                .Where(x =>(x.Message.Conversation.ParticipantAId == currentUserIdAndMode.UserId && x.Message.Conversation.ParticipantAMode == currentUserIdAndMode.Mode) ||(x.Message.Conversation.ParticipantBId == currentUserIdAndMode.UserId && x.Message.Conversation.ParticipantBMode == currentUserIdAndMode.Mode) )
-                .Select(x => x.Message.ConversationId);
-
-            conversationsQueryable = conversationsQueryable.Where(x => conversationsWithCustomOffers.Contains(x.Id));
+        {           
+            conversationsQueryable = conversationsQueryable.Where(x => x.Messages.Any(x => x.PayloadJson != null));
         }
 
         if(request.OrderStatusIds != null && request.OrderStatusIds.Any())

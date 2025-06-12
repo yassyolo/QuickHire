@@ -35,16 +35,14 @@ export function AllMessages({
   };
 
   return (
-    <div className="inbox-messages-all-preview d-flex flex-column">
+    <div className="inbox-messages-all-filter d-flex flex-column">
       {messages.length !== 0 &&
       <ButtonDropdownContainer>
         <ActionButton
           text={
             <>
               Conversations{" "}
-              <i
-                className="bi bi-chevron-down"
-                style={{ fontSize: "520 !important" }}
+              <i className="bi bi-chevron-down" style={{ fontSize: "520 !important" }}
               ></i>
             </>
           }

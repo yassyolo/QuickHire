@@ -158,7 +158,6 @@ public static class ServiceCollectionExtensions
         services.AddScoped<CustomOfferReceivedNotificationGenerator>();
         services.AddScoped<CustomOfferAcceptedNotificationGenerator>();
         services.AddScoped<CustomOfferCancelledNotificationGenerator>();
-        services.AddScoped<CustomOfferExpiredNotificationGenerator>();
         services.AddScoped<CustomRequestPlacedNotificationGenerator>();
         services.AddScoped<CustomRequestReceivedNotificationGenerator>();
         services.AddScoped<HotGigNotificationGenerator>();
@@ -185,7 +184,6 @@ public static class ServiceCollectionExtensions
             { NotificationType.CustomOfferReceived, provider.GetRequiredService<CustomOfferReceivedNotificationGenerator>() },
             { NotificationType.CustomOfferAccepted, provider.GetRequiredService<CustomOfferAcceptedNotificationGenerator>() },
             { NotificationType.CustomOfferCancelled, provider.GetRequiredService<CustomOfferCancelledNotificationGenerator>() },
-            { NotificationType.CustomOfferExpired, provider.GetRequiredService<CustomOfferExpiredNotificationGenerator>() },
             { NotificationType.CustomRequestPlaced, provider.GetRequiredService<CustomRequestPlacedNotificationGenerator>() },
             { NotificationType.CustomRequestReceived, provider.GetRequiredService<CustomRequestReceivedNotificationGenerator>() },
             { NotificationType.HotGig, provider.GetRequiredService<HotGigNotificationGenerator>() },

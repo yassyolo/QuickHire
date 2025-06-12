@@ -1,6 +1,10 @@
 import { Link } from "react-router-dom";
 import { MessageItem } from "../Common/MessageItem";
 import "./CustomOfferMessage.css";
+import { useAuth } from "../../../../../AuthContext";
+import { useState } from "react";
+import { CustomOfferPreview } from "../../../../Buyer/CustomOffers/CustomOfferPreview";
+import { ActionButton } from "../../../../../Shared/Buttons/ActionButton/ActionButton";
 
 interface CustomOfferProps {
     senderProfilePictureUrl: string;
@@ -19,12 +23,18 @@ export interface CustomOfferPayload{
     senderUsername: string;
 }
 export function CustomOfferMessage({ senderProfilePictureUrl, senderUsername, timestamp, payload, content }: CustomOfferProps) {
+     const { user } = useAuth();
+     const [showOfferModal, setShowOfferModal] = useState(false);
+    const handleShowOfferModal = () => {
+        setShowOfferModal(true);
+    }
+
     return (
         <MessageItem senderProfilePictureUrl={senderProfilePictureUrl} senderUsername={senderUsername} content={content} timestamp={timestamp}>
             <div className="custom-offer-message d-flex flex-column">
                 <div className="custom-offer-message-top d-flex flex-row justify-content-between">
                     <div className="custom-offer-message-gig-title">{payload.gigTitle}</div>
-                    <div className="custom-offer-message-gig-price">{payload.offerAmount}</div>
+                    <div className="custom-offer-message-gig-price">${payload.offerAmount}</div>
                 </div>
                 <div className="view-gig-container">View gig <Link className="gig-link" to={`/buyer/gig/${payload.gigId}`}>here</Link></div>
                 <div className="offer-includes-container">
@@ -35,12 +45,24 @@ export function CustomOfferMessage({ senderProfilePictureUrl, senderUsername, ti
                         ))}
                     </div>
                 </div>
-                <div className="offer-actions d-flex flex-row">
-                    <Link to={`/buyer/gig/${payload.gigId}/offer/${payload.offerId}`} className="btn btn-primary">View Offer</Link>
-                    <button className="btn btn-secondary">View Offer</button>
-                    <button className="btn btn-danger">Withdraw Offer</button>
-                </div>
+                 <div className="offer-actions d-flex flex-row">
+                                  <ActionButton className="view-offer-button" onClick={handleShowOfferModal} text={"View"} ariaLabel={"View custom offer"}></ActionButton>
+          {user?.mode === "buyer" ? (
+            <>
+            
+                <ActionButton className="withdraw-offer-button" onClick={handleShowOfferModal} text={"Order"} ariaLabel={"View custom offer"}></ActionButton>
+                            {showOfferModal && <CustomOfferPreview onClose={() => setShowOfferModal(false)} id={payload.offerId} showSellerInfo={true} />}
+
+            </>
+          ) : user?.mode === "seller" ? (
+            <>
+                <ActionButton className="withdraw-offer-button" onClick={handleShowOfferModal} text={"Withdraw"} ariaLabel={"View custom offer"}></ActionButton>
+                            {showOfferModal && <CustomOfferPreview onClose={() => setShowOfferModal(false)} id={payload.offerId} showSellerInfo={false} />}
+            </>
+          ) : null}
+        </div>
             </div>
+
         </MessageItem>
     );
 }

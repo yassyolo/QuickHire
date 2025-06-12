@@ -8,6 +8,8 @@ using QuickHire.Application.Users.Models.Statistics;
 using QuickHire.Application.Users.ProjectBriefs.ProjectBriefPreview;
 using QuickHire.Application.Users.Seller.CustomOffers.ChooseFromGigs;
 using QuickHire.Application.Users.Seller.CustomOffers.ChooseFromInclusives;
+using QuickHire.Application.Users.Seller.CustomOffers.CreateCustomOffer;
+using QuickHire.Application.Users.Seller.CustomOffers.GetCustomOffer;
 using QuickHire.Application.Users.Seller.Dashboard.GetSellerDashboard;
 using QuickHire.Application.Users.Seller.Dashboard.GetSellerDashboardOrders;
 using QuickHire.Application.Users.Seller.Gigs.DeleteGig;
@@ -368,6 +370,26 @@ public class SellerModule : CarterModule
    .WithName("ChooseFromInclusives")
    .WithTags("Custom Offers")
    .WithDescription("Get a list of gigs to choose from for custom offers.");
+
+
+        app.MapPost("seller/custom-offer", async([FromBody] CreateCustomOfferCommand command, IMediator mediator) =>
+        {
+            var result = await mediator.Send(command);
+            return Results.Ok(result);
+        })
+            .WithName("CreateCustomOffer")
+            .WithDescription("Create a custom offer.");
+
+        //buyer/custom-offers/${id}
+        app.MapGet("buyer/custom-offers/{Id}", async([AsParameters] GetCustomOfferQuery query, IMediator mediator) =>
+        {
+            var result = await mediator.Send(query);
+            return Results.Ok(result);
+        })
+            .WithName("GetCustomOffer")
+            .WithTags("Custom Offers")
+            .Produces(StatusCodes.Status404NotFound)
+            .WithDescription("Get a custom offer by its ID.");
         #endregion
     }
 }

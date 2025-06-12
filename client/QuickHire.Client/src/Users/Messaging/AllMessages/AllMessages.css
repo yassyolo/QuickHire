@@ -1,11 +1,17 @@
 .all-messages-container {
     display: flex;
     flex-direction: column;
-    padding: 20px 0 20px 0;
+    padding: 0 0 20px 0;
+    margin-top: 20px;
     width: 350px;
-    height: 90%;
+    height: 100%;
     overflow-y: scroll;
     overflow-x: hidden;
+    background-color: #f0f0f0;
+        border-top: 1px solid #e0e0e0;
+    border-bottom: 1px solid #e0e0e0;
+        border-left: 1px solid #e0e0e0;
+
 }
 
 .no-messages-yet{
@@ -16,6 +22,10 @@
     margin-bottom: 20px;
     margin-right: 50px;
 
+}
+
+.inbox-messages-all-filter{
+    margin-top: 10px;
 }
 
 .no-messages-yet-description{

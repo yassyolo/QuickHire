@@ -18,7 +18,7 @@ type User = {
   profilePictureUrl: string;
 };
 
-type CustomOfferPayloadModel = {
+export type CustomOfferPayloadModel = {
   gigTitle: string;
   gigId: number;
   offerAmount: string;

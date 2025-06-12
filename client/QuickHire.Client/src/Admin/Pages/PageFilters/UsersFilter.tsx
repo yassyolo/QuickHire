@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { SearchById } from "../../../Shared/SearchInputs/SearchById/SearchById";
-import { SearchByKeyword } from "../../../Shared/SearchInputs/SearchByKeyword/SearchByKeyword";
+import { SearchById } from "../../../Shared/Forms/SearchInputs/SearchById/SearchById";
+import { SearchByKeyword } from "../../../Shared/Forms/SearchInputs/SearchByKeyword/SearchByKeyword";
 import { ActionButton } from "../../../Shared/Buttons/ActionButton/ActionButton";
 import { ButtonDropdownContainer } from "../../../Shared/Dropdowns/Common/Dropdown/ButtonDropdownContainer";
 import { RolePopulate } from "../../../Shared/Dropdowns/Populate/Roles/RolePopulate";

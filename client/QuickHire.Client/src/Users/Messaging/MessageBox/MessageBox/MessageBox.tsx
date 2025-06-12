@@ -272,9 +272,9 @@ return (
       )}
 
       <div className="participant-info d-flex flex-column justify-content-center align-items-center">
-        <img src={conversation?.participantBInfo.profilePictureUrl || ""} alt="Profile" className="profile-picture" style={{marginBottom: '10px' }}/>
-        <div className="names-country-languages d-flex flex-column">
-          <div className="username-full-name d-flex flex-column" style={{fontSize:'15px', fontWeight:'bold'}}>
+        <img src={conversation?.participantBInfo.profilePictureUrl || ""} alt="Profile" className="participant-profile-picture" style={{marginBottom: '10px' }}/>
+        <div className="partificpant-names-country-languages d-flex flex-column">
+          <div className="partifipant-username-full-name d-flex flex-column" style={{fontSize:'15px', fontWeight:'bold'}}>
             {conversation?.participantBInfo.fullName || ""}
             <div className="seller-username">@{conversation?.participantBInfo.username || ""}</div>
           </div>

@@ -6,7 +6,7 @@ import "../SubSubCategory/AddSubSubCategoryModal.css";
 import { FormLabel } from "../../../../../Shared/Forms/FormLabel/FormLabel";
 import { IconButton } from "../../../../../Shared/Buttons/IconButton/IconButton";
 import { useTooltip } from "../../../../../Shared/Forms/Common/Tooltips/Tooltip";
-import { GigFilter } from "../../../Details/Categories/SubSubCategory/SubSubCategoryDetails";
+import { GigFilter } from "../../../../Pages/Details/Categories/SubSubCategory/SubSubCategoryDetails";
 import { FilterItem } from "../../Deactivate/SubSubCategory/DeactivateSubSubCategoryModal";
 
 export interface AddSubCategoryModalProps {

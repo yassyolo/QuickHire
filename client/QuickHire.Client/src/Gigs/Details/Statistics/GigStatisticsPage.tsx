@@ -1,4 +1,4 @@
-import { GigStatistics } from "../../../Admin/Components/Details/Gig/Statistics/GigStatistics";
+import { GigStatistics } from "../../../Admin/Pages/Details/Gigs/Statistics/GigStatistics";
 import { IconButton } from "../../../Shared/Buttons/IconButton/IconButton";
 import "./GigStatisticsPage.css";
 

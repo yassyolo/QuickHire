@@ -358,9 +358,6 @@ namespace QuickHire.Infrastructure.Migrations
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
-                    b.Property<int>("MessageId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("OrderId")
                         .HasColumnType("int");
 
@@ -402,9 +399,6 @@ namespace QuickHire.Infrastructure.Migrations
 
                     b.HasIndex("GigId");
 
-                    b.HasIndex("MessageId")
-                        .IsUnique();
-
                     b.HasIndex("OrderId")
                         .IsUnique()
                         .HasFilter("[OrderId] IS NOT NULL");
@@ -414,6 +408,35 @@ namespace QuickHire.Infrastructure.Migrations
                     b.HasIndex("SellerId");
 
                     b.ToTable("CustomOffers");
+                });
+
+            modelBuilder.Entity("QuickHire.Domain.CustomOffers.CustomOfferInclusives", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("CustomOfferId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("PaymentPlanIncludeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CustomOfferId");
+
+                    b.HasIndex("PaymentPlanIncludeId");
+
+                    b.ToTable("CustomOfferInclusives");
                 });
 
             modelBuilder.Entity("QuickHire.Domain.Gigs.Gig", b =>
@@ -2010,12 +2033,6 @@ namespace QuickHire.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("QuickHire.Domain.Messaging.Message", "Message")
-                        .WithOne()
-                        .HasForeignKey("QuickHire.Domain.CustomOffers.CustomOffer", "MessageId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("QuickHire.Domain.Orders.Order", "Order")
                         .WithOne("CustomOffer")
                         .HasForeignKey("QuickHire.Domain.CustomOffers.CustomOffer", "OrderId");
@@ -2034,13 +2051,30 @@ namespace QuickHire.Infrastructure.Migrations
 
                     b.Navigation("Gig");
 
-                    b.Navigation("Message");
-
                     b.Navigation("Order");
 
                     b.Navigation("ProjectBrief");
 
                     b.Navigation("Seller");
+                });
+
+            modelBuilder.Entity("QuickHire.Domain.CustomOffers.CustomOfferInclusives", b =>
+                {
+                    b.HasOne("QuickHire.Domain.CustomOffers.CustomOffer", "CustomOffer")
+                        .WithMany()
+                        .HasForeignKey("CustomOfferId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("QuickHire.Domain.Gigs.PaymentPlanInclude", "PaymentPlanInclude")
+                        .WithMany()
+                        .HasForeignKey("PaymentPlanIncludeId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("CustomOffer");
+
+                    b.Navigation("PaymentPlanInclude");
                 });
 
             modelBuilder.Entity("QuickHire.Domain.Gigs.Gig", b =>
@@ -2105,7 +2139,7 @@ namespace QuickHire.Infrastructure.Migrations
 
             modelBuilder.Entity("QuickHire.Domain.Gigs.PaymentPlanInclude", b =>
                 {
-                    b.HasOne("QuickHire.Domain.CustomOffers.CustomOffer", "CustomOffer")
+                    b.HasOne("QuickHire.Domain.CustomOffers.CustomOffer", null)
                         .WithMany("InclusiveServices")
                         .HasForeignKey("CustomOfferId");
 
@@ -2114,8 +2148,6 @@ namespace QuickHire.Infrastructure.Migrations
                         .HasForeignKey("PaymentPlanId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("CustomOffer");
 
                     b.Navigation("PaymentPlan");
                 });

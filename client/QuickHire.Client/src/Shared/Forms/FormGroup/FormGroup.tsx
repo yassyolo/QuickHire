@@ -5,8 +5,8 @@ interface FormGroupProps {
     id: string;
     label: string;
     tooltipDescription?: string;
-    type: "text" | "file" | "textarea" | "password" | "date";
-    value?: string | File | undefined;
+    type: "text" | "file" | "textarea" | "password" | "date" | "number";
+    value?: string | File | undefined | number;
     onChange: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
     placeholder?: string;
     ariaDescribedBy?: string;
@@ -45,6 +45,9 @@ export function FormGroup({ id, label, tooltipDescription, type, value, onChange
             )}
             {type === "date" && (
                 <input id={id} type="date" className="form-control" placeholder={placeholder} value={formatDateToYYYYMMDD(value as string)} onChange={onChange} aria-describedby={ariaDescribedBy}/>
+            )}
+            {type === "number" && (
+                <input id={id} type="number" className={`form-control ${error && error.length > 0 ? 'error' : ''}`} placeholder={placeholder} value={value as string} onChange={onChange} aria-describedby={ariaDescribedBy}/>
             )}
 
             {error && error.length > 0 && (

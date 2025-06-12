@@ -29,7 +29,9 @@ public class ProjectBriefPreviewQueryHandler : IQueryHandler<ProjectBriefPreview
             throw new NotFoundException(nameof(Domain.ProjectBriefs.ProjectBrief), request.Id);
         }
 
-        var buyerInfo = await _userService.GetBuyerInfoForProjectBriefAsync(projectBrief.BuyerId);
+        var userId = await _userService.GetUserIdByBuyerIdAsync(projectBrief.BuyerId);
+
+        var buyerInfo = await _userService.GetUserInfoForPreviewAsync(userId);
         return new ProjectBriefPreviewModel
         {
             ProjectBriefNumber = projectBrief.ProjectBriefNumber,
@@ -38,8 +40,8 @@ public class ProjectBriefPreviewQueryHandler : IQueryHandler<ProjectBriefPreview
             Budget = projectBrief.Budget,
             DeliveryTimeInDays = projectBrief.DeliveryTimeInDays,
             SubSubCategoryName = projectBrief.SubSubCategory.Name,
-            BuyerName = buyerInfo.BuyerName,
-            BuyerProfilePictureUrl = buyerInfo.BuyerProfilePictureUrl,
+            BuyerName = buyerInfo.Name,
+            BuyerProfilePictureUrl = buyerInfo.ProfilePictureUrl,
             CreatedAt = projectBrief.CreatedAt.ToString("yyyy-MM-dd"),
             MemberSince = buyerInfo.MemberSince,
             Status = projectBrief.Status.ToString(),

@@ -6,6 +6,7 @@ import axios from "../../../axiosInstance";
 import { isAxiosError } from "axios";
 import { ModalActions } from "../../../Admin/Components/Modals/Common/ModalActions";
 import { ActionButton } from "../../../Shared/Buttons/ActionButton/ActionButton";
+import { CustomOfferPayloadModel, useAuth } from "../../../AuthContext";
 
 interface ChooseFromGigs
  {
@@ -20,6 +21,12 @@ interface Inclusives {
     value: string;
 }
 
+interface CustomOfferReturnModel {
+    text: string;
+    conversationId: number;
+    payload: CustomOfferPayloadModel;
+}
+
 export function SendCustomOfferModal({
     id,
     onClose,
@@ -29,6 +36,7 @@ export function SendCustomOfferModal({
     onClose: () => void;
     onSendCustomOfferSuccess: (id: number) => void;
 }) {
+    const auth = useAuth();
     const [showGigsChoice, setShowGigsChoice] = useState<boolean>(true);
     const [chosenGig, setChosenGig] = useState<ChooseFromGigs | null>(null);
     const[populatedGigs, setPopulatedGigs] = useState<ChooseFromGigs[]>([]);
@@ -76,43 +84,72 @@ export function SendCustomOfferModal({
         setShowGigsChoice(false);
     };
 
-    const handleInclusiveChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { value, checked } = e.target;
-        setChosenInclusives((prev) => {
-            if (checked) {
-                return [...prev, { id: Date.now(), name: value, value }];
-            } else {
-                return prev.filter((inclusive) => inclusive.value !== value);
-            }
-        });
-    };
+    const handleInclusiveChange = (
+  e: React.ChangeEvent<HTMLInputElement>,
+  id: number,
+  name: string
+) => {
+  const { checked } = e.target;
+  setChosenInclusives((prev) => {
+    if (checked) {
+      return [...prev, { id, name, value: name }];
+    } else {
+      return prev.filter((inclusive) => inclusive.id !== id);
+    }
+  });
+};
 
     const handleSendOffer = async () => {
-        if (!chosenGig) return;
+    if (!chosenGig) return;
 
-        const payload = {
-            projectBriefId: id,
-            gigId: chosenGig.id,
-            description,
-            deliveryTime,
-            revisions,
-            total,
-            inclusivesIds: chosenInclusives.map((x) => x.id)
-        };
+    const payload = {
+    projectBriefId: id,
+    gigId: chosenGig.id,
+    description,
+    deliveryTime,
+    total,
+    inclusivesIds: chosenInclusives.map((x) => x.id),
+};
 
-        try {
-            await axios.post("https://localhost:7267/custom-offers/send", payload);
-            onSendCustomOfferSuccess(id);
-            onClose();
-        } catch (error) {
-            if (isAxiosError(error) && error.response && error.response.status === 400) {
-                console.error("Validation Errors:", error.response.data.errors);
-                setValidationErrors(error.response.data.errors || {});
-            } else {
-                console.error("Error sending custom offer:", error);
-            }
+console.log(payload);
+
+try {
+    const response = await axios.post(
+        "https://localhost:7267/seller/custom-offer",
+        payload,
+        {
+            headers: {
+                "Content-Type": "application/json", 
+            },
         }
-    };
+    );
+        
+        const offer = response.data as CustomOfferReturnModel;
+
+        if (auth.signalRConnection) {
+            await auth.signalRConnection.invoke(
+                "SendMessage",
+                offer.text,                
+                offer.conversationId,       
+                null,                       
+                offer.payload,             
+                null                        
+            );
+        }
+
+        onSendCustomOfferSuccess(id);
+        onClose();
+
+    } catch (error) {
+        if (isAxiosError(error) && error.response?.status === 400) {
+            console.error("Validation Errors:", error.response.data.errors);
+            setValidationErrors(error.response.data.errors || {});
+        } else {
+            console.error("Error sending custom offer:", error);
+        }
+    }
+};
+
 
     return (
         <div className="custom-offer-modal-overlay">
@@ -163,8 +200,8 @@ export function SendCustomOfferModal({
                                 id={"delivery-time"}
                                 label={"Delivery Time (days)"}
                                 tooltipDescription={"How many days to deliver the offer?"}
-                                type={"text"}
-                                value={deliveryTime.toString()}
+                                type={"number"}
+                                value={deliveryTime}
                                 onChange={(e) => setDeliveryTime(parseInt(e.target.value))}
                                 placeholder={"e.g. 3"}
                                 ariaDescribedBy={"delivery-help"}
@@ -174,8 +211,8 @@ export function SendCustomOfferModal({
                                 id={"revisions"}
                                 label={"Revisions"}
                                 tooltipDescription={"How many revisions do you allow?"}
-                                type={"text"}
-                                value={revisions.toString()}
+                                type={"number"}
+                                value={revisions}
                                 onChange={(e) => setRevisions(parseInt(e.target.value))}
                                 placeholder={"e.g. 2"}
                                 ariaDescribedBy={"revision-help"}
@@ -185,8 +222,8 @@ export function SendCustomOfferModal({
                                 id={"total"}
                                 label={"Total Price ($)"}
                                 tooltipDescription={"Enter the total amount you will charge."}
-                                type={"text"}
-                                value={total.toString()}
+                                type={"number"}
+                                value={total}
                                 onChange={(e) => setTotal(parseFloat(e.target.value))}
                                 placeholder={"e.g. 150"}
                                 ariaDescribedBy={"total-help"}
@@ -203,7 +240,7 @@ export function SendCustomOfferModal({
                                             type="checkbox"
                                             id={`inclusive-${inclusive.id}`}
                                             value={inclusive.value}
-                                            onChange={handleInclusiveChange}
+                                            onChange={(e) => handleInclusiveChange(e, inclusive.id, inclusive.name)}
                                         />
                                         <label htmlFor={`inclusive-${inclusive.id}`}>{inclusive.name}</label>
                                     </li>
@@ -212,7 +249,7 @@ export function SendCustomOfferModal({
                         </div>
 <ModalActions id={"deactivate-main-category-actions"}>
                 <ActionButton text={"Back"} onClick={() => setShowGigsChoice(true)} className={"back-button"} ariaLabel={"Back Button"} />
-                <ActionButton text={"Send offer"} onClick={handleSendOffer} className={"continue-button"} ariaLabel={"Continue Button"} />
+                <ActionButton text={"Send offer"} onClick={handleSendOffer} className={"send-offer-button"} ariaLabel={"Continue Button"} />
             </ModalActions> 
 
                     </div>

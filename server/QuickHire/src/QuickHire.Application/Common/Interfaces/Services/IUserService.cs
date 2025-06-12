@@ -9,6 +9,7 @@ using QuickHire.Application.Users.Models.Authentication;
 using QuickHire.Application.Users.Models.Messaging;
 using QuickHire.Application.Users.Models.NewSEller;
 using QuickHire.Application.Users.Models.Profile;
+using System.Security;
 
 namespace QuickHire.Application.Common.Interfaces.Services;
 
@@ -53,12 +54,13 @@ public interface IUserService
     Task<string> GetUserEmailByUserIdAsync(string userId);
     Task<string> GetGigSellerEmailAsync(int id);
     Task<string> GetUserModerationStatusAsync(string? userId);
-    Task<string> GetUsernameByUserIdAsync(int buyerId);
+    Task<string> GetUsernameByBuyerIdAsync(int buyerId);
     Task<GetExistingUserInfoModel> GetExistingUserInfoAsync();
-    Task<(string BuyerName, string BuyerProfilePictureUrl,  string MemberSince ,string Location, string[] Languages)> GetBuyerInfoForProjectBriefAsync(int buyerId);
+    Task<(string Name, string ProfilePictureUrl,  string MemberSince ,string Location, string[] Languages)> GetUserInfoForPreviewAsync(string userId);
     Task<AboutUserModel> GetAboutCurrentUserAsync();
     (string UserId, string Mode) GetCurrentUserIdAndMode();
     Task<(string ProfilePictureUrl, string Username)> GetUsernameAndProfilePictureAsync(string participantBId);
     Task<ParticipantBInfoModel> GetParticipantInfoAsync(string participantBId);
     Task<string> UpdateBuyerDescriptionAsync(string description);
+    Task<string> GetUsernameByUserIdAsync(string userId);
 }

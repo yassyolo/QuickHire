@@ -22,8 +22,6 @@ public class CustomOffer : BaseSoftDeletableEntity<int>
     public IEnumerable<PaymentPlanInclude> InclusiveServices { get; set; } = new List<PaymentPlanInclude>();
     public int GigId { get; set; }
     public Gig Gig { get; set; } = null!;
-    public int MessageId { get; set; }
-    public Message Message { get; set; } = null!;
     public CustomOfferStatus Status { get; set; }
     public DateTime CreatedAt { get; set; } 
     public DateTime? AcceptedAt { get; set; }

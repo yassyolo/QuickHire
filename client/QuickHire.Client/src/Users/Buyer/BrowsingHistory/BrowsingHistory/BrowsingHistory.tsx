@@ -4,7 +4,6 @@ import { PageTitle } from "../../../../Shared/PageItems/PageTitle/PageTitle";
 import { GigCard } from "../../../../Gigs/GigCard/GigCard";
 import { SellerPage } from "../../../Seller/Pages/Common/SellerPage";
 import './BrowsingHistory.css';
-import { NoContentItem } from "../../../../Shared/NoContent/NoContentItem";
 
  export interface Gig {
      id: number;
@@ -77,7 +76,9 @@ export function BrowsingHistory() {
         </div>
  ) : (
     <div className="no-history">
-        <NoContentItem title={"No browsing history"} description={"Start exploring servises now"}></NoContentItem>
+        <i className="fa-solid fa-clock"></i>
+        <p>No browsing history available.</p>
+        <p>Start exploring gigs to build your history.</p>
     </div>
  )}
             

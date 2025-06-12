@@ -9,6 +9,4 @@ public class PaymentPlanInclude : BaseSoftDeletableEntity<int>
     public string Value { get; set; } = string.Empty;
     public int PaymentPlanId { get; set; }
     public PaymentPlan PaymentPlan { get; set; } = null!;
-    public int? CustomOfferId { get; set; }
-    public CustomOffer? CustomOffer { get; set; }
 }

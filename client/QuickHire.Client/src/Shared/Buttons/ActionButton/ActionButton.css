@@ -14,6 +14,24 @@
     border-radius: 5px !important;
 }
 
+.view-offer-button{
+    background-color: var(--white-color) !important;
+    color: var(--text-black-color) !important;
+    box-shadow: none !important;
+    padding: 3px 10px;
+    width: 70px;
+    border-radius: 5px !important;
+    font-size: 14px !important;
+}
+
+.withdraw-offer-button{
+    background-color: var(--text-black-color) !important;
+    color: var(--white-color) !important;
+    padding: 8px 15px;
+    width: 110px;
+    border-radius: 5px !important;
+}
+
 .send-button{
     background-color: var(--fiverr-green-color) !important;
     color: var(--white-color) !important;
@@ -196,12 +214,17 @@
     background-color: var(--text-grey-color) !important;
 }
 
-.continue-button{
+.continue-button, .send-offer-button{
     background-color: var(--text-black-color) !important;
     color: var(--white-color) !important;
     padding: 8px 15px;
     width: 100px;
     align-self: flex-end; 
+}
+
+.send-offer-button{
+    width: 120px;
+    border-radius: 5px !important;
 }
 
 .details-modal-save-button{

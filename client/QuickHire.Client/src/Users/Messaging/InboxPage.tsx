@@ -4,6 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 import axios from "../../axiosInstance";
 import { AllMessages } from "./AllMessages/AllMessages";
 import { MessageBox, NewMessageSignalRDto } from "./MessageBox/MessageBox/MessageBox";
+import "./InboxPage.css";
 
 export interface AllMessagesItem {
   id: number;
@@ -129,15 +130,11 @@ export function InboxPage() {
 }, [auth]);
 
   return (
-    <div style={{ padding: "10px 20px 20px 20px" }}>
-      <Breadcrumb
-        items={[
-          { label: <i className="bi bi-house-door" />, to: `/${auth?.user?.mode}/dashboard` },
-          { label: "Inbox messages" },
-        ]}
-      />
+    <div className="inbox-page">
+      <Breadcrumb items={[ { label: <i className="bi bi-house-door" />, to: `/${auth?.user?.mode}/dashboard` }, { label: "Inbox messages" }, ]}/>
 
-      <div className="inbox-messages-all-preview d-flex flex-row" style={{ width: "100%", height: "70vh" }}>
+      <div className="inbox-messages-all-preview d-flex flex-row">
+
         <AllMessages
           messages={allMessages}
           selectedOrderStatusIds={selectedOrderStatusIds}
@@ -147,8 +144,9 @@ export function InboxPage() {
           onApply={handleApplyFilters}
           onMessageClick={handleMessageClick}
         />
-
+<div className="message-box-container">
         {selectedMessageId !== null && <MessageBox id={selectedMessageId} />}
+        </div>
       </div>
     </div>
   );

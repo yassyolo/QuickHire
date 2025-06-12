@@ -7,7 +7,7 @@ import { BuyerProfileDropdown } from '../Common/Profile/Buyer/BuyerProfileDropdo
 import { MainCategoriesHeader } from '../../../Categories/MainCategories/MainCategoriesHeader';
 import './BuyerNavbar.css';
 import { Logo } from '../../Logo/Logo';
-import { SearchGig } from '../../../SearchInputs/SearchGigsByKeyword/SearchGig';
+import { SearchGig } from '../../../Forms/SearchInputs/SearchGigsByKeyword/SearchGig';
 import { useSearch } from './SearchContext';
 
 export function BuyerNavbar() {

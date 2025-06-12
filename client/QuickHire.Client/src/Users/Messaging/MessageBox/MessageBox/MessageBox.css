@@ -1,10 +1,51 @@
 .message-box-contents {
   display: flex;
   flex-direction: column;
-  width: 850px;
+  width: 100%;
   height: 70vh;
-  padding: 10px 16px 16px 16px;
   box-sizing: border-box;
+  border-radius: 5px;
+  border: 1px solid #e0e0e0;
+
+}
+
+.participant-info {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px;
+}
+
+.participant-b-info-order{
+  margin-left: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.partifipant-username-full-name{
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.participant-profile-picture {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.partificpant-names-country-languages {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  justify-content: center;
+  align-items: center;
 }
 
 .messages{
@@ -14,6 +55,14 @@
   overflow-y: auto;
   flex-grow: 1;
   height: 80%;
+  padding: 0 40px 0 40px;
+}
+
+.star-button {
+  cursor: pointer;
+  color: var(--text-black-color);
+  box-shadow: none!important;
+  font-size: 20px;
 }
 
 .message-box-top{
@@ -27,12 +76,6 @@
   border-top-right-radius: 5px;
 }
 
-.participant-b-info-order {
-  display: flex;
-  flex-direction: row;
-  width: 220px;
-  gap: 20px;
-}
 
 .current-order-header {
   font-size: 16px;
@@ -68,4 +111,8 @@
   gap: 10px;
   padding: 10px;
   border-top: 1px solid #ccc;
+}
+
+.message-box{
+
 }

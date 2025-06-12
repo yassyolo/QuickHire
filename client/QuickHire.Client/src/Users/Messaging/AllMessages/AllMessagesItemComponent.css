@@ -3,7 +3,8 @@
   flex-direction: row;
   padding: 12px;
   border-bottom: 1px solid #e0e0e0;
-  width: 330px; 
+  background-color: var(--white-color);
+  width: 340px; 
   box-sizing: border-box;
   cursor: pointer;
 }

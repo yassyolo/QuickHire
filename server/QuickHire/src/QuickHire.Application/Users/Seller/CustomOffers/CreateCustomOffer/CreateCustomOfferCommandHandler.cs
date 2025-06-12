@@ -54,13 +54,20 @@ public class CreateCustomOfferCommandHandler : ICommandHandler<CreateCustomOffer
 
         foreach (var inclusiveService in inclusiveServicesList)
         {
-            inclusiveService.CustomOfferId = customOffer.Id;
+            var customOfferInclude = new CustomOfferInclusives
+            {
+                CustomOfferId = customOffer.Id,
+                PaymentPlanIncludeId = inclusiveService.Id,
+            };
+
+            await _repository.AddAsync(customOfferInclude);
         }
+        await _repository.SaveChangesAsync();
 
         var sellerIdAndMode = _userService.GetCurrentUserIdAndMode();
         var buyerUserId = await _userService.GetUserIdByBuyerIdAsync(projectBrief.BuyerId);
         var conversationId = 0;
-        var existingConversationQueryable = _repository.GetAllIncluding<Conversation>().Where(x => (x.ParticipantBId == sellerIdAndMode.UserId && x.ParticipantAId == buyerUserId) || (x.ParticipantAId == sellerIdAndMode.UserId && x.ParticipantBId == buyerUserId));
+        var existingConversationQueryable = _repository.GetAllIncluding<Conversation>().Where(x => (x.ParticipantBId == sellerIdAndMode.UserId && x.ParticipantAId == buyerUserId && x.ParticipantAMode == "buyer" && x.ParticipantBMode == sellerIdAndMode.Mode) || (x.ParticipantAId == sellerIdAndMode.UserId && x.ParticipantAMode == sellerIdAndMode.Mode && x.ParticipantBId == buyerUserId && x.ParticipantBMode == "buyer"));
         var existingConversation = await _repository.FirstOrDefaultAsync<Conversation>(existingConversationQueryable);
         if (existingConversation != null)
         {
@@ -86,10 +93,9 @@ public class CreateCustomOfferCommandHandler : ICommandHandler<CreateCustomOffer
         }
 
         var gig = await _repository.GetByIdAsync<Gig, int>(request.GigId);
-        var username = await _userService.GetCurrentUserAsync();
-            public string Message { get; set; } = "Hello, {UserName}! You have received new custom offer with numberL {CustomOfferNumber}. Check out your messages with {SellerUserName}!";
+        var senderUsername = await _userService.GetUsernameByUserIdAsync(sellerIdAndMode.UserId);
 
-    await _notificationService.MakeNotification(projectBrief.BuyerId, Common.Interfaces.Factories.Notification.NotificationRecipientType.Buyer, Domain.Users.Enums.NotificationType.CustomOfferReceived, new Dictionary<string, string> { { "UserName", buyer.UserName! }, { "ProjectTitle", projectBrief.ProjectBriefNumber } });
+        await _notificationService.MakeNotification(projectBrief.BuyerId, Common.Interfaces.Factories.Notification.NotificationRecipientType.Buyer, Domain.Users.Enums.NotificationType.CustomOfferReceived, new Dictionary<string, string> { { "SellerUserName", senderUsername } });
 
 
         return new CustomOfferReturnModel
@@ -103,7 +109,7 @@ public class CreateCustomOfferCommandHandler : ICommandHandler<CreateCustomOffer
                 OfferAmount = customOffer.Price.ToString("F2"),
                 Includes = inclusiveServicesList.Select(x => x.Name).ToList(),
                 OfferId = customOffer.Id,
-                SenderUsername = username.UserName ?? string.Empty
+                SenderUsername = senderUsername ?? string.Empty
             }
         };
     }

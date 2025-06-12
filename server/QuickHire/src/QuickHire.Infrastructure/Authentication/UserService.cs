@@ -208,17 +208,9 @@ internal class UserService : IUserService
         return buyer.Id;
     }
 
-    public async Task<(string BuyerName, string BuyerProfilePictureUrl, string MemberSince, string Location, string[] Languages)> GetBuyerInfoForProjectBriefAsync(int buyerId)
-    {
-        var userId = await _repository.GetAllReadOnly<Buyer>()
-            .Where(x => x.Id == buyerId)
-            .Select(x => x.UserId)
-            .FirstOrDefaultAsync();
-        var address = await _repository.GetAllReadOnly<Address>()
-            .Where(x => x.UserId == userId)
-            .Include(x => x.Country)
-            .Select(x => x.Country.Name)
-            .FirstOrDefaultAsync();
+    public async Task<(string Name, string ProfilePictureUrl, string MemberSince, string Location, string[] Languages)> GetUserInfoForPreviewAsync(string userId)
+    {      
+        var address = await _repository.GetAllReadOnly<Address>().Where(x => x.UserId == userId).Include(x => x.Country).Select(x => x.Country.Name).FirstOrDefaultAsync();
 
         var user = await _userManager.FindByIdAsync(userId);
         return (user.FullName, user.ProfileImageUrl ?? string.Empty, user.JoinedAt.ToString("MMMM dd, yyyy"),  address ?? string.Empty, await _repository.GetAllReadOnly<UserLanguage>().Where(x => x.UserId == userId).Select(x => x.Language.Name).ToArrayAsync());
@@ -499,7 +491,7 @@ internal class UserService : IUserService
         return _repository.GetAllReadOnly<ApplicationUser>().Where(x => x.Id == userId).Select(x => x.ModerationStatus.ToString()).FirstOrDefaultAsync();
     }
 
-    public async Task<string> GetUsernameByUserIdAsync(int buyerId)
+    public async Task<string> GetUsernameByBuyerIdAsync(int buyerId)
     {
         var userId = await _repository.GetAllReadOnly<Buyer>().Where(x => x.Id == buyerId).Select(x => x.UserId).FirstOrDefaultAsync();
         return await _repository.GetAllReadOnly<ApplicationUser>().Where(x => x.Id == userId).Select(x => x.UserName).FirstOrDefaultAsync();
@@ -514,12 +506,6 @@ internal class UserService : IUserService
             || x.FullName.Contains(request.Keyword));
         }
 
-        if (!string.IsNullOrEmpty(request.RoleId))
-        {
-            var roles = _roleManager.Roles.Where(x => x.Id == request.RoleId).Select(x => x.Name).ToList();
-            usersQueryable = usersQueryable.Where(x => _userManager.GetRolesAsync(x).Result.Any(role => roles.Contains(role)));
-        }
-
         if(request.ModerationStatusId != null)
         {
             var moderationStatus = (QuickHire.Domain.Moderation.Enums.ModerationStatus)request.ModerationStatusId;
@@ -529,6 +515,14 @@ internal class UserService : IUserService
         if(request.Id != null)
         {
             usersQueryable = usersQueryable.Where(x => x.Id == $"{request.Id}");
+        }
+
+        if (!string.IsNullOrEmpty(request.RoleId))
+        {
+            var role = await _roleManager.FindByIdAsync(request.RoleId);
+            var userIdsInRole = (await _userManager.GetUsersInRoleAsync(role.Name)).Select(u => u.Id).ToList();
+
+            usersQueryable = usersQueryable.Where(x => userIdsInRole.Contains(x.Id));
         }
 
         var totalCount = usersQueryable.Count();
@@ -796,5 +790,10 @@ internal class UserService : IUserService
         await _repository.SaveChangesAsync();
 
         return user.ProfileImageUrl ?? string.Empty;
+    }
+
+    public async Task<string> GetUsernameByUserIdAsync(string userId)
+    {
+        return await _repository.GetAllReadOnly<ApplicationUser>().Where(x => x.Id == userId).Select(x => x.UserName).FirstOrDefaultAsync() ?? string.Empty;
     }
 }

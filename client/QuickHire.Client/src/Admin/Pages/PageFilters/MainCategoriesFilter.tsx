@@ -1,5 +1,5 @@
-import { SearchById } from "../../../Shared/SearchInputs/SearchById/SearchById";
-import { SearchByKeyword } from "../../../Shared/SearchInputs/SearchByKeyword/SearchByKeyword";
+import { SearchById } from "../../../Shared/Forms/SearchInputs/SearchById/SearchById";
+import { SearchByKeyword } from "../../../Shared/Forms/SearchInputs/SearchByKeyword/SearchByKeyword";
 
 interface CategoriesFilterProps {
     setId(id: number | undefined): void;

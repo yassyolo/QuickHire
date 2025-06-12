@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { NoPagesPagination } from "../../../Shared/Pagination/NoPagesPagination/NoPagesPagination";
+import { NoPagesPagination } from "../../../Shared/PageItems/Pagination/NoPagesPagination/NoPagesPagination";
 import { ReviewsForUserItem } from "./ReviewsForUserItem";
 import "./ReviewsForUser.css";
 export interface ReviewForUser{

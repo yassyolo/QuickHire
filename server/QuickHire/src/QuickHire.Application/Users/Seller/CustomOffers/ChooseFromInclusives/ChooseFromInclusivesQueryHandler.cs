@@ -23,16 +23,18 @@ public class ChooseFromInclusivesQueryHandler : IQueryHandler<ChooseFromInclusiv
         var gigsList = await _repository.ToListAsync<Domain.Gigs.Gig>(gigsQueryable);
         var gigsIds = gigsList.Select(x => x.Id).ToList();
 
-        var paymentPlans = _repository.GetAllIncluding<PaymentPlan>(x => x.Inclusions).Where(x => gigsIds.Contains(x.GigId)).DistinctBy(x => x.Name);
+        var paymentPlans = _repository.GetAllIncluding<PaymentPlan>(x => x.Inclusions).Where(x => gigsIds.Contains(x.GigId));
         var paymentPlansList = await _repository.ToListAsync<PaymentPlan>(paymentPlans);
-        return paymentPlansList
-            .SelectMany(x => x.Inclusions)
-            .Select(x => new InclusivesModel
-            {
-                Id = x.Id,
-                Name = x.Name,
-                Value = x.Value
-            })
-            .ToList();
+        var distinctInclusives = paymentPlansList.SelectMany(x => x.Inclusions).GroupBy(x => x.Name)  
+         .Select(x => x.First()) 
+         .Select(x => new InclusivesModel
+         {
+             Id = x.Id,
+             Name = x.Name,
+             Value = x.Value
+         })
+         .ToList();
+
+        return distinctInclusives;
     }
 }
