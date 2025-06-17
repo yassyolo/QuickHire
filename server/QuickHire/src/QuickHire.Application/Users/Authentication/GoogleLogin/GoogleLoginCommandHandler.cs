@@ -1,10 +1,13 @@
 ﻿using MediatR;
+
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Google;
+using Microsoft.AspNetCore.Identity;
+
 using QuickHire.Application.Common.Interfaces.Abstractions;
 using QuickHire.Application.Common.Interfaces.Services;
-using QuickHire.Domain.Shared.Exceptions;
+
 using System.Security.Claims;
+
 using UnauthorizedAccessException = QuickHire.Domain.Shared.Exceptions.UnauthorizedAccessException;
 
 namespace QuickHire.Application.Users.Authentication.GoogleLogin;
@@ -21,7 +24,7 @@ public class GoogleLoginCommandHandler : ICommandHandler<GoogleLoginCommand, Uni
     public async Task<Unit> Handle(GoogleLoginCommand request, CancellationToken cancellationToken)
     {
         var context = request.HttpContext;
-        var result = await context.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
+        var result = await context.AuthenticateAsync(IdentityConstants.ExternalScheme);
 
         if (!result.Succeeded)
         {
@@ -37,7 +40,7 @@ public class GoogleLoginCommandHandler : ICommandHandler<GoogleLoginCommand, Uni
         var email = externalInfo.Principal.FindFirstValue(ClaimTypes.Email);
         var user = await _userService.FindByExternalLoginAsync(externalInfo.LoginProvider, externalInfo.ProviderKey) ?? await _userService.GetUserByEmailAsync(email);
 
-        if(user == null)
+        if (user == null)
         {
             var createdUserResult = await _userService.CreateUserForExternalLoginAsync(externalInfo);
         }

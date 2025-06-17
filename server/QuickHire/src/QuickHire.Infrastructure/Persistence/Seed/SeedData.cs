@@ -1,40 +1,30 @@
 ﻿using Microsoft.AspNetCore.Identity;
+
 using QuickHire.Domain.Categories;
+using QuickHire.Domain.Categories.Enums;
+using QuickHire.Domain.Gigs;
+using QuickHire.Domain.Moderation;
 using QuickHire.Domain.Moderation.Enums;
 using QuickHire.Domain.Users;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using QuickHire.Infrastructure.Persistence.Identity;
 
-using QuickHire.Domain.Users.Enums;
-using static QuickHire.Domain.Shared.Constants.EntityPropertyLength;
+using Address = QuickHire.Domain.Users.Address;
 using ApplicationUser = QuickHire.Infrastructure.Persistence.Identity.ApplicationUser;
-using FAQ = QuickHire.Domain.Categories.FAQ;
-using MainCategory = QuickHire.Domain.Categories.MainCategory;
-using Language = QuickHire.Domain.Users.Language;
-using Gig = QuickHire.Domain.Gigs.Gig;
-using UserLanguage = QuickHire.Domain.Users.UserLanguage;
+using BillingDetails = QuickHire.Domain.Users.BillingDetails;
 using Certification = QuickHire.Domain.Users.Certification;
 using Education = QuickHire.Domain.Users.Education;
-using Skill = QuickHire.Domain.Users.Skill;
-using Address = QuickHire.Domain.Users.Address;
-using Portfolio = QuickHire.Domain.Users.Portfolio;
-using BillingDetails = QuickHire.Domain.Users.BillingDetails;
-using GigFilter = QuickHire.Domain.Categories.GigFilter;
+using FAQ = QuickHire.Domain.Categories.FAQ;
 using FilterOption = QuickHire.Domain.Categories.FilterOption;
-using PaymentPlanInclude = QuickHire.Domain.Gigs.PaymentPlanInclude;
-using PaymentPlan = QuickHire.Domain.Gigs.PaymentPlan;
+using Gig = QuickHire.Domain.Gigs.Gig;
+using GigFilter = QuickHire.Domain.Categories.GigFilter;
 using GigRequirement = QuickHire.Domain.Gigs.GigRequirement;
-
-using System.Runtime.CompilerServices;
-using Microsoft.AspNetCore.Http.HttpResults;
-using QuickHire.Domain.Categories.Enums;
-using QuickHire.Infrastructure.Persistence.Identity;
-using Microsoft.Extensions.DependencyInjection;
-using QuickHire.Domain.Moderation;
-using QuickHire.Domain.Gigs;
-using static System.Net.WebRequestMethods;
+using Language = QuickHire.Domain.Users.Language;
+using MainCategory = QuickHire.Domain.Categories.MainCategory;
+using PaymentPlan = QuickHire.Domain.Gigs.PaymentPlan;
+using PaymentPlanInclude = QuickHire.Domain.Gigs.PaymentPlanInclude;
+using Portfolio = QuickHire.Domain.Users.Portfolio;
+using Skill = QuickHire.Domain.Users.Skill;
+using UserLanguage = QuickHire.Domain.Users.UserLanguage;
 
 namespace QuickHire.Infrastructure.Persistence.Seed;
 
@@ -76,7 +66,7 @@ public class SeedData
     public UserLanguage UserLanguage8 { get; set; } = null!;
     public UserLanguage UserLanguage9 { get; set; } = null!;
     public UserLanguage UserLanguage10 { get; set; } = null!;
-    public UserLanguage UserLanguage11{ get; set; } = null!;
+    public UserLanguage UserLanguage11 { get; set; } = null!;
     public UserLanguage UserLanguage12 { get; set; } = null!;
     public UserLanguage UserLanguage13 { get; set; } = null!;
     public UserLanguage UserLanguage14 { get; set; } = null!;
@@ -173,7 +163,7 @@ public class SeedData
     public MainCategory MainCategory4 { get; set; } = null!;
     public MainCategory MainCategory5 { get; set; } = null!;
     public MainCategory MainCategory6 { get; set; } = null!;
-    public MainCategory MainCategory7 { get; set; } = null!;       
+    public MainCategory MainCategory7 { get; set; } = null!;
     public MainCategory MainCategory8 { get; set; } = null!;
     public MainCategory MainCategory9 { get; set; } = null!;
     public MainCategory MainCategory10 { get; set; } = null!;
@@ -244,7 +234,7 @@ public class SeedData
     public SubCategory SubCategory5ForMainCategory6 { get; set; } = null!;
     public SubCategory SubCategory1ForMainCategory7 { get; set; } = null!;
     public SubCategory SubCategory2ForMainCategory7 { get; set; } = null!;
-        
+
     public SubCategory SubCategory3ForMainCategory7 { get; set; } = null!;
     public SubCategory SubCategory4ForMainCategory7 { get; set; } = null!;
     public SubCategory SubCategory5ForMainCategory7 { get; set; } = null!;
@@ -257,7 +247,7 @@ public class SeedData
     public SubCategory SubCategory2ForMainCategory9 { get; set; } = null!;
     public SubCategory SubCategory3ForMainCategory9 { get; set; } = null!;
     public SubCategory SubCategory4ForMainCategory9 { get; set; } = null!;
-    public SubCategory SubCategory5ForMainCategory9 { get; set; } = null!;       
+    public SubCategory SubCategory5ForMainCategory9 { get; set; } = null!;
     public SubCategory SubCategory1ForMainCategory10 { get; set; } = null!;
     public SubCategory SubCategory2ForMainCategory10 { get; set; } = null!;
     public SubCategory SubCategory3ForMainCategory10 { get; set; } = null!;
@@ -398,7 +388,7 @@ public class SeedData
     public BillingDetails BillingDetails9 { get; set; } = null!;
     public BillingDetails BillingDetails10 { get; set; } = null!;
 
-    
+
 
     public Country Country1 { get; set; } = null!;
     public Country Country2 { get; set; } = null!;
@@ -426,7 +416,7 @@ public class SeedData
     public FilterOption FilterOption7 { get; set; } = null!;
     public FilterOption FilterOption8 { get; set; } = null!;
     public FilterOption FilterOption9 { get; set; } = null!;
-    
+
     public GigFilter GigFilter1ForSubSubCategory1ForSubCategory1ForMainCategory10 { get; set; } = null!;
     public GigFilter GigFilter2ForSubSubCategory1ForSubCategory1ForMainCategory10 { get; set; } = null!;
     public GigFilter GigFilter3ForSubSubCategory1ForSubCategory1ForMainCategory10 { get; set; } = null!;
@@ -488,7 +478,7 @@ public class SeedData
     public GigFilter GigFilterForSubSubCategory2ForSubCategory1ForMainCategory4 { get; set; } = null!;
     public GigFilter GigFilterForSubSubCategory1ForSubCategory2ForMainCategory4 { get; set; } = null!;
     public GigFilter GigFilterForSubSubCategory2ForSubCategory2ForMainCategory4 { get; set; } = null!;
-            public GigFilter GigFilterForSubSubCategory2ForSubCategory3ForMainCategory4 { get; set; } = null!;
+    public GigFilter GigFilterForSubSubCategory2ForSubCategory3ForMainCategory4 { get; set; } = null!;
     public GigFilter GigFilterForSubSubCategory1ForSubCategory4ForMainCategory4 { get; set; } = null!;
     public GigFilter GigFilterForSubSubCategory2ForSubCategory4ForMainCategory4 { get; set; } = null!;
     public GigFilter GigFilterForSubSubCategory1ForSubCategory1ForMainCategory4 { get; set; } = null!;
@@ -500,7 +490,7 @@ public class SeedData
     public GigFilter GigFilterForSubSubCategory1ForSubCategory2ForMainCategory3 { get; set; } = null!;
     public GigFilter GigFilterForSubSubCategory2ForSubCategory1ForMainCategory3 { get; set; } = null!;
     public GigFilter GigFilterForSubSubCategory1ForSubCategory1ForMainCategory3 { get; set; } = null!;
-            public GigFilter GigFilterForSubSubCategory2ForSubCategory4ForMainCategory2 { get; set; } = null!;
+    public GigFilter GigFilterForSubSubCategory2ForSubCategory4ForMainCategory2 { get; set; } = null!;
     public GigFilter GigFilterForSubSubCategory1ForSubCategory4ForMainCategory2 { get; set; } = null!;
     public GigFilter GigFilterForSubSubCategory2ForSubCategory3ForMainCategory2 { get; set; } = null!;
     public GigFilter GigFilterForSubSubCategory1ForSubCategory3ForMainCategory2 { get; set; } = null!;
@@ -598,7 +588,7 @@ public class SeedData
 
     public async Task SeedAsync()
     {
-        await SeedCountries();     
+        await SeedCountries();
         await SeedMainCategories();
         await SeedMainCategoriesFAQs();
         await SeedSubCategories();
@@ -617,7 +607,7 @@ public class SeedData
         await SeedSkills();
         await SeedPortfolios();
         await SeedReportedItems();
-       // await SeedGigs();
+        // await SeedGigs();
     }
 
     private async Task SeedApplicationUsers()
@@ -770,27 +760,27 @@ public class SeedData
 
     private async Task SeedReportedItems()
     {
-        if(!_context.ReportedItems.Any())
-        {
-            ReportedItem1 = new ReportedItem
-            {              
-                Reason = "Inappropriate content",
-                ReportedUserId = User2.Id,
-                ReportedById = User1.Id,
-                CreatedAt = DateTime.Now
-            };
-            ReportedItem2 = new ReportedItem
-            {
-                Reason = "I dont like this user",
-                ReportedUserId = User2.Id,
-                ReportedById = User3.Id,
-                CreatedAt = DateTime.Now
-            };
-           
+        //if(!_context.ReportedItems.Any())
+        //{
+        //    ReportedItem1 = new ReportedItem
+        //    {              
+        //        Reason = "Inappropriate content",
+        //        ReportedUserId = User2.Id,
+        //        ReportedById = User1.Id,
+        //        CreatedAt = DateTime.Now
+        //    };
+        //    ReportedItem2 = new ReportedItem
+        //    {
+        //        Reason = "I dont like this user",
+        //        ReportedUserId = User2.Id,
+        //        ReportedById = User3.Id,
+        //        CreatedAt = DateTime.Now
+        //    };
 
-            _context.ReportedItems.AddRange(ReportedItem1, ReportedItem2);
-            await _context.SaveChangesAsync();
-        }
+
+        //    _context.ReportedItems.AddRange(ReportedItem1, ReportedItem2);
+        //    await _context.SaveChangesAsync();
+        //}
     }
 
     private async Task SeedBuyers()
@@ -937,7 +927,7 @@ public class SeedData
             _context.Educations.AddRange(educationsForSeller1);
             await _context.SaveChangesAsync();
         }
-        
+
     }
     private async Task SeedAddresses()
     {
@@ -1059,7 +1049,7 @@ public class SeedData
             _context.AddRange(list);
             await _context.SaveChangesAsync();
         }
-    
+
     }
     private async Task SeedCertifications()
     {
@@ -1112,8 +1102,9 @@ public class SeedData
             _context.Skills.AddRange(skillsForSeller1);
             await _context.SaveChangesAsync();
         }
-    }   
-    private async Task SeedPortfolios() { 
+    }
+    private async Task SeedPortfolios()
+    {
         if (!_context.Portfolios.Any())
         {
             var portfoliosForSeller1 = new List<Portfolio>
@@ -1153,27 +1144,27 @@ public class SeedData
         if (!_context.Languages.Any())
         {
             Language1 = new Language { Name = "English" };
-            Language2 = new Language {Name = "Spanish" };
-            Language3 = new Language {Name = "French" };
-            Language4 = new Language {  Name = "German" };
+            Language2 = new Language { Name = "Spanish" };
+            Language3 = new Language { Name = "French" };
+            Language4 = new Language { Name = "German" };
             Language5 = new Language { Name = "Chinese" };
-            Language6 = new Language {Name = "Japanese" };
+            Language6 = new Language { Name = "Japanese" };
             Language7 = new Language { Name = "Korean" };
-            Language8 = new Language {Name = "Arabic" };
-            Language9 = new Language {  Name = "Portuguese" };
+            Language8 = new Language { Name = "Arabic" };
+            Language9 = new Language { Name = "Portuguese" };
             Language10 = new Language { Name = "Russian" };
             Language11 = new Language { Name = "Hindi" };
-            Language12 = new Language {  Name = "Italian" };
-            Language13 = new Language {  Name = "Dutch" };
+            Language12 = new Language { Name = "Italian" };
+            Language13 = new Language { Name = "Dutch" };
             Language14 = new Language { Name = "Turkish" };
-            Language15 = new Language {  Name = "Polish" };
+            Language15 = new Language { Name = "Polish" };
 
-            _context.Languages.AddRange(Language1, Language2, Language2, Language3, Language4, 
-                Language5, Language6, Language7, Language8, Language9, Language10, Language11, 
+            _context.Languages.AddRange(Language1, Language2, Language2, Language3, Language4,
+                Language5, Language6, Language7, Language8, Language9, Language10, Language11,
                 Language12, Language13, Language14, Language15);
 
             await _context.SaveChangesAsync();
-        }      
+        }
     }
     private async Task SeedUserLanguages()
     {
@@ -1217,7 +1208,7 @@ public class SeedData
                 UserLanguage16, UserLanguage17, UserLanguage18, UserLanguage19, UserLanguage20
             );
             await _context.SaveChangesAsync();
-        }      
+        }
     }
     private async Task SeedBillingDetails()
     {
@@ -1318,17 +1309,17 @@ public class SeedData
     {
         if (!_context.Countries.Any())
         {
-            Country1 = new Country{ Name = "USA"};
-            Country2 = new Country { Name = "Canada"};
-            Country3 = new Country { Name = "UK"};
-            Country4 = new Country { Name = "France"};
-            Country5 = new Country { Name = "Germany"};
-            Country6 = new Country {Name = "Spain"};
-            Country7 = new Country { Name = "Italy"};
-            Country8 = new Country { Name = "Australia"};
-            Country9 = new Country { Name = "India"};
-            Country10 = new Country { Name = "Brazil"};
-            Country11 = new Country { Name = "Japan"};
+            Country1 = new Country { Name = "USA" };
+            Country2 = new Country { Name = "Canada" };
+            Country3 = new Country { Name = "UK" };
+            Country4 = new Country { Name = "France" };
+            Country5 = new Country { Name = "Germany" };
+            Country6 = new Country { Name = "Spain" };
+            Country7 = new Country { Name = "Italy" };
+            Country8 = new Country { Name = "Australia" };
+            Country9 = new Country { Name = "India" };
+            Country10 = new Country { Name = "Brazil" };
+            Country11 = new Country { Name = "Japan" };
 
             var countries = new List<Country>
             {
@@ -1340,7 +1331,7 @@ public class SeedData
             await _context.SaveChangesAsync();
 
         }
-    } 
+    }
     private async Task SeedMainCategories()
     {
         if (!_context.MainCategories.Any())
@@ -1354,13 +1345,13 @@ public class SeedData
                 Clicks = random.Next(0, 1000),
                 CreatedOn = DateTime.UtcNow.AddDays(-random.Next(1, 365))
             };
-           MainCategory2 = new MainCategory
-           {
-               Name = "Programming & Tech",
-               Description = "Solutions built to power your ideas.",
-               Clicks = random.Next(0, 1000),
-               CreatedOn = DateTime.UtcNow.AddDays(-random.Next(1, 365))
-           };
+            MainCategory2 = new MainCategory
+            {
+                Name = "Programming & Tech",
+                Description = "Solutions built to power your ideas.",
+                Clicks = random.Next(0, 1000),
+                CreatedOn = DateTime.UtcNow.AddDays(-random.Next(1, 365))
+            };
             MainCategory3 = new MainCategory
             {
                 Name = "Digital Marketing",
@@ -1368,34 +1359,34 @@ public class SeedData
                 Clicks = random.Next(0, 1000),
                 CreatedOn = DateTime.UtcNow.AddDays(-random.Next(1, 365))
             };
-           MainCategory4 = new MainCategory
-           {
-               Name = "Video & Animation",
-               Description = "Bring your story to life on screen.",
-               Clicks = random.Next(0, 1000),
-               CreatedOn = DateTime.UtcNow.AddDays(-random.Next(1, 365))
-           };
-         MainCategory5 = new MainCategory
-         {
-             Name = "Writing & Translation",
-             Description = "Words that inspire, sell, and connect.",
-             Clicks = random.Next(0, 1000),
-             CreatedOn = DateTime.UtcNow.AddDays(-random.Next(1, 365))
-         };
-          MainCategory6 = new MainCategory
-          {
-              Name = "Music & Audio",
-              Description = "Soundtracks to elevate your brand.",
-              Clicks = random.Next(0, 1000),
-              CreatedOn = DateTime.UtcNow.AddDays(-random.Next(1, 365))
-          };
-           MainCategory7 = new MainCategory
-           {
-               Name = "Business",
-               Description = "Support and strategy for serious growth.",
-               Clicks = random.Next(0, 1000),
-               CreatedOn = DateTime.UtcNow.AddDays(-random.Next(1, 365))
-           };
+            MainCategory4 = new MainCategory
+            {
+                Name = "Video & Animation",
+                Description = "Bring your story to life on screen.",
+                Clicks = random.Next(0, 1000),
+                CreatedOn = DateTime.UtcNow.AddDays(-random.Next(1, 365))
+            };
+            MainCategory5 = new MainCategory
+            {
+                Name = "Writing & Translation",
+                Description = "Words that inspire, sell, and connect.",
+                Clicks = random.Next(0, 1000),
+                CreatedOn = DateTime.UtcNow.AddDays(-random.Next(1, 365))
+            };
+            MainCategory6 = new MainCategory
+            {
+                Name = "Music & Audio",
+                Description = "Soundtracks to elevate your brand.",
+                Clicks = random.Next(0, 1000),
+                CreatedOn = DateTime.UtcNow.AddDays(-random.Next(1, 365))
+            };
+            MainCategory7 = new MainCategory
+            {
+                Name = "Business",
+                Description = "Support and strategy for serious growth.",
+                Clicks = random.Next(0, 1000),
+                CreatedOn = DateTime.UtcNow.AddDays(-random.Next(1, 365))
+            };
             MainCategory8 = new MainCategory
             {
                 Name = "Finance",
@@ -1418,7 +1409,7 @@ public class SeedData
                 CreatedOn = DateTime.UtcNow.AddDays(-random.Next(1, 365))
             };
 
-        var mainCategories = new List<MainCategory>
+            var mainCategories = new List<MainCategory>
         {
                 MainCategory1,
                 MainCategory2,
@@ -1683,7 +1674,7 @@ public class SeedData
     }
     private async Task SeedSubCategories()
     {
-        if(!_context.SubCategories.Any())
+        if (!_context.SubCategories.Any())
         {
             SubCategory1ForMainCategory1 = new SubCategory
             {
@@ -1708,7 +1699,7 @@ public class SeedData
                 Name = "Art & Illustration",
                 MainCategoryId = MainCategory1.Id,
                 Clicks = 220,
-                ImageUrl= "https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto/v1/attachments/generic_asset/asset/68011f21cd41c664951df861d9f876ac-1682402649988/Art%20_%20Illustration.png",
+                ImageUrl = "https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto/v1/attachments/generic_asset/asset/68011f21cd41c664951df861d9f876ac-1682402649988/Art%20_%20Illustration.png",
                 CreatedOn = DateTime.UtcNow.AddDays(-1)
             };
 
@@ -2099,7 +2090,7 @@ public class SeedData
     }
     private async Task SeedSubSubCategories()
     {
-        if(!_context.SubSubCategories.Any())
+        if (!_context.SubSubCategories.Any())
         {
             SubSubCategory1ForSubCategory1ForMainCategory1 = new SubSubCategory
             {
@@ -2354,140 +2345,140 @@ public class SeedData
             {
                 Name = "AI Image Editing",
                 SubCategoryId = SubCategory6ForMainCategory1.Id,
-Clicks = 45,
-CreatedOn = DateTime.Now.AddDays(-136)
-};
+                Clicks = 45,
+                CreatedOn = DateTime.Now.AddDays(-136)
+            };
 
-        SubSubCategory3ForSubCategory6ForMainCategory1 = new SubSubCategory
-        {
-            Name = "Presentation Design",
-            SubCategoryId = SubCategory6ForMainCategory1.Id,
-            Clicks = 40,
-            CreatedOn = DateTime.Now.AddDays(-134)
-        };
+            SubSubCategory3ForSubCategory6ForMainCategory1 = new SubSubCategory
+            {
+                Name = "Presentation Design",
+                SubCategoryId = SubCategory6ForMainCategory1.Id,
+                Clicks = 40,
+                CreatedOn = DateTime.Now.AddDays(-134)
+            };
 
-        SubSubCategory4ForSubCategory6ForMainCategory1 = new SubSubCategory
-        {
-            Name = "Infographic Design",
-            SubCategoryId = SubCategory6ForMainCategory1.Id,
-            Clicks = 35,
-            CreatedOn = DateTime.Now.AddDays(-132)
-        };
+            SubSubCategory4ForSubCategory6ForMainCategory1 = new SubSubCategory
+            {
+                Name = "Infographic Design",
+                SubCategoryId = SubCategory6ForMainCategory1.Id,
+                Clicks = 35,
+                CreatedOn = DateTime.Now.AddDays(-132)
+            };
 
-        SubSubCategory5ForSubCategory6ForMainCategory1 = new SubSubCategory
-        {
-            Name = "Vector Tracing",
-            SubCategoryId = SubCategory6ForMainCategory1.Id,
-            Clicks = 30,
-            CreatedOn = DateTime.Now.AddDays(-130)
-        };
+            SubSubCategory5ForSubCategory6ForMainCategory1 = new SubSubCategory
+            {
+                Name = "Vector Tracing",
+                SubCategoryId = SubCategory6ForMainCategory1.Id,
+                Clicks = 30,
+                CreatedOn = DateTime.Now.AddDays(-130)
+            };
 
-        SubSubCategory6ForSubCategory6ForMainCategory1 = new SubSubCategory
-        {
-            Name = "Resume Design",
-            SubCategoryId = SubCategory6ForMainCategory1.Id,
-            Clicks = 25,
-            CreatedOn = DateTime.Now.AddDays(-128)
-        };
+            SubSubCategory6ForSubCategory6ForMainCategory1 = new SubSubCategory
+            {
+                Name = "Resume Design",
+                SubCategoryId = SubCategory6ForMainCategory1.Id,
+                Clicks = 25,
+                CreatedOn = DateTime.Now.AddDays(-128)
+            };
 
-        // SubCategory7: Print Design
-        SubSubCategory1ForSubCategory7ForMainCategory1 = new SubSubCategory
-        {
-            Name = "Flyer Design",
-            SubCategoryId = SubCategory7ForMainCategory1.Id,
-            Clicks = 20,
-            CreatedOn = DateTime.Now.AddDays(-126)
-        };
+            // SubCategory7: Print Design
+            SubSubCategory1ForSubCategory7ForMainCategory1 = new SubSubCategory
+            {
+                Name = "Flyer Design",
+                SubCategoryId = SubCategory7ForMainCategory1.Id,
+                Clicks = 20,
+                CreatedOn = DateTime.Now.AddDays(-126)
+            };
 
-        SubSubCategory2ForSubCategory7ForMainCategory1 = new SubSubCategory
-        {
-            Name = "Brochure Design",
-            SubCategoryId = SubCategory7ForMainCategory1.Id,
-            Clicks = 18,
-            CreatedOn = DateTime.Now.AddDays(-124)
-        };
+            SubSubCategory2ForSubCategory7ForMainCategory1 = new SubSubCategory
+            {
+                Name = "Brochure Design",
+                SubCategoryId = SubCategory7ForMainCategory1.Id,
+                Clicks = 18,
+                CreatedOn = DateTime.Now.AddDays(-124)
+            };
 
-        SubSubCategory3ForSubCategory7ForMainCategory1 = new SubSubCategory
-        {
-            Name = "Poster Design",
-            SubCategoryId = SubCategory7ForMainCategory1.Id,
-            Clicks = 16,
-            CreatedOn = DateTime.Now.AddDays(-122)
-        };
+            SubSubCategory3ForSubCategory7ForMainCategory1 = new SubSubCategory
+            {
+                Name = "Poster Design",
+                SubCategoryId = SubCategory7ForMainCategory1.Id,
+                Clicks = 16,
+                CreatedOn = DateTime.Now.AddDays(-122)
+            };
 
-        SubSubCategory4ForSubCategory7ForMainCategory1 = new SubSubCategory
-        {
-            Name = "Catalog Design",
-            SubCategoryId = SubCategory7ForMainCategory1.Id,
-            Clicks = 14,
-            CreatedOn = DateTime.Now.AddDays(-120)
-        };
+            SubSubCategory4ForSubCategory7ForMainCategory1 = new SubSubCategory
+            {
+                Name = "Catalog Design",
+                SubCategoryId = SubCategory7ForMainCategory1.Id,
+                Clicks = 14,
+                CreatedOn = DateTime.Now.AddDays(-120)
+            };
 
-        SubSubCategory5ForSubCategory7ForMainCategory1 = new SubSubCategory
-        {
-            Name = "Menu Design",
-            SubCategoryId = SubCategory7ForMainCategory1.Id,
-            Clicks = 12,
-            CreatedOn = DateTime.Now.AddDays(-118)
-        };
+            SubSubCategory5ForSubCategory7ForMainCategory1 = new SubSubCategory
+            {
+                Name = "Menu Design",
+                SubCategoryId = SubCategory7ForMainCategory1.Id,
+                Clicks = 12,
+                CreatedOn = DateTime.Now.AddDays(-118)
+            };
 
-        SubSubCategory6ForSubCategory7ForMainCategory1 = new SubSubCategory
-        {
-            Name = "Invitation Design",
-            SubCategoryId = SubCategory7ForMainCategory1.Id,
-            Clicks = 10,
-            CreatedOn = DateTime.Now.AddDays(-116)
-        };
+            SubSubCategory6ForSubCategory7ForMainCategory1 = new SubSubCategory
+            {
+                Name = "Invitation Design",
+                SubCategoryId = SubCategory7ForMainCategory1.Id,
+                Clicks = 10,
+                CreatedOn = DateTime.Now.AddDays(-116)
+            };
 
-        // SubCategory8: Packaging & Covers
-        SubSubCategory1ForSubCategory8ForMainCategory1 = new SubSubCategory
-        {
-            Name = "Packaging & Label Design",
-            SubCategoryId = SubCategory8ForMainCategory1.Id,
-            Clicks = 9,
-            CreatedOn = DateTime.Now.AddDays(-114)
-        };
+            // SubCategory8: Packaging & Covers
+            SubSubCategory1ForSubCategory8ForMainCategory1 = new SubSubCategory
+            {
+                Name = "Packaging & Label Design",
+                SubCategoryId = SubCategory8ForMainCategory1.Id,
+                Clicks = 9,
+                CreatedOn = DateTime.Now.AddDays(-114)
+            };
 
-        SubSubCategory2ForSubCategory8ForMainCategory1 = new SubSubCategory
-        {
-            Name = "Book Design",
-            SubCategoryId = SubCategory8ForMainCategory1.Id,
-            Clicks = 8,
-            CreatedOn = DateTime.Now.AddDays(-112)
-        };
+            SubSubCategory2ForSubCategory8ForMainCategory1 = new SubSubCategory
+            {
+                Name = "Book Design",
+                SubCategoryId = SubCategory8ForMainCategory1.Id,
+                Clicks = 8,
+                CreatedOn = DateTime.Now.AddDays(-112)
+            };
 
-        SubSubCategory3ForSubCategory8ForMainCategory1 = new SubSubCategory
-        {
-            Name = "Book Covers",
-            SubCategoryId = SubCategory8ForMainCategory1.Id,
-            Clicks = 7,
-            CreatedOn = DateTime.Now.AddDays(-110)
-        };
+            SubSubCategory3ForSubCategory8ForMainCategory1 = new SubSubCategory
+            {
+                Name = "Book Covers",
+                SubCategoryId = SubCategory8ForMainCategory1.Id,
+                Clicks = 7,
+                CreatedOn = DateTime.Now.AddDays(-110)
+            };
 
-        SubSubCategory4ForSubCategory8ForMainCategory1 = new SubSubCategory
-        {
-            Name = "Album Cover Design",
-            SubCategoryId = SubCategory8ForMainCategory1.Id,
-            Clicks = 6,
-            CreatedOn = DateTime.Now.AddDays(-108)
-        };
+            SubSubCategory4ForSubCategory8ForMainCategory1 = new SubSubCategory
+            {
+                Name = "Album Cover Design",
+                SubCategoryId = SubCategory8ForMainCategory1.Id,
+                Clicks = 6,
+                CreatedOn = DateTime.Now.AddDays(-108)
+            };
 
-        SubSubCategory5ForSubCategory8ForMainCategory1 = new SubSubCategory
-        {
-            Name = "Podcast Cover Art",
-            SubCategoryId = SubCategory8ForMainCategory1.Id,
-            Clicks = 5,
-            CreatedOn = DateTime.Now.AddDays(-106)
-        };
+            SubSubCategory5ForSubCategory8ForMainCategory1 = new SubSubCategory
+            {
+                Name = "Podcast Cover Art",
+                SubCategoryId = SubCategory8ForMainCategory1.Id,
+                Clicks = 5,
+                CreatedOn = DateTime.Now.AddDays(-106)
+            };
 
-        SubSubCategory6ForSubCategory8ForMainCategory1 = new SubSubCategory
-        {
-            Name = "Car Wraps",
-            SubCategoryId = SubCategory8ForMainCategory1.Id,
-            Clicks = 4,
-            CreatedOn = DateTime.Now.AddDays(-104)
-        };
-        SubSubCategory1ForSubCategory1ForMainCategory2 = new SubSubCategory
+            SubSubCategory6ForSubCategory8ForMainCategory1 = new SubSubCategory
+            {
+                Name = "Car Wraps",
+                SubCategoryId = SubCategory8ForMainCategory1.Id,
+                Clicks = 4,
+                CreatedOn = DateTime.Now.AddDays(-104)
+            };
+            SubSubCategory1ForSubCategory1ForMainCategory2 = new SubSubCategory
             {
                 Name = "Frontend Development",
                 SubCategoryId = SubCategory1ForMainCategory2.Id,
@@ -3126,7 +3117,7 @@ CreatedOn = DateTime.Now.AddDays(-136)
     }
     private async Task SeedGigFiltersForSubSubCategories()
     {
-         if(!_context.GigFilters.Any())
+        if (!_context.GigFilters.Any())
         {
             //MainCategory1: Graphics & Design
             //SuCategory2: Art and illustration
@@ -3309,14 +3300,14 @@ CreatedOn = DateTime.Now.AddDays(-136)
                 Title = "Logo style"
             };
 
-GigFilter2ForSubSubCategory1ForSubCategory1ForMainCategory1 = new GigFilter
+            GigFilter2ForSubSubCategory1ForSubCategory1ForMainCategory1 = new GigFilter
             {
                 SubSubCategoryId = SubSubCategory1ForSubCategory1ForMainCategory1.Id,
                 Type = Domain.Categories.Enums.GigFilterType.ServiceIncludes,
                 Title = "File format"
             };
 
-GigFilter3ForSubSubCategory1ForSubCategory1ForMainCategory1 = new GigFilter
+            GigFilter3ForSubSubCategory1ForSubCategory1ForMainCategory1 = new GigFilter
             {
                 SubSubCategoryId = SubSubCategory1ForSubCategory1ForMainCategory1.Id,
                 Type = Domain.Categories.Enums.GigFilterType.ServiceIncludes,
@@ -4027,85 +4018,85 @@ GigFilter3ForSubSubCategory1ForSubCategory1ForMainCategory1 = new GigFilter
                 Name = "New Seller",
                 GigFilterId = GigFilter5.Id
             };
-             FilterOption1ForGigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1 = new FilterOption()
+            FilterOption1ForGigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1 = new FilterOption()
             {
                 GigFilterId = GigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1.Id,
                 Name = "Mobile App (iOS/Android)"
             };
 
-             FilterOption2ForGigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1 = new FilterOption()
+            FilterOption2ForGigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1 = new FilterOption()
             {
                 GigFilterId = GigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1.Id,
                 Name = "Web Application"
             };
 
-             FilterOption3ForGigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1 = new FilterOption()
+            FilterOption3ForGigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1 = new FilterOption()
             {
                 GigFilterId = GigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1.Id,
                 Name = "Desktop Application"
             };
 
-             FilterOption4ForGigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1 = new FilterOption()
+            FilterOption4ForGigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1 = new FilterOption()
             {
                 GigFilterId = GigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1.Id,
                 Name = "E-commerce Platform"
             };
 
-             FilterOption5ForGigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1 = new FilterOption()
+            FilterOption5ForGigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1 = new FilterOption()
             {
                 GigFilterId = GigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1.Id,
                 Name = "SaaS Dashboard"
             };
 
-             FilterOption6ForGigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1 = new FilterOption()
+            FilterOption6ForGigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1 = new FilterOption()
             {
                 GigFilterId = GigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1.Id,
                 Name = "Landing Page / Marketing Site"
             };
 
-             FilterOption7ForGigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1 = new FilterOption()
+            FilterOption7ForGigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1 = new FilterOption()
             {
                 GigFilterId = GigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1.Id,
                 Name = "Progressive Web App (PWA)"
             };
 
-             FilterOption8ForGigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1 = new FilterOption()
+            FilterOption8ForGigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1 = new FilterOption()
             {
                 GigFilterId = GigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1.Id,
                 Name = "Enterprise / B2B Tool"
             };
 
-             FilterOption1ForGigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1 = new FilterOption()
+            FilterOption1ForGigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1 = new FilterOption()
             {
                 GigFilterId = GigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1.Id,
                 Name = "Figma"
             };
 
-             FilterOption2ForGigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1 = new FilterOption()
+            FilterOption2ForGigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1 = new FilterOption()
             {
                 GigFilterId = GigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1.Id,
                 Name = "Adobe XD"
             };
 
-             FilterOption3ForGigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1 = new FilterOption()
+            FilterOption3ForGigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1 = new FilterOption()
             {
                 GigFilterId = GigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1.Id,
                 Name = "Sketch"
             };
 
-             FilterOption4ForGigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1 = new FilterOption()
+            FilterOption4ForGigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1 = new FilterOption()
             {
                 GigFilterId = GigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1.Id,
                 Name = "Adobe Photoshop"
             };
 
-             FilterOption5ForGigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1 = new FilterOption()
+            FilterOption5ForGigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1 = new FilterOption()
             {
                 GigFilterId = GigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1.Id,
                 Name = "Adobe Illustrator"
             };
 
-             FilterOption6ForGigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1 = new FilterOption()
+            FilterOption6ForGigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1 = new FilterOption()
             {
                 GigFilterId = GigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1.Id,
                 Name = "InVision"
@@ -4162,7 +4153,7 @@ GigFilter3ForSubSubCategory1ForSubCategory1ForMainCategory1 = new GigFilter
             await _context.SaveChangesAsync();
         }
     }
-  private async Task SeedGigs()
+    private async Task SeedGigs()
     {
 
         var gig1 = new Gig
@@ -4214,9 +4205,9 @@ GigFilter3ForSubSubCategory1ForSubCategory1ForMainCategory1 = new GigFilter
         };
 
         await _context.Gigs.AddRangeAsync(gig1, gig2, gig3, gig4);
-       await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync();
 
-       await SeedGigDetails(_context, gig1, gig2, gig3, gig4);
+        await SeedGigDetails(_context, gig1, gig2, gig3, gig4);
     }
 
     private async Task SeedGigDetails(ApplicationDbContext context, Gig gig1, Gig gig2, Gig gig3, Gig gig4)
@@ -4351,12 +4342,12 @@ GigFilter3ForSubSubCategory1ForSubCategory1ForMainCategory1 = new GigFilter
             Description = "UX audit of 5+ pages with actionable recommendations."
         };
 
-       await context.PaymentPlans.AddRangeAsync(
-            paymentPlan1Basic, paymentPlan1Standard, paymentPlan1Premium,
-            paymentPlan2Basic, paymentPlan2Standard, paymentPlan2Premium,
-            paymentPlan3Basic, paymentPlan3Standard, paymentPlan3Premium,
-            paymentPlan4Basic, paymentPlan4Standard, paymentPlan4Premium
-        );
+        await context.PaymentPlans.AddRangeAsync(
+             paymentPlan1Basic, paymentPlan1Standard, paymentPlan1Premium,
+             paymentPlan2Basic, paymentPlan2Standard, paymentPlan2Premium,
+             paymentPlan3Basic, paymentPlan3Standard, paymentPlan3Premium,
+             paymentPlan4Basic, paymentPlan4Standard, paymentPlan4Premium
+         );
 
         await context.SaveChangesAsync();
 

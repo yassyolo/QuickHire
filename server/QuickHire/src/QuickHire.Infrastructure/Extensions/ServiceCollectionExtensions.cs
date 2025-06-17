@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
+
 using QuickHire.Application.Common.Interfaces.Factories.Notification;
 using QuickHire.Application.Common.Interfaces.Repository;
 using QuickHire.Application.Common.Interfaces.Services;
@@ -23,6 +24,7 @@ using QuickHire.Infrastructure.Persistence.Identity;
 using QuickHire.Infrastructure.Persistence.Repositories;
 using QuickHire.Infrastructure.Realtime.Services;
 using QuickHire.Infrastructure.Services;
+
 using System.Text;
 
 namespace QuickHire.Infrastructure.Extensions;
@@ -43,65 +45,66 @@ public static class ServiceCollectionExtensions
 
     private static IServiceCollection AddAppAuthentication(this IServiceCollection services, IConfiguration configuration)
     {
+
         services.AddAuthentication(options =>
         {
-            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme; 
-            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;    
-            options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme; 
+            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
         })
-.AddCookie(options =>
-{
-    options.Cookie.Name = "Google_Cookie";
-    options.SlidingExpiration = true;
-    options.Cookie.SameSite = SameSiteMode.None; 
-    options.Cookie.SecurePolicy = CookieSecurePolicy.Always; 
-})
-.AddJwtBearer(options =>
-{
-    var section = configuration.GetSection(JwtOptions.JwtOptionsKey);
-
-    options.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-        ValidIssuer = section["Issuer"],
-        ValidAudience = section["Audience"],
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(section["Secret"])),
-    };
-
-    options.Events = new JwtBearerEvents
-    {
-        OnMessageReceived = context =>
+        .AddCookie(options =>
         {
-            var accessToken = context.Request.Cookies["ACCESS_TOKEN"];
+            options.Cookie.Name = "Google_Cookie";
+            options.SlidingExpiration = true;
+            options.Cookie.SameSite = SameSiteMode.None;
+            options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+        })
+        .AddJwtBearer(options =>
 
-            var path = context.HttpContext.Request.Path;
-            if (string.IsNullOrEmpty(accessToken) &&
-                path.StartsWithSegments("/chathub"))
+        {
+            var section = configuration.GetSection(JwtOptions.JwtOptionsKey);
+
+            options.TokenValidationParameters = new TokenValidationParameters
             {
-                accessToken = context.Request.Query["access_token"];
-            }
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = section["Issuer"],
+                ValidAudience = section["Audience"],
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(section["Secret"])),
+            };
 
-            context.Token = accessToken;
+            options.Events = new JwtBearerEvents
+            {
+                OnMessageReceived = context =>
+                {
+                    var accessToken = context.Request.Cookies["ACCESS_TOKEN"];
 
-            return Task.CompletedTask;
-        }
-    };
-})
-.AddGoogle(options =>
-{
-    options.ClientId = configuration["GoogleAuthenticationOptions:ClientId"];
-    options.ClientSecret = configuration["GoogleAuthenticationOptions:ClientSecret"];
-    options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme; 
-    options.SaveTokens = true;
-    options.CallbackPath = "/google-redirect";
+                    var path = context.HttpContext.Request.Path;
+                    if (string.IsNullOrEmpty(accessToken) &&
+                        path.StartsWithSegments("/chathub"))
+                    {
+                        accessToken = context.Request.Query["access_token"];
+                    }
 
-    options.CorrelationCookie.SameSite = SameSiteMode.None;
-    options.CorrelationCookie.SecurePolicy = CookieSecurePolicy.Always;
+                    context.Token = accessToken;
 
-});
+                    return Task.CompletedTask;
+                }
+            };
+        })
+        .AddGoogle(options =>
+        {
+            options.ClientId = configuration["GoogleAuthenticationOptions:ClientId"];
+            options.ClientSecret = configuration["GoogleAuthenticationOptions:ClientSecret"];
+            options.SignInScheme = IdentityConstants.ExternalScheme;
+            options.SaveTokens = true;
+
+            options.CorrelationCookie.SameSite = SameSiteMode.None;
+            options.CorrelationCookie.SecurePolicy = CookieSecurePolicy.Always;
+
+        });
 
         return services;
     }
@@ -145,10 +148,10 @@ public static class ServiceCollectionExtensions
 
     private static IServiceCollection AddOptions(this IServiceCollection services, IConfiguration configuration)
     {
-        services.Configure<CloudinaryOptions>(options => configuration.GetSection(CloudinaryOptions.CloudinaryOptionsKey).Bind(options)); 
+        services.Configure<CloudinaryOptions>(options => configuration.GetSection(CloudinaryOptions.CloudinaryOptionsKey).Bind(options));
         services.Configure<SendGridOptions>(options => configuration.GetSection(SendGridOptions.SendGridOptionsKey).Bind(options));
         services.Configure<JwtOptions>(options => configuration.GetSection(JwtOptions.JwtOptionsKey).Bind(options));
-      
+
         return services;
     }
 

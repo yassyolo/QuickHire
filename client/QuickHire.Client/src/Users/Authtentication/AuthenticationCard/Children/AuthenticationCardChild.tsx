@@ -47,7 +47,9 @@ export function AuthentionCardChild() {
     };
 
     const handleContinueWithGoogleClick = () => {
-  const returnUrl = encodeURIComponent("http://localhost:5173/google-redirect");
+//   const returnUrl = encodeURIComponent("http://localhost:7267/auth/callback");
+  const returnUrl = encodeURIComponent("http://localhost:5173/admin");
+  // Redirect to the Google authentication endpoint with the return URL
   window.location.href = `https://localhost:7267/auth/google?returnUrl=${returnUrl}`;
 };
 

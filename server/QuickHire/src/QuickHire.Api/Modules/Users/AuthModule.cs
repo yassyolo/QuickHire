@@ -1,11 +1,13 @@
 ﻿using Carter;
+
 using FluentValidation;
+
 using MediatR;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
+
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+
 using QuickHire.Application.Users.Authentication.AboutUser;
 using QuickHire.Application.Users.Authentication.ChangePassword;
 using QuickHire.Application.Users.Authentication.GoogleLogin;
@@ -44,27 +46,35 @@ public class AuthModule : CarterModule
             if (string.IsNullOrEmpty(returnUrl))
                 returnUrl = "/";
 
-            var redirectUrl = $"/signin-google?returnUrl={Uri.EscapeDataString(returnUrl)}";
+            var redirectUrl = $"/auth/callback?returnUrl={Uri.EscapeDataString(returnUrl)}";
             var properties = signInManager.ConfigureExternalAuthenticationProperties("Google", redirectUrl);
 
-            return Results.Challenge(properties, new[] { "Google" });
+            return Results.Challenge(properties, [GoogleDefaults.AuthenticationScheme]);
         })
-.WithName("GoogleLogin");
-        app.MapGet("/signin-google", async (HttpContext context, IMediator mediator) =>
+        .WithName("GoogleLogin");
+
+        app.MapGet("/auth/callback", async (HttpContext context, IMediator mediator) =>
         {
-            var googleAuthResult = await context.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
-            var cookieAuthResult = await context.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            var externalAuthResult = await context.AuthenticateAsync(IdentityConstants.ExternalScheme);
-            Console.WriteLine($"Google Auth Result: {googleAuthResult?.Principal?.Identity?.Name}");
-            Console.WriteLine($"Cookie Auth Result: {cookieAuthResult?.Principal?.Identity?.Name}");
             var returnUrl = context.Request.Query["returnUrl"].ToString() ?? "/";
             await mediator.Send(new GoogleLoginCommand(context, returnUrl));
 
             context.Response.Redirect(returnUrl);
         })
-            .Produces(StatusCodes.Status302Found)
-            .Produces(StatusCodes.Status400BadRequest)
-            .Produces(StatusCodes.Status401Unauthorized);
+        .Produces(StatusCodes.Status302Found)
+        .Produces(StatusCodes.Status400BadRequest)
+        .Produces(StatusCodes.Status401Unauthorized);
+
+        //app.MapPost("/auth/google/logout", async (HttpContext context, IMediator mediator) =>
+        //{
+        //    await mediator.Send(new GoogleLogoutCommand(context));
+
+        //    return Results.NoContent();
+        //})
+        //.WithName("GoogleLogout")
+        //.Produces(StatusCodes.Status204NoContent)
+        //.Produces(StatusCodes.Status400BadRequest)
+        //.WithDescription("Logs out the user by clearing the authentication cookies.");
+
         app.MapPost("auth/register", async ([FromBody] RegisterBuyerCommand command, IMediator mediator) =>
         {
             var result = await mediator.Send(command);
@@ -94,17 +104,17 @@ public class AuthModule : CarterModule
         .Produces(StatusCodes.Status404NotFound)
         .WithDescription("Retrieves information about the currently authenticated user. If the user is not authenticated, returns a 401 Unauthorized status. If the user is not found, returns a 404 Not Found status.");
 
-            app.MapPost("auth/switch-mode", async (SwitchModeCommand command, IMediator mediator) =>
-            {
+        app.MapPost("auth/switch-mode", async (SwitchModeCommand command, IMediator mediator) =>
+        {
             await mediator.Send(command);
 
             return Results.NoContent();
         })
-            .WithName("SwitchMode")
-            .Produces(StatusCodes.Status204NoContent)
-            .ProducesProblem(StatusCodes.Status401Unauthorized)
-                
-            .WithDescription("Switches the mode of the currently authenticated user. If the user is not authenticated, returns a 401 Unauthorized status. This endpoint allows users to switch between different modes (e.g., buyer/seller).");
+        .WithName("SwitchMode")
+        .Produces(StatusCodes.Status204NoContent)
+        .ProducesProblem(StatusCodes.Status401Unauthorized)
+
+        .WithDescription("Switches the mode of the currently authenticated user. If the user is not authenticated, returns a 401 Unauthorized status. This endpoint allows users to switch between different modes (e.g., buyer/seller).");
 
         app.MapPost("auth/refresh-token", async (HttpContext httpContext, IMediator mediator) =>
         {
@@ -142,7 +152,7 @@ public class AuthModule : CarterModule
         .WithDescription("Logs out the user by clearing the authentication cookies.");
 
         //auth/change-password
-        app.MapPost("/auth/change-password", async([FromBody] ChangePasswordCommand command, IMediator mediator) =>
+        app.MapPost("/auth/change-password", async ([FromBody] ChangePasswordCommand command, IMediator mediator) =>
         {
             await mediator.Send(command);
             return Results.NoContent();
