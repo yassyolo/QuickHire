@@ -73,7 +73,7 @@ export function FAQAndDescription({
   );
 
   return (
-    <div>
+    <div style={{display: "flex", flexDirection: "column", gap: "30px"}}>
       <FormGroup
         id={"description"}
         label={"Description"}
@@ -107,7 +107,7 @@ export function FAQAndDescription({
         <div className="faq-list" aria-label={"faq-list"}>
           <div className="faq-list-title">FAQ's</div>
           {faqs.map((faq, index) => (
-            <div key={index} className="faq-row">
+            <div key={index} className="faq-row" style={{ display: "flex", alignItems: "center", justifyContent: 'center', gap: "80%" }}>
               <FAQ question={faq.question} answer={faq.answer} id={0} showActions={false} />
               <ActionButton
                 text={<i className="bi bi-x" style={{ fontSize: "25px", color: "red" }} />}

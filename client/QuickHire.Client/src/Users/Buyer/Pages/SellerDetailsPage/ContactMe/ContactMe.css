@@ -1,29 +1,33 @@
 .message-seller-modal-wrapper {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-    backdrop-filter: blur(4px);
-    z-index: 5000000;
-  justify-content: center;
-  align-items: center;
+      position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 50000000000000 !important;
+    padding: 1rem;
+    box-sizing: border-box;
+    backdrop-filter: blur(2px);
 }
 
 .message-seller-modal-content {
-  background-color: var(--white-color) !important;
-  border-radius: 10px !important;
-  padding: 20px;
-  max-width: 600px;
-  max-height: 90vh;
-  box-shadow: var(--default-shadow);
-  position: relative;
-  z-index: 1001;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+    background-color: var(--white-color) !important;
+    border-radius: 10px !important;
+    padding: 20px;
+    max-width: 600px;
+    max-height: 90vh;
+    box-shadow: var(--default-shadow);
+    position: relative;
+    z-index: 100000001;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
 }
 
 .message-preview-section {

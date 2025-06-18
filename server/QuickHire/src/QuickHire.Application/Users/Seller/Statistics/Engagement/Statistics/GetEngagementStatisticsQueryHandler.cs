@@ -23,7 +23,7 @@ public class GetEngagementStatisticsQueryHandler: IQueryHandler<GetEngagementSta
 
     public async Task<IEnumerable<EngagementStatisticsRowModel>> Handle( GetEngagementStatisticsQuery request,CancellationToken cancellationToken)
     {
-        /*var (startDate, endDate) = ParseRange(request.Range ?? "last 30 days");
+        var (startDate, endDate) = ParseRange(request.Range ?? "last 30 days");
         var sellerId = await _userService.GetSellerIdByUserIdAsync();
 
         var seller = await _repository.GetByIdAsync<QuickHire.Domain.Users.Seller, int>(sellerId);
@@ -40,17 +40,17 @@ public class GetEngagementStatisticsQueryHandler: IQueryHandler<GetEngagementSta
 
         var favouriteGigs = await _repository.ToListAsync(favouriteGigsQueryable);
 
-        var projectBriefsQueryable = _repository.GetAllReadOnly<SuitableSellerProjectBrief>().Where(x => x.SellerId == sellerId);
-        projectBriefsQueryable = _repository.GetAllIncluding<SuitableSellerProjectBrief>(x => x.ProjectBrief);
+        var projectBriefsQueryable = _repository.GetAllIncluding<SuitableSellerProjectBrief>(x => x.ProjectBrief).Where(x => x.SellerId == sellerId);
         projectBriefsQueryable = projectBriefsQueryable.Where(x => x.ProjectBrief.CreatedAt.Date >= startDate && x.ProjectBrief.CreatedAt.Date <= endDate);
         var briefs = await _repository.ToListAsync(projectBriefsQueryable);
 
-        var conversationsQueryable = _repository.GetAllReadOnly<Conversation>().Where(c => c.SellerId == sellerId);
+        var sellerUserId = await _userService.GetUserIdBySellerIdAsync(sellerId);
+        var conversationsQueryable = _repository.GetAllReadOnly<Conversation>().Where(x => x.ParticipantBId == sellerUserId && x.ParticipantBMode == "seller" || x.ParticipantAId == sellerUserId && x.ParticipantAMode == "seller");
         var conversations = await _repository.ToListAsync(conversationsQueryable);
-        var conversationIds = conversations.Select(c => c.Id).ToList();
+        var conversationIds = conversations.Select(x => x.Id).ToList();
 
         var messagesQueryable = _repository.GetAllReadOnly<Message>()
-            .Where(x => x.ReceiverId == sellerId && conversationIds.Contains(x.ConversationId) && x.SentAt.Date >= startDate && x.SentAt.Date <= endDate);
+            .Where(x => x.ReceiverId == sellerUserId && x.ReceiverRole == "seller" && conversationIds.Contains(x.ConversationId) && x.SentAt.Date >= startDate && x.SentAt.Date <= endDate);
         var allMessages = await _repository.ToListAsync(messagesQueryable);
 
         var firstMessages = allMessages.GroupBy(x => x.ConversationId).Select(x => x.OrderBy(x => x.SentAt).First()).ToList();
@@ -74,57 +74,7 @@ public class GetEngagementStatisticsQueryHandler: IQueryHandler<GetEngagementSta
             };
         });
 
-        return result;*/
-
-        return new List<EngagementStatisticsRowModel>
-        {
-            new EngagementStatisticsRowModel
-            {
-                Date = DateTime.UtcNow.ToString("yyyy-MM-dd"),
-                ProfileViews = 10,
-                GigClicks = 5,
-                MessagesStarted = 2,
-                GigSaves = 3,
-                BriefsReceived = 1
-            },
-            new EngagementStatisticsRowModel
-            {
-                Date = DateTime.UtcNow.AddDays(-1).ToString("yyyy-MM-dd"),
-                ProfileViews = 8,
-                GigClicks = 4,
-                MessagesStarted = 1,
-                GigSaves = 2,
-                BriefsReceived = 0
-            },
-            new EngagementStatisticsRowModel
-            {
-                Date = DateTime.UtcNow.AddDays(-2).ToString("yyyy-MM-dd"),
-                ProfileViews = 12,
-                GigClicks = 6,
-                MessagesStarted = 3,
-                GigSaves = 4,
-                BriefsReceived = 2
-            },
-            new EngagementStatisticsRowModel
-            {
-                Date = DateTime.UtcNow.AddDays(-3).ToString("yyyy-MM-dd"),
-                ProfileViews = 15,
-                GigClicks = 7,
-                MessagesStarted = 4,
-                GigSaves = 5,
-                BriefsReceived = 3
-            },
-            new EngagementStatisticsRowModel
-            {
-                Date = DateTime.UtcNow.AddDays(-4).ToString("yyyy-MM-dd"),
-                ProfileViews = 20,
-                GigClicks = 10,
-                MessagesStarted = 5,
-                GigSaves = 6,
-                BriefsReceived = 4
-            }
-
-        };
+        return result;
     }
 
     private (DateTime Start, DateTime End) ParseRange(string range)

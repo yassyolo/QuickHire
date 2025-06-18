@@ -17,6 +17,20 @@
   gap: 10px;
   padding: 10px;
 }
+.current-order-item{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  margin-bottom: 50px;
+}
+.current-order-item img {
+  width: 50px;
+  height: 50px;
+  border-radius: 5px;
+  object-fit: cover;
+}
 
 .participant-b-info-order{
   margin-left: 20px;

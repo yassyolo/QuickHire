@@ -1,4 +1,4 @@
-import { FormGroup } from "../../../../../Shared/Forms/FormGroup/FormGroup";
+import { useRef } from "react";
 
 interface GalleryUploadProps {
   images: File[];
@@ -13,16 +13,22 @@ export function GalleryUpload({
   images,
   onImagesChange,
   validationErrors = [],
-  tooltipDescription = "Upload up to 5 high-quality images.",
-  showTooltip,
-  onShowTooltip,
+
 }: GalleryUploadProps) {
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    let selectedFiles: File[] = [];
-    if (e.target instanceof HTMLInputElement && e.target.files) {
-      selectedFiles = Array.from(e.target.files);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const MAX_IMAGES = 5;
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      const selectedFiles = Array.from(e.target.files);
+      const totalFiles = [...images, ...selectedFiles].slice(0, MAX_IMAGES);
+      onImagesChange(totalFiles);
+
+      // Reset input so the same file can be re-selected
+      if (inputRef.current) {
+        inputRef.current.value = '';
+      }
     }
-    onImagesChange([...images, ...selectedFiles]);
   };
 
   const handleRemoveImage = (index: number) => {
@@ -32,32 +38,49 @@ export function GalleryUpload({
 
   return (
     <div className="flex flex-col gap-4">
-      <FormGroup
+      
+
+      <input
         id="gallery-upload"
-        label="Gallery Images"
-        tooltipDescription={tooltipDescription}
         type="file"
+        accept="image/*"
         multiple
         onChange={handleFileChange}
-        onShowTooltip={onShowTooltip}
-        showTooltip={showTooltip}
-        error={validationErrors}
+        ref={inputRef}
+        className="block border border-gray-300 rounded px-3 py-2 w-full text-sm file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
       />
+
+      {validationErrors.length > 0 && (
+        <div className="text-red-500 text-sm">{validationErrors[0]}</div>
+      )}
 
       {images.length > 0 && (
         <div className="flex flex-wrap gap-3">
           {images.map((file, index) => {
             const previewUrl = URL.createObjectURL(file);
             return (
-              <div key={index} className="relative group">
+              <div
+                key={index}
+                className="relative"
+                style={{
+                  width: "450px",
+                  height: "300px",
+                  borderRadius: "8px",
+                  overflow: "hidden",
+                  boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+                  border: "1px solid #ccc",
+                  margin: "5px",
+                }}
+              >
                 <img
                   src={previewUrl}
                   alt={`Preview ${index + 1}`}
-                  className="w-32 h-32 object-cover rounded border"
+                  style={{ borderRadius: "8px" , objectFit: "cover" }}
                 />
                 <button
                   onClick={() => handleRemoveImage(index)}
                   className="absolute top-1 right-1 bg-red-500 text-white rounded-full px-2 py-0.5 text-xs opacity-80 hover:opacity-100"
+                  aria-label="Remove image"
                 >
                   ✕
                 </button>

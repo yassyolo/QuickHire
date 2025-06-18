@@ -11,10 +11,9 @@ export interface DeleteGigProps {
 }
 
 export function WithdrawProjectBrief({showModal, onClose, onDeactivateSuccess, id,}: DeleteGigProps) {
-
   const handleContinue = async () => {
     try {
-      const url = `https://localhost:7267/buyer/project-briefs/delete/${id}`;
+      const url = `https://localhost:7267/buyers/project-briefs/delete/${id}`;
 
       await axios.delete(url);
       onDeactivateSuccess(id);

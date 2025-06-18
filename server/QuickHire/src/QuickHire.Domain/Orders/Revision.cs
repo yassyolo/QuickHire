@@ -14,7 +14,7 @@ public class Revision : BaseSoftDeletableEntity<int>
     public DateTime? RejectedAt { get; set; }
     public RevisionStatus Status { get; set; }
     public string? RejectionReason { get; set; } = string.Empty;
-    public IEnumerable<string> AttachmentUrls { get; set; } = new List<string>();
+    public List<string> AttachmentUrls { get; set; } = new();
     public string? SourceFileUrl { get; set; } = string.Empty;
     public int MessageId { get; set; }
     public Message Message { get; set; } = null!;

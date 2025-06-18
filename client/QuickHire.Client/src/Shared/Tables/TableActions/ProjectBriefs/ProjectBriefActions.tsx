@@ -57,8 +57,8 @@ export function ProjectBriefActions ({project, onWithdrawSuccess, onSendCustomOf
             </div>
 
             {onPreviewModalVisibility && <ProjectBriefPreview id={id} onClose={handlePreviewModalVisibility} showBuyerInfo={showNuyerInfo} />}
-            {showWithdrawModal && onWithdrawSuccess && <WithdrawProjectBrief id={id} onClose={handleShowWithdrawModal} onDeactivateSuccess={onWithdrawSuccess} showModal={true} />}
-            {showCustomOfferModal && onSendCustomOfferSuccess && <SendCustomOfferModal id={id} onClose={handleShowCustomOfferModal} onSendCustomOfferSuccess={onSendCustomOfferSuccess} />}
+            {showWithdrawModal && onWithdrawSuccess && <WithdrawProjectBrief id={id} onClose={() => setShowWithdrawModal(false)} onDeactivateSuccess={onWithdrawSuccess} showModal={true} />}
+            {showCustomOfferModal && onSendCustomOfferSuccess && <SendCustomOfferModal id={id} onClose={() => setShowCustomOfferModal(false)} onSendCustomOfferSuccess={onSendCustomOfferSuccess} />}
         </>
     );
 };

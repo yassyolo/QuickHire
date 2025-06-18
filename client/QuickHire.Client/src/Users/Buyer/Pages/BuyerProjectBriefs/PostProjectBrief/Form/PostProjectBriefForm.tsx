@@ -187,12 +187,9 @@ const handleAddProjectBrief = async () => {
 
       content: (
         <div className="wizard-form">
-          <div className="brief-description-title">
-            Answer these questions in order for the seller to understand your requirements.
-          </div>
             <FormGroup
               id={"deliveryDays"}
-              label={"How many days to complete the project?"}
+label={"In how many days should the project be completed?"}
               tooltipDescription={"Specify how long the project should take to complete. Use numbers only."}
               type={"text"}
               value={deliveryDays}

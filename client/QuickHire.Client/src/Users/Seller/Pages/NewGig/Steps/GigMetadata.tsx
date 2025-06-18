@@ -22,9 +22,11 @@ export interface SelectedOption {
 interface ServiceIncludesDropdownProps {
   selectedOptions: SelectedOption[];
   onApply: (selected: SelectedOption[]) => void;
+  subSubCategoryId: number;
 }
 
 export function GigMetadata({
+  subSubCategoryId,
   selectedOptions,
   onApply,
 }: ServiceIncludesDropdownProps) {
@@ -34,10 +36,12 @@ export function GigMetadata({
   useEffect(() => {
     const fetchFilters = async () => {
       try {
-        const response = await axios.get<GigFilter[]>(
-          "https://localhost:7267/gig-filters/populate"
-        );
-        setFilters(response.data);
+        const params = new URLSearchParams();
+    params.append("Id", subSubCategoryId.toString());
+    const url = `https://localhost:7267/gig-filters/populate?${params.toString()}`;
+
+    const response = await axios.get<GigFilter[]>(url);
+    setFilters(response.data);
       } catch (error) {
         console.error("Error fetching gig filters:", error);
       }
@@ -81,9 +85,10 @@ export function GigMetadata({
   };
 
   return (
+
     <Dropdown onClearAll={handleClearAll} onApply={handleApply}>
       {filters.map((filter) => (
-        <div key={filter.id} className="filter-item">
+        <div key={filter.id} className="filter-item" style={{width: '500px'}}>
           <div className="filter-title">{filter.name}</div>
           <div className="checkbox-list">
             {filter.options.map((option) => (
@@ -96,7 +101,10 @@ export function GigMetadata({
               />
             ))}
           </div>
-          <div className="divider" />
+          {filter.options.length > 0 && (
+  <div className="divider" />
+)}
+
         </div>
       ))}
     </Dropdown>

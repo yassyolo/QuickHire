@@ -43,7 +43,7 @@ public class GetGigsForUserQueryHandler : IQueryHandler<GetGigsForUserQuery, Pag
             .Select(x => new SearchGigsForAdminModel
             {
                 Id = x.Id,
-                CreatedOn = x.CreatedAt.ToString("yyyy-MM-dd"),
+                CreatedOn = x.CreatedAt.ToString("dd MMM, yyyy"),
                 Service = x.Title,
                 Orders = x.Orders.Count(),
                 Revenue = x.Orders.Sum(x => x.TotalPrice),

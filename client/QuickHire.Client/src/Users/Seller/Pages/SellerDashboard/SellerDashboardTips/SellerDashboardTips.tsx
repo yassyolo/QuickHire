@@ -15,16 +15,15 @@ interface Tip {
 export function SellerDashboardTips({ tips }: SellerDashboardTipProps) {
   const [currentTipIndex, setCurrentTipIndex] = useState(0);
 
-  const handlePageChange = (page: number) => {
-    setCurrentTipIndex(page);
-  };
-
   const currentTip = tips[currentTipIndex];
 
   return (
     <div className="seller-dashboard-tips-wrapper">
-              <NoPagesPagination totalPages={tips.length} currentPage={currentTipIndex}  onPageChange={handlePageChange} />
-      <div className="seller-dashboard-tips">
+<NoPagesPagination 
+  totalPages={tips.length} 
+  currentPage={currentTipIndex + 1} 
+  onPageChange={(page) => setCurrentTipIndex(page - 1)} 
+/>      <div className="seller-dashboard-tips">
         <SellerDashboardTipItem tip={currentTip.tip} rightAligned={currentTip.rightAligned} photoUrl={currentTip.photoUrl} />
       </div>
     </div>

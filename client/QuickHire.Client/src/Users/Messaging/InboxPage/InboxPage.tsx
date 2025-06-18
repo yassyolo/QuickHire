@@ -131,7 +131,7 @@ export function InboxPage() {
 
   return (
     <div className="inbox-page">
-      <Breadcrumb items={[ { label: <i className="bi bi-house-door" />, to: `/${auth?.user?.mode}/dashboard` }, { label: "Inbox messages" }, ]}/>
+      <Breadcrumb items={[ { label: <i className="bi bi-house-door" />, to: `/${auth?.user?.mode}` }, { label: "Inbox messages" }, ]}/>
 
       <div className="inbox-messages-all-preview d-flex flex-row">
 

@@ -192,8 +192,14 @@
 .view-order-details-row-button{
     background-color:transparent !important;
     color: var(--fiverr-green-color) !important;
-
-    width: 150px;
+    width: 90px !important;
+    height: 40px !important;
+    padding: 8px 15px !important;
+    margin-top: 20px !important;
+    justify-content: center;
+    margin-left: 20px;
+    align-items: center;
+    display: flex;
     border-radius: 5px !important;
     font-size: 14px !important;
     box-shadow: none !important;

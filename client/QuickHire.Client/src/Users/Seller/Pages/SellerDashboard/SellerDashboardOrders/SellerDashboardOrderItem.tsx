@@ -29,10 +29,6 @@ export function SellerDashboardOrderItem({ item }: SellerDashboardOrderItemProps
                     <div className="seller-dashboard-order-details-label">Price:</div>
                     <div className="seller-dashboard-order-details-item-value">${item.price}</div>
                 </div>
-                <div className="seller-dashboard-order-details-item d-flex flex-column">
-                    <div className="seller-dashboard-order-details-label">Status</div>
-                    <div className="seller-dashboard-order-details-item-value">{item.status}</div>
-                </div>
             </div>
 
             <ActionButton text={"View"} onClick={handleOrderNavigate} className={"view-order-details-row-button"} ariaLabel={"View-order-details"}></ActionButton>

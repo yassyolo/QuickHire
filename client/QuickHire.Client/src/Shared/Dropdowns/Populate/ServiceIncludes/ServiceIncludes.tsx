@@ -29,18 +29,22 @@ export function ServiceIncludesDropdown({ selectedOptions, onApply, subSubCatego
   const [filters, setFilters] = useState<GigFilter[]>([]);
   const [internalSelected, setInternalSelected] = useState<SelectedOption[]>(selectedOptions);
 
-  useEffect(() => {
+ useEffect(() => {
     const fetchFilters = async () => {
       try {
-        if (subSubCategoryId) {
-          const response = await axios.get<GigFilter[]>(`https://localhost:7267/gig-filters/populate/${subSubCategoryId}`);
-          setFilters(response.data);
-          return;
-        }
+        const params = new URLSearchParams();
+    if (subSubCategoryId !== undefined) {
+      params.append("Id", subSubCategoryId.toString());
+    }
+    const url = `https://localhost:7267/gig-filters/populate?${params.toString()}`;
+
+    const response = await axios.get<GigFilter[]>(url);
+    setFilters(response.data);
       } catch (error) {
-        console.error("Error fetching filters:", error);
+        console.error("Error fetching gig filters:", error);
       }
     };
+
     fetchFilters();
   }, []);
 

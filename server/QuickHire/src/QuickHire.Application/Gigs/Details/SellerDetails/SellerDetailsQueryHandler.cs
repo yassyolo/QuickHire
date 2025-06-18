@@ -86,7 +86,7 @@ public class SellerDetailsQueryHandler : IQueryHandler<SellerDetailsQuery, GigSe
             MemberSince = sellerDetailsForBuyer.MemberSince,
             TotoalReviews = totalReviews,
             Id = gig.SellerId,
-            LastDelivery = ordersList.Any() ? ordersList.Max(x => x.CreatedAt).ToString("yyyy-MM-dd") : "N/A",
+            LastDelivery = ordersList.Any() ? ordersList.Max(x => x.CreatedAt).ToString("dd MMM, yyyy") : "N/A",
             Reviews = reviewModels.ToList(),
         }; 
         

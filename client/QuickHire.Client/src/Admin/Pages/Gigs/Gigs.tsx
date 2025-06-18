@@ -48,9 +48,14 @@ export function Gigs (){
     const handlePageChange = (page: number) => setCurrentPage(page);
 
     useEffect(() => {
+        setModerationStatusId(1);
+    }, []);
+
+    useEffect(() => {
         setCurrentPage(1);
+        setModerationStatusId(1);
     }
-    , [id, keyword, subCategoryId, subSubCategoryId, moderationStatusId]);
+    , [id, keyword, subCategoryId, subSubCategoryId]);
 
     const handleSubCategoryIdSelect = (id: number) => setSubCategoryId(id);
     const handleSubSubCategoryIdSelect = (id: number) => setSubSubCategoryId(id);
@@ -88,10 +93,9 @@ export function Gigs (){
     const handleOnDeactivateSuccess = () => {
         setKeyword('');
         setId(undefined);
-        setCurrentPage(1);
         setSubCategoryId(0);
         setSubSubCategoryId(0);
-        setModerationStatusId(0);
+        setModerationStatusId(3);
         fetchGigs();
     }
 
@@ -107,7 +111,8 @@ export function Gigs (){
                     <DataTable data={gigs} columns={["id", "createdOn", "service", "orders", "revenue", "clicks", "avgReview"]} headers={tableHeaders} renderActions={(row: GigRow) => (<GigActions gig={row} onDeactivateSuccess={handleOnDeactivateSuccess} />)} />
                 </div></>
             )}
-        </div><div className="pagination-container">
+        </div>            <div className="pagination-container" style={{marginBottom: '30px', marginTop: '50px'}}>
+
                 <Pagination totalPages={totalPages} currentPage={currentPage} onPageChange={handlePageChange}></Pagination>
             </div></>
 );

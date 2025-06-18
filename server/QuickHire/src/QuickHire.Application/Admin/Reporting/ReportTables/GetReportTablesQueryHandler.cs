@@ -41,7 +41,7 @@ public class GetReportTablesQueryHandler : IQueryHandler<GetReportTablesQuery, M
             Id = x.Id,
             CreatedBy = reportedByUserInfo,
             Reason = x.Reason,
-            CreatedOn = x.CreatedAt.ToString("yyyy-MM-dd"),
+            CreatedOn = x.CreatedAt.ToString("dd MMM, yyyy"),
         };
         }));
 

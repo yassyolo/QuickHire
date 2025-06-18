@@ -65,11 +65,11 @@ import axios from "../../../../../axiosInstance";
                         <div className="project-details-item-value">{projectBrief.createdAt}</div>
                     </div>
                     <div className="d-flex flex-column project-details-item border">
-                        <div className="project-details-item-label">Delivery time</div>
+                        <div className="project-details-item-label">Delivery time (days)</div>
                         <div className="project-details-item-value">{projectBrief.deliveryTimeInDays}</div>
                     </div>
                     <div className="d-flex flex-column project-details-item border">
-                        <div className="project-details-item-label">Budget</div>
+                        <div className="project-details-item-label">Budget($)</div>
                         <div className="project-details-item-value">{projectBrief.budget}</div>
                     </div>
                     <div className="d-flex flex-column project-details-item">

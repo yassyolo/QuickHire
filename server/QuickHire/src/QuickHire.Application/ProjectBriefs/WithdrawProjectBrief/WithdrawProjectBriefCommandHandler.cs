@@ -20,14 +20,17 @@ public class WithdrawProjectBriefCommandHandler : ICommandHandler<WithdrawProjec
 
     public async Task<Unit> Handle(WithdrawProjectBriefCommand request, CancellationToken cancellationToken)
     {
-        var projectBriefQueryable = _repository.GetAllIncluding<Domain.ProjectBriefs.ProjectBrief>(x => x.CustomOffers!).Where(x => x.Id == request.Id);
+        var projectBriefQueryable = _repository.GetAllIncluding<Domain.ProjectBriefs.ProjectBrief>(x => x.CustomOffers!)
+                                               .Where(x => x.Id == request.Id);
         var projectBrief = await _repository.FirstOrDefaultAsync(projectBriefQueryable);
         if (projectBrief == null)
         {
             throw new NotFoundException(nameof(Domain.ProjectBriefs.ProjectBrief), request.Id);
         }
 
-        bool isAssociatedWithOrder = projectBrief.Status == ProjectBriefStatus.OrderPlaced || projectBrief.CustomOffers!.Any(x => x.Status == Domain.CustomOffers.Enums.CustomOfferStatus.Accepted && x.Order != null && x.Order.Status == Domain.Orders.Enums.OrderStatus.InProgress);
+        bool isAssociatedWithOrder = projectBrief.Status == ProjectBriefStatus.OrderPlaced ||
+            projectBrief.CustomOffers!.Any(x => x.Status == Domain.CustomOffers.Enums.CustomOfferStatus.Accepted &&  x.Order != null &&
+                                               x.Order.Status == Domain.Orders.Enums.OrderStatus.InProgress);
 
         if (isAssociatedWithOrder)
         {
@@ -38,18 +41,19 @@ public class WithdrawProjectBriefCommandHandler : ICommandHandler<WithdrawProjec
         {
             var suitableSellerProjectBriefQueryable = _repository.GetAllIncluding<Domain.ProjectBriefs.SuitableSellerProjectBrief>(x => x.ProjectBrief).Where(x => x.ProjectBrief.Id == request.Id);
             var suitableSellerProjectBrief = await _repository.ToListAsync(suitableSellerProjectBriefQueryable);
+
             foreach (var suitableSeller in suitableSellerProjectBrief)
             {
                 suitableSeller.ProjectBrief.IsDeleted = true;
                 suitableSeller.ProjectBrief.DeletedAt = DateTime.Now;
-
                 await _repository.UpdateAsync(suitableSeller.ProjectBrief);
             }
 
             projectBrief.IsDeleted = true;
             projectBrief.DeletedAt = DateTime.Now;
-
             await _repository.UpdateAsync(projectBrief);
+
+            await _repository.SaveChangesAsync();  
         }
         catch (Exception ex)
         {
@@ -57,5 +61,6 @@ public class WithdrawProjectBriefCommandHandler : ICommandHandler<WithdrawProjec
         }
         return Unit.Value;
     }
+
 }
 

@@ -1,18 +1,28 @@
 import { useState } from "react";
 import { ActionButton } from "../../../Buttons/ActionButton/ActionButton";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../../AuthContext";
 interface OrderActionsProps {
     order: { id: number };
 }
 
 export function OrderActions ({order}: OrderActionsProps) {
     const [showActionsDropdown, setShowActionsDropdown] = useState(false); 
+    const {user} = useAuth();
+
     const {id} = order;
     const navigate = useNavigate();
 
     const handlePreviewModalVisibility = () => {
+        if(user?.mode === "buyer") {
+            navigate(`/buyer/orders/${id}`);
+            return;
+        }
+        if(user?.mode === "seller") {
+            navigate(`/seller/orders/${id}`);
+            return;
+        }
         setShowActionsDropdown(false);
-        navigate(   `/seller/orders/${id}`);
     };
 
     const handleActionsDropdownVisibility = () => setShowActionsDropdown(!showActionsDropdown);

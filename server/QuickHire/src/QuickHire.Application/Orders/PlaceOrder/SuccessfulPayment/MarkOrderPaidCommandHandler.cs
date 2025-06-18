@@ -39,7 +39,7 @@ public class MarkOrderPaidCommandHandler : ICommandHandler<MarkOrderPaidCommand,
                 throw new NotFoundException(nameof(Domain.Orders.Order), request.OrderId);
             }
 
-            order.Status = Domain.Orders.Enums.OrderStatus.Paid;
+            order.Status = Domain.Orders.Enums.OrderStatus.InProgress;
 
             if (order.CustomeOfferId.HasValue)
             {
@@ -76,6 +76,9 @@ public class MarkOrderPaidCommandHandler : ICommandHandler<MarkOrderPaidCommand,
 
             await _repository.AddAsync(newConversation);
             await _repository.SaveChangesAsync();
+
+            order.ConversationId = newConversation.Id;
+            await _repository.UpdateAsync(order);
 
             var subtotal = order.TotalPrice;
             var taxRate = 0.15m;
@@ -121,7 +124,7 @@ public class MarkOrderPaidCommandHandler : ICommandHandler<MarkOrderPaidCommand,
                 BuyerName = buyerForInvoice.name,
                 BuyerAddress = buyerForInvoice.address,
                 BuyerCompanyName = buyerForInvoice.companyName,
-                CreatedAt = invoice.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss"),
+                CreatedAt = invoice.CreatedAt.ToString("dd MMM, yyyy"),
                 OrderNumber = order.OrderNumber,
                 Items = new List<InvoiceItemModel> { serviceFeeItem, orderItem },
                 TotalAmount = totalAmount.ToString("F2"),

@@ -16,15 +16,15 @@ interface ReviewsForUserProps {
 export function ReviewsForUser({ reviewsList }: ReviewsForUserProps) {
     const [currentTipIndex, setCurrentTipIndex] = useState(0);
 
-    const handlePageChange = (page: number) => {
-        setCurrentTipIndex(page);
-    }
-
   return(
     <div className="reviews-for-user-wrapper d-flex flex-column">
         <div className="reviews-for-user-header">What people loved about this freelancer</div>
         <div className="no-pages-wrapper">        
-            <NoPagesPagination totalPages={reviewsList.length} currentPage={currentTipIndex}  onPageChange={handlePageChange} />
+            <NoPagesPagination 
+  totalPages={reviewsList.length} 
+  currentPage={currentTipIndex + 1} 
+  onPageChange={(page) => setCurrentTipIndex(page - 1)} 
+/> 
         </div>
         <div className="reviews-for-user-list">
             {reviewsList.map((review, index) => (

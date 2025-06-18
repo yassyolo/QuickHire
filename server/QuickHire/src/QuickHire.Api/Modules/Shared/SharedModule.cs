@@ -73,7 +73,7 @@ public class SharedModule : CarterModule
         #endregion
 
         #region Filters
-        app.MapGet("gig-filters/populate/{Id}", async ([AsParameters] ServiceIncludesFilterQuery query, IMediator mediator) =>
+        app.MapGet("/gig-filters/populate", async ([AsParameters] ServiceIncludesFilterQuery query, IMediator mediator) =>
         {
             var result = await mediator.Send(query);
             return Results.Ok(

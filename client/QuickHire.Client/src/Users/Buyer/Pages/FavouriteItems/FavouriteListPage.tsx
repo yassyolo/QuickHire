@@ -49,9 +49,6 @@ import axios from "../../../../axiosInstance";
                     description: description
                 });
             }
-
-            setName("");
-            setDescription("");
         }
         const onDeactivateFavouriteList = () => {
             navigate("/buyer/favourite-gigs");

@@ -30,6 +30,7 @@ export function BuyerNavbar() {
             </div>
 
             <div className="top-seller-navbar-right">
+                <button className="order-button" style={{padding: '10px 20px', border:'1px solid #ccc !important', color: '#ddd', backgroundColor: 'white !important', boxShadow: 'none !important', transform: 'none'}}  onClick={() => navigate('/buyer/orders')}>Orders</button>
                 <IconButton buttonInfo="Favourites" icon={<i className="fa-regular fa-heart"></i>} onClick={handleFavouritesIconClick} className={"inbox-button"} ariaLabel={"FavoritesButton"}></IconButton>
 
                 <NotificationButtonDropdown buyer={true}/>

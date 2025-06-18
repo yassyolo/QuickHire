@@ -19,7 +19,7 @@ public class GetGigPerformanceCardsQueryHandler : IQueryHandler<GetGigPerformanc
 
     public async Task<IEnumerable<CardItemModel>> Handle(GetGigPerformanceCardsQuery request, CancellationToken cancellationToken)
     {
-       /* var sellerId = await _userService.GetSellerIdByUserIdAsync();
+        var sellerId = await _userService.GetSellerIdByUserIdAsync();
         var gigsQueryable = _repository.GetAllReadOnly<QuickHire.Domain.Gigs.Gig>().Where(x => x.SellerId == sellerId);
         var gigList = await _repository.ToListAsync<QuickHire.Domain.Gigs.Gig>(gigsQueryable);
         var gigIds = gigList.Select(x => x.Id).ToList();
@@ -33,13 +33,12 @@ public class GetGigPerformanceCardsQueryHandler : IQueryHandler<GetGigPerformanc
         var favouriteGigs = await _repository.ToListAsync<QuickHire.Domain.Users.FavouriteGig>(favouriteGigsQueryable);
 
         var gigsSold = orders.Count();
-        var reviewsQueryable = _repository.GetAllReadOnly<QuickHire.Domain.Orders.Review>();
-        reviewsQueryable = _repository.GetAllIncluding<QuickHire.Domain.Orders.Review>(x => x.Order);
+        var reviewsQueryable = _repository.GetAllIncluding<QuickHire.Domain.Orders.Review>(x => x.Order);
         reviewsQueryable = reviewsQueryable.Where(x => gigIds.Contains(x.Order.GigId.Value));
         var reviews = await _repository.ToListAsync<QuickHire.Domain.Orders.Review>(reviewsQueryable);
 
         var browsingHistoryQueryable = _repository.GetAllReadOnly<QuickHire.Domain.Users.BrowsingHistory>();
-        browsingHistoryQueryable = browsingHistoryQueryable.Where(x => gigIds.Contains(x.GigId));
+        browsingHistoryQueryable = browsingHistoryQueryable!.Where(x => gigIds.Contains(x.GigId!.Value));
         var browsingHistory = await _repository.ToListAsync<QuickHire.Domain.Users.BrowsingHistory>(browsingHistoryQueryable);
         var repeatViewsCount = browsingHistory
             .GroupBy(x => x.GigId)
@@ -71,30 +70,6 @@ public class GetGigPerformanceCardsQueryHandler : IQueryHandler<GetGigPerformanc
             {
                 Title = "Reviews count",
                 Value = reviews.Count().ToString()
-            }
-        };*/
-
-        return new List<CardItemModel>
-        {
-            new CardItemModel
-            {
-                Title = "Gigs sold",
-                Value = "350"
-            },
-            new CardItemModel
-            {
-                Title = "Gig likes",
-                Value = "1200"
-            },
-            new CardItemModel
-            {
-                Title = "Repeat views",
-                Value = "800"
-            },
-            new CardItemModel
-            {
-                Title = "Reviews count",
-                Value = "320"
             }
         };
     }

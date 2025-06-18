@@ -18,7 +18,7 @@ const tableHeaders = {
     buyerUsername: "Buyer",
     description: "Description",
     deliveryTimeInDays: "Delivery Time (days)",
-    budget: "Budget",
+    budget: "Budget ($)",
 }
 
 

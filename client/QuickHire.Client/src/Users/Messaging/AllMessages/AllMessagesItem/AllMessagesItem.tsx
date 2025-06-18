@@ -9,19 +9,22 @@ interface AllMessagesItemProps {
   onMessageClick: (messageId: number) => void;
 }
 
-export function AllMessagesItemComponent({ message, setSelectedMessageId, onMessageClick }: AllMessagesItemProps) {
+export function AllMessagesItemComponent({ message, setSelectedMessageId, onMessageClick, onStarSuccess }: AllMessagesItemProps) {
   const handleToggleConversationLike = async () => {
-    //todo
-    try {
-      const url = `https://localhost:7267/messages/star/${message.id}`;
-      const response = await axios.post(url);
-      if (response.status === 200) {
-        console.log("Message like toggled successfully");
-      }
-    } catch (error) {
-      console.error("Error toggling message like:", error);
+  try {
+    const url = `https://localhost:7267/messages/star?messageId=${message.id}`;
+    const response = await axios.post(url); // no body
+
+    if (response.status === 200) {
+        if (onStarSuccess) {
+          onStarSuccess(message.id); 
+        }
     }
-  };
+  } catch (error) {
+    console.error("Error toggling conversation like:", error);
+  }
+};
+
 
     const handleMessageClick = () => {
         setSelectedMessageId(message.id);

@@ -116,7 +116,9 @@ export function SubCategories (){
                             <SubCategoryActions category={row} onEditSuccess={handleEditSuccess} onDeactivateSuccess={handleDeactivateSuccess} details={{ name: row.name, imageUrl: row.imageUrl }}></SubCategoryActions>)} />
                 </div>
             )}
-        </div><div className="pagination-container">
+        </div>
+                    <div className="pagination-container" style={{marginBottom: '30px', marginTop: '50px'}}>
+
                 <Pagination totalPages={totalPages} currentPage={currentPage} onPageChange={handlePageChange}></Pagination>
             </div></>
 );

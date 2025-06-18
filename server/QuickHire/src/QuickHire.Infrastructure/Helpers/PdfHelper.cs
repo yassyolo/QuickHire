@@ -67,7 +67,7 @@ internal class PdfHelper : IPdfHelper
 
             var issueInfo = new Paragraph()
                 .Add(new Text("Issued on:\n").SetFont(boldFont))
-                .Add($"{invoice.CreatedAt:yyyy-MM-dd}\n\n")
+                .Add($"{invoice.CreatedAt:dd MMM, yyyy}\n\n")
                 .Add(new Text("Order №:\n").SetFont(boldFont))
                 .Add($"{invoice.OrderNumber}")
                 .SetFont(regularFont);

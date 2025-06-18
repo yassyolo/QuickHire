@@ -97,7 +97,7 @@ export function SellerGigs (){
               {loading ? (<div className="loading">Loading...</div>
               ) : (
                 <div style={{marginTop: '10px'}}>
-                                <div className="page-title-button">
+                                <div className="pag-title-button">
 
                     <TitleFilterSelector selectedId={moderationStatusId} setSelectedId={handleSelectedModerationStatusId} endpoint="https://localhost:7267/filters/moderation-status" /><div className="categories-list">
                         <div className="create-gig-button-wrapper">
@@ -105,7 +105,9 @@ export function SellerGigs (){
                 </div>
                             </div>
 
-                <DataTable data={gigs} columns={["id", "title", "clicks", "likes", "orders", "revenue"]} headers={tableHeaders} renderActions={(row: GigRow) => (<SellerGigActions gig={row} paused={moderationStatusId === 4} onActivateGigSuccess={handleOnActivateGigSuccess} onDeactivateGigSuccess={handleOnPauseGigSuccess} onDeleteSuccess={onDeleteSuccess} />)} />
+<div style={{marginBottom: '20px', width: '100%'}}>                
+    <DataTable data={gigs} columns={["id", "title", "clicks", "likes", "orders", "revenue"]} headers={tableHeaders} renderActions={(row: GigRow) => (<SellerGigActions gig={row} paused={moderationStatusId === 4} onActivateGigSuccess={handleOnActivateGigSuccess} onDeactivateGigSuccess={handleOnPauseGigSuccess} onDeleteSuccess={onDeleteSuccess} />)} />
+</div>
               </div></div>
               )}
             </div>

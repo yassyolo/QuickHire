@@ -25,7 +25,6 @@ export function AuthentionCardChild() {
     const [searchParams] = useSearchParams();
     const redirectTo = searchParams.get("redirectTo");
 
-
     const { login } = useAuth();
 
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -90,29 +89,38 @@ export function AuthentionCardChild() {
         }
     };
 
-    const handleLogin = async () => {
-        setValidationErrors({});
-        try {
-            await login(email, password); 
-            setShowSignInModal(false);
-            setEmail("");
-            setPassword("");
-            setUsername("");
-            setShowRegisterOrSignInModal(false);
-            if (redirectTo) {
-                navigate(redirectTo);
-            }
-        } catch (error: unknown) {
-            if (axios.isAxiosError(error) && error.response?.status === 400) {
-                setValidationErrors({
-                    Email: error.response.data.errors?.Email || [],
-                    Password: error.response.data.errors?.Password || [],
-                });
-            } else {
-                console.error("Error during login:", error);
-            }
-        }
-    };
+   const handleLogin = async () => {
+  setValidationErrors({});
+  try {
+    await login(email, password); 
+    setShowSignInModal(false);
+    setPassword("");
+    setShowRegisterOrSignInModal(false);
+    console.log("email", email);
+    if (email.includes("admin")){
+        navigate("/admin/main-categories");
+        return;
+    }
+        setUsername("");
+        setEmail("");
+
+    if (redirectTo) {
+      navigate(redirectTo);
+    } else {    
+        navigate("/buyer");
+    }
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error) && error.response?.status === 400) {
+      setValidationErrors({
+        Email: error.response.data.errors?.Email || [],
+        Password: error.response.data.errors?.Password || [],
+      });
+    } else {
+      console.error("Error during login:", error);
+    }
+  }
+};
+
 
     const handleContinueButtonDisability =
         !email || !password || Object.keys(validationErrors).length > 0;
@@ -275,3 +283,5 @@ export function AuthentionCardChild() {
         </AuthenticationCard>
     );
 }
+
+

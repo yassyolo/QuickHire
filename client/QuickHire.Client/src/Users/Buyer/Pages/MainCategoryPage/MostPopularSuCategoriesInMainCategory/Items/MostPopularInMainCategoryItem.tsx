@@ -10,7 +10,7 @@ interface MostPopularInMainCategoryProps {
 export function MostPopularInMainCategoryItem({ id, name, imageUrl }: MostPopularInMainCategoryProps) {
    const navigate = useNavigate();
     const handleClick = () => {
-        navigate(`/buyers/main-categories/${id}`);
+        navigate(`/buyer/sub-categories/${id}`);
     };
 
     return (

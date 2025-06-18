@@ -1,4 +1,4 @@
-import { ChangeEvent } from "react";
+import { ChangeEvent, RefObject } from "react";
 import { FormLabel } from "../FormLabel/FormLabel";
 
 interface FormGroupProps {
@@ -13,7 +13,8 @@ interface FormGroupProps {
   onShowTooltip?: () => void;
   showTooltip?: boolean;
   error?: string[];
-  multiple?: boolean; 
+  multiple?: boolean;
+  inputRef?: RefObject<HTMLInputElement>; // ✅ NEW
 }
 
 export function FormGroup({
@@ -28,7 +29,8 @@ export function FormGroup({
   onShowTooltip,
   showTooltip,
   error,
-  multiple, 
+  multiple,
+  inputRef, // ✅ NEW
 }: FormGroupProps) {
   function formatDateToYYYYMMDD(dateString: string): string {
     if (!dateString) return "";
@@ -67,11 +69,12 @@ export function FormGroup({
         <input
           id={id}
           type="file"
+          ref={inputRef} // ✅ NEW
           className={`form-control ${error && error.length > 0 ? "error" : ""}`}
           accept="image/*"
           onChange={onChange}
           aria-describedby={ariaDescribedBy}
-          multiple={multiple} 
+          multiple={multiple}
         />
       )}
 

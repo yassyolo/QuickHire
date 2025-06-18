@@ -53,7 +53,7 @@ export function DeleteGigModal({showModal, onClose, onDeactivateSuccess, id,}: D
   <>
     {showModal && (
       (affectedItems?.length ?? 0) > 0 ? (
-        <DeactivateModalNotPossible id={id} onClose={onClose} affectedItems={"Filters"}>
+        <DeactivateModalNotPossible id={id} onClose={onClose} affectedItems={"Order(s) in queue"}>
             {affectedItems.map((item, index) => (
                 <li key={index}>{item}</li>
             ))}

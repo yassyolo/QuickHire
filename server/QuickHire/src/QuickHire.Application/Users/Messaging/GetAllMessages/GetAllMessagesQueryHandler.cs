@@ -24,7 +24,7 @@ public class GetAllMessagesQueryHandler : IQueryHandler<GetAllMessagesQuery, Lis
     {
         var currentUserIdAndMode = _userService.GetCurrentUserIdAndMode();
 
-        var conversationsQueryable = _repository.GetAllIncluding<Conversation>(x => x.Messages!).Where(x => (x.ParticipantAId == currentUserIdAndMode.UserId && x.ParticipantAMode == currentUserIdAndMode.Mode) || (x.ParticipantBId == currentUserIdAndMode.UserId && x.ParticipantBMode == currentUserIdAndMode.Mode));
+        var conversationsQueryable = _repository.GetAllIncluding<Conversation>(x => x.Messages!, x=> x.Order).Where(x => (x.ParticipantAId == currentUserIdAndMode.UserId && x.ParticipantAMode == currentUserIdAndMode.Mode) || (x.ParticipantBId == currentUserIdAndMode.UserId && x.ParticipantBMode == currentUserIdAndMode.Mode) && x.Order == null);
 
         if (request.IsStarred.HasValue && request.IsStarred == true)
         {

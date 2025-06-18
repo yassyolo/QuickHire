@@ -7,6 +7,6 @@ public class BuyerProjectBriefModel
     public string DocumentNumber { get; set; } = null!;
     public int SellersReached { get; set; } 
     public int TotalOffers { get; set; }
-    public bool Order { get; set; }
+    public string Order { get; set; } = null!;
     public string Status { get; set; } = null!;
 }

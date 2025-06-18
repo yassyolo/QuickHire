@@ -320,7 +320,7 @@ public class GigsModule : CarterModule
             .WithTags("FavouriteGigs")
             .WithDescription("Remove a gig list for a buyer");
 
-        app.MapPost("/buyers/favourite-gigs/{id}", async([AsParameters] EditFavouriteListCommand command, IMediator mediator) =>
+        app.MapPut("/buyers/favourite-gigs", async([FromBody] EditFavouriteListCommand command, IMediator mediator) =>
         {
             await mediator.Send(command);
             return Results.NoContent();
@@ -384,21 +384,18 @@ public class GigsModule : CarterModule
             var result = await mediator.Send(query);
             return Results.Ok(result);
         })
-            .WithName("GigDetails")
-            .WithTags("Gigs")
-            .WithDescription("Search gigs with pagination and filtering options");
+        .WithName("GigDetails")
+        .WithTags("Gigs")
+        .WithDescription("Search gigs with pagination and filtering options");
 
-        //sub-sub-category/gigs
         app.MapPost("/sub-sub-category/gigs", async ([FromBody] GigsInSubSubCategoryQuery query, IMediator mediator) =>
         {
             var result = await mediator.Send(query);
             return Results.Ok(result);
         })
-.WithName("GetGigsInSubSubCategory")
-.WithTags("Gigs")
-.WithDescription("Get gigs in a sub-sub-category with pagination and filtering options");
-
-
+         .WithName("GetGigsInSubSubCategory")
+         .WithTags("Gigs")
+         .WithDescription("Get gigs in a sub-sub-category with pagination and filtering options");
 
     }
 }

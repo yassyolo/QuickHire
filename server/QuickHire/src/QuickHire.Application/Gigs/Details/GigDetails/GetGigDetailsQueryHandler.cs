@@ -112,10 +112,8 @@ public class GetGigDetailsQueryHandler : IQueryHandler<GetGigDetailsQuery, GigDe
 
         if (request.Preview)
         {
-            var buyerId = await _userService.GetBuyerIdByUserIdAsync();
             model.OrdersInQueue = gig.Orders.Count();
             model.NumberOfLikes = favourites.Count();
-            model.Liked = favourites.Any(x => x.BuyerId == buyerId);
             model.SellerId = gig.Seller.Id;
         }
 

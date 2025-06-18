@@ -15,11 +15,6 @@ public class OrderStatusQueryHandler : IQueryHandler<OrderStatusQuery, FilterIte
        {
             new ()
             {
-                Id = (int) OrderStatus.Paid,
-                Name = SplitPascalCase(OrderStatus.Paid.ToString())
-            },
-            new ()
-            {
             Id = (int) OrderStatus.InProgress,
             Name = SplitPascalCase(OrderStatus.InProgress.ToString())
             },

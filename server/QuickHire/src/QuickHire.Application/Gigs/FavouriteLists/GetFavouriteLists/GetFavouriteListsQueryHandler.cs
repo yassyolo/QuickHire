@@ -35,7 +35,7 @@ public class GetFavouriteListsQueryHandler : IQueryHandler<GetFavouriteListsQuer
             {
                 Id = x.Id,
                 Name = x.Name,
-                Description = x.Description,
+                Description = x.Description!,
                 GigCount = x.FavouriteGigs?.Count() ?? 0,
                 ImageUrls = images
             };

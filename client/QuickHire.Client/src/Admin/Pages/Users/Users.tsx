@@ -45,9 +45,12 @@ export function Users (){
 
     useEffect(() => {
         setModerationStatusId(1);
+    }, []);
+
+    useEffect(() => {
         setCurrentPage(1);
     }
-    , [id, keyword, moderationStatusId, selectedRoleId]);
+    , [id, keyword, selectedRoleId]);
 
     const handleSelectedModerationStatusId = (id: number) => setModerationStatusId(id);
     const handleSelectedRoleId = (id: string) => setSelectedRoleId(id);
@@ -56,6 +59,7 @@ export function Users (){
         setKeyword('');
         setId(undefined);
         setCurrentPage(1);
+        setModerationStatusId(3);
         fetchGigs();
     }
 
@@ -100,7 +104,9 @@ export function Users (){
                     <TitleFilterSelector selectedId={moderationStatusId} setSelectedId={handleSelectedModerationStatusId} endpoint="https://localhost:7267/filters/moderation-status" />
                     <DataTable data={gigs} columns={["id", "joined", "username", "roles", "status"]} headers={tableHeaders} renderActions={(row: UserRow) => (<UserActions user={row} onDeactivateSuccess={hanldeDeactivateSuccess} />)} /></>
             )}
-        </div><div className="pagination-container">
+        </div>
+                    <div className="pagination-container" style={{marginBottom: '30px', marginTop: '50px'}}>
+
                 <Pagination totalPages={totalPages} currentPage={currentPage} onPageChange={handlePageChange}></Pagination>
             </div></>
 );

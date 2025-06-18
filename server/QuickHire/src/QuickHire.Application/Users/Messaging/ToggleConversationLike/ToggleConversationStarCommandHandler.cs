@@ -24,29 +24,52 @@ public class ToggleConversationStarCommandHandler : ICommandHandler<ToggleConver
     {
         var currentUserIdAndMode = _userService.GetCurrentUserIdAndMode();
 
-        var conversationsQueryable = _repository.GetAllIncluding<Conversation>(x => x.Messages)
-            .Where(x => (x.ParticipantAId == currentUserIdAndMode.UserId && x.ParticipantAMode == currentUserIdAndMode.Mode) || (x.ParticipantBId == currentUserIdAndMode.UserId && x.ParticipantBMode == currentUserIdAndMode.Mode));
+        if (request.MessageId.HasValue)
+        {
+            var conversationsQueryable = _repository.GetAllIncluding<Conversation>(x => x.Messages)
+           .Where(x => (x.ParticipantAId == currentUserIdAndMode.UserId && x.ParticipantAMode == currentUserIdAndMode.Mode) || (x.ParticipantBId == currentUserIdAndMode.UserId && x.ParticipantBMode == currentUserIdAndMode.Mode));
 
-        conversationsQueryable = conversationsQueryable.Where(x => x.Messages.Any(x => x.Id == request.MessageId));
-        var conversation = await _repository.FirstOrDefaultAsync(conversationsQueryable);
-        if (conversation == null)
-        {
-            throw new NotFoundException(nameof(Conversation), "Conversation not found for the given message ID.");
-        }
+            conversationsQueryable = conversationsQueryable.Where(x => x.Messages.Any(x => x.Id == request.MessageId));
+            var conversation = await _repository.FirstOrDefaultAsync(conversationsQueryable);
+            if (conversation == null)
+            {
+                throw new NotFoundException(nameof(Conversation), "Conversation not found for the given message ID.");
+            }
 
-        if (conversation.ParticipantAId == currentUserIdAndMode.UserId && conversation.ParticipantAMode == currentUserIdAndMode.Mode)
-        {
-            conversation.IsStarredByParticipantA = !conversation.IsStarredByParticipantA;
+            if (conversation.ParticipantAId == currentUserIdAndMode.UserId && conversation.ParticipantAMode == currentUserIdAndMode.Mode)
+            {
+                conversation.IsStarredByParticipantA = !conversation.IsStarredByParticipantA;
+            }
+            else if (conversation.ParticipantBId == currentUserIdAndMode.UserId && conversation.ParticipantBMode == currentUserIdAndMode.Mode)
+            {
+                conversation.IsStarredByParticipantB = !conversation.IsStarredByParticipantB;
+            }
+            else
+            {
+                throw new UnauthorizedAccessException("You do not have permission to star this conversation.");
+            }
         }
-        else if(conversation.ParticipantBId == currentUserIdAndMode.UserId && conversation.ParticipantBMode == currentUserIdAndMode.Mode)
+        else if (request.ConversationId.HasValue)
         {
-            conversation.IsStarredByParticipantB = !conversation.IsStarredByParticipantB;
-        }
-        else
-        {
-            throw new UnauthorizedAccessException("You do not have permission to star this conversation.");
-        }
+            var conversation = await _repository.GetByIdAsync<Conversation, int>(request.ConversationId.Value);
+            if (conversation == null)
+            {
+                throw new NotFoundException(nameof(Conversation), request.ConversationId.Value);
+            }
 
+            if (conversation.ParticipantAId == currentUserIdAndMode.UserId && conversation.ParticipantAMode == currentUserIdAndMode.Mode)
+            {
+                conversation.IsStarredByParticipantA = !conversation.IsStarredByParticipantA;
+            }
+            else if (conversation.ParticipantBId == currentUserIdAndMode.UserId && conversation.ParticipantBMode == currentUserIdAndMode.Mode)
+            {
+                conversation.IsStarredByParticipantB = !conversation.IsStarredByParticipantB;
+            }
+            else
+            {
+                throw new UnauthorizedAccessException("You do not have permission to star this conversation.");
+            }
+        }      
 
         return Unit.Value;
     }

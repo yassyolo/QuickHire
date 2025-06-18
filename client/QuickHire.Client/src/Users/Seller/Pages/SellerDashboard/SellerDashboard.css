@@ -1,6 +1,7 @@
 .seller-dashboard-left{
     width: 23%;
     gap: 25px;
+    max-height: 700px;
 }
 
 .seller-dashboard-right{

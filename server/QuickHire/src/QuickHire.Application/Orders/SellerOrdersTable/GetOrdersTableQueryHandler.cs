@@ -19,26 +19,51 @@ public class GetOrdersTableQueryHandler : IQueryHandler<GetOrdersTableQuery, Lis
 
     public async Task<List<OrdersTableModel>> Handle(GetOrdersTableQuery request, CancellationToken cancellationToken)
     {
-        var sellerId = await _userService.GetSellerIdByUserIdAsync();
-        var ordersQueryable = _repository.GetAllIncluding<Domain.Orders.Order>(x => x.Gig!, x => x.SelectedPaymentPlan!).Where(x => x.SellerId == sellerId && x.Status == (OrderStatus)request.OrderStatusId);
-        var orders = await _repository.ToListAsync(ordersQueryable);
-
+        var orderQueryable = _repository.GetAllIncluding<Domain.Orders.Order>(x => x.Gig!, x => x.SelectedPaymentPlan!).Where(x => x.Status == (OrderStatus)request.OrderStatusId);
         var ordersTableModels = new List<OrdersTableModel>();
 
-        foreach (var x in orders)
+        if (request.Buyer.HasValue)
         {
-            var buyerUserId = await _userService.GetUserIdByBuyerIdAsync(x.BuyerId);
-            var buyerUsername = await _userService.GetUsernameByUserIdAsync(buyerUserId);
+            var buyerId = await _userService.GetBuyerIdByUserIdAsync();
+            orderQueryable = orderQueryable.Where(x => x.BuyerId == buyerId);
+            var orders = await _repository.ToListAsync(orderQueryable);
 
-            ordersTableModels.Add(new OrdersTableModel
+            foreach (var x in orders)
             {
-                Id = x.Id,
-                BuyerUsername = buyerUsername,
-                GigTitle = x.Gig!.Title,
-                DueOn = x.CreatedAt.AddDays(x.SelectedPaymentPlan!.DeliveryTimeInDays).ToString(),
-                Total = x.TotalPrice,
-                Status = x.Status.ToString()
-            });
+                var sellerUserId = await _userService.GetUserIdBySellerIdAsync(x.SellerId);
+                var sellerUserName = await _userService.GetUsernameByUserIdAsync(sellerUserId);
+                ordersTableModels.Add(new OrdersTableModel
+                {
+                    Id = x.Id,
+                    SellerUsername = sellerUserName,
+                    GigTitle = x.Gig!.Title,
+                    DueOn = x.CreatedAt.AddDays(x.SelectedPaymentPlan!.DeliveryTimeInDays).ToString(),
+                    Total = x.TotalPrice,
+                    Status = x.Status.ToString()
+                });
+            }
+        }
+        else
+        {
+            var sellerId = await _userService.GetSellerIdByUserIdAsync();
+            orderQueryable = orderQueryable.Where(x => x.SellerId == sellerId && x.Id == x.Id);
+            var orders = await _repository.ToListAsync(orderQueryable);
+            foreach (var x in orders)
+            {
+                var buyerUserId = await _userService.GetUserIdByBuyerIdAsync(x.BuyerId);
+                var buyerUsername = await _userService.GetUsernameByUserIdAsync(buyerUserId);
+
+                ordersTableModels.Add(new OrdersTableModel
+                {
+                    Id = x.Id,
+                    BuyerUsername = buyerUsername,
+                    GigTitle = x.Gig!.Title,
+                    DueOn = x.CreatedAt.AddDays(x.SelectedPaymentPlan!.DeliveryTimeInDays).ToString(),
+                    Total = x.TotalPrice,
+                    Status = x.Status.ToString()
+                });
+            }
+
         }
 
         return ordersTableModels;

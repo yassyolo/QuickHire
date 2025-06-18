@@ -12,9 +12,8 @@ interface ProjectBriefRowModel{
     id: number;
     date: string;
     documentNumber: string;
-    sellersReaced: number;
+    sellersReached: number;
     totalOffers: number;
-    order: boolean;
     status: string;
 }
 
@@ -22,9 +21,8 @@ const headers = {
     id: "ID",
     date: "Date",   
     documentNumber: "Document Number",
-    sellersReaced: "Sellers Reached",
+    sellersReached: "Sellers Reached",
     totalOffers: "Total Offers",
-    order: "Order",
     status: "Status"
 };
 export function MyProjectBriefs() {
@@ -72,8 +70,8 @@ export function MyProjectBriefs() {
     }
 
     const handleWithdrawProjectBriefSuccess = (id: number) => {
-        setPtojectBriefs(prev => prev.filter(x => x.id === id));
-    };
+        setPtojectBriefs(prev => prev.filter(x => x.id !== id)); 
+    }
     return (
         <SellerPage>
             <PageTitle title="My project briefs"   description="View and manage all the project briefs you've created for sellers."  breadcrumbs={[{ label: <i className="bi bi-house-door"></i>, to: `/buyer/dashboard` },{ label: "My project briefs" }]}/>            
@@ -86,7 +84,8 @@ export function MyProjectBriefs() {
                      </div>
                  </ButtonDropdownContainer>
                </div>
-               <DataTable data={projectBriefs} columns={["id", "date", "documentNumber", "sellersReaced", "order", "status", "totalOffers"]} headers={headers}     renderActions={(row: ProjectBriefRowModel) => (<ProjectBriefActions project={row} showNuyerInfo={false} onWithdrawSuccess={handleWithdrawProjectBriefSuccess}  />)} />
+               <div style={{marginTop: '20px'}}>               <DataTable data={projectBriefs} columns={["id", "date", "documentNumber", "sellersReached", "status", "totalOffers"]} headers={headers}     renderActions={(row: ProjectBriefRowModel) => (<ProjectBriefActions project={row} showNuyerInfo={false} onWithdrawSuccess={handleWithdrawProjectBriefSuccess}  />)} />
+</div>
            </div>
         </SellerPage>
     );

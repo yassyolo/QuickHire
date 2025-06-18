@@ -6,6 +6,7 @@ using QuickHire.Application.CustomOffers.GetCustomOffer;
 using QuickHire.Application.CustomOffers.Seller.ChooseFromGigs;
 using QuickHire.Application.CustomOffers.Seller.ChooseFromInclusives;
 using QuickHire.Application.CustomOffers.Seller.CreateCustomOffer;
+using QuickHire.Application.Gigs.Seller.AddGig;
 using QuickHire.Application.Gigs.Seller.DeleteGig;
 using QuickHire.Application.Gigs.Seller.GetGigForDelete;
 using QuickHire.Application.Gigs.Seller.SellerGigs;
@@ -43,58 +44,57 @@ public class SellerModule : CarterModule
 {
     public override void AddRoutes(IEndpointRouteBuilder app)
     {
-            #region Statistics  
+        #region Statistics  
 
-        app.MapGet("/seller/statistics/gig-performance", async([AsParameters] GetGigPerformanceStatisticsQuery query, IMediator mediator) =>
+        app.MapGet("/seller/statistics/gig-performance", async ([AsParameters] GetGigPerformanceStatisticsQuery query, IMediator mediator) =>
         {
             var result = await mediator.Send(query);
             return Results.Ok(result);
         })
-            .WithName("GetGigPerformanceStatistics")
-            .WithTags("Seller")
-            .Produces(StatusCodes.Status404NotFound)
-            .Produces<IEnumerable<GigPerformanceRowModel>>(StatusCodes.Status200OK);
+        .RequireAuthorization(new AuthorizeAttribute { Roles = "seller,admin" })
+        .WithName("GetGigPerformanceStatistics")
+        .WithTags("Seller")
+        .WithDescription("Get gig performance statistics for the seller, including various metrics and data points.");
 
-        app.MapGet("/seller/statistics/engagement", async([AsParameters] GetEngagementStatisticsQuery query, IMediator mediator) =>
+        app.MapGet("/seller/statistics/engagement", async ([AsParameters] GetEngagementStatisticsQuery query, IMediator mediator) =>
         {
             var result = await mediator.Send(query);
             return Results.Ok(result);
         })
-            .WithName("GetEngagementStatistics")
-            .WithTags("Seller")
-            .Produces(StatusCodes.Status404NotFound)
-            .Produces<IEnumerable<EngagementStatisticsRowModel>>(StatusCodes.Status200OK);
+        .RequireAuthorization(new AuthorizeAttribute { Roles = "seller,admin" })
+        .WithName("GetEngagementStatistics")
+        .WithTags("Seller")
+        .WithDescription("Get engagement statistics for the seller, including various metrics and data points.");
 
-        app.MapGet("/seller/statistics/earnings", async([AsParameters] GetEarningStatisticsQuery query, IMediator mediator) =>
+        app.MapGet("/seller/statistics/earnings", async ([AsParameters] GetEarningStatisticsQuery query, IMediator mediator) =>
         {
             var result = await mediator.Send(query);
             return Results.Ok(result);
         })
-            .WithName("GetEarningStatistics")
-            .WithTags("Seller")
-            .Produces(StatusCodes.Status404NotFound)
-            .Produces<IEnumerable<EarningStatisticsRowModel>>(StatusCodes.Status200OK);
+        .RequireAuthorization(new AuthorizeAttribute { Roles = "seller,admin" })
+        .WithName("GetEarningStatistics")
+        .WithTags("Seller")
+        .WithDescription("Get earnings statistics for the seller, including various metrics and data points.");            
 
         app.MapGet("/seller/statistics/order-fulfillment", async([AsParameters] GetOrderFullfillmentStatisticsQuery query, IMediator mediator) =>
         {
             var result = await mediator.Send(query);
             return Results.Ok(result);
         })
-            .WithName("GetOrderFullfillmentStatistics")
-            .WithTags("Seller")
-            .Produces(StatusCodes.Status404NotFound)
-            .Produces<IEnumerable<OrderFullfillmentRowModel>>(StatusCodes.Status200OK);
+         .WithName("GetOrderFullfillmentStatistics")
+         .WithTags("Seller")
+         .RequireAuthorization(new AuthorizeAttribute { Roles = "seller,admin" })
+         .WithDescription("Get order fulfillment statistics for the seller, including various metrics and data points.");          
 
         app.MapGet("/seller/statistics/repeat-business", async([AsParameters] GetRepeatBusinessStatisticsQuery query, IMediator mediator) =>
         {
             var result = await mediator.Send(query);
             return Results.Ok(result);
         })
-            .WithName("GetRepeatBusinessStatistics")
-            .WithTags("Seller")
-            .Produces(StatusCodes.Status404NotFound)
-            .Produces<IEnumerable<RepeatBusinessRowModel>>(StatusCodes.Status200OK);
-
+        .WithName("GetRepeatBusinessStatistics")
+        .WithTags("Seller")
+        .RequireAuthorization(new AuthorizeAttribute { Roles = "seller,admin" })
+        .WithDescription("Get repeat business statistics for the seller, including various metrics and data points.");
 
         app.MapGet("/seller/statistics/gig-performance/cards", async ([AsParameters] GetGigPerformanceCardsQuery query, IMediator mediator) =>
         {
@@ -103,38 +103,38 @@ public class SellerModule : CarterModule
         })
         .WithName("GetGigPerformanceCards")
         .WithTags("Seller")
-        .Produces(StatusCodes.Status404NotFound)
-        .Produces<IEnumerable<CardItemModel>>(StatusCodes.Status200OK);
+        .RequireAuthorization(new AuthorizeAttribute { Roles = "seller,admin" })
+        .WithDescription("Get gig performance cards for the seller, including various metrics and data points.");
 
         app.MapGet("/seller/statistics/earnings/cards", async ([AsParameters] GetEarningStatisticsCardsQuery query, IMediator mediator) =>
         {
             var result = await mediator.Send(query);
             return Results.Ok(result);
         })
-            .WithName("GetEarningStatisticsCards")
-    .WithTags("Seller")
-    .Produces(StatusCodes.Status404NotFound)
-    .Produces<IEnumerable<CardItemModel>>(StatusCodes.Status200OK);
+        .WithName("GetEarningStatisticsCards")
+        .WithTags("Seller")
+        .RequireAuthorization(new AuthorizeAttribute { Roles = "seller,admin" })
+        .WithDescription("Get earnings cards for the seller, including various metrics and data points.");
 
         app.MapGet("/seller/statistics/order-fulfillment/cards", async ([AsParameters] GetOrderFullfillmentStatisticsCradsQuery query, IMediator mediator) =>
         {
             var result = await mediator.Send(query);
             return Results.Ok(result);
         })
-            .WithName("GetOrderFullfillmentStatisticsCards")
+        .WithName("GetOrderFullfillmentStatisticsCards")
         .WithTags("Seller")
-        .Produces(StatusCodes.Status404NotFound)
-        .Produces<IEnumerable<CardItemModel>>(StatusCodes.Status200OK);
+        .RequireAuthorization(new AuthorizeAttribute { Roles = "seller,admin" })
+        .WithDescription("Get order fulfillment cards for the seller, including various metrics and data points.");
 
         app.MapGet("/seller/statistics/engagement/cards", async ([AsParameters] GetEngagementStatisticsCardsQuery query, IMediator mediator) =>
         {
             var result = await mediator.Send(query);
             return Results.Ok(result);
         })
-            .WithName("GetEngagementStatisticsCards")
-            .WithTags("Seller")
-        .Produces(StatusCodes.Status404NotFound)
-        .Produces<IEnumerable<CardItemModel>>(StatusCodes.Status200OK);
+        .WithName("GetEngagementStatisticsCards")
+        .WithTags("Seller")
+        .RequireAuthorization(new AuthorizeAttribute { Roles = "seller,admin" })
+        .WithDescription("Get engagement cards for the seller, including various metrics and data points.");
 
         app.MapGet("/seller/statistics/repeat-business/cards", async ([AsParameters] GetRepeatBusinessStatisticsCardsQuery query, IMediator mediator) =>
         {
@@ -143,8 +143,8 @@ public class SellerModule : CarterModule
         })
         .WithName("GetRepeatBusinessStatisticsCards")
         .WithTags("Seller")
-        .Produces(StatusCodes.Status404NotFound)
-        .Produces<IEnumerable<CardItemModel>>(StatusCodes.Status200OK);
+        .RequireAuthorization(new AuthorizeAttribute { Roles = "seller,admin" })
+        .WithDescription("Get repeat business cards for the seller, including various metrics and data points.");
 
         #endregion
 
@@ -154,22 +154,20 @@ public class SellerModule : CarterModule
             var result = await mediator.Send(query);
             return Results.Ok(result);
         })
-            .WithName("GetSellerDashboard")
-            .WithTags("Seller")
-            .Produces(StatusCodes.Status404NotFound)
-            .Produces<GetSellerDashboardModel>(StatusCodes.Status200OK)
-            .WithDescription("Get the seller dashboard data including statistics and other relevant information.");
+        .RequireAuthorization(new AuthorizeAttribute { Roles = "seller" })
+        .WithName("GetSellerDashboard")
+        .WithTags("Seller")
+        .WithDescription("Get the seller dashboard data including statistics and other relevant information.");
 
         app.MapGet("/seller/dashboard/orders", async([AsParameters] GetSellerDashboardOrdersQuery query, IMediator mediator) =>
         {
             var result = await mediator.Send(query);
             return Results.Ok(result);
         })
-         .WithName("GetSellerDashboardOrders")
-         .WithTags("Seller")
-         .Produces(StatusCodes.Status404NotFound)
-         .Produces<IEnumerable<SellerDashboardOrderModel>>(StatusCodes.Status200OK)
-         .WithDescription("Get the seller dashboard orders data.");
+        .RequireAuthorization(new AuthorizeAttribute { Roles = "seller" })
+        .WithName("GetSellerDashboardOrders")
+        .WithTags("Seller")
+        .WithDescription("Get the seller dashboard orders data.");
         #endregion
 
         #region Profile
@@ -236,42 +234,42 @@ public class SellerModule : CarterModule
         .DisableAntiforgery()
         .WithDescription("Edit the seller's portfolio in their profile.");
 
+        #endregion
 
-
-
-    #endregion
-
-       // /seller/Gigs/delete
-       app.MapDelete("/seller/gigs/delete/{Id}", async([AsParameters] DeleteGigCommand command, IMediator mediator) =>
-       {
+        #region Gigs
+        app.MapDelete("/seller/gigs/delete/{Id}", async ([AsParameters] DeleteGigCommand command, IMediator mediator) =>
+        {
             await mediator.Send(command);
             return Results.NoContent();
         })
-            .WithName("DeleteGig")
-            .WithTags("Seller")
-            .Produces(StatusCodes.Status404NotFound)
-            .WithDescription("Delete a gig for the seller.");
+        .WithName("DeleteGig")
+        .WithTags("Seller Gigs")
+        .RequireAuthorization(new AuthorizeAttribute { Roles = "seller" })
+        .WithDescription("Delete a gig by its ID for the seller. This action requires authorization as a seller.");
 
         app.MapGet("/seller/gigs/delete/{Id}", async ([AsParameters] GetGigForDeleteQuery command, IMediator mediator) =>
         {
             var result = await mediator.Send(command);
             return Results.Ok(result);
         })
-            .WithName("GetGigForDelete")
-            .WithTags("Seller")
-            .Produces(StatusCodes.Status404NotFound)
-            .WithDescription("Get gig details for deletion confirmation.");
+        .WithName("GetGigForDelete")
+        .WithTags("Seller Gigs")
+        .RequireAuthorization(new AuthorizeAttribute { Roles = "seller" })
+        .WithDescription("Get gig details for deletion confirmation. This action requires authorization as a seller.");
 
-        app.MapPut("/seller/gigs/activate", async([AsParameters] ToggleActivationStatusCommand command, IMediator mediator) =>
+
+        app.MapPut("/seller/gigs/activate", async ([AsParameters] ToggleActivationStatusCommand command, IMediator mediator) =>
         {
-             await mediator.Send(command);
+            await mediator.Send(command);
             return Results.NoContent();
         })
-            .WithName("ActivateGig")
-            .WithTags("Seller")
-            .Produces(StatusCodes.Status404NotFound)
-            .WithDescription("Activate a gig for the seller.");
-        app.MapGet("/seller/gigs/table", async([AsParameters] GetSellerGigsTableQuery query, IMediator mediator) =>
+        .WithName("ActivateGig")
+        .WithTags("Seller Gigs")
+        .RequireAuthorization(new AuthorizeAttribute { Roles = "seller" })
+        .WithDescription("Activate or deactivate a gig for the seller. This action requires authorization as a seller.");
+
+
+        app.MapGet("/seller/gigs/table", async ([AsParameters] GetSellerGigsTableQuery query, IMediator mediator) =>
         {
             var result = await mediator.Send(query);
             return Results.Ok(result);
@@ -279,41 +277,53 @@ public class SellerModule : CarterModule
         .RequireAuthorization(new AuthorizeAttribute { Roles = "seller" })
         .WithName("GetSellerGigsTable")
         .WithTags("Seller")
-         .WithDescription("Get the seller's gigs table.");
+        .WithDescription("Get the seller's gigs table.");
 
         app.MapGet("/seller/gigs", async ([AsParameters] GetSellerGigsQuery query, IMediator mediator) =>
-{
-            var result = await mediator.Send(query);        
-          return Results.Ok(result);
-         })
-                    .RequireAuthorization(new AuthorizeAttribute { Roles = "buyer" })
+        {
+            var result = await mediator.Send(query);
+            return Results.Ok(result);
+        })
+        .RequireAuthorization(new AuthorizeAttribute { Roles = "buyer" })
         .WithName("GetSellerGigs")
         .WithTags("Seller")
         .WithDescription("Get the seller's gigs with pagination and filtering options.");
 
-        //                const url = `https://localhost:7267/seller/orders/table?${params.toString()}`;
+        app.MapPost("/seller/gigs", async([FromForm] AddGigCommand command, IMediator mediator) =>
+        {
+            await mediator.Send(command);
+            return Results.NoContent();
+        })
+        .RequireAuthorization(new AuthorizeAttribute { Roles = "seller" })
+        .WithName("CreateGig")
+        .WithTags("Seller Gigs")
+        .DisableAntiforgery()
+        .WithDescription("Create a new gig for the seller. This action requires authorization as a seller.");
+        #endregion
 
-
-        app.MapGet("/seller/orders/table", async([AsParameters] GetOrdersTableQuery query, IMediator mediator) =>
+        #region Project Briefs
+        app.MapGet("/seller/project-briefs/table", async ([AsParameters] GetProjectBriefsTableQuery query, IMediator mediator) =>
         {
             var result = await mediator.Send(query);
             return Results.Ok(result);
         })
-            .WithName("GetSellerOrdersTable")
-            .WithTags("Seller")
-            .Produces(StatusCodes.Status404NotFound)
-            .WithDescription("Get the seller's orders table with pagination and filtering options.");
+        .RequireAuthorization(new AuthorizeAttribute { Roles = "seller" })
+        .WithName("GetSellerProjectBriefsTable")
+        .WithTags("Seller Project Briefs")
+        .WithDescription("Get the seller's project briefs table with pagination and filtering options.");
 
-        //https://localhost:7267/seller/project-briefs/table
-        app.MapGet("/seller/project-briefs/table", async([AsParameters] GetProjectBriefsTableQuery query, IMediator mediator) =>
+        app.MapGet("/project-brief/preview/{Id}", async ([AsParameters] ProjectBriefPreviewQuery query, IMediator mediator) =>
         {
             var result = await mediator.Send(query);
             return Results.Ok(result);
         })
-            .WithName("GetSellerProjectBriefsTable")
-            .WithTags("Seller")
-            .Produces(StatusCodes.Status404NotFound)
-            .WithDescription("Get the seller's project briefs table with pagination and filtering options.");
+        .RequireAuthorization(new AuthorizeAttribute { Roles = "seller,buyer" })
+        .WithName("GetProjectBriefPreview")
+        .WithTags("Project Briefs")
+        .WithDescription("Get the preview of a project brief by its ID.");
+        #endregion
+
+
 
         app.MapGet("/seller/new", async ([AsParameters]  GetExistingUserInfoQuery query, IMediator mediator) =>
         {
@@ -338,34 +348,28 @@ public class SellerModule : CarterModule
             .Produces(StatusCodes.Status200OK)
             .WithDescription("Create a new seller profile.");
 
-        app.MapGet("/project-brief/preview/{Id}", async([AsParameters] ProjectBriefPreviewQuery query, IMediator mediator) =>
-        {
-            var result = await mediator.Send(query);
-            return Results.Ok(result);
-        })
-            .WithName("GetProjectBriefPreview")
-            .WithTags("Seller")
-            .Produces(StatusCodes.Status404NotFound)
-            .WithDescription("Get the preview of a project brief by its ID.");
+       
 
         #region Custom Offers
          app.MapGet("/seller/choose-from-gigs", async([AsParameters] ChooseFromGigsQuery query, IMediator mediator) =>
          {
             var result = await mediator.Send(query);
             return Results.Ok(result);
-})
-            .WithName("ChooseFromGigs")
-            .WithTags("Custom Offers")
-            .WithDescription("Get a list of gigs to choose from for custom offers.");
+         })
+         .RequireAuthorization(new AuthorizeAttribute { Roles = "seller" })
+         .WithName("ChooseFromGigs")
+         .WithTags("Custom Offers")
+         .WithDescription("Get a list of gigs to choose from for custom offers.");
 
         app.MapGet("/seller/choose-from-inclusives", async ([AsParameters] ChooseFromInclusivesQuery query, IMediator mediator) =>
         {
             var result = await mediator.Send(query);
             return Results.Ok(result);
         })
-   .WithName("ChooseFromInclusives")
-   .WithTags("Custom Offers")
-   .WithDescription("Get a list of gigs to choose from for custom offers.");
+        .RequireAuthorization(new AuthorizeAttribute { Roles = "seller" })
+        .WithName("ChooseFromInclusives")
+        .WithTags("Custom Offers")
+        .WithDescription("Get a list of gigs to choose from for custom offers.");
 
 
         app.MapPost("seller/custom-offer", async([FromBody] CreateCustomOfferCommand command, IMediator mediator) =>
@@ -373,19 +377,10 @@ public class SellerModule : CarterModule
             var result = await mediator.Send(command);
             return Results.Ok(result);
         })
-            .WithName("CreateCustomOffer")
-            .WithDescription("Create a custom offer.");
-
-        //buyer/custom-offers/${id}
-        app.MapGet("buyer/custom-offers/{Id}", async([AsParameters] GetCustomOfferQuery query, IMediator mediator) =>
-        {
-            var result = await mediator.Send(query);
-            return Results.Ok(result);
-        })
-            .WithName("GetCustomOffer")
-            .WithTags("Custom Offers")
-            .Produces(StatusCodes.Status404NotFound)
-            .WithDescription("Get a custom offer by its ID.");
+        .RequireAuthorization(new AuthorizeAttribute { Roles = "seller" })
+        .WithTags("Custom Offers")
+        .WithName("CreateCustomOffer")
+        .WithDescription("Create a custom offer.");
         #endregion
     }
 }

@@ -43,8 +43,7 @@ export function Overview({
   }, []);
 
   return (
-    <div className="wizard-form">
-      <div className="brief-description-title">Overview</div>
+    <div className="wizard-form" style={{ width: "600px", marginBottom: "20px" }}>
       <FormGroup
         id="title"
         label="Title"

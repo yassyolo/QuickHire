@@ -25,7 +25,7 @@ public class ExploreHotGigsQueryHandler : IQueryHandler<ExploreHotGigsQuery, Lis
         var gigsQueryable = _repository.GetAllIncluding<Domain.Gigs.Gig>(x => x.Seller, x => x.Orders).Where(x => x.ModerationStatus != Domain.Moderation.Enums.ModerationStatus.PendingReview);
 
         var gigsList = await _repository.ToListAsync(gigsQueryable);
-        gigsList = gigsList.OrderByDescending(x => x.Clicks).ThenBy(x => x.Orders).Take(10).ToList();
+        gigsList = gigsList.OrderByDescending(x => x.Clicks).ThenBy(x => x.Orders.Count()).Take(8).ToList();
         var result = new List<GigCardModel>();
 
         foreach (var bh in gigsList)

@@ -22,7 +22,7 @@ public class GetOrderFullfillmentStatisticsQueryHandler
 
     public async Task<IEnumerable<OrderFullfillmentRowModel>> Handle(GetOrderFullfillmentStatisticsQuery request,CancellationToken cancellationToken)
     {
-        /*var (startDate, endDate) = ParseRange(request.Range ?? "last 30 days");
+        var (startDate, endDate) = ParseRange(request.Range ?? "last 30 days");
         var sellerId = await _userService.GetSellerIdByUserIdAsync();
 
         var ordersQueryable = _repository.GetAllIncluding<Order>(x => x.Reviews) .Where(x => x.SellerId == sellerId && x.CreatedAt.Date >= startDate && x.CreatedAt.Date <= endDate);
@@ -49,47 +49,7 @@ public class GetOrderFullfillmentStatisticsQueryHandler
                 };
             });
 
-        return groupedByDate.ToList();*/
-
-        return new List<OrderFullfillmentRowModel>
-        {
-            new OrderFullfillmentRowModel
-            {
-                Date = "2023-10-01",
-                NewOrders = 5,
-                CompletedOrders = 3,
-                Sales = 5,
-                AverageRating = 4.5,
-                Revenue = 1500.00m
-            },
-            new OrderFullfillmentRowModel
-            {
-                Date = "2023-10-02",
-                NewOrders = 8,
-                CompletedOrders = 6,
-                Sales = 8,
-                AverageRating = 4.0,
-                Revenue = 2400.00m
-            },
-            new OrderFullfillmentRowModel
-            {
-                Date = "2023-10-03",
-                NewOrders = 10,
-                CompletedOrders = 7,
-                Sales = 10,
-                AverageRating = 4.2,
-                Revenue = 3000.00m
-            },
-            new OrderFullfillmentRowModel
-            {
-                Date = "2023-10-04",
-                NewOrders = 6,
-                CompletedOrders = 4,
-                Sales = 6,
-                AverageRating = 4.8,
-                Revenue = 1800.00m
-            },
-        };
+        return groupedByDate.ToList();
     }
 
     private (DateTime Start, DateTime End) ParseRange(string range)

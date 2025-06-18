@@ -25,8 +25,12 @@ export interface CustomOfferPayload{
 export function CustomOfferMessage({ senderProfilePictureUrl, senderUsername, timestamp, payload, content }: CustomOfferProps) {
      const { user } = useAuth();
      const [showOfferModal, setShowOfferModal] = useState(false);
+     const [showOrderModal, setShowOrderModal] = useState(false);
+    const handleShowOrderModal = () => {
+        setShowOrderModal(!showOrderModal);
+    }
     const handleShowOfferModal = () => {
-        setShowOfferModal(true);
+        setShowOfferModal(!showOfferModal);
     }
 
     return (
@@ -50,11 +54,12 @@ export function CustomOfferMessage({ senderProfilePictureUrl, senderUsername, ti
           {user?.mode === "buyer" && (
             <>
             
-                <ActionButton className="withdraw-offer-button" onClick={handleShowOfferModal} text={"Order"} ariaLabel={"View custom offer"}></ActionButton>
+                <ActionButton className="withdraw-offer-button" onClick={handleShowOrderModal} text={"Order"} ariaLabel={"View custom offer"}></ActionButton>
 
             </>
           ) }
                           {showOfferModal && <CustomOfferPreview onClose={() => setShowOfferModal(false)} id={payload.offerId} showSellerInfo={true} />}
+                           
 
         </div>
             </div>
@@ -62,3 +67,6 @@ export function CustomOfferMessage({ senderProfilePictureUrl, senderUsername, ti
         </MessageItem>
     );
 }
+/** {showOrderModal && <OrderForm chosenPlan={undefined} chosenPlanId={0} gigId={payload.gigId} onBack={function (): void {
+                        throw new Error("Function not implemented.");
+                    } } />} */

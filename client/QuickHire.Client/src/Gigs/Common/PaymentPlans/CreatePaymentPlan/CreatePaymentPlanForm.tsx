@@ -70,6 +70,8 @@ export function CreatePackagePlansForm({onSubmit}: CreatePackagePlansFormProps
                   type="text"
                   value={p.name}
                   onChange={e => updatePlan(p.id, "name", e.target.value)}
+                    className="delivery-time-input"
+
                 />
               </td>
             ))}
@@ -82,6 +84,8 @@ export function CreatePackagePlansForm({onSubmit}: CreatePackagePlansFormProps
                   type="number"
                   value={p.price}
                   onChange={e => updatePlan(p.id, "price", parseFloat(e.target.value))}
+                    className="delivery-time-input"
+
                 />
               </td>
             ))}
@@ -93,6 +97,8 @@ export function CreatePackagePlansForm({onSubmit}: CreatePackagePlansFormProps
                 <textarea
                   value={p.description}
                   onChange={e => updatePlan(p.id, "description", e.target.value)}
+                    className="delivery-time-input"
+
                 />
               </td>
             ))}
@@ -105,6 +111,8 @@ export function CreatePackagePlansForm({onSubmit}: CreatePackagePlansFormProps
                   type="number"
                   value={p.revisions}
                   onChange={e => updatePlan(p.id, "revisions", parseInt(e.target.value))}
+                    className="delivery-time-input"
+
                 />
               </td>
             ))}
@@ -117,6 +125,8 @@ export function CreatePackagePlansForm({onSubmit}: CreatePackagePlansFormProps
                   type="number"
                   value={p.deliveryTimeInDays}
                   onChange={e => updatePlan(p.id, "deliveryTimeInDays", parseInt(e.target.value))}
+                    className="delivery-time-input"
+
                 />
               </td>
             ))}
@@ -133,6 +143,8 @@ export function CreatePackagePlansForm({onSubmit}: CreatePackagePlansFormProps
                       type="checkbox"
                       checked={checked}
                       onChange={e => toggleFeature(plan.id, feature, e.target.checked)}
+                        className="delivery-time-input"
+
                     />
                   </td>
                 );
@@ -155,12 +167,12 @@ export function CreatePackagePlansForm({onSubmit}: CreatePackagePlansFormProps
           </tr>
         </tbody>
       </table>
-
-<ActionButton
+<div className="save-wrapper" style={{marginTop: '20px'}}><ActionButton
                   text="Save and continue"
                   onClick={handleSubmit}
                   className="save-and-continue-button"
-                  ariaLabel="Save personal info and go to next step" />
+                  ariaLabel="Save personal info and go to next step" /></div>
+
      
     </div>
   );

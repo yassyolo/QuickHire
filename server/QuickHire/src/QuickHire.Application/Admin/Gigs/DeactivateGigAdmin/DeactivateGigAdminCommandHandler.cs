@@ -38,7 +38,10 @@ public class DeactivateGigAdminCommandHandler : ICommandHandler<DeactivateGigAdm
             throw new InvalidOperationException("This gig is already deactivated.");
         }
 
-        if(gig.Orders.Where(x => x.Status == Domain.Orders.Enums.OrderStatus.Paid || x.Status == Domain.Orders.Enums.OrderStatus.InProgress).Any())
+        var ordersQueryable = _repository.GetAllIncluding<Domain.Orders.Order>(x => x.Gig).Where(x => x.GigId == request.Id && x.Status == Domain.Orders.Enums.OrderStatus.InProgress);
+        var orders = await _repository.ToListAsync(ordersQueryable);
+
+        if(orders.Any())
         {
             throw new InvalidOperationException("This gig cannot be deactivated because it has active orders.");
         }

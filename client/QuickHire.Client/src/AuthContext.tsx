@@ -108,16 +108,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   }, []);
 
-const fetchUser = useCallback(async () => {
+const fetchUser = useCallback(async (): Promise<void> => {
   try {
     const res = await axios.get("https://localhost:7267/auth/me");
     setUser(res.data);
     await startSignalRConnection();
-    return res.data;  
   } catch {
     setUser(null);
     await stopSignalRConnection();
-    return null;
   } finally {
     setLoading(false);
   }
@@ -130,20 +128,10 @@ const fetchUser = useCallback(async () => {
       "https://localhost:7267/auth/login",
       { emailOrUsername: email, password },
       { withCredentials: true }
-    );
-    const fetchedUser = await fetchUser();
-    console.log("User logged in:", fetchedUser);
-
-    if (fetchedUser.roles.includes("admin")) {
-  console.log("Redirecting to admin");
-  navigate("/admin/main-categories");
-} else {
-  console.log("Redirecting to buyer");
-  navigate("/buyer");
-}
-
+    );  
+    await fetchUser();
   },
-  [fetchUser, navigate]
+  []
 );
 
   const logout = useCallback(async () => {

@@ -28,171 +28,167 @@ interface HotInMainCategory {
 }
 
 export function FrontPage() {
-    const {user, switchMode} = useAuth();
-      const [active, setActive] = useState('');
-    const [recentlyLikedGigs, setRecentlyLikedGigs] = useState<Gig[]>([]);
-    const [recentlyViewedGigs, setRecentlyViewedGigs] = useState<Gig[]>([]);
-    const [seeMoreGigs, setSeeMoreGigs] = useState<Gig[]>([]);
-    const [hotInMainCategory, setHotInMainCategory] = useState<HotInMainCategory | null>(null);
-    const [exploreGigs, setExploreGigs] = useState<Gig[]>([]);
+    const { user, switchMode } = useAuth();
+  const navigate = useNavigate();
 
-    const [showRecentlyLiked, setShowRecentlyLiked] = useState(false);
-    const [showRecentlyViewed, setShowRecentlyViewed] = useState(false);
-    const [showSeeMore, setShowSeeMore] = useState(false);
+  const [recentlyLikedGigs, setRecentlyLikedGigs] = useState<Gig[]>([]);
+  const [recentlyViewedGigs, setRecentlyViewedGigs] = useState<Gig[]>([]);
+  const [seeMoreGigs, setSeeMoreGigs] = useState<Gig[]>([]);
+  const [hotInMainCategory, setHotInMainCategory] = useState<HotInMainCategory | null>(null);
+  const [exploreGigs, setExploreGigs] = useState<Gig[]>([]);
 
-    const [currentPageHot, setCurrentPageHot] = useState(1);
-    const [currentPageExplore, setCurrentPageExplore] = useState(1);
-    const itemsPerPageHot = 4;
-    const itemsPerPageExplore = 4;
-    const navigate = useNavigate();
-    const handleGoToDashboard = async () => {
-  try {
-    await switchMode("seller");
-    navigate("/seller/dashboard");
-  } catch (error) {
-    console.error("Error switching mode:", error);
-  }
-};
+  const [showRecentlyLiked, setShowRecentlyLiked] = useState(false);
+  const [showRecentlyViewed, setShowRecentlyViewed] = useState(false);
+  const [showSeeMore, setShowSeeMore] = useState(false);
 
-    useEffect(() => {
-        setActive('liked');
-        console.log("User mode:", user);
-        fetchHotInMainCategory();
-        fetchExploreGigs();
-        handleShowRecentlyLiked();
-        console.log(hotInMainCategory?.mainCategory)
-    }, []);
+  const [currentPageHot, setCurrentPageHot] = useState(1);
+  const [currentPageExplore, setCurrentPageExplore] = useState(1);
 
-    const fetchRecentlyLikedGigs = async () => {
-        try {
-            const response = await axios.get<Gig[]>('https://localhost:7267/buyers/recently-liked');
-            setRecentlyLikedGigs(response.data);
-        } catch (error) {
-            console.error("Error fetching recently liked gigs:", error);
-        }
-    };
-    const fetchRecentlyViewedGigs = async () => {
-        try {
-            const response = await axios.get<Gig[]>('https://localhost:7267/buyers/recently-viewed');
-            setRecentlyViewedGigs(response.data);
-        } catch (error) {
-            console.error("Error fetching recently viewed gigs:", error);
-        }
-    };
-    const fetchSeeMoreGigs = async () => {
-        try {
-            const response = await axios.get<Gig[]>('https://localhost:7267/buyers/see-more');
-            setSeeMoreGigs(response.data);
-        } catch (error) {
-            console.error("Error fetching see more gigs:", error);
-        }
-    };
+  const itemsPerPage = 4;
 
-    const fetchHotInMainCategory = async () => {
-        try {
-            const response = await axios.get<HotInMainCategory>('https://localhost:7267/buyers/hot-in-main-category');
-            setHotInMainCategory(response.data);
-        } catch (error) {
-            console.error("Error fetching hot gigs in main category:", error);
-        }
-    };
+  const [active, setActive] = useState("liked");
 
-    const fetchExploreGigs = async () => {
-        try {
-            const response = await axios.get<Gig[]>('https://localhost:7267/buyers/explore');
-            setExploreGigs(response.data);
-        } catch (error) {
-            console.error("Error fetching explore gigs:", error);
-        }
-    };
+  useEffect(() => {
+    fetchHotInMainCategory();
+    fetchExploreGigs();
+    handleShowRecentlyLiked();
+  }, []);
 
-    const handleShowRecentlyLiked = () => {
-        fetchRecentlyLikedGigs();
-        setShowRecentlyLiked(true);
-        setShowRecentlyViewed(false);
-        setShowSeeMore(false);
-    };
-    const handleShowRecentlyViewed = () => {
-        fetchRecentlyViewedGigs();
-        setShowRecentlyViewed(true);
-        setShowRecentlyLiked(false);
-        setShowSeeMore(false);
-    };
-    const handleShowSeeMore = () => {
-        fetchSeeMoreGigs();
-        setShowSeeMore(true);
-        setShowRecentlyLiked(false);
-        setShowRecentlyViewed(false);
-    };
-
-    const onSetSeeMoreLiked = (liked: boolean, gigId: number) => {
-        setRecentlyLikedGigs((prev) =>
-            prev.map((gig) =>
-                gig.id === gigId ? { ...gig, liked: liked } : gig
-            )
-        );
-    };
-
-    const onHotInMainCategoryPageChange = (page: number) => {
-        setCurrentPageHot(page);
-    };
-
-    const onExploreGigsPageChange = (page: number) => {
-        setCurrentPageExplore(page);
-    };
-
-   const MAX_RECENTLY_LIKED = 3;
-
-const updateGigLikedState = (liked: boolean, gigId: number) => {
-  const updateGigArray = (gigs: Gig[]) =>
-    gigs.map(gig => (gig.id === gigId ? { ...gig, liked } : gig));
-
-  setExploreGigs(prev => updateGigArray(prev));
-  setRecentlyViewedGigs(prev => updateGigArray(prev));
-
-  setRecentlyLikedGigs(prev => {
-    if (!liked) {
-      return prev.filter(gig => gig.id !== gigId);
-    } else {
-      const exists = prev.some(gig => gig.id === gigId);
-      if (exists) {
-        return updateGigArray(prev);
-      } else {
-
-        let newGig: Gig | undefined;
-        newGig = exploreGigs.find(gig => gig.id === gigId) 
-          || recentlyViewedGigs.find(gig => gig.id === gigId) 
-          || (hotInMainCategory?.gigs.find(gig => gig.id === gigId));
-
-        if (!newGig) {
-          newGig = { id: gigId, liked} as Gig;
-        } else {
-          newGig = { ...newGig, liked };
-        }
-
-        const updatedList = [newGig, ...prev];
-        if (updatedList.length > MAX_RECENTLY_LIKED) {
-          updatedList.pop();
-        }
-        return updatedList;
-      }
+  const fetchHotInMainCategory = async () => {
+    try {
+      const response = await axios.get<HotInMainCategory>("https://localhost:7267/buyers/hot-in-main-category");
+      setHotInMainCategory(response.data);
+    } catch (error) {
+      console.error("Error fetching hot gigs:", error);
     }
+  };
+
+  const fetchExploreGigs = async () => {
+    try {
+      const response = await axios.get<Gig[]>("https://localhost:7267/buyers/explore");
+      setExploreGigs(response.data);
+    } catch (error) {
+      console.error("Error fetching explore gigs:", error);
+    }
+  };
+
+  const fetchRecentlyLikedGigs = async () => {
+    try {
+      const response = await axios.get<Gig[]>("https://localhost:7267/buyers/recently-liked");
+      setRecentlyLikedGigs(response.data);
+    } catch (error) {
+      console.error("Error fetching recently liked gigs:", error);
+    }
+  };
+
+  const fetchRecentlyViewedGigs = async () => {
+    try {
+      const response = await axios.get<Gig[]>("https://localhost:7267/buyers/recently-viewed");
+      setRecentlyViewedGigs(response.data);
+    } catch (error) {
+      console.error("Error fetching recently viewed gigs:", error);
+    }
+  };
+
+  const fetchSeeMoreGigs = async () => {
+    try {
+      const response = await axios.get<Gig[]>("https://localhost:7267/buyers/see-more");
+      setSeeMoreGigs(response.data);
+    } catch (error) {
+      console.error("Error fetching see more gigs:", error);
+    }
+  };
+
+  const handleShowRecentlyLiked = () => {
+    fetchRecentlyLikedGigs();
+    setShowRecentlyLiked(true);
+    setShowRecentlyViewed(false);
+    setShowSeeMore(false);
+  };
+
+  const handleShowRecentlyViewed = () => {
+    fetchRecentlyViewedGigs();
+    setShowRecentlyViewed(true);
+    setShowRecentlyLiked(false);
+    setShowSeeMore(false);
+  };
+
+  const handleShowSeeMore = () => {
+    fetchSeeMoreGigs();
+    setShowSeeMore(true);
+    setShowRecentlyLiked(false);
+    setShowRecentlyViewed(false);
+  };
+
+ const updateGigLikedState = (liked: boolean, gigId: number) => {
+  const updateGigArray = (gigs: Gig[]) =>
+    gigs.map((gig) => (gig.id === gigId ? { ...gig, liked } : gig));
+
+  setExploreGigs((prev) => updateGigArray(prev));
+  setRecentlyViewedGigs((prev) => updateGigArray(prev));
+
+  setRecentlyLikedGigs((prev) => {
+    if (!liked) {
+      return prev.filter((gig) => gig.id !== gigId);
+    }
+
+    const exists = prev.some((gig) => gig.id === gigId);
+    if (exists) {
+      return updateGigArray(prev);
+    }
+
+    let newGig =
+      exploreGigs.find((gig) => gig.id === gigId) ||
+      recentlyViewedGigs.find((gig) => gig.id === gigId) ||
+      hotInMainCategory?.gigs.find((gig) => gig.id === gigId);
+
+    if (!newGig) return prev; // fallback: if gig not found anywhere, don't add
+
+    newGig = { ...newGig, liked: true };
+
+    const updatedList = [newGig, ...prev];
+    if (updatedList.length > 3) {
+      updatedList.pop();
+    }
+    return updatedList;
   });
 
-  setHotInMainCategory(prev => {
-    if (!prev) return null;
-    return {
-      ...prev,
-      gigs: updateGigArray(prev.gigs)
-    };
-  });
+  setHotInMainCategory((prev) =>
+    prev ? { ...prev, gigs: updateGigArray(prev.gigs) } : null
+  );
 };
 
 
+  const displayedHotGigs = hotInMainCategory
+    ? hotInMainCategory.gigs.slice((currentPageHot - 1) * itemsPerPage, currentPageHot * itemsPerPage)
+    : [];
 
-    const displayedHotGigs = hotInMainCategory? hotInMainCategory.gigs.slice((currentPageHot - 1) * itemsPerPageHot, currentPageHot * itemsPerPageHot): [];
+  const displayedExploreGigs = exploreGigs.slice((currentPageExplore - 1) * itemsPerPage, currentPageExplore * itemsPerPage);
 
-    const displayedExploreGigs = exploreGigs.slice((currentPageExplore - 1) * itemsPerPageExplore, currentPageExplore * itemsPerPageExplore);
+  const totalPagesHot = hotInMainCategory ? Math.ceil(hotInMainCategory.gigs.length / itemsPerPage) : 1;
+  const totalPagesExplore = Math.ceil(exploreGigs.length / itemsPerPage);
+
+  const onSetSeeMoreLiked = (liked: boolean, gigId: number) => {
+    const updatedGigs = seeMoreGigs.map((gig) =>
+      gig.id === gigId ? { ...gig, liked } : gig
+    );
+    setSeeMoreGigs(updatedGigs);
+    if (liked) {
+      setRecentlyLikedGigs((prev) => [...prev, updatedGigs.find((g) => g.id === gigId)!]);
+    } else {
+      setRecentlyLikedGigs((prev) => prev.filter((g) => g.id !== gigId));
+    }
+  }
+
+  const handleGoToDashboard = async () => {
+    try {
+      await switchMode("seller");
+      navigate("/seller/dashboard");
+    } catch (error) {
+      console.error("Error switching mode:", error);
+    }
+  };
+
 
     return (
   <>
@@ -329,36 +325,43 @@ Recently liked
                 </div>
             </div>
 
-            <div className="hot-gigs-conatiner d-flex flex-column">
-                <div className="gigs-title">Hot {hotInMainCategory?.mainCategory !== undefined ? (`in ${hotInMainCategory?.mainCategory}`) : ('')} </div>
-                <div className="pagination-wrapper">
-
-                    <NoPagesPagination
-                        totalPages={hotInMainCategory ? Math.ceil(hotInMainCategory.gigs.length / itemsPerPageHot) : 1}
-                        currentPage={currentPageHot}
-                        onPageChange={onHotInMainCategoryPageChange} />
-                </div>
-                <div className="gigs-list-hot">
-                    {displayedHotGigs.map((gig) => (
-                        <GigCard key={gig.id} gig={gig} showSeller={true} setLiked={updateGigLikedState} />
-                    ))}
-                </div>
+          <div className="hot-gigs-container d-flex flex-column">
+            <div className="gigs-title">
+              Hot {hotInMainCategory?.mainCategory ? `in ${hotInMainCategory.mainCategory}` : ""}
             </div>
 
-            <div className="explore-gigs-container d-flex flex-column" style={{marginBottom: '50px'}}>
-                <div className="gigs-title">Explore</div>
-                <div className="pagination-wrapper">
-                    <NoPagesPagination
-                        totalPages={Math.ceil(exploreGigs.length / itemsPerPageExplore)}
-                        currentPage={currentPageExplore}
-                        onPageChange={onExploreGigsPageChange} />
-                </div>
-                <div className="gigs-list-hot">
-                    {displayedExploreGigs.map((gig) => (
-                        <GigCard key={gig.id} gig={gig} showSeller={true} setLiked={updateGigLikedState} />
-                    ))}
-                </div>
+            <div className="pagination-wrapper">
+              <NoPagesPagination
+                totalPages={totalPagesHot}
+                currentPage={currentPageHot}
+                onPageChange={(page) => setCurrentPageHot(page)}
+              />
             </div>
+
+            <div className="gigs-list-hot">
+              {displayedHotGigs.map((gig) => (
+                <GigCard key={gig.id} gig={gig} showSeller={true} setLiked={updateGigLikedState} />
+              ))}
+            </div>
+          </div>
+
+            <div className="explore-gigs-container d-flex flex-column" style={{ marginBottom: "50px" }}>
+            <div className="gigs-title">Explore</div>
+
+            <div className="pagination-wrapper">
+              <NoPagesPagination
+                totalPages={totalPagesExplore}
+                currentPage={currentPageExplore}
+                onPageChange={(page) => setCurrentPageExplore(page)}
+              />
+            </div>
+
+            <div className="gigs-list-hot">
+              {displayedExploreGigs.map((gig) => (
+                <GigCard key={gig.id} gig={gig} showSeller={true} setLiked={updateGigLikedState} />
+              ))}
+            </div>
+          </div>
         </div>
 
         </SellerPage>

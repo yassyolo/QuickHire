@@ -615,7 +615,10 @@ public class SeedData
         await SeedCertifications();
         await SeedSkills();
         await SeedPortfolios();
-       // await SeedGigs();
+        /*await SeedGigs();
+        await SeedSeller2Gigs();
+        await SeedSeller4Gigs();
+        await SeedSeller5Gigs();*/
     }
 
     private async Task SeedApplicationUsers()
@@ -888,7 +891,6 @@ public class SeedData
             }
         }
     }
-
     private async Task SeedBuyers()
     {
         if (!_context.Buyers.Any())
@@ -1197,13 +1199,6 @@ public class SeedData
         Name = "UX Design Professional Certificate",
         Issuer = "Google",
         IssuedAt = new DateTime(2020, 9, 1),
-        SellerId = Seller1.Id
-    },
-    new Certification
-    {
-        Name = "Human-Centered Design Certificate",
-        Issuer = "Coursera / University of California San Diego",
-        IssuedAt = new DateTime(2021, 3, 20),
         SellerId = Seller1.Id
     }
 };
@@ -4336,7 +4331,6 @@ GigFilter3ForSubSubCategory1ForSubCategory1ForMainCategory1 = new GigFilter
 
        await SeedGigDetails(_context, gig1, gig2, gig3, gig4);
     }
-
     private async Task SeedGigDetails(ApplicationDbContext context, Gig gig1, Gig gig2, Gig gig3, Gig gig4)
     {
         await context.GigMetadatas.AddRangeAsync(
@@ -4597,9 +4591,9 @@ new PaymentPlanInclude { PaymentPlanId = paymentPlan1Premium.Id, Name = "Bonus",
 
         await context.SaveChangesAsync();
     }
-
-    private async Task SeedSeller2Gigs(ApplicationDbContext context, Guid seller2Id, Guid uxDesignSubSubCategoryId)
+    private async Task SeedSeller2Gigs()
     {
+        var context = _context;
         var gig5 = new Gig
         {
             SellerId = Seller2.Id,
@@ -4744,9 +4738,9 @@ new PaymentPlanInclude { PaymentPlanId = paymentPlan1Premium.Id, Name = "Bonus",
         );
         await context.SaveChangesAsync();
     }
-
-    private async Task SeedSeller4Gigs(ApplicationDbContext context, Guid seller4Id, Guid uxDesignSubSubCategoryId)
+    private async Task SeedSeller4Gigs()
     {
+        var context = _context;
         // Create 4 gigs for Seller4
         var gig1 = new Gig
         {
@@ -4911,9 +4905,9 @@ new PaymentPlanInclude { PaymentPlanId = paymentPlan1Premium.Id, Name = "Bonus",
         );
         await context.SaveChangesAsync();
     }
-
-    private async Task SeedSeller5Gigs(ApplicationDbContext context, Guid seller5Id, Guid uxDesignSubSubCategoryId)
+    private async Task SeedSeller5Gigs()
     {
+        var context = _context;
         // Create 4 gigs for Seller5
         var gig1 = new Gig
         {
@@ -5078,7 +5072,4 @@ new PaymentPlanInclude { PaymentPlanId = paymentPlan1Premium.Id, Name = "Bonus",
         );
         await context.SaveChangesAsync();
     }
-
-
-
 }

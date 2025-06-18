@@ -71,8 +71,8 @@ public class SearchGigsForAdminQueryHandler : IQueryHandler<SearchGigsForAdminQu
             .Select(x => new SearchGigsForAdminModel
             {
                 Id = x.Id,
-                CreatedOn = x.CreatedAt.ToString("yyyy-MM-dd"),
-                Service = x.Title,
+                CreatedOn = x.CreatedAt.ToString("dd MMM, yyyy"),
+                Service = x.Title,  
                 Orders = x.Orders.Where(x => x.Status != Domain.Orders.Enums.OrderStatus.PendingPayment || x.Status != Domain.Orders.Enums.OrderStatus.Failed).Count(),
                 Revenue = x.Orders.Where(x => x.Status != Domain.Orders.Enums.OrderStatus.PendingPayment || x.Status != Domain.Orders.Enums.OrderStatus.Failed).Sum(x => x.TotalPrice),
                 AvgReview = x.Orders.Where(x => x.Status != Domain.Orders.Enums.OrderStatus.PendingPayment || x.Status != Domain.Orders.Enums.OrderStatus.Failed).SelectMany(x => x.Reviews).Any() ? x.Orders.SelectMany(x => x.Reviews).Average(x => x.Rating) : 0,

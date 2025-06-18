@@ -110,7 +110,9 @@ export function MainCategories() {
                         )} />
                 </div>
             )}
-        </div><div className="pagination-container">
+        </div>
+                    <div className="pagination-container" style={{marginBottom: '30px', marginTop: '50px'}}>
+
                 <Pagination totalPages={totalPages} currentPage={currentPage} onPageChange={handlePageChange} />
             </div></>
     );

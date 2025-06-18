@@ -24,14 +24,21 @@ internal class LoginBuyerCommandHandler : ICommandHandler<LoginBuyerCommand, Uni
             throw new NotFoundException("ApplicationUser", request.model.EmailOrUsername);
         }
 
-        var passwordCheckResult = await _userService.CheckPasswordAsync(user, request.model.Password);
-
-        if(!passwordCheckResult)
+        try
         {
-            throw new UnauthorizedAccessException("Invalid credentials", "The provided email/username or password is incorrect.");
-        }
+            var passwordCheckResult = await _userService.CheckPasswordAsync(user, request.model.Password);
 
-        await _userService.AssignJwtTokens(user, "buyer");
+            if (!passwordCheckResult)
+            {
+                throw new UnauthorizedAccessException("Invalid credentials", "The provided email/username or password is incorrect.");
+            }
+
+            await _userService.AssignJwtTokens(user, "buyer");
+        }
+        catch (Exception ex)
+        {
+           throw new BadRequestException("Login failed", ex.Message);
+        }       
 
         return Unit.Value;
     }

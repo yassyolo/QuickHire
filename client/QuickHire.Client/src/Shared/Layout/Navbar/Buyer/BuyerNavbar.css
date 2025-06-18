@@ -12,6 +12,24 @@
     z-index: 2;
 }
 
+.order-button{
+    background-color: white;
+    color: var(--fiverr-green-color)  !important;
+    border: none;
+    padding: 8px 20px !important;
+    border-radius: 5px;
+    font-size: 16px;
+    box-shadow: none !important;
+    color: var(--text-grey-color);
+    border: 2px solid var(--fiverr-green-color) !important;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.order-button:hover{
+    background-color: var(--text-grey-color);
+}
+
 .bottom-seller-navbar{
     border-bottom: 1px solid #dee2e6;
     padding: 0 40px;

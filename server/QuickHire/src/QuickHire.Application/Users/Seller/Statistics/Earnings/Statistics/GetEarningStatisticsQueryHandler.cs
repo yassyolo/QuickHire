@@ -21,7 +21,7 @@ public class GetEarningStatisticsQueryHandler : IQueryHandler<GetEarningStatisti
 
     public async Task<IEnumerable<EarningStatisticsRowModel>> Handle(GetEarningStatisticsQuery request, CancellationToken cancellationToken)
     {
-        /*var (startDate, endDate) = ParseRange(request.Range ?? "last 30 days");
+        var (startDate, endDate) = ParseRange(request.Range ?? "last 30 days");
 
         var sellerId = await _userService.GetSellerIdByUserIdAsync();
 
@@ -54,51 +54,7 @@ public class GetEarningStatisticsQueryHandler : IQueryHandler<GetEarningStatisti
             };
         });
 
-        return result;*/
-
-        return new List<EarningStatisticsRowModel>
-        {
-            new EarningStatisticsRowModel
-            {
-                Date = "2023-10-01",
-                TotalRevenue = 1000,
-                CompletedRevenue = 800,
-                InProgressRevenue = 200,
-                AverageOrderValue = 200
-            },
-            new EarningStatisticsRowModel
-            {
-                Date = "2023-10-02",
-                TotalRevenue = 1200,
-                CompletedRevenue = 1000,
-                InProgressRevenue = 200,
-                AverageOrderValue = 300
-            },
-            new EarningStatisticsRowModel
-            {
-                Date = "2023-10-03",
-                TotalRevenue = 1500,
-                CompletedRevenue = 1200,
-                InProgressRevenue = 300,
-                AverageOrderValue = 375
-            },
-            new EarningStatisticsRowModel
-            {
-                Date = "2023-10-04",
-                TotalRevenue = 900,
-                CompletedRevenue = 700,
-                InProgressRevenue = 200,
-                AverageOrderValue = 225
-            },
-            new EarningStatisticsRowModel
-            {
-                Date = "2023-10-05",
-                TotalRevenue = 1100,
-                CompletedRevenue = 900,
-                InProgressRevenue = 200,
-                AverageOrderValue = 275
-            }
-        };
+        return result;
     }
 
     private (DateTime Start, DateTime End) ParseRange(string range)

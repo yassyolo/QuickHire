@@ -29,7 +29,7 @@ internal static class MapsterConfiguration
     {
         TypeAdapterConfig<MainCategory, MainCategoryRowModel>.NewConfig()
             .Map(dest => dest.Id, src => src.Id)
-            .Map(dest => dest.CreatedOn, src => src.CreatedOn.ToString("yyyy-MM-dd"))
+            .Map(dest => dest.CreatedOn, src => src.CreatedOn.ToString("dd MMM, yyyy"))
             .Map(dest => dest.Name, src => src.Name)
             .Map(dest => dest.Description, src => src.Description)
             .Map(dest => dest.SubCategories, src => src.SubCategories.Count())
@@ -45,7 +45,7 @@ internal static class MapsterConfiguration
             .Map(dest => dest.Name, src => src.Name)
             .Map(dest => dest.Description, src => src.Description)
             .Map(dest => dest.Clicks, src => src.Clicks)
-            .Map(dest => dest.CreatedOn, src => src.CreatedOn.ToString("yyyy-MM-dd"));
+            .Map(dest => dest.CreatedOn, src => src.CreatedOn.ToString("dd MMM, yyyy"));
 
         TypeAdapterConfig<SubCategory, SubCategoriesInMainCategoryModel>.NewConfig()
             .Map(dest => dest.Id, src => src.Id)
@@ -65,7 +65,7 @@ internal static class MapsterConfiguration
             .Map(dest => dest.Id, src => src.Id)
             .Map(dest => dest.Name, src => src.Name)
             .Map(dest => dest.Clicks, src => src.Clicks)
-            .Map(dest => dest.CreatedOn, src => src.CreatedOn.ToString("yyyy-MM-dd"))
+            .Map(dest => dest.CreatedOn, src => src.CreatedOn.ToString("dd MMM, yyyy"))
             .Map(dest => dest.ImageUrl, src => src.ImageUrl)
             .Map(dest => dest.MainCategoryName, src => src.MainCategory.Name)
             .Map(dest => dest.SubSubCategories, src => src.SubSubCategories.Count());
@@ -91,7 +91,7 @@ internal static class MapsterConfiguration
             .Map(dest => dest.Id, src => src.Id)
             .Map(dest => dest.Name, src => src.Name)
             .Map(dest => dest.Clicks, src => src.Clicks)
-            .Map(dest => dest.CreatedOn, src => src.CreatedOn.ToString("yyyy-MM-dd"))
+            .Map(dest => dest.CreatedOn, src => src.CreatedOn.ToString("dd MMM, yyyy"))
             .Map(dest => dest.MainCategoryName, src => src.MainCategory.Name)
             .Map(dest => dest.ImageUrl, src => src.ImageUrl);
 
@@ -101,7 +101,7 @@ internal static class MapsterConfiguration
             .Map(dest => dest.Clicks, src => src.Clicks)
             .Map(dest => dest.Filters, src => src.GigFilters.Count())
             .Map(dest => dest.Gigs, src => src.Gigs.Count())
-            .Map(dest => dest.CreatedOn, src => src.CreatedOn.ToString("yyyy-MM-dd "))
+            .Map(dest => dest.CreatedOn, src => src.CreatedOn.ToString("dd MMM, yyyy"))
             .Map(dest => dest.SubCategoryName, src => src.SubCategory.Name);
 
         TypeAdapterConfig<SubSubCategory, GetSubSubCategoryForEditModel>.NewConfig()
@@ -140,7 +140,7 @@ internal static class MapsterConfiguration
             .Map(dest => dest.Id, src => src.Id)
             .Map(dest => dest.Title, src => src.Title)
             .Map(dest => dest.Message, src => src.Message)
-            .Map(dest => dest.CreatedAt, src => src.CreatedAt.ToString("yyyy-MM-dd"));
+            .Map(dest => dest.CreatedAt, src => src.CreatedAt.ToString("dd MMM, yyyy"));
 
         TypeAdapterConfig<SubCategory, SubCategoriesHeaderResponseModel>.NewConfig()
             .Map(dest => dest.Id, src => src.Id)
@@ -170,7 +170,7 @@ internal static class MapsterConfiguration
 
         TypeAdapterConfig<Invoice, FinancialDocumentRowModel>.NewConfig()
             .Map(dest => dest.Id, src => src.Id)
-            .Map(dest => dest.Date, src => src.CreatedAt.ToString("yyyy-MM-dd"))
+            .Map(dest => dest.Date, src => src.CreatedAt.ToString("dd MMM, yyyy"))
             .Map(dest => dest.DocumentNumber, src => src.InvoiceNumber)
             .Map(dest => dest.Service, src => src.Order.Gig.Title)
             .Map(dest => dest.OrderNumber, src => src.Order.OrderNumber)
@@ -178,15 +178,25 @@ internal static class MapsterConfiguration
             .Map(dest => dest.PdfLink, src => src.SourceUrl);
 
         TypeAdapterConfig<Order, SellerDashboardOrderModel>.NewConfig()
-            .Map(dest => dest.Id, src => src.Id)
-            .Map(dest => dest.ImageUrl, src => src.Gig.ImageUrls.FirstOrDefault())
-            .Map(dest => dest.Title, src => src.Gig.Title)
-            .Map(dest => dest.Status, src => src.Status.ToString())
-            .Map(dest => dest.DueIn, src =>((src.CreatedAt.AddDays(src.SelectedPaymentPlan.DeliveryTimeInDays) - DateTime.UtcNow).TotalDays).ToString("F0"));
+    .Map(dest => dest.Id, src => src.Id)
+    .Map(dest => dest.ImageUrl, src => src.Gig.ImageUrls.FirstOrDefault())
+    .Map(dest => dest.Title, src => src.Gig.Title)
+    .Map(dest => dest.Price, src => src.TotalPrice)
+    .Map(dest => dest.Status, src => src.Status.ToString())
+    .Map(dest => dest.DueIn, src => FormatDueIn(src));
 
-            TypeAdapterConfig<Language, PopulationModel>.NewConfig()
+
+        TypeAdapterConfig<Language, PopulationModel>.NewConfig()
             .Map(dest => dest.Id, src => src.Id)
             .Map(dest => dest.Name, src => src.Name);
         TypeAdapterConfig.GlobalSettings.Scan(assembly);
+    }
+
+    private static string FormatDueIn(Order src)
+    {
+        var dueIn = src.CreatedAt.AddDays(src.SelectedPaymentPlan.DeliveryTimeInDays) - DateTime.UtcNow;
+        if (dueIn.TotalSeconds <= 0)
+            return "Overdue";
+        return $"{dueIn.Days}d {dueIn.Hours}h";
     }
 }

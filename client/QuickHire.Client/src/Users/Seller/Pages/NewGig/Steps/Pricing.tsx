@@ -29,8 +29,6 @@ export function PricingStep({
 
   return (
     <div>
-      <h2 className="text-xl font-semibold mb-4">Create Your Package Plans</h2>
-
       {validationErrors && (
         <div className="text-red-500 mb-2">{validationErrors}</div>
       )}

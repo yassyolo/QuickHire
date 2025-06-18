@@ -57,7 +57,7 @@ public class GetBuyerProjectBriefsQueryHandler : IQueryHandler<GetBuyerProjectBr
             DocumentNumber = x.ProjectBriefNumber,
             SellersReached = sellersReachedByBrief.TryGetValue(x.Id, out var count) ? count : 0,
             TotalOffers = x.CustomOffers.Count(),
-            Order = x.Status == ProjectBriefStatus.OrderPlaced,
+            Order = x.Status == ProjectBriefStatus.OrderPlaced ? "yes" : "no",
             Status = x.Status.ToString()
         });
     }

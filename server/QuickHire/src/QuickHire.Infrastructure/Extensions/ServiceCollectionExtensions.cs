@@ -21,7 +21,6 @@ using QuickHire.Infrastructure.Options;
 using QuickHire.Infrastructure.Persistence;
 using QuickHire.Infrastructure.Persistence.Identity;
 using QuickHire.Infrastructure.Persistence.Repositories;
-using QuickHire.Infrastructure.Realtime.Services;
 using QuickHire.Infrastructure.Services;
 using Stripe.Tax;
 using System.Text;

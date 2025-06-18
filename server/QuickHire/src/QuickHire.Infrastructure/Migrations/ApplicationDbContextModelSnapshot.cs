@@ -1315,8 +1315,7 @@ namespace QuickHire.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CountryId")
-                        .IsUnique();
+                    b.HasIndex("CountryId");
 
                     b.ToTable("Addresses");
                 });
@@ -2343,8 +2342,8 @@ namespace QuickHire.Infrastructure.Migrations
             modelBuilder.Entity("QuickHire.Domain.Users.Address", b =>
                 {
                     b.HasOne("QuickHire.Domain.Users.Country", "Country")
-                        .WithOne()
-                        .HasForeignKey("QuickHire.Domain.Users.Address", "CountryId")
+                        .WithMany()
+                        .HasForeignKey("CountryId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 

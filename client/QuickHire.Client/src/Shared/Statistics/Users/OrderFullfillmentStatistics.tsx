@@ -24,12 +24,7 @@ export function OrderFullfillmentStatistics() {
         }
     catch (error) {
         console.error("Error fetching order fulfillment statistics cards:", error);
-        setStatisticCards([
-            { title: "Completed Orders", value: "0" },
-            { title: "Sales", value: "0" },
-            { title: "Average Rating", value: "0" },
-            { title: "Revenue", value: "0" },
-        ]);
+       
     }
   };
 

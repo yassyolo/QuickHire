@@ -18,7 +18,7 @@ interface GigsForUserProps {
 }
 export function GigsForUser ({ userId }: GigsForUserProps) {
     const [gigs, setGigs] = useState<GigRow[]>([]);
-    const itemsPerPage = 2;
+    const itemsPerPage = 5;
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [totalPages, setTotalPages] = useState<number>(0);
     
@@ -62,7 +62,8 @@ export function GigsForUser ({ userId }: GigsForUserProps) {
         <>
             <div className="categories-list d-flex flex-column" style={{gap: "10px"}}>
                                 <DataTable data={gigs} columns={["id", "createdOn", "service", "orders", "revenue", "clicks", "avgReview"]} headers={tableHeaders} renderActions={(row: GigRow) => (<GigActions gig={row} onDeactivateSuccess={handleDeactivateSuccess} />)} />
-            <div className="pagination-container">
+                        <div className="pagination-container" style={{marginBottom: '30px', marginTop: '50px'}}>
+
                <Pagination totalPages={totalPages} currentPage={currentPage} onPageChange={handlePageChange}></Pagination>
             </div>
                                         </div>

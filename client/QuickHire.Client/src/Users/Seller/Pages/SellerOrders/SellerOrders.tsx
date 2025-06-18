@@ -13,7 +13,6 @@ export interface OrderRow{
   gigTitle: string;
   dueOn: string;
   total: number;
-  status: string;
 }
 
 const tableHeaders = {
@@ -21,8 +20,7 @@ const tableHeaders = {
   buyerUsername: "Buyer",
   gigTitle: "Service",
   dueOn: "Due On",
-  total: "Total",
-  status: "Status",
+  total: "Total($)",
 };
 
 
@@ -50,10 +48,11 @@ export function SellerOrders (){
                 setLoading(false);
             }
         }, [moderationStatusId]);
-
+useEffect(() => {
+        setModerationStatusId(3); 
+    }, []);
     useEffect(() => {
         fetchGigs();
-        setModerationStatusId(3); 
     }
     , [ moderationStatusId, fetchGigs]);
 
@@ -65,7 +64,7 @@ breadcrumbs={[{ label: <i className="bi bi-house-door"></i>, to: "/seller/dashbo
               {loading ? (<div className="loading">Loading...</div>
               ) : (
                 <div style={{marginTop: '10px'}}><TitleFilterSelector selectedId={moderationStatusId} setSelectedId={handleSelectedModerationStatusId} endpoint="https://localhost:7267/admin/filters/order-status" /><div className="categories-list">
-                <DataTable data={orders} columns={["id", "buyerUsername", "gigTitle", "dueOn", "total", "status"]} headers={tableHeaders} renderActions={(row: OrderRow) => (<OrderActions order={row}  />)} />
+                <DataTable data={orders} columns={["id", "buyerUsername", "gigTitle", "dueOn", "total"]} headers={tableHeaders} renderActions={(row: OrderRow) => (<OrderActions order={row}  />)} />
               </div></div>
               )}
             </div>

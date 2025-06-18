@@ -3,5 +3,8 @@ using QuickHire.Application.Common.Interfaces.Abstractions;
 
 namespace QuickHire.Application.Shared.Filters.ServiceIncludesFilter;
 
-public record ServiceIncludesFilterQuery(int? Id) : IQuery<List<ServiceIncludesFilterModel>>;
+public class ServiceIncludesFilterQuery : IQuery<List<ServiceIncludesFilterModel>>
+{
+    public int? Id { get; init; }
+}
 

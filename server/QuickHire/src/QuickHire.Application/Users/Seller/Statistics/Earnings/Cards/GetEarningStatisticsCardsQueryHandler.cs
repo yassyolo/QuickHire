@@ -18,7 +18,7 @@ public class GetEarningStatisticsCardsQueryHandler : IQueryHandler<GetEarningSta
 
     public async Task<IEnumerable<CardItemModel>> Handle(GetEarningStatisticsCardsQuery request, CancellationToken cancellationToken)
     {
-        /*var sellerId = await _userService.GetSellerIdByUserIdAsync();
+        var sellerId = await _userService.GetSellerIdByUserIdAsync();
         var ordersQuery = _repository.GetAllReadOnly<QuickHire.Domain.Orders.Order>().Where(x => x.SellerId == sellerId);
 
         var orders = await _repository.ToListAsync<QuickHire.Domain.Orders.Order>(ordersQuery);
@@ -48,30 +48,6 @@ public class GetEarningStatisticsCardsQueryHandler : IQueryHandler<GetEarningSta
             {
                 Title = "In-progress revenue",
                 Value = inProgressOrdersRevenue.ToString("C")
-            }
-        };*/
-
-        return new List<CardItemModel>
-        {
-            new CardItemModel
-            {
-                Title = "Revenue",
-                Value = "8200"
-            },
-            new CardItemModel
-            {
-                Title = "Completed revenue",
-                Value = "6500"
-            },
-            new CardItemModel
-            {
-                Title = "Average order value",
-                Value = "164"
-            },
-            new CardItemModel
-            {
-                Title = "In-progress revenue",
-                Value = "1700"
             }
         };
     }

@@ -69,12 +69,12 @@ export function GigDetailsPage() {
 
     return (
         <>
-        <div style={{padding: '20px 200px'}}>
+        <div style={{padding: '20px 90px'}}>
             <div className="d-flex flex-row justify-content-between" style={{paddingRight: '40px'}}>
         <Breadcrumb items={[
             { label: <i className="bi bi-house-door" />, to: "/buyer" },
             { label: gigDetails?.mainCategoryName, to: `/buyer/main-categories/${gigDetails?.mainCategoryId}` },
-            { label: gigDetails?.subCategoryName },
+            { label: gigDetails?.subCategoryName, to: `/buyer/sub-categories/${gigDetails?.subCategoryId}` },
         ]} />
           <div className="gig-buttons">
             {gigId !== null && (
@@ -115,14 +115,17 @@ export function GigDetailsPage() {
 }
                 </div>
                 </div>
-                <div className="d-flex flex-column sticky-container" style={{gap: '30px'}}>
+                <div className="d-flex flex-column" style={{gap: '20px'}}>
+                    <div className="d-flex flex-column" style={{gap: '30px'}}>
                     <div className="payment-plans-container">
                         {gigDetails && gigDetails.paymentPlans.length > 0 && gigId !== null &&
                                     <PaymentPlansCard plans={gigDetails.paymentPlans} gigId={gigId}/>}
+                    </div>
                 </div>
                 <ContactMe userId={gigDetails?.userId ?? ""}/>
                 </div>
                 
+
                                
             </div>
                 

@@ -27,7 +27,7 @@ public class SubSubCategoryDetailsQueryHandler : IQueryHandler<SubSubCategoryDet
             Id = subSubCategory.Id,
             Name = subSubCategory.Name,            
             Clicks = subSubCategory.Clicks,
-            CreatedOn = subSubCategory.CreatedOn.ToString("yyyy-MM-dd"),
+            CreatedOn = subSubCategory.CreatedOn.ToString("dd MMM, yyyy"),
         };
 
         var gigFiltersQueryable = _repository.GetAllIncluding<Domain.Categories.GigFilter>(x => x.Options).Where(x => x.SubSubCategoryId == subSubCategory.Id);

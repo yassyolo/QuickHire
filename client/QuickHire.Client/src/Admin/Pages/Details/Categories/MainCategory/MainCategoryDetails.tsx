@@ -107,7 +107,7 @@ export function MainCategoryDetails() {
   const handleSeeSubCategory = (id: number) => navigate(`/admin/sub-categories/${id}`);
 
   return (
-      <div className="category-details-page d-flex flex-row" style={{ height: "70vh" }}>
+      <div className="category-details-page d-flex flex-row" style={{ height: "100%" }}>
         <div className="breadcrumb-side-nav" style={{marginRight: "30px", width: '10%'}}>
           <Breadcrumb items={[ { label: <i className="bi bi-house-door" /> }, { label: "Main categories", to: "/admin/main-categories" }
           ]} />

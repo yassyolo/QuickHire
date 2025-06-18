@@ -2,10 +2,11 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  position: relative;
+  position: sticky;
   padding: 20px;
 background-color: #f9f9f9;
 border-radius: 8px;
+height: 280px;
 }
 
 .step {

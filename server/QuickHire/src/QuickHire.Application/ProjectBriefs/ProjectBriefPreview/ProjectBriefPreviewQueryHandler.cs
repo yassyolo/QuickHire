@@ -42,7 +42,7 @@ public class ProjectBriefPreviewQueryHandler : IQueryHandler<ProjectBriefPreview
             SubSubCategoryName = projectBrief.SubSubCategory.Name,
             BuyerName = buyerInfo.Name,
             BuyerProfilePictureUrl = buyerInfo.ProfilePictureUrl,
-            CreatedAt = projectBrief.CreatedAt.ToString("yyyy-MM-dd"),
+            CreatedAt = projectBrief.CreatedAt.ToString("dd MMM, yyyy"),
             MemberSince = buyerInfo.MemberSince,
             Status = projectBrief.Status.ToString(),
             Location = buyerInfo.Location,

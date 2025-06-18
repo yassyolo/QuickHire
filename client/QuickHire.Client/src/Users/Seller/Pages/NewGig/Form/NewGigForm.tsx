@@ -13,7 +13,7 @@ import { ActionButton } from "../../../../../Shared/Buttons/ActionButton/ActionB
 
 export function NewGigForm() {
   const [activeStep, setActiveStep] = useState(1);
-const [title, setTitle] = useState("");
+  const [title, setTitle] = useState("");
   const [selectedSubSubCategoryId, setSelectedSubSubCategoryId] = useState<number | null>(null);
   const [description, setDescription] = useState("");
   const [tags, setTags] = useState("");
@@ -29,6 +29,7 @@ const [title, setTitle] = useState("");
   const handlePublish = async () => {
     try {
       const formData = new FormData();
+      formData.append("Title", title);
 
       formData.append("SubSubCategoryId", String(selectedSubSubCategoryId));
       formData.append("Description", description);
@@ -38,8 +39,8 @@ const [title, setTitle] = useState("");
       formData.append("Faqs", JSON.stringify(faqs));
       formData.append("Requirements", JSON.stringify(requirements));
       galleryImages.forEach((file) => formData.append(`GalleryImages`, file));
-
-      await axios.post("/api/gigs", formData, {
+const url = "https://localhost:7267/seller/gigs";
+      await axios.post(url, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
@@ -61,9 +62,9 @@ const [title, setTitle] = useState("");
   const steps = [
     {
       title: "Overview",
-      isValid: title.trim() !== "" && tags.trim() !== "" && selectedSubSubCategoryId !== null,
+      isValid: true,
       content: (
-        <><Overview
+        <div style={{justifyContent: 'center', alignItems: 'center'}}><Overview
               selectedSubSubCategoryId={selectedSubSubCategoryId}
               onChangeSubSubCategoryId={setSelectedSubSubCategoryId}
               title={title}
@@ -74,12 +75,12 @@ const [title, setTitle] = useState("");
                   text="Save and continue"
                   onClick={handleNextStep}
                   className="save-and-continue-button"
-                  ariaLabel="Save personal info and go to next step" /></>
+                  ariaLabel="Save personal info and go to next step" /></div>
       ),
     },
     {
       title: "Pricing",
-      isValid: plans.length > 0 && plans.every((plan) => plan.price > 0),
+      isValid: true,
       content: (
         <><PricingStep
               onNextStep={() => {
@@ -90,25 +91,28 @@ const [title, setTitle] = useState("");
     },
     {
       title: "Metadata",
-      isValid: selectedOptions.length > 0,
+      isValid: true,
       content: (
-        <><GigMetadata
-              selectedOptions={selectedOptions}
-              onApply={(options) => {
-                  setSelectedOptions(options);
-                  setActiveStep((prev) => prev + 1);
-              } } /><ActionButton
+        <div style={{width: '550px' , justifyContent: 'center', alignContent: 'center', gap: '20px', display: 'flex', flexDirection: 'column'}}><GigMetadata
+          selectedOptions={selectedOptions}
+          onApply={(options) => {
+            setSelectedOptions(options);
+            setActiveStep((prev) => prev + 1);
+          } }
+          subSubCategoryId={selectedSubSubCategoryId ?? 0}
+
+        /><ActionButton
                   text="Save and continue"
                   onClick={handleNextStep}
                   className="save-and-continue-button"
-                  ariaLabel="Save personal info and go to next step" /></>
+                  ariaLabel="Save personal info and go to next step" /></div>
       ),
     },
     {
       title: "FAQ and Description",
-      isValid: faqs.length > 0 && description.trim() !== "",
+      isValid: true,
       content: (
-        <><FAQAndDescription
+        <div style={{width: '550px' , justifyContent: 'center', alignContent: 'center', gap: '20px', display: 'flex', flexDirection: 'column'}} ><FAQAndDescription
               description={description}
               onDescriptionChange={setDescription}
               faqs={faqs}
@@ -118,14 +122,15 @@ const [title, setTitle] = useState("");
                   text="Save and continue"
                   onClick={handleNextStep}
                   className="save-and-continue-button"
-                  ariaLabel="Save personal info and go to next step" /></>
+                  ariaLabel="Save personal info and go to next step" /></div>
       ),
     },
     {
       title: "Requirements",
-      isValid: requirements.every((req) => req.question.trim() !== "") && requirements.length > 0,
+      isValid: true,
       content: (
-        <><Requirements
+        <div style={{width: '550px' , justifyContent: 'center', alignContent: 'center', gap: '20px', display: 'flex', flexDirection: 'column'}} >
+          <Requirements
               requirements={requirements}
               onRequirementsChange={setRequirements}
               validationErrors={requirementsValidationErrors}
@@ -133,33 +138,25 @@ const [title, setTitle] = useState("");
                   text="Save and continue"
                   onClick={handleNextStep}
                   className="save-and-continue-button"
-                  ariaLabel="Save personal info and go to next step" /></>
+                  ariaLabel="Save personal info and go to next step" /></div>
       ),
     },
     {
       title: "Gallery",
       isValid: galleryImages.length > 0,
       content: (
-        <><GalleryUpload
+                <div style={{width: '550px' , justifyContent: 'center', alignContent: 'center', gap: '20px', display: 'flex', flexDirection: 'column'}} >
+<GalleryUpload
               images={galleryImages}
               onImagesChange={setGalleryImages}
               validationErrors={galleryValidationErrors}
               tooltipDescription="Upload up to 5 images of your work." /><ActionButton
                   text="Save and continue"
-                  onClick={handleNextStep}
+                  onClick={handlePublish}
                   className="save-and-continue-button"
-                  ariaLabel="Save personal info and go to next step" /></>
+                  ariaLabel="Save personal info and go to next step" /></div>
       ),
-    },
-    {
-      title: "Publish",
-      isValid: galleryImages.length > 0,      
-      content: (
-        <button className="primary-button" onClick={handlePublish}>
-          Publish Gig
-        </button>
-      ),
-    },
+    }
   ];
 
   return (

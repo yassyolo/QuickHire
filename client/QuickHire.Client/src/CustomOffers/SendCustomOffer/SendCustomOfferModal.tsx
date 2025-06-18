@@ -125,6 +125,7 @@ try {
     );
         
         const offer = response.data as CustomOfferReturnModel;
+        onClose();
 
         if (auth.signalRConnection) {
              await auth.signalRConnection.invoke(
@@ -133,12 +134,12 @@ try {
                     offer.conversationId,                  
                     null,                                  
                     JSON.stringify(offer.payload),         
-                    "CustomOffer",                        
+                    1, 
+                    null                       
                 );
         }
 
         onSendCustomOfferSuccess(id);
-        onClose();
 
     } catch (error) {
         if (isAxiosError(error) && error.response?.status === 400) {

@@ -45,6 +45,7 @@ import { SubCategoryPage } from './Users/Buyer/Pages/SubCategoryPage/SubCategory
 import { BuyerSearchResultsPage } from './Users/Buyer/Pages/SearchResults/BuyerSearchResults'
 import { OrderDetails } from './Orders/Pages/OrderDetails/OrderDetails'
 import { SellerDetailsPage } from './Users/Buyer/Pages/SellerDetailsPage/SellerDetailsPage'
+import { BuyerOrders } from './Users/Buyer/Pages/BuyerOrders/BuyerOrders'
 
 export function App() {
   return (
@@ -88,6 +89,7 @@ export function App() {
             <Route path="browsing-history" element={<BrowsingHistory />} />
             <Route path="favourite-gigs" element={<FavouritesPage />} />
             <Route path="favourite-gigs/:id" element={<FavouriteListPage />} />
+            <Route path="orders" element={<BuyerOrders />} />
             <Route path="seller/:id" element={<SellerDetailsPage />} />
             <Route path="gigs/:id" element={<GigDetailsPage />} />
             <Route path="project-briefs" element={<PostProjectBrief/>} />

@@ -83,7 +83,6 @@ export function OrderForm({ chosenPlan, chosenPlanId, gigId, onBack }: OrderForm
     setActiveStep((prev) => (prev < steps.length ? prev + 1 : prev));
   };
 
-  // Updated: Expect both clientSecret and orderId
   const createOrderAndGetClientSecret = async (): Promise<CreateOrderResponse | null> => {
     if (!orderForm) return null;
 
@@ -100,7 +99,7 @@ export function OrderForm({ chosenPlan, chosenPlanId, gigId, onBack }: OrderForm
     try {
       const response = await axios.post<CreateOrderResponse>("https://localhost:7267/orders", payload);
       if (response.status === 200 || response.status === 201) {
-        return response.data; // { clientSecret, orderId }
+        return response.data; 
       }
     } catch (error) {
       console.error("Order creation failed:", error);

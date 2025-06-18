@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using QuickHire.Application.Common.Interfaces.Repository;
 using QuickHire.Application.Common.Interfaces.Services;
 using QuickHire.Application.Users.Models.Messaging;
@@ -84,6 +85,7 @@ public class ChatHub : Hub
             {
                 MessageType.CustomOffer => JsonSerializer.Deserialize<CustomOfferPayloadModel>(PayloadJson),
                 MessageType.Revision => JsonSerializer.Deserialize<RevisionPayloadModel>(PayloadJson),
+                MessageType.Delivery => JsonSerializer.Deserialize<DeliveryPayloadModel>(PayloadJson),
                 _ => null
             };
         }
@@ -138,6 +140,11 @@ public class ChatHub : Hub
         {
             type = MessageType.Revision;
             payloadJson = JsonSerializer.Serialize(revision);
+        }
+        else if (newMessageModel.Payload is DeliveryPayloadModel delivery)
+        {
+            type = MessageType.Delivery;
+            payloadJson = JsonSerializer.Serialize(delivery);
         }
         else if (!string.IsNullOrEmpty(newMessageModel.AttachmentUrl))
         {
@@ -197,6 +204,7 @@ public class ChatHub : Hub
         {
             MessageType.CustomOffer => JsonSerializer.Deserialize<CustomOfferPayloadModel>(payloadJson),
             MessageType.Revision => JsonSerializer.Deserialize<RevisionPayloadModel>(payloadJson),
+            MessageType.Delivery => JsonSerializer.Deserialize<DeliveryPayloadModel>(payloadJson),
             _ => null
         };
     }

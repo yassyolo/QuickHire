@@ -39,7 +39,7 @@ public class GetCustomOfferQueryHandler : IQueryHandler<GetCustomOfferQuery, Cus
             Revisions = customOffer.Revisions.ToString(),
             DeliveryTimeInDays = customOffer.DeliveryTimeInDays.ToString(),
             OfferIncludes = offerIncludesList.Select(x => x.PaymentPlanInclude.Name).ToArray(),
-            CreateOn = customOffer.CreatedAt.ToString("yyyy-MM-dd"),
+            CreateOn = customOffer.CreatedAt.ToString("dd MMM, yyyy"),
             Status = customOffer.Status.ToString(),
             SellerName = userInfo.Name,
             SellerProfilePictureUrl = userInfo.ProfilePictureUrl,

@@ -3,5 +3,5 @@ using QuickHire.Application.Users.Models.Orders;
 
 namespace QuickHire.Application.Orders.GetOrdersTable;
 
-public record GetOrdersTableQuery(int OrderStatusId) : IQuery<List<OrdersTableModel>>;
+public record GetOrdersTableQuery(int OrderStatusId, bool? Buyer) : IQuery<List<OrdersTableModel>>;
 

@@ -4,7 +4,8 @@ import { FileMessage } from "../Messages/File/FileMessage";
 import { CustomOfferMessage, CustomOfferPayload } from "../Messages/CustomOfferMessage/CustomOfferMessage";
 import "./MessageBox.css";
 import { useAuth } from "../../../../AuthContext";
-import { fetchConversationById, starConversation, uploadFile } from "./Message";
+import { fetchConversationById, uploadFile } from "./Message";
+import axios from "../../../../axiosInstance";
 
 interface MessageBoxProps {
   id: number;
@@ -99,13 +100,21 @@ export function MessageBox({ id }: MessageBoxProps) {
 
   const handleStarConversation = async () => {
     if (!conversation) return;
+     
+  try {
+    const url = `https://localhost:7267/messages/star?conversationId=${conversation.id}`;
+    const response = await axios.post(url); 
 
-    try {
-      await starConversation(conversation.id);
+    if (response.status === 200) {
       setConversation(prev => prev ? { ...prev, isStarred: !prev.isStarred } : prev);
-    } catch (error) {
-      console.error("Error starring conversation:", error);
+        
     }
+  }
+   catch (error) {
+    console.error("Error toggling conversation like:", error);
+  }
+
+  
   };
 
   useEffect(() => {
@@ -209,7 +218,18 @@ export function MessageBox({ id }: MessageBoxProps) {
           })}
           <div ref={messagesEndRef} />
         </div>
-
+{file && (
+  <div className="image-preview" style={{ margin: "10px 0" }}>
+    <img
+      src={URL.createObjectURL(file)}
+      alt="Preview"
+      style={{ width: "250px", maxHeight: "150px", borderRadius: "8px", marginLeft: "20px" , marginRight: "10px"}}
+    />
+    <button onClick={() => setFile(null)} className="btn btn-sm btn-danger" style={{ marginTop: "5px" }}>
+      X
+    </button>
+  </div>
+)}
         <div className="message-input-container d-flex flex-row align-items-center">
           <label htmlFor="photo-upload" className="upload-icon-label">
             <i className="bi bi-image" style={{ fontSize: "1.3rem" }}></i>
@@ -238,8 +258,9 @@ export function MessageBox({ id }: MessageBoxProps) {
       <div className="participant-b-info-order d-flex flex-column">
         {conversation?.currentOrder && (
           <div className="current-order d-flex flex-column">
-            <div className="current-order-header">Order</div>
-            <div className="current-order-status">{conversation.currentOrder.status}</div>
+            <div className="d-flex flex-row justify-content-between"> <div className="current-order-header">Order</div>
+            <div className="current-order-status">{conversation.currentOrder.status}</div></div>
+           
             <div className="d-flex flex-row current-order-item">
               <img
                 src={conversation.currentOrder.imageUrl}
@@ -247,7 +268,7 @@ export function MessageBox({ id }: MessageBoxProps) {
                 className="current-order-image"
               />
               <div className="current-order-details d-flex flex-column">
-                <div className="current-order-price">{conversation.currentOrder.price}</div>
+                <div className="current-order-price">${conversation.currentOrder.price}</div>
                 <div className="current-order-due">Due on: {conversation.currentOrder.dueOn}</div>
               </div>
             </div>

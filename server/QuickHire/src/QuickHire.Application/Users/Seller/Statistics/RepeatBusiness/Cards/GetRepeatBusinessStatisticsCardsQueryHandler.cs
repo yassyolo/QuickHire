@@ -18,9 +18,9 @@ public class GetRepeatBusinessStatisticsCardsQueryHandler : IQueryHandler<GetRep
 
     public async Task<IEnumerable<CardItemModel>> Handle(GetRepeatBusinessStatisticsCardsQuery request, CancellationToken cancellationToken)
     {
-        /*var sellerId = await _userService.GetSellerIdByUserIdAsync();
+        var sellerId = await _userService.GetSellerIdByUserIdAsync();
 
-        var ordersQueryable = _repository.GetAllReadOnly<QuickHire.Domain.Orders.Order>().Where(o => o.SellerId == sellerId);
+        var ordersQueryable = _repository.GetAllReadOnly<QuickHire.Domain.Orders.Order>().Where(x => x.SellerId == sellerId);
         var orders = await _repository.ToListAsync<QuickHire.Domain.Orders.Order>(ordersQueryable);
 
         var buyerGroups = orders.GroupBy(x => x.BuyerId).Select(x => x.Count()).ToList();
@@ -46,26 +46,7 @@ public class GetRepeatBusinessStatisticsCardsQueryHandler : IQueryHandler<GetRep
             Title = "Revenue",
             Value = totalRevenue.ToString("C")
         }
-    };*/
-
-        return new List<CardItemModel>
-        {
-            new CardItemModel
-            {
-                Title = "Returning buyers",
-                Value = "230"
-            },
-            new CardItemModel
-            {
-                Title = "Average repeat orders",
-                Value = "1.7"
-            },
-            new CardItemModel
-            {
-                Title = "Revenue",
-                Value = "15,500"
-            }
-        };
+    };
     }
 }
 

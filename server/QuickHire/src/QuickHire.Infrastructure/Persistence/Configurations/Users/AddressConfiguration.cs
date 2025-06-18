@@ -12,8 +12,8 @@ internal class AddressConfiguration : IEntityTypeConfiguration<Address>
         builder.HasKey(x => x.Id);
 
         builder.HasOne(x => x.Country)
-            .WithOne()
-            .HasForeignKey<Address>(x => x.CountryId);
+            .WithMany()
+            .HasForeignKey(x => x.CountryId);
         builder.Property(x => x.Street).IsRequired().HasMaxLength(StreetMaxLength);
 
         builder.Property(x => x.City).IsRequired().HasMaxLength(CityMaxLength);

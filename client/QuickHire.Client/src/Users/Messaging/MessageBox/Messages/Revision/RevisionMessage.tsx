@@ -1,9 +1,7 @@
 import { MessageItem } from "../Common/MessageItem";
-import "./CustomOfferMessage.css";
 import { useAuth } from "../../../../../AuthContext";
 import { useState } from "react";
 import { ActionButton } from "../../../../../Shared/Buttons/ActionButton/ActionButton";
-import './RevisionMessage.css';
 
 interface CustomOfferProps {
     senderProfilePictureUrl: string;
@@ -16,7 +14,6 @@ interface CustomOfferProps {
 export interface RevisionPayload {
     attachments: string[];
     description: string;
-    sourceFileUrl: string;
     revisionNumber: number;
     acceptUntil: string;
     revisionId: number;
@@ -40,10 +37,7 @@ export function RevisionMessage({ senderProfilePictureUrl, senderUsername, times
                         <img key={index} className="attachment-image" src={attachment} alt={`Attachment ${index + 1}`} />
                     ))}
                 </div>
-                <div className="decription-title">Source file</div>
-<a href={payload.sourceFileUrl} target="_blank" rel="noopener noreferrer" className="source-file">
-  Click here
-</a>
+               
 <div className="has-until-container">
     Buyer has until <span className="has-until-date">{payload.acceptUntil}</span> to accept this revision.
 </div>

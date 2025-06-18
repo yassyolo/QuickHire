@@ -4,6 +4,7 @@ using QuickHire.Application.Common.Interfaces.Repository;
 using QuickHire.Application.Common.Interfaces.Services;
 using QuickHire.Application.Users.Models.Messaging;
 using QuickHire.Domain.Messaging;
+using QuickHire.Domain.Messaging.Enums;
 using QuickHire.Domain.Orders;
 using QuickHire.Domain.Shared.Exceptions;
 using UnauthorizedAccessException = QuickHire.Domain.Shared.Exceptions.UnauthorizedAccessException;
@@ -25,21 +26,17 @@ public class GetCurrentConversationQueryHandler : IQueryHandler<GetCurrentConver
     {
         var currentUserIdAndMode = _userService.GetCurrentUserIdAndMode();
 
-        var messagesQueryable = _repository.GetAllIncluding<Message>(x => x.Conversation).Where(x => x.Id == request.Id);
+        var messagesQueryable = _repository.GetAllIncluding<Message>(x => x.Conversation).Where(x => x.Id == request.Id && x.Conversation.Order ==null);
         var message = await _repository.FirstOrDefaultAsync(messagesQueryable);
-
-        message.IsRead = true; 
+       
+        message.IsRead = true;
         await _repository.UpdateAsync(message);
-        if (message == null)
-        {
-            throw new NotFoundException(nameof(Message), "Message not found for the given message ID.");
-        }
 
-        if ((message.Conversation.ParticipantAId != currentUserIdAndMode.UserId || message.Conversation.ParticipantAMode != currentUserIdAndMode.Mode) &&
+       if ((message.Conversation.ParticipantAId != currentUserIdAndMode.UserId || message.Conversation.ParticipantAMode != currentUserIdAndMode.Mode) &&
                        (message.Conversation.ParticipantBId != currentUserIdAndMode.UserId || message.Conversation.ParticipantBMode != currentUserIdAndMode.Mode))
-        {
-            throw new UnauthorizedAccessException("You do not have permission to access this conversation.");
-        }
+            {
+                throw new UnauthorizedAccessException("You do not have permission to access this conversation.");
+            }    
 
         var conversationQueryable = _repository.GetAllIncluding<Conversation>(x => x.Messages).Where(x => x.Id == message.Conversation.Id);
         var conversation = await _repository.FirstOrDefaultAsync(conversationQueryable);
@@ -70,32 +67,48 @@ public class GetCurrentConversationQueryHandler : IQueryHandler<GetCurrentConver
         var messagesModel = new List<MessagesForConversationModel>();
         foreach (var m in messages)
         {
-            var getSender =  await _userService.GetUsernameAndProfilePictureAsync(m.SenderId);
+            var getSender = await _userService.GetUsernameAndProfilePictureAsync(m.SenderId);
 
-            var payload = m.PayloadJson != null ? System.Text.Json.JsonSerializer.Deserialize<CustomOfferPayloadModel>(m.PayloadJson) : null;
+            object? payload = null;
+            if (!string.IsNullOrEmpty(m.PayloadJson))
+            {
+                payload = m.Type switch
+                {
+                    MessageType.CustomOffer => System.Text.Json.JsonSerializer.Deserialize<CustomOfferPayloadModel>(m.PayloadJson),
+                    MessageType.Revision => System.Text.Json.JsonSerializer.Deserialize<RevisionPayloadModel>(m.PayloadJson),
+                    MessageType.Delivery => System.Text.Json.JsonSerializer.Deserialize<DeliveryPayloadModel>(m.PayloadJson),
+                    _ => null
+                };
+            }
+
             var model = new MessagesForConversationModel
             {
                 Id = m.Id,
                 SenderProfilePictureUrl = getSender.ProfilePictureUrl,
                 Content = m.Text,
-                Timestamp = m.SentAt.ToString("dd-MM"), 
+                Timestamp = m.SentAt.ToString("dd-MM"),
                 SenderUsername = getSender.Username,
                 MessageType = m.Type.ToString().ToLower(),
                 Payload = payload,
-                FileUrl = m.AttachmentUrl != null ? m.AttachmentUrl : null
+                FileUrl = m.AttachmentUrl
             };
             messagesModel.Add(model);
         }
+
 
         var ordersQueryable = _repository.GetAllIncluding<Order>(x => x.Conversation, x => x.Gig, x => x.SelectedPaymentPlan).Where(x => x.Conversation.Id == conversation.Id);
         var order = await _repository.FirstOrDefaultAsync(ordersQueryable);
         if (order != null)
         {
+            var dueTimeSpan = order.CreatedAt
+    .AddDays(order.SelectedPaymentPlan.DeliveryTimeInDays) - DateTime.UtcNow;
+
+            string formattedDue = $"{(int)dueTimeSpan.TotalDays} days {dueTimeSpan.Hours} hours {dueTimeSpan.Minutes} minutes";
             result.CurrentOrder = new CurrentOrderModel
             {
                 Id = order.Id,
                 Price = order.TotalPrice.ToString(),
-                DueOn = (order.CreatedAt.AddDays(order.SelectedPaymentPlan.DeliveryTimeInDays) - DateTime.UtcNow).TotalDays.ToString(),
+                DueOn = formattedDue,
                 Status = order.Status.ToString(),
                ImageUrl = order.Gig.ImageUrls.FirstOrDefault() ?? string.Empty,
             };

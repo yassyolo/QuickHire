@@ -2,6 +2,8 @@
 using QuickHire.Application.Common.Interfaces.Repository;
 using QuickHire.Application.Common.Interfaces.Services;
 using QuickHire.Application.Users.Models.Statistics;
+using QuickHire.Domain.Orders;
+using QuickHire.Domain.Orders.Enums;
 
 namespace QuickHire.Application.Users.Seller.Statistics.OrderFullfillment.Cards;
 
@@ -18,62 +20,44 @@ public class GetOrderFullfillmentStatisticsCradsQueryHandler : IQueryHandler<Get
 
     public async Task<IEnumerable<CardItemModel>> Handle(GetOrderFullfillmentStatisticsCradsQuery request, CancellationToken cancellationToken)
     {
-        /*var sellerId = await _userService.GetSellerIdByUserIdAsync();
+        var sellerId = await _userService.GetSellerIdByUserIdAsync();
 
-        var ordersQueryable = _repository.GetAllReadOnly<QuickHire.Domain.Orders.Order>().Where(x => x.SellerId == sellerId);
-        ordersQueryable = _repository.GetAllIncluding<QuickHire.Domain.Orders.Order>(x => x.Reviews);
-        var ordersList = await _repository.ToListAsync<QuickHire.Domain.Orders.Order>(ordersQueryable);
+        var ordersQueryable = _repository.GetAllIncluding<Order>(x => x.Reviews).Where(x => x.SellerId == sellerId);
 
-        var revenue = ordersList.Where(x => x.Status == QuickHire.Domain.Orders.Enums.OrderStatus.Delivered).Sum(x => x.TotalPrice);
-        var averageRating = ordersList.Where(x => x.Status == QuickHire.Domain.Orders.Enums.OrderStatus.Delivered).SelectMany(x => x.Reviews).Average(x => x.Rating);
+        var ordersList = await _repository.ToListAsync(ordersQueryable);
+        var completedOrders = ordersList.Where(x => x.Status == OrderStatus.Delivered);
 
-        return new List<CardItemModel>
-        {
-            new CardItemModel
-            {
-                Title = "Completed orders",
-                Value = ordersList.Where(x => x.Status == QuickHire.Domain.Orders.Enums.OrderStatus.Delivered).Count().ToString()
-            },
-            new CardItemModel
-            {
-                Title = "Sales",
-                Value = ordersList.Count().ToString()
-            },
-            new CardItemModel
-            {
-                Title = "Average Rating",
-                Value = averageRating.ToString("F1")
-            },
-            new CardItemModel
-            {
-                Title = "Revenue",
-                Value = revenue.ToString("C")
-            }
-        };*/
+        var revenue = completedOrders.Sum(x => x.TotalPrice);
+
+        var deliveredReviews = completedOrders.SelectMany(x => x.Reviews);
+
+        var averageRating = deliveredReviews.Any()? deliveredReviews.Average(x => x.Rating): 0; 
 
         return new List<CardItemModel>
+    {
+        new CardItemModel
         {
-            new CardItemModel
-            {
-                Title = "Completed orders",
-                Value = "32"
-            },
-            new CardItemModel
-            {
-                Title = "Sales",
-                Value = "34"
-            },
-            new CardItemModel
-            {
-                Title = "Average rating",
-                Value = "4.5"
-            },
-            new CardItemModel
-            {
-                Title = "Revenue",
-                Value = "2222"
-            }
-        };
+            Title = "Completed orders",
+            Value = completedOrders.Count().ToString()
+        },
+        new CardItemModel
+        {
+            Title = "Sales",
+            Value = ordersList.Count().ToString()
+        },
+        new CardItemModel
+        {
+            Title = "Average Rating",
+            Value = averageRating.ToString("F1")
+        },
+        new CardItemModel
+        {
+            Title = "Revenue",
+            Value = revenue.ToString("C")
+        }
+    };
     }
+
 }
+
 

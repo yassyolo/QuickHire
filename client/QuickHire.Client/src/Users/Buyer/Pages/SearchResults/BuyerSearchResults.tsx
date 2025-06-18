@@ -100,14 +100,14 @@ export function BuyerSearchResultsPage() {
             ) : gigs.length === 0 ? (
                 <p>No gigs found for "{keyword}".</p>
             ) : (
-                <div className="gigs-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '20px', marginTop: '40px' }}>
+                <div className="gigs-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '20px', marginTop: '40px' }}>
                     {gigs.map(gig => (
                         <GigCard key={gig.id} gig={gig} showSeller={true} setLiked={handleLikeGig} />
                     ))}
                 </div>
             )}
 
-            <div className="pagination-container">
+            <div className="pagination-container" style={{marginBottom: '30px', marginTop: '50px'}}>
                 <Pagination totalPages={totalPages} currentPage={currentPage} onPageChange={handlePageChange} />
             </div>
         </SellerPage>

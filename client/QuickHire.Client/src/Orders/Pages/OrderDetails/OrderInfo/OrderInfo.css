@@ -1,0 +1,50 @@
+.order-info {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background-color: var(--white-color);
+    border-radius: 5px;
+    width: 800px;
+}
+
+.order-info-gig {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    padding: 20px;
+    background-color: var(--white-color);
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    align-items: center;
+    cursor: pointer;
+}
+
+.order-info-gig img {
+    width: 250px;
+    height: 150px;
+    border-radius: 5px;
+    object-fit: cover;
+}
+
+.order-info-title {
+    font-size: 17px;
+    font-weight: bold;
+    color: var(--text-black-color);
+    max-width: 400px;
+}
+
+
+.order-number {
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--text-black-color);
+
+}
+
+.order-info-gig-gig-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--text-black-color);
+    max-width: 400px;
+
+}

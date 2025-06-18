@@ -21,7 +21,7 @@ public class GetGigPerformanceStatisticsQueryHandler : IQueryHandler<GetGigPerfo
 
     public async Task<IEnumerable<GigPerformanceRowModel>> Handle(GetGigPerformanceStatisticsQuery request, CancellationToken cancellationToken)
     {
-        /*var (startDate, endDate) = ParseRange(request.Range ?? "last 30 days");
+        var (startDate, endDate) = ParseRange(request.Range ?? "last 30 days");
         var sellerId = await _userService.GetSellerIdByUserIdAsync();
 
         var gigsQueryable = _repository.GetAllReadOnly<Gig>().Where(x => x.SellerId == sellerId);
@@ -40,8 +40,7 @@ public class GetGigPerformanceStatisticsQueryHandler : IQueryHandler<GetGigPerfo
         var reviewsQueryable = _repository.GetAllReadOnly<Review>().Where(x => x.Order.GigId.HasValue && gigIds.Contains(x.Order.GigId.Value) && x.CreatedOn.Date >= startDate && x.CreatedOn.Date <= endDate);
         var reviews = await _repository.ToListAsync(reviewsQueryable);
 
-        var dateRange = Enumerable.Range(0, (endDate - startDate).Days + 1)
-                                  .Select(x => startDate.AddDays(x))
+        var dateRange = Enumerable.Range(0, (endDate - startDate).Days + 1).Select(x => startDate.AddDays(x))
                                   .ToList();
 
         var result = dateRange.Select(date =>
@@ -64,66 +63,7 @@ public class GetGigPerformanceStatisticsQueryHandler : IQueryHandler<GetGigPerfo
             };
         });
 
-        return result;*/
-
-        return new List<GigPerformanceRowModel>
-        {
-            new GigPerformanceRowModel
-            {
-                Date = DateTime.UtcNow.ToString("yyyy-MM-dd"),
-                GigsSold = 10,
-                GigLikes = 5,
-                GigFavourites = 3,
-                RepeatViews = 20,
-                CommentsCount = 2
-            },
-            new GigPerformanceRowModel
-            {
-                Date = DateTime.UtcNow.AddDays(-1).ToString("yyyy-MM-dd"),
-                GigsSold = 8,
-                GigLikes = 4,
-                GigFavourites = 2,
-                RepeatViews = 15,
-                CommentsCount = 1
-            },
-            new GigPerformanceRowModel
-            {
-                Date = DateTime.UtcNow.AddDays(-2).ToString("yyyy-MM-dd"),
-                GigsSold = 12,
-                GigLikes = 6,
-                GigFavourites = 4,
-                RepeatViews = 25,
-                CommentsCount = 3
-            },
-            new GigPerformanceRowModel
-            {
-                Date = DateTime.UtcNow.AddDays(-3).ToString("yyyy-MM-dd"),
-                GigsSold = 7,
-                GigLikes = 3,
-                GigFavourites = 1,
-                RepeatViews = 10,
-                CommentsCount = 0
-            },
-            new GigPerformanceRowModel
-            {
-                Date = DateTime.UtcNow.AddDays(-4).ToString("yyyy-MM-dd"),
-                GigsSold = 5,
-                GigLikes = 2,
-                GigFavourites = 1,
-                RepeatViews = 8,
-                CommentsCount = 1
-            },
-            new GigPerformanceRowModel
-            {
-                Date = DateTime.UtcNow.AddDays(-5).ToString("yyyy-MM-dd"),
-                GigsSold = 6,
-                GigLikes = 3,
-                GigFavourites = 2,
-                RepeatViews = 12,
-                CommentsCount = 1
-            }
-
-        };
+        return result;
     }
 
     private (DateTime Start, DateTime End) ParseRange(string range)

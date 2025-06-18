@@ -6,23 +6,26 @@
     list-style: none;
 }
 
+.gig-requirements-show-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 0;
+    list-style: none;
+}
+
 .requirement-show-question{
-    font-size: 17px;
+    font-size: 16px;
     font-weight: 600;
     color: var(--text-black-color);
     margin-bottom: 10px;
 }
 
 .requirement-show-answer{
-    font-size: 17px;
+    font-size: 16px;
     font-weight: 500;   
     color: var(--text-black-color);
 }
-
-.gig-requirements-show-container{
-    padding: 20px 20px 0 100px;
-}
-
 .gig-requirement-item{
     margin-bottom: 20px;
 }

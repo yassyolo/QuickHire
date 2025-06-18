@@ -17,19 +17,9 @@ public class GetRepeatBusinessStatisticsQueryHandler : IQueryHandler<GetRepeatBu
         _userService = userService;
     }
 
-    /* const fetchStatistics = () => {
-        const mockData: RepeatBusinessStatistics[] = [
-            { date: "2024-05-01", returningBuyers: 10, averageRepeatOrders: 1.5, revenue: 1200 },
-            { date: "2024-05-02", returningBuyers: 12, averageRepeatOrders: 1.6, revenue: 1300 },
-            { date: "2024-05-03", returningBuyers: 15, averageRepeatOrders: 1.8, revenue: 1600 },
-            { date: "2024-05-04", returningBuyers: 14, averageRepeatOrders: 1.7, revenue: 1500 },
-            { date: "2024-05-05", returningBuyers: 20, averageRepeatOrders: 1.9, revenue: 2000 },
-        ];
-        setStatistics(mockData);
-    };*/
     public async Task<IEnumerable<RepeatBusinessRowModel>> Handle(GetRepeatBusinessStatisticsQuery request, CancellationToken cancellationToken)
     {
-        /*var sellerId = await _userService.GetSellerIdByUserIdAsync();
+        var sellerId = await _userService.GetSellerIdByUserIdAsync();
 
         var (startDate, endDate) = ParseRange(request.Range ?? "last 30 days");
 
@@ -56,46 +46,7 @@ public class GetRepeatBusinessStatisticsQueryHandler : IQueryHandler<GetRepeatBu
             .OrderBy(x => x.Date)
             .ToList();
 
-        return groupedByDate;*/
-
-        return new List<RepeatBusinessRowModel>
-        {
-            new RepeatBusinessRowModel
-            {
-                Date = "2024-05-01",
-                ReturningBuyers = 10,
-                AverageRepeatOrders = 1.5,
-                Revenue = 1200
-            },
-            new RepeatBusinessRowModel
-            {
-                Date = "2024-05-02",
-                ReturningBuyers = 12,
-                AverageRepeatOrders = 1.6,
-                Revenue = 1300
-            },
-            new RepeatBusinessRowModel
-            {
-                Date = "2024-05-03",
-                ReturningBuyers = 15,
-                AverageRepeatOrders = 1.8,
-                Revenue = 1600
-            },
-            new RepeatBusinessRowModel
-            {
-                Date = "2024-05-04",
-                ReturningBuyers = 14,
-                AverageRepeatOrders = 1.7,
-                Revenue = 1500
-            },
-            new RepeatBusinessRowModel
-            {
-                Date = "2024-05-05",
-                ReturningBuyers = 20,
-                AverageRepeatOrders = 1.9,
-                Revenue = 2000
-            }
-        };
+        return groupedByDate;
     }
 
     private (DateTime Start, DateTime End) ParseRange(string range)
