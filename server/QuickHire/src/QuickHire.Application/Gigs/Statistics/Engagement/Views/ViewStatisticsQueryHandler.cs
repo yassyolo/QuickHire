@@ -19,19 +19,19 @@ public class ViewStatisticsQueryHandler : IQueryHandler<ViewStatisticsQuery, Sta
 
     public async Task<StatisticsLineChartModel> Handle(ViewStatisticsQuery request, CancellationToken cancellationToken)
     {
-        /*var gig = await _repository.GetByIdAsync<Gig, int>(request.Id);
+        var gig = await _repository.GetByIdAsync<Gig, int>(request.Id);
         if (gig == null)
         {
             throw new NotFoundException(nameof(Gig), request.Id);
-        }*/
+        }
 
-        var browsingHistory = _repository.GetAllReadOnly<QuickHire.Domain.Users.BrowsingHistory>().Where(x => x.GigId == request.Id);
-        var browsingHistoryList = await _repository.ToListAsync(browsingHistory);
+        var browsingHistoryQuery = _repository.GetAllReadOnly<QuickHire.Domain.Users.BrowsingHistory>().Where(x => x.GigId == request.Id);
+        var browsingHistoryList = await _repository.ToListAsync(browsingHistoryQuery);
 
         var totalItem = new TotalItemModel
         {
             Label = "Views",
-            Count = browsingHistoryList.Count().ToString(),
+            Count = browsingHistoryList.Count().ToString()
         };
 
         var peakViews = browsingHistoryList.GroupBy(x => x.ViewedAt.Date)
@@ -40,64 +40,52 @@ public class ViewStatisticsQueryHandler : IQueryHandler<ViewStatisticsQuery, Sta
                 Date = x.Key,
                 Count = x.Count()
             })
-            .OrderByDescending(x => x.Count);
+            .OrderByDescending(x => x.Count)
+            .FirstOrDefault();
 
         var peak = new PeakModel
         {
-            Date = peakViews.Select(x => x.Date).FirstOrDefault().ToString("dd MMM")
+            Date = peakViews?.Date.ToString("dd MMM") ?? "-"
         };
 
-        var thisMonthViews = browsingHistoryList.Where(x => x.ViewedAt.Month == DateTime.Now.Month && x.ViewedAt.Year == DateTime.Now.Year).Count();
-        var lastMonthViews = browsingHistoryList.Where(x => x.ViewedAt.Month == DateTime.Now.AddMonths(-1).Month && x.ViewedAt.Year == DateTime.Now.AddMonths(-1).Year).Count();
+        var now = DateTime.Now;
+        var thisMonthViews = browsingHistoryList.Count(x => x.ViewedAt.Month == now.Month && x.ViewedAt.Year == now.Year);
 
-        var thisMonth = new ThisMonthModel
+        var lastMonth = now.AddMonths(-1);
+        var lastMonthViews = browsingHistoryList.Count(x => x.ViewedAt.Month == lastMonth.Month && x.ViewedAt.Year == lastMonth.Year);
+
+        var percentageChange = lastMonthViews == 0 ? 0 : (thisMonthViews - lastMonthViews) * 100 / lastMonthViews;
+
+        var thisMonthItem = new ThisMonthModel
         {
             Count = thisMonthViews.ToString(),
-            Percentage = (lastMonthViews == 0 ? 0 : (thisMonthViews - lastMonthViews) * 100 / lastMonthViews).ToString(),
+            Percentage = percentageChange.ToString()
         };
 
-        var statistics = browsingHistoryList.GroupBy(x => x.ViewedAt.Month)
-                        .Select(x => new LineChartDataPointModel
-                        {
-                            Month = x.Key.ToString("MMMM", CultureInfo.InvariantCulture),
-                            Value = x.Count().ToString()
-                        })
-                        .OrderBy(x => DateTime.ParseExact(x.Month, "MMMM", CultureInfo.CurrentCulture))
-                        .ToList();
-
-        /*return new StatisticsLineChartModel
-        {
-            TotalItem = totalItem,
-            PeakItem = peak,
-            ThisMonthItem = thisMonth,
-            Data = statistics         
-        };*/
+        var statistics = browsingHistoryList
+            .GroupBy(x => new { x.ViewedAt.Year, x.ViewedAt.Month })
+            .Select(x => new
+            {
+                Year = x.Key.Year,
+                MonthNumber = x.Key.Month,
+                MonthName = CultureInfo.InvariantCulture.DateTimeFormat.GetMonthName(x.Key.Month),
+                Count = x.Count()
+            })
+            .OrderBy(x => x.Year)
+            .ThenBy(x => x.MonthNumber)
+            .Select(x => new LineChartDataPointModel
+            {
+                Month = x.MonthName,
+                Value = x.Count.ToString()
+            })
+            .ToList();
 
         return new StatisticsLineChartModel
         {
-            TotalItem = new TotalItemModel
-            {
-                Label = "Views",
-                Count = "1098"
-            },
-            PeakItem = new PeakModel
-            {
-                Date = "10 Apr"
-            },
-            ThisMonthItem = new ThisMonthModel
-            {
-                Count = "202",
-                Percentage = "15"
-            },
-            Data = new List<LineChartDataPointModel>
-        {
-            new LineChartDataPointModel { Month = "January", Value = "150" },
-            new LineChartDataPointModel { Month = "February", Value = "190" },
-            new LineChartDataPointModel { Month = "March", Value = "220" },
-            new LineChartDataPointModel { Month = "April", Value = "270" },
-            new LineChartDataPointModel { Month = "May", Value = "268" },
-        }
+            TotalItem = totalItem,
+            PeakItem = peak,
+            ThisMonthItem = thisMonthItem,
+            Data = statistics
         };
     }
 }
-

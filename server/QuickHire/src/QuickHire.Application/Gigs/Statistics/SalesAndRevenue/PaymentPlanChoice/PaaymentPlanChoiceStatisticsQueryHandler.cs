@@ -18,7 +18,7 @@ public class PaaymentPlanChoiceStatisticsQueryHandler : IQueryHandler<PaaymentPl
 
     public async Task<PieChartDataModel> Handle(PaaymentPlanChoiceStatisticsQuery request, CancellationToken cancellationToken)
     {
-        /*var gig = await _repository.GetByIdAsync<Gig, int>(request.Id);
+        var gig = await _repository.GetByIdAsync<Gig, int>(request.Id);
         if (gig == null)
         {
             throw new NotFoundException(nameof(Gig), request.Id);
@@ -33,25 +33,11 @@ public class PaaymentPlanChoiceStatisticsQueryHandler : IQueryHandler<PaaymentPl
         Label = x.First().SelectedPaymentPlan.Name,
         Value = x.Count().ToString(),
         Percentage = ((double)x.Count() / ordersList.Count() * 100).ToString("F0")
-    }).ToList();*/
-        
+    }).ToList();
+
         return new PieChartDataModel
         {
-            Data = new List<PieChartDataPointModel>
-            {
-                new PieChartDataPointModel
-                {
-                    Label = "Yes",
-                    Value = "123",
-                    Percentage = "44"
-                },
-                new PieChartDataPointModel
-                {
-                    Label = "No",
-                    Value = "140",
-                    Percentage = "56"
-                }
-            }
+            Data = groupedData
         };
     }
 }

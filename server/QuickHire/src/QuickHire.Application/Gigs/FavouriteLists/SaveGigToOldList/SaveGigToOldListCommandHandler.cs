@@ -20,7 +20,18 @@ public class SaveGigToOldListCommandHandler : ICommandHandler<SaveGigToOldListCo
 
     public async Task<Unit> Handle(SaveGigToOldListCommand request, CancellationToken cancellationToken)
     {
-        /*var buyerId = await _userService.GetBuyerIdByUserIdAsync();
+        var buyerId = await _userService.GetBuyerIdByUserIdAsync();
+
+        var gig = await _repository.GetByIdAsync<QuickHire.Domain.Gigs.Gig, int>(request.GigId);
+        if (gig == null)
+        {
+            throw new NotFoundException(nameof(QuickHire.Domain.Gigs.Gig), request.GigId);
+        }
+
+        if(gig.SellerId == buyerId)
+        {
+            throw new BadRequestException("You cannot add your own gig to a favourite list.", "");
+        }
         var favouriteGigList = await _repository.GetByIdAsync<QuickHire.Domain.Users.FavouriteGigsList, int>(request.FavouriteListId);
         if (favouriteGigList == null)
         {
@@ -32,10 +43,11 @@ public class SaveGigToOldListCommandHandler : ICommandHandler<SaveGigToOldListCo
             throw new UnauthorizedAccessException("You do not have permission to access this favourite list.");
         }
 
-        var gig = await _repository.GetByIdAsync<QuickHire.Domain.Gigs.Gig, int>(request.GigId);
-        if (gig == null)
+        var existingFavouriteGigQueruyable = _repository.GetAllReadOnly<QuickHire.Domain.Users.FavouriteGig>().Where(x => x.BuyerId == buyerId && x.GigId == gig.Id && x.FavouriteGigsListId == favouriteGigList.Id);
+        var existingFavouriteGig = await _repository.FirstOrDefaultAsync<QuickHire.Domain.Users.FavouriteGig>(existingFavouriteGigQueruyable);
+        if (existingFavouriteGig != null)
         {
-            throw new NotFoundException(nameof(QuickHire.Domain.Gigs.Gig), request.GigId);
+            return Unit.Value;
         }
 
         var newFavouriteGig = new QuickHire.Domain.Users.FavouriteGig
@@ -47,7 +59,7 @@ public class SaveGigToOldListCommandHandler : ICommandHandler<SaveGigToOldListCo
         };
 
         await _repository.AddAsync(newFavouriteGig);
-        await _repository.SaveChangesAsync();*/
+        await _repository.SaveChangesAsync();
 
         return Unit.Value;
 

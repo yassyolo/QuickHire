@@ -58,7 +58,7 @@ export function GigStatistics({id} : GigStatisticsProps) {
         }
     }
     return(      
-        <div className="gigs-statistics-admin">
+        <div className="gigs-statistics-admin" style={{width: "1000px"}}>
             <div className="gig-statistics filter">
               <TitleFilterSelector selectedId={selectedId} setSelectedId={handleSelectedStatisticsType} data={data}/>           
             </div>

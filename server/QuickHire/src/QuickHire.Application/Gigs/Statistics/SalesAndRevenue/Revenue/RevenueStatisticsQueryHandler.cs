@@ -18,7 +18,7 @@ public class RevenueStatisticsQueryHandler : IQueryHandler<RevenueStatisticsQuer
 
     public async Task<StatisticsLineChartModel> Handle(RevenueStatisticsQuery request, CancellationToken cancellationToken)
     {
-        /*var gig = await _repository.GetByIdAsync<Gig, int>(request.Id);
+        var gig = await _repository.GetByIdAsync<Gig, int>(request.Id);
         if (gig == null)
         {
             throw new NotFoundException(nameof(Gig), request.Id);
@@ -63,38 +63,12 @@ public class RevenueStatisticsQueryHandler : IQueryHandler<RevenueStatisticsQuer
                         .OrderBy(x => x.Month)
                         .ToList();
 
-        /*return new StatisticsLineChartModel
+        return new StatisticsLineChartModel
         {
             TotalItem = totalItem,
             PeakItem = peak,
             ThisMonthItem = thisMonth,
             Data = statistics,
-        };*/
-
-        return new StatisticsLineChartModel
-        {
-            TotalItem = new TotalItemModel
-            {
-                Label = "Revenue",
-                Count = "1234"
-            },
-            PeakItem = new PeakModel
-            {
-                Date = "12 Mar"
-            },
-            ThisMonthItem = new ThisMonthModel
-            {
-                Count = "234",
-                Percentage = "25"
-            },
-            Data = new List<LineChartDataPointModel>
-            {
-                new LineChartDataPointModel { Month = "January", Value = "150" },
-                new LineChartDataPointModel { Month = "February", Value = "180" },
-                new LineChartDataPointModel { Month = "March", Value = "210" },
-                new LineChartDataPointModel { Month = "April", Value = "220" },
-                new LineChartDataPointModel { Month = "May", Value = "234" },
-            }
         };
     }
 }

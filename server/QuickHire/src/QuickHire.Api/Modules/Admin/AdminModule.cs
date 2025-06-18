@@ -9,24 +9,14 @@ using QuickHire.Application.Admin.MainCategories.AddMainCategory;
 using QuickHire.Application.Admin.MainCategories.DeleteMainCategory;
 using QuickHire.Application.Admin.MainCategories.EditMainCategory;
 using QuickHire.Application.Admin.MainCategories.GetMainCategoryForDelete;
-using QuickHire.Application.Admin.MainCategories.MainCategoriesForLinks;
 using QuickHire.Application.Admin.MainCategories.MainCategoryDetails;
-using QuickHire.Application.Admin.MainCategories.MainCategoryPageDetails;
-using QuickHire.Application.Admin.MainCategories.PopulateMainCategories;
 using QuickHire.Application.Admin.MainCategories.SearchMainCategories;
-using QuickHire.Application.Admin.Models.SubCategories;
-using QuickHire.Application.Admin.Models.SubSubCategories;
-using QuickHire.Application.Admin.Reporting.Report;
 using QuickHire.Application.Admin.Reporting.ReportTables;
 using QuickHire.Application.Admin.SubCategories.AddSubCategory;
 using QuickHire.Application.Admin.SubCategories.DeleteSubCategory;
 using QuickHire.Application.Admin.SubCategories.EditSubCategory;
 using QuickHire.Application.Admin.SubCategories.GetSubCategoryForDelete;
-using QuickHire.Application.Admin.SubCategories.PopularSubcategories;
-using QuickHire.Application.Admin.SubCategories.PopulateSubCategories;
 using QuickHire.Application.Admin.SubCategories.SearchSubCategories;
-using QuickHire.Application.Admin.SubCategories.SubCategoriesHeader;
-using QuickHire.Application.Admin.SubCategories.SubCategoriesInMainCategory;
 using QuickHire.Application.Admin.SubCategories.SubCategoryDetails;
 using QuickHire.Application.Admin.SubSubCategories.AddSubSubCategory;
 using QuickHire.Application.Admin.SubSubCategories.DeleteFilterOption;
@@ -37,7 +27,6 @@ using QuickHire.Application.Admin.SubSubCategories.EditFilterOption;
 using QuickHire.Application.Admin.SubSubCategories.EditSubSubCategory;
 using QuickHire.Application.Admin.SubSubCategories.GetGigFilterForDelete;
 using QuickHire.Application.Admin.SubSubCategories.GetSubSubCategoryForDelete;
-using QuickHire.Application.Admin.SubSubCategories.PopulateSubSubCategories;
 using QuickHire.Application.Admin.SubSubCategories.SearchSubSubCategories;
 using QuickHire.Application.Admin.SubSubCategories.SubSubCategoryDetails;
 using QuickHire.Application.Admin.Users.DeactivateUser;
@@ -62,7 +51,7 @@ public class AdminModule : CarterModule
         .WithTags("Main Categories")  
         .WithDescription("Searches through main categories by id and keyword and returns paginated result");
 
-        app.MapPost("/admin/main-categories/add", async ([FromBody] AddMainCategoryCommand command, IMediator mediator) =>
+        app.MapPost("/admin/main-categories", async ([FromBody] AddMainCategoryCommand command, IMediator mediator) =>
         {
             await mediator.Send(command);
             return Results.NoContent();
@@ -82,7 +71,7 @@ public class AdminModule : CarterModule
         .WithTags("Main Categories")
         .WithDescription("Gets a main category by Id.");
 
-        app.MapPut("/admin/main-categories/edit", async ([FromBody] EditMainCategoryCommand command, IMediator mediator) =>
+        app.MapPut("/admin/main-categories", async ([FromBody] EditMainCategoryCommand command, IMediator mediator) =>
         {
             await mediator.Send(command);
             return Results.NoContent();
@@ -92,7 +81,7 @@ public class AdminModule : CarterModule
         .WithTags("Main Categories")
         .WithDescription("Edits an existing main category by Id.");
 
-        app.MapDelete("/admin/main-categories/delete", async ([FromBody] DeleteMainCategoryCommand command, IMediator mediator) =>
+        app.MapDelete("/admin/main-categories", async ([FromBody] DeleteMainCategoryCommand command, IMediator mediator) =>
         {
             await mediator.Send(command);
             return Results.NoContent();
@@ -112,15 +101,7 @@ public class AdminModule : CarterModule
         .WithTags("Main Categories")
         .WithDescription("Gets a main category for deletion by Id.");
 
-        app.MapGet("admin/main-categories/populate", async (IMediator mediator) =>
-        {
-            var result = await mediator.Send(new PopulateMainCategoriesQuery());
-            return Results.Ok(result);
-        })
-         .RequireAuthorization(new AuthorizeAttribute { Roles = "admin, seller" })
-         .WithName("PopulateMainCategories")
-         .WithTags("Main Categories")
-         .WithDescription("Populates main categories.");
+
 
         #endregion
 
@@ -147,17 +128,7 @@ public class AdminModule : CarterModule
        .DisableAntiforgery()       
        .WithDescription("Edits an existing sub category by Id.");
 
-        app.MapGet("/admin/sub-categories/populate", async (IMediator mediator) =>
-        {
-            var result = await mediator.Send(new PopulateSubCategoriesQuery());
-            return Results.Ok(result);
-        })
-        .RequireAuthorization(new AuthorizeAttribute { Roles = "admin" })
-        .WithName("PopulateSubCategories")
-        .WithTags("Sub Categories")
-        .WithDescription("Populates sub categories.");
-
-        app.MapPost("/admin/sub-categories/add", async ([FromForm] AddSubCategoryCommand command, IMediator mediator) =>
+        app.MapPost("/admin/sub-categories", async ([FromForm] AddSubCategoryCommand command, IMediator mediator) =>
         {
             var result = await mediator.Send(command);
             return Results.Ok(result);
@@ -201,6 +172,7 @@ public class AdminModule : CarterModule
         #endregion
 
         #region Sub Sub Categories
+
         app.MapDelete("/admin/sub-sub-categories", async ([FromBody] DeleteSubSubCategoryCommand query, IMediator mediator) =>
         {
             await mediator.Send(query);
@@ -221,20 +193,10 @@ public class AdminModule : CarterModule
         .WithTags("Sub Sub Categories")
         .WithDescription("Gets a sub sub category for deletion by Id.");
 
-        app.MapGet("/admin/sub-sub-categories/populate", async (IMediator mediator) =>
-        {
-            var result = await mediator.Send(new PopulateSubSubCategoriesQuery());
-            return Results.Ok(result);
-        })
-        .WithName("PopulateSubSubCategories")
-        .WithTags("Sub Sub Categories")
-        //.RequireAuthorization(new AuthorizeAttribute { Roles = "admin,buyer" })
-        .WithDescription("Populates sub sub categories.");
-
-        app.MapPost("/admin/sub-sub-categories/add", async ([FromBody] AddSubSubCategoryCommand command, IMediator mediator) =>
+        app.MapPost("/admin/sub-sub-categories", async ([FromBody] AddSubSubCategoryCommand command, IMediator mediator) =>
         {
             var result = await mediator.Send(command);
-            return Results.NoContent();
+            return Results.Ok(result);
         })
         .RequireAuthorization(new AuthorizeAttribute { Roles = "admin" })
         .WithName("AddSubSubCategory")
@@ -251,7 +213,7 @@ public class AdminModule : CarterModule
         .WithTags("Sub Sub Categories")
         .WithDescription("Searches through sub sub categories by id and keyword and main category and returns paginated result");
      
-        app.MapPut("/admin/sub-sub-categories/edit", async([FromForm] EditSubSubCategoryCommand command, IMediator mediator) =>
+        app.MapPut("/admin/sub-sub-categories", async([FromForm] EditSubSubCategoryCommand command, IMediator mediator) =>
         {
             await mediator.Send(command);
             return Results.NoContent();
@@ -308,10 +270,10 @@ public class AdminModule : CarterModule
 
         #region Filter Options
 
-        app.MapDelete("/admin/sub-sub-categories/filters/options/delete/{Id}", async([FromForm] DeleteFilterOptionCommand command, IMediator mediator) =>
+        app.MapDelete("/admin/sub-sub-categories/filters/options/delete", async([FromForm] DeleteFilterOptionCommand command, IMediator mediator) =>
         {
-            var result = await mediator.Send(command);
-            return Results.Ok(result);
+            await mediator.Send(command);
+            return Results.NoContent();
         })
         .RequireAuthorization(new AuthorizeAttribute { Roles = "admin" })
         .WithName("GetSubSubCategoryFilterOptionForDelete")
@@ -365,6 +327,7 @@ public class AdminModule : CarterModule
         #endregion
 
         #region Gigs
+
         app.MapGet("/admin/gigs/seller", async ([AsParameters] GetSellerForGigQuery query, IMediator mediator) => {
             var result = await mediator.Send(query);
             return Results.Ok(result);
@@ -405,7 +368,7 @@ public class AdminModule : CarterModule
         .WithName("GetReport")
         .WithTags("Report")
         .WithDescription("Gets report details by Id.");
-        #endregion
+        #endregion       
     }
 
 }

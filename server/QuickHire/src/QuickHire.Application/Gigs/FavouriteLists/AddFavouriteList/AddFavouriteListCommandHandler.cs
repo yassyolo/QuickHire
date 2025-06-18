@@ -43,6 +43,21 @@ public class AddFavouriteListCommandHandler : ICommandHandler<AddFavouriteListCo
                 throw new NotFoundException(nameof(QuickHire.Domain.Gigs.Gig), request.GigId);
             }
 
+            var gigSellerUserId = await _userService.GetUserIdBySellerIdAsync(gig.SellerId);
+            var buyerUserId = await _userService.GetUserIdByBuyerIdAsync(buyerId);
+
+            if (gigSellerUserId == buyerUserId)
+            {
+                throw new BadRequestException("You cannot add your own gig to a favourite list.", "");
+            }
+
+            var existingFavouriteGigQueruyable = _repository.GetAllReadOnly<QuickHire.Domain.Users.FavouriteGig>().Where(x => x.BuyerId == buyerId && x.GigId == gig.Id && x.FavouriteGigsListId == favouriteList.Id);
+            var existingFavouriteGig = await _repository.FirstOrDefaultAsync<QuickHire.Domain.Users.FavouriteGig>(existingFavouriteGigQueruyable);
+            if (existingFavouriteGig != null)
+            {
+                return Unit.Value;
+            }
+
             var newFavouriteGig = new QuickHire.Domain.Users.FavouriteGig
             {
                 BuyerId = buyerId,

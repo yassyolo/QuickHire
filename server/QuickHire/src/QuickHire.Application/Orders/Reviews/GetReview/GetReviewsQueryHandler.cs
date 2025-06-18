@@ -19,8 +19,7 @@ public class GetReviewsQueryHandler : IQueryHandler<GetReviewsQuery, List<Review
 
     public async Task<List<ReviewResponseRowModel>> Handle(GetReviewsQuery request, CancellationToken cancellationToken)
 {
-    /*var reviewsQueryable = _repository.GetAllReadOnly<QuickHire.Domain.Orders.Review>();
-    reviewsQueryable = _repository.GetAllIncluding<QuickHire.Domain.Orders.Review>(x => x.Order, x => x.Order.Buyer, x => x.Order.Seller, x => x.Order.Gig, x => x.Order.SelectedPaymentPlan);
+    var reviewsQueryable = _repository.GetAllIncluding<QuickHire.Domain.Orders.Review>(x => x.Order.Buyer, x => x.Order.Seller, x => x.Order.Gig, x => x.Order.SelectedPaymentPlan);
 
     if (request.UserId.HasValue)
     {
@@ -45,7 +44,7 @@ public class GetReviewsQueryHandler : IQueryHandler<GetReviewsQuery, List<Review
         reviewsQueryable = reviewsQueryable.OrderByDescending(x => x.CreatedOn);
     }
 
-    if(request.GetAll == false)
+    if(request.ShowMore == false)
     {
         reviewsQueryable = reviewsQueryable.Take(5);
     }
@@ -69,36 +68,7 @@ public class GetReviewsQueryHandler : IQueryHandler<GetReviewsQuery, List<Review
             };
         }));
 
-        return reviewModels.ToList();*/
-
-        return new List<ReviewResponseRowModel>
-        {
-            new ReviewResponseRowModel
-            {
-                FullName = "John Doe",
-                Date = "01 January 2023",
-                Rating = 5,
-                ProfileImageUrl = "https://example.com/profile.jpg",
-                Comment = "Great service!",
-                Duration = "3 days",
-                Price = "$100",
-                CountryName = "USA",
-                RepeatBuyer = true
-            },
-            new ReviewResponseRowModel
-            {
-                FullName = "Jane Smith",
-                Date = "02 January 2023",
-                Rating = 4,
-                ProfileImageUrl = "https://example.com/profile2.jpg",
-                Comment = "Very satisfied.",
-                Duration = "2 days",
-                Price = "$80",
-                CountryName = "Canada",
-                RepeatBuyer = false
-            }
-        };
-
+        return reviewModels.ToList();
     }
    
 }

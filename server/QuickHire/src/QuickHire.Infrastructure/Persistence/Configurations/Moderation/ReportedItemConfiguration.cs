@@ -12,16 +12,10 @@ internal class ReportedItemConfiguration : IEntityTypeConfiguration<ReportedItem
     {
         builder.HasKey(x => x.Id);
 
-        builder.Property(x => x.ReportedUserId).IsRequired();
-
         builder.Property(x => x.ReportedById).IsRequired();
 
         builder.Property(x => x.CreatedAt).IsRequired();
 
         builder.Property(x => x.Reason).IsRequired().HasMaxLength(ReasonMaxLength);
-
-        builder.HasOne(x => x.Gig)
-            .WithOne()
-            .HasForeignKey<ReportedItem>(x => x.GigId);
     }
 }

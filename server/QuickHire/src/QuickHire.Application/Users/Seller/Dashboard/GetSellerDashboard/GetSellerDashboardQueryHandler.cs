@@ -22,7 +22,7 @@ public class GetSellerDashboardQueryHandler : IQueryHandler<GetSellerDashboardQu
 
         var sellerDashboardInfo = await _userService.GetSellerDashboardInfoAsync(sellerId);
 
-        var orderQueryable = _repository.GetAllIncluding<QuickHire.Domain.Orders.Order>(x => x.Reviews).Where(x => x.SellerId == sellerId);
+        var orderQueryable = _repository.GetAllIncluding<QuickHire.Domain.Orders.Order>(x => x.Reviews).Where(x => x.SellerId == sellerId && x.Status != Domain.Orders.Enums.OrderStatus.PendingPayment && x.Status != Domain.Orders.Enums.OrderStatus.Failed);
         var orderList = await _repository.ToListAsync<QuickHire.Domain.Orders.Order>(orderQueryable);
 
         return new GetSellerDashboardModel()

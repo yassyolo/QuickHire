@@ -173,7 +173,7 @@ internal static class MapsterConfiguration
             .Map(dest => dest.Date, src => src.CreatedAt.ToString("yyyy-MM-dd"))
             .Map(dest => dest.DocumentNumber, src => src.InvoiceNumber)
             .Map(dest => dest.Service, src => src.Order.Gig.Title)
-            .Map(dest => dest.OrderNumber, src => src.OrderId.ToString())
+            .Map(dest => dest.OrderNumber, src => src.Order.OrderNumber)
             .Map(dest => dest.Total, src => src.TotalAmount.ToString("C"))
             .Map(dest => dest.PdfLink, src => src.SourceUrl);
 

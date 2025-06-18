@@ -12,8 +12,6 @@ internal class DeactivatedRecordConfiguration : IEntityTypeConfiguration<Deactiv
     {
         builder.HasKey(x => x.Id);
 
-        builder.Property(x => x.UserId).IsRequired();
-
         builder.Property(x => x.CreatedAt).IsRequired();
 
         builder.Property(x => x.Reason).IsRequired().HasMaxLength(ReasonMaxLength);

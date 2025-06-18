@@ -7,9 +7,7 @@ public class GetFinancialDocumentsQueryValidator : AbstractValidator<GetFinancia
 {
     public GetFinancialDocumentsQueryValidator()
     {
-        RuleFor(x => x.Buyer)
-            .NotEmpty()
-            .WithMessage(string.Format(Required, "Buyer"));
+
     }
 }
 

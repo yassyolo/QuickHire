@@ -26,7 +26,6 @@ public class EditFilterCommandHandler : ICommandHandler<EditFilterCommand, Unit>
         gigFilter.Title = request.Name;
 
         await _repository.UpdateAsync(gigFilter);
-        await _repository.SaveChangesAsync();
 
         return Unit.Value;
     }

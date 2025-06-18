@@ -2,7 +2,7 @@
 
 namespace QuickHire.Domain.Categories;
 
-public class SubCategory : BaseEntity<int>
+public class SubCategory : BaseSoftDeletableEntity<int>
 {
     public string Name { get; set; } = string.Empty;
     public string? ImageUrl { get; set; } 

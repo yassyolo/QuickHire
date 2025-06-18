@@ -28,8 +28,6 @@ public class EditFilterOptionCommandHandler : ICommandHandler<EditFilterOptionCo
 
         await _repository.UpdateAsync(filterOption);
 
-        await _repository.SaveChangesAsync();
-
         return Unit.Value;
     }
 }

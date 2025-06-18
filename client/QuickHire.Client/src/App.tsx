@@ -9,34 +9,42 @@ import { AdminNavbar } from './Shared/Layout/Navbar/Admin/AdminNavbar'
 import { SubSubCategoryDetails } from './Admin/Pages/Details/Categories/SubSubCategory/SubSubCategoryDetails'
 import { Users } from './Admin/Pages/Users/Users'
 import { MainCategoryDetails } from './Admin/Pages/Details/Categories/MainCategory/MainCategoryDetails'
-import { MainCategoryPage } from './Shared/Categories/MainCategories/MainCategoryPage'
+import { MainCategoryPage } from './Users/Buyer/Pages/MainCategoryPage/MainCategoryPage'
 import { AuthentionCardChild } from './Users/Authtentication/AuthenticationCard/Children/AuthenticationCardChild'
-import { BillingAndPaymentsPage } from './Users/BillingAndPayments/BillingAndPaymentsPage'
+import { BillingAndPaymentsPage } from './Users/Buyer/Pages/BillingsAndPayments/BillingAndPaymentsPage'
 import { SellerNavbar } from './Shared/Layout/Navbar/Seller/SellerNavbar'
-import { SettingsPage } from './Users/Settings/SettingsPage'
+import { SettingsPage } from './Users/Buyer/Pages/Settings/SettingsPage'
 import { BuyerNavbar } from './Shared/Layout/Navbar/Buyer/BuyerNavbar'
 import { SearchProvider } from './Shared/Layout/Navbar/Buyer/SearchContext'
-import { BrowsingHistory } from './Users/Buyer/BrowsingHistory/BrowsingHistory/BrowsingHistory'
-import { FavouritesPage } from './Users/Buyer/Favourites/FavouritesPage/FavouritesPage'
+import { BrowsingHistory } from './Users/Buyer/Pages/BuyerBrowsingHistory/BrowsingHistoryPage/BrowsingHistory'
+import { FavouritesPage } from './Users/Buyer/Pages/FavouritesLists/FavouritesPage'
 import { SellerDashboard } from './Users/Seller/Pages/SellerDashboard/SellerDashboard'
 import { SellerAnalytics } from './Users/Seller/Pages/SellerAnalytics/SellerAnalytics'
 import { SellerProfile } from './Users/Seller/Pages/SellerProfile/SellerProfile'
 import { SellerEarnings } from './Users/Seller/Pages/SellerEarnings/SellerEarnings'
-import { PostProjectBrief } from './Users/Buyer/ProjectBriefs/PostProjectBrief/PostProjectBrief'
-import { BuyerProfilePage } from './Users/Buyer/Profile/BuyerProfilePage'
-import { FavouriteListPage } from './Users/Buyer/Favourites/FavouriteList/FavouriteListPage'
-import { SellerDetailsPage } from './Users/Buyer/SellerDetails/SellerDetailsPage'
+import { BuyerProfilePage } from './Users/Buyer/Pages/BuyerProfile/BuyerProfilePage'
+import { FavouriteListPage } from './Users/Buyer/Pages/FavouriteItems/FavouriteListPage'
 import { NewSellerForm } from './Users/Seller/Pages/NewSeller/Form/NewSellerForm'
 import { GigDetailsForAdmin } from './Admin/Pages/Details/Gigs/GigDetailsPage'
-import { GigDetailsPage } from './Gigs/Details/GigDetails/GigDetailsPage'
+import { GigDetailsPage } from './Gigs/Pages/GigDetails/GigDetails/GigDetailsPage'
 import { SellerGigs } from './Users/Seller/Pages/SellerGigs/SellerGigs'
 import { SellerOrders } from './Users/Seller/Pages/SellerOrders/SellerOrders'
 import { SellerProjectBriefs } from './Users/Seller/Pages/SellerProjectBriefs/SellerProjectBriefs'
 import { AuthProvider } from './AuthContext'
-import { InboxPage } from './Users/Messaging/InboxPage'
+import { InboxPage } from './Users/Messaging/InboxPage/InboxPage'
 import GoogleLoginRedirect from './Users/Authtentication/GoogleLoginRetirect'
-import { MyProjectBriefs } from './Users/Buyer/ProjectBriefs/MyProjectBriefs.tsx/MyProjectBriefs'
+import { MyProjectBriefs } from './Users/Buyer/Pages/BuyerProjectBriefs/MyProjectBriefs.tsx/MyProjectBriefs'
 import { UserDetailsForAdmin } from './Admin/Pages/Details/Users/UserDetailsPage'
+import { FrontPage } from './Users/Buyer/Pages/FirstPage/FrontPage'
+import { NotAuthenticatedNavbar } from './Shared/Layout/Navbar/NotAuthenticated/NotAuthenticatedNavbar'
+import { NotAuthenticatedPage } from './Users/NotAuthenticated/Pages/NotAuthenticatedPage'
+import { SubSubCategoryPage } from './Users/Buyer/Pages/SubSubCategory/SubSubCategoryPage'
+import { PostProjectBrief } from './Users/Buyer/Pages/BuyerProjectBriefs/PostProjectBrief/PostProjectBrief'
+import { NewGigForm } from './Users/Seller/Pages/NewGig/Form/NewGigForm'
+import { SubCategoryPage } from './Users/Buyer/Pages/SubCategoryPage/SubCategoryPage'
+import { BuyerSearchResultsPage } from './Users/Buyer/Pages/SearchResults/BuyerSearchResults'
+import { OrderDetails } from './Orders/Pages/OrderDetails/OrderDetails'
+import { SellerDetailsPage } from './Users/Buyer/Pages/SellerDetailsPage/SellerDetailsPage'
 
 export function App() {
   return (
@@ -69,6 +77,8 @@ export function App() {
             <Route path="orders" element={<SellerOrders />} />
             <Route path="project-briefs" element={<SellerProjectBriefs/>} />
             <Route path="inbox" element={<InboxPage />} />
+            <Route path="gigs/new" element={<NewGigForm />} />
+            <Route path="orders/:id" element={<OrderDetails />} />
           </Route>
 
           <Route path="/buyer" element={<BuyerNavbar />}>
@@ -80,19 +90,29 @@ export function App() {
             <Route path="favourite-gigs/:id" element={<FavouriteListPage />} />
             <Route path="seller/:id" element={<SellerDetailsPage />} />
             <Route path="gigs/:id" element={<GigDetailsPage />} />
-
             <Route path="project-briefs" element={<PostProjectBrief/>} />
             <Route path="my-project-briefs" element={<MyProjectBriefs />} />
             <Route path="profile" element={<BuyerProfilePage />} />
             <Route path="inbox" element={<InboxPage />} />
+            <Route path="" element={<FrontPage/>} />
+            <Route path="sub-sub-categories/:id" element={<SubSubCategoryPage />} />
+            <Route path="sub-categories/:id" element={<SubCategoryPage />} />
+            <Route path="search" element={<BuyerSearchResultsPage />} />
+            <Route path="orders/:id" element={<OrderDetails />} />
 
           </Route>
 
           <Route path="*" element={<div>Page Not Found</div>} />
-          <Route path="/" element={<SellerDashboard />} />
-                                <Route path="/login" element={<AuthentionCardChild />} />
+          <Route path="/login" element={<AuthentionCardChild />} />
           <Route path="/google-redirect" element={<GoogleLoginRedirect />} />
+
+          <Route path="/" element={<NotAuthenticatedNavbar />}>
+  <Route index element={<NotAuthenticatedPage />} />  
+  <Route path="users" element={<NotAuthenticatedPage />} />
+</Route>
+
         </Routes>
+
             </AuthProvider>
 
             </SearchProvider>

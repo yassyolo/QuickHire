@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
-import axios from "../../../../axiosInstance";
 import { useParams } from "react-router-dom";
 import { Breadcrumb } from "../../../../Shared/PageItems/Breadcrumb/Breadcrumb";
 import { SideNavigation } from "../../../../Shared/PageItems/SideNavigation/SideNavigation";
 import { GigDetails } from "./GigInfo/GigInfo";
 import { GigStatistics } from "./Statistics/GigStatistics";
 import './GigDetailsPage.css';
-import { ReviewsList } from "../../../../Gigs/Reviews/ReviewsList/ReviewsList";
+import { ReviewsList } from "../../../../Orders/Pages/Reviews/ReviewsLIst/ReviewsList";
 import { UserForGig } from "./UserForGig/UserForGig";
-import { RatingDistribution } from "../../../../Gigs/Reviews/RatingDistrbution/RatingDistribution";
+import { RatingDistribution } from "../../../../Orders/Pages/Reviews/RatingDistrbution/RatingDistribution";
 import { GigModerationStatus } from "./Moderation/GigModeration";
 
 
@@ -73,31 +72,6 @@ export function GigDetailsForAdmin() {
         setShowGigModeration(false);
         setShowStatistics(false);
     };
-
-
-         useEffect(() => {
-            const fetchDetails = async () => {
-                try {
-                    const params = new URLSearchParams();
-                    const parsedId = id ? parseInt(id, 10) : NaN;
-                    if (!isNaN(parsedId)) params.append("id", parsedId.toString());
-    
-                    const url = `https://localhost:7267/admin/gigs/${parsedId}`;
-    
-                    await axios.get(url, {
-                        headers: {
-                            'Accept': '*/*',
-                        },
-                    });
-                    
-                } catch (error) {
-                    console.error("Error fetching main category details:", error);
-                } 
-            };
-    
-            fetchDetails();
-    
-        }, [id]);
 
     return(
             <div className="gig-details-page-admin d-flex flex-row">

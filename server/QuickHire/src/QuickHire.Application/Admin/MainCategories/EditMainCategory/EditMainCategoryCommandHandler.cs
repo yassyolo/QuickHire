@@ -18,10 +18,6 @@ public class EditMainCategoryCommandHandler : ICommandHandler<EditMainCategoryCo
     public async Task<Unit> Handle(EditMainCategoryCommand request, CancellationToken cancellationToken)
     {
         var mainCategory = await _repository.GetByIdAsync<MainCategory, int>(request.Id);
-        if(mainCategory == null)
-        {
-            throw new NotFoundException(nameof(MainCategory), request.Id);
-        }
 
         if (mainCategory == null)
         {
@@ -31,7 +27,7 @@ public class EditMainCategoryCommandHandler : ICommandHandler<EditMainCategoryCo
         mainCategory.Name = request.Name;
         mainCategory.Description = request.Description;
 
-        await _repository.SaveChangesAsync();
+        await _repository.UpdateAsync(mainCategory);
 
         return Unit.Value;
     }

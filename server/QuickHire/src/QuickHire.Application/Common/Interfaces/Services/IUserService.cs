@@ -63,4 +63,7 @@ public interface IUserService
     Task<ParticipantBInfoModel> GetParticipantInfoAsync(string participantBId);
     Task<string> UpdateBuyerDescriptionAsync(string description);
     Task<string> GetUsernameByUserIdAsync(string userId);
+    Task ReportUserAsync(string reportedUserId);
+    Task<int> CreateSellerAsync(int industryId, string username, string fullName, string description, IFormFile? profilePicture);
+    Task<(string name, string address, string companyName)> GetBuyerForInvoiceAsync(string buyerUserId);
 }

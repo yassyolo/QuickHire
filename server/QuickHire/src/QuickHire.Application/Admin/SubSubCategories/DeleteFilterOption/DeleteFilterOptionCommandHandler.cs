@@ -16,14 +16,14 @@ public class DeleteFilterOptionCommandHandler : ICommandHandler<DeleteFilterOpti
     }
     public async Task<Unit> Handle(DeleteFilterOptionCommand request, CancellationToken cancellationToken)
     {
-        var filterOptionQueryable = _repository.GetAllIncluding<FilterOption>(x => x.GigFilter.SubSubCategory).Where(x => x.Id == request.Id);
+        var filterOptionQueryable = _repository.GetAllIncluding<FilterOption>(x => x.GigFilter.SubSubCategory!.Gigs!).Where(x => x.Id == request.Id);
         var filterOption = await _repository.FirstOrDefaultAsync(filterOptionQueryable);
         if (filterOption == null)
         {
             throw new NotFoundException(nameof(FilterOption), request.Id);
         }
 
-        if (filterOption.GigFilter.SubSubCategory.Gigs.Any())
+        if (filterOption.GigFilter.SubSubCategory!.Gigs!.Any())
         {
             throw new BadRequestException("Cannot delete filter options that has gigs.", $"{nameof(FilterOption.Name)} has gigs and cannot be deleted.");
         }

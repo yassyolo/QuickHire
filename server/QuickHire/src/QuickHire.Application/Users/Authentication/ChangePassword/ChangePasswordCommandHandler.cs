@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using QuickHire.Application.Common.Interfaces.Abstractions;
 using QuickHire.Application.Common.Interfaces.Services;
+using QuickHire.Domain.Shared.Exceptions;
 using QuickHire.Domain.Users;
 
 namespace QuickHire.Application.Users.Authentication.ChangePassword;
@@ -23,13 +24,18 @@ public class ChangePasswordCommandHandler : ICommandHandler<ChangePasswordComman
             throw new ArgumentException("New password and confirm new password do not match.");
         }
 
-        await _userService.ChangePasswordAsync(request.NewPassword);
+        try
+        {
+            await _userService.ChangePasswordAsync(request.NewPassword);
 
-        var sellerId = await _userService.GetSellerIdByUserIdAsync();
-        var user = await _userService.GetCurrentUserAsync();
+            var buyerId = await _userService.GetBuyerIdByUserIdAsync();
 
-        await _notificationService.MakeNotification(sellerId, Common.Interfaces.Factories.Notification.NotificationRecipientType.Seller, Domain.Users.Enums.NotificationType.ProfileUpdate,
-         new Dictionary<string, string> { { "UserName", user.UserName! } });
+            await _notificationService.MakeNotification(buyerId, Common.Interfaces.Factories.Notification.NotificationRecipientType.Buyer, Domain.Users.Enums.NotificationType.ProfileUpdate, new Dictionary<string, string> { });
+        }
+        catch (Exception ex)
+        {
+            throw new BadRequestException("An error occurred while changing the password.", ex.Message);
+        }      
 
         return Unit.Value;
     }

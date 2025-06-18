@@ -13,6 +13,11 @@ export function SellerProfileDropdown() {
     navigate("/buyer"); 
   };
 
+  const handleSettingsClick = () => {
+    switchMode("buyer");
+    navigate("/buyer/settings");
+  }
+
   const handleLogoutClick = async () => {
     await logout();
   };
@@ -26,7 +31,7 @@ export function SellerProfileDropdown() {
       />
       <div className="dropdown-divider"></div>
       <Link to="/seller/profile" className="dropdown-item" aria-label="Profile Link">Profile</Link>
-      <Link to="/buyer/settings" className="dropdown-item" aria-label="Settings Link">Settings</Link>
+      <div onClick={handleSettingsClick} className="dropdown-item" aria-label="Settings Link">Settings</div>
       <Link to="/seller/billing-and-payment" className="dropdown-item" aria-label="Billing and Payments">Billing and payments</Link>
       <div className="dropdown-divider"></div>
 <div 

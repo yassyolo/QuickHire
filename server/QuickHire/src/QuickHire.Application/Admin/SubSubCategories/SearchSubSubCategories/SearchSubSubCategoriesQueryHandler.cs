@@ -18,12 +18,11 @@ public class SearchSubSubCategoriesQueryHandler : IQueryHandler<SearchSubSubCate
 
     public async Task<PaginatedResultModel<SubSubCategoryRowModel>> Handle(SearchSubSubCategoriesQuery request, CancellationToken cancellationToken)
     {
-        var subSubCategoriesQuery = _repository.GetAllIncluding<SubSubCategory>(x => x.Gigs, x => x.GigFilters);
+        var subSubCategoriesQuery = _repository.GetAllIncluding<SubSubCategory>(x => x.Gigs!, x => x.GigFilters);
 
         if (!string.IsNullOrEmpty(request.Keyword))
         {
-            subSubCategoriesQuery = subSubCategoriesQuery.Where(x => x.Name.ToLower().Contains(request.Keyword.ToLower()) ||
-            x.SubCategory.Name.ToLower().Contains(request.Keyword.ToLower()));
+            subSubCategoriesQuery = subSubCategoriesQuery.Where(x => x.Name.ToLower().Contains(request.Keyword.ToLower()));
         }
 
         if (request.Id != null)
@@ -46,8 +45,7 @@ public class SearchSubSubCategoriesQueryHandler : IQueryHandler<SearchSubSubCate
         }
         else
         {
-            var pagedQuery = subSubCategoriesQuery.Skip((request.CurrentPage - 1) * request.ItemsPerPage)
-                .Take(request.ItemsPerPage);
+            var pagedQuery = subSubCategoriesQuery.Skip((request.CurrentPage - 1) * request.ItemsPerPage).Take(request.ItemsPerPage);
 
             subSubCategoriesList = await _repository.ToListAsync(pagedQuery);
         }

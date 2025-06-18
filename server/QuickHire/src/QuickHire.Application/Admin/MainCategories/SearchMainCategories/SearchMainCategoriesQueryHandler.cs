@@ -40,9 +40,7 @@ public class SearchMainCategoriesQueryHandler : IQueryHandler<SearchMainCategori
         }
         else
         {
-            var pagedQuery = mainCategoriesQuery
-                .Skip((request.CurrentPage - 1) * request.ItemsPerPage)
-                .Take(request.ItemsPerPage);
+            var pagedQuery = mainCategoriesQuery.Skip((request.CurrentPage - 1) * request.ItemsPerPage).Take(request.ItemsPerPage);
 
             mainCategoriesList = await _repository.ToListAsync(pagedQuery);
         }

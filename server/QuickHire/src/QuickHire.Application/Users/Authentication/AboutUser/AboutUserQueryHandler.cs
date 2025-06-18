@@ -15,7 +15,6 @@ internal class AboutUserQueryHandler : IQueryHandler<AboutUserQuery, AboutUserMo
         _userService = userService;
     }
 
-
     public async Task<AboutUserModel> Handle(AboutUserQuery request, CancellationToken cancellationToken)
     {
         return await _userService.GetAboutCurrentUserAsync();

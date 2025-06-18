@@ -3,9 +3,9 @@ import { useEffect, useState } from "react";
 import { Breadcrumb } from "../../../../../Shared/PageItems/Breadcrumb/Breadcrumb";
 import { CategoryActions } from "../../Common/Actions/CategoryActions";
 import { CategoryDetails } from "../../Common/CategoryDetails/CategoryDetails";
-import { DeactivateSubSubCategoryModal, FilterItem } from "../../../../Components/Modals/Deactivate/SubSubCategory/DeactivateSubSubCategoryModal";
+import { DeactivateSubSubCategoryModal, FilterItem } from "../../../../../Shared/Modals/Deactivate/SubSubCategory/DeactivateSubSubCategoryModal";
 import { SubSubCategoriesTableSection } from "../../Common/Tables/GigFiltersTableSection";
-import { EditSubSubCategoryModal } from "../../../../Components/Modals/Edit/EditSubSubCategoryModal";
+import { EditSubSubCategoryModal } from "../../../../../Shared/Modals/Edit/SubSubCategory/EditSubSubCategoryModal";
 import { SideNavigation } from "../../../../../Shared/PageItems/SideNavigation/SideNavigation";
 import axios from "../../../../../axiosInstance";
 

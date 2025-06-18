@@ -1,10 +1,10 @@
 import {  useCallback, useEffect, useState } from "react";
 import {Pagination} from "../../../Shared/PageItems/Pagination/Pagination/Pagination";
-import { DataTable } from "../../Components/Tables/Common/AdminDataTable";
+import { DataTable } from "../../../Shared/Tables/Common/DataTable/AdminDataTable";
 import { PageTitle } from "../../../Shared/PageItems/PageTitle/PageTitle";
 import { UsersFilter } from "../PageFilters/UsersFilter";
 import { TitleFilterSelector } from "../../../Shared/PageItems/TitleFilterSection/TitleFilterSection";
-import { UserActions } from "../../Components/Tables/TableActions/UserActions";
+import { UserActions } from "../../../Shared/Tables/TableActions/Users/UserActions";
 import axios from "../../../axiosInstance";
 export interface UserRow{
   id: string;
@@ -44,10 +44,7 @@ export function Users (){
     const handlePageChange = (page: number) => setCurrentPage(page);
 
     useEffect(() => {
-                setModerationStatusId(1);
-    }
-    , []);
-    useEffect(() => {
+        setModerationStatusId(1);
         setCurrentPage(1);
     }
     , [id, keyword, moderationStatusId, selectedRoleId]);
@@ -100,7 +97,7 @@ export function Users (){
             {loading ? (<div className="loading">Loading...</div>
             ) : (
                 <>
-                    <TitleFilterSelector selectedId={moderationStatusId} setSelectedId={handleSelectedModerationStatusId} endpoint="https://localhost:7267/admin/filters/moderation-status" />
+                    <TitleFilterSelector selectedId={moderationStatusId} setSelectedId={handleSelectedModerationStatusId} endpoint="https://localhost:7267/filters/moderation-status" />
                     <DataTable data={gigs} columns={["id", "joined", "username", "roles", "status"]} headers={tableHeaders} renderActions={(row: UserRow) => (<UserActions user={row} onDeactivateSuccess={hanldeDeactivateSuccess} />)} /></>
             )}
         </div><div className="pagination-container">

@@ -19,7 +19,7 @@ public class MarkAsReadQueryHandler : IQueryHandler<MarkAsReadQuery, Unit>
 
     public async Task<Unit> Handle(MarkAsReadQuery request, CancellationToken cancellationToken)
     {
-        var notification = await _repository.GetByIdAsync<Domain.Users.Notification, int>(request.Id);
+        var notification = await _repository.GetByIdAsync<Domain.Users.Notification, int>(request.Id)!;
         if (notification == null)
         {
             throw new NotFoundException(nameof(Domain.Users.Notification), request.Id);

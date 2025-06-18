@@ -16,7 +16,7 @@ public class SubSubCategoryDetailsQueryHandler : IQueryHandler<SubSubCategoryDet
 
     public async Task<SubSubCategoryDetailsModel> Handle(SubSubCategoryDetailsQuery request, CancellationToken cancellationToken)
     {
-        var subSubCategory = await _repository.GetByIdAsync<Domain.Categories.SubSubCategory, int>(request.Id);
+        var subSubCategory = await _repository.GetByIdAsync<Domain.Categories.SubSubCategory, int>(request.Id)!;
         if (subSubCategory == null)
         {
             throw new NotFoundException(nameof(Domain.Categories.SubSubCategory), request.Id);
@@ -37,7 +37,7 @@ public class SubSubCategoryDetailsQueryHandler : IQueryHandler<SubSubCategoryDet
             var gigFilterModel = new GigFilterModel
             {
                 Id = gigFilter.Id,
-                Title = gigFilter.Title,
+                Title = gigFilter.Title!,
                 Items = gigFilter.Options.Select(x => new FilterOptionModel
                 {
                     Id = x.Id,

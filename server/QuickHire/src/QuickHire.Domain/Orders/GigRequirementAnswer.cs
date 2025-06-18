@@ -11,6 +11,5 @@ public class GigRequirementAnswer : BaseSoftDeletableEntity<int>
     public int OrderId { get; set; }
     public Order Order { get; set; } = null!;
     public string BuyerId { get; set; } = string.Empty;
-    public IEnumerable<string>? AttachmentUrls { get; set; } 
 }   
 

@@ -52,8 +52,7 @@ public class SellerDetailsQueryHandler : IQueryHandler<SellerDetailsQuery, GigSe
         var sellerDetailsForBuyer = await _userService.GetSellerDetailsForBuyer(gig.SellerId);
         var sellerUser = await _userService.GetSellerProfileDetails(userId);
 
-        var userLanguagesQueryable = _repository.GetAllReadOnly<Domain.Users.UserLanguage>().Where(x => x.UserId == userId);
-        userLanguagesQueryable = _repository.GetAllIncluding<Domain.Users.UserLanguage>(x => x.Language);
+        var userLanguagesQueryable = _repository.GetAllIncluding<Domain.Users.UserLanguage>(x => x.Language).Where(x => x.UserId == userId);
         var userLanguages = await _repository.ToListAsync<Domain.Users.UserLanguage>(userLanguagesQueryable);
         var languages = userLanguages.Select(x => x.Language.Name).ToList();
 
@@ -74,6 +73,7 @@ public class SellerDetailsQueryHandler : IQueryHandler<SellerDetailsQuery, GigSe
 
         return new GigSellerDetailsModel
         {
+            UserId = userId,
             ProfileImageUrl = sellerUser.ProfilePictureUrl,
             FullName = sellerUser.FullName,
             Location = sellerUser.Country,
@@ -89,7 +89,6 @@ public class SellerDetailsQueryHandler : IQueryHandler<SellerDetailsQuery, GigSe
             LastDelivery = ordersList.Any() ? ordersList.Max(x => x.CreatedAt).ToString("yyyy-MM-dd") : "N/A",
             Reviews = reviewModels.ToList(),
         }; 
-
         
     }
 }

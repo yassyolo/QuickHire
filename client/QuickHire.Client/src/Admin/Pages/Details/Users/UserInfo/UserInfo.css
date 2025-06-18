@@ -1,0 +1,90 @@
+.seller-details-dex-skills-item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.contact-me-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: var(--default-shadow);
+    width: 410px;
+    height: 200px;
+    position: sticky;
+    top: 90px;
+    justify-content: center;
+    align-items: center;
+}
+
+.contact-me-description {
+    font-size: 16px;
+    color: var(--text-black-color);
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.rating-distribution-wrapper{
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 15px;
+        width: 60%;
+
+}
+
+.rating-list-wrapper{
+    width: 60%;
+    margin-top: 20px;
+}
+
+.seller-gigs-header, .seller-details-dex-skills-item-header{
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-black-color);
+}
+
+.seller-details-dex-skills-item-content{
+    font-size: 15px;
+    color: var(--text-black-color);
+}
+
+.seller-details-dex-skills-item{
+    margin-bottom: 28px;
+}
+
+.seller-gigs-list{
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+
+    gap: 20px;
+    width: 100%;
+}
+
+.seller-details-dex-skills-item-content-education, .seller-details-dex-skills-item-content-certification{
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.seller-details-dex-skills-item-content-skills{
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.seller-details-dex-skills-item-content-portfolios{
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.seller-details-dex-skills-item-header.description{
+    margin-top: 50px;
+}
+
+.seller-details-dex-skills-item-content.description{
+    font-size: 15px;
+    color: var(--text-black-color);
+}

@@ -2,17 +2,25 @@
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using QuickHire.Application.Admin.FAQ.AddFAQ;
-using QuickHire.Application.Admin.FAQ.DeleteFAQ;
-using QuickHire.Application.Admin.FAQ.EditFAQ;
-using QuickHire.Application.Admin.FAQ.GetFAQ;
-using QuickHire.Application.Admin.Filters.CountriesFilter;
-using QuickHire.Application.Admin.Filters.ModerationStatusFilter;
-using QuickHire.Application.Admin.Filters.OrderStatusFilter;
-using QuickHire.Application.Admin.Filters.PriceFilter;
-using QuickHire.Application.Admin.Filters.RoleFilter;
 using QuickHire.Application.Admin.Models.FAQ;
 using QuickHire.Application.Admin.Models.Filters;
+using QuickHire.Application.Admin.Reporting.ReportTables;
+using QuickHire.Application.Shared.FAQ.AddFAQ;
+using QuickHire.Application.Shared.FAQ.DeleteFAQ;
+using QuickHire.Application.Shared.FAQ.EditFAQ;
+using QuickHire.Application.Shared.FAQ.GetFAQ;
+using QuickHire.Application.Shared.Filters.CategoriesPopulate.MainCategories;
+using QuickHire.Application.Shared.Filters.CategoriesPopulate.SubCategories;
+using QuickHire.Application.Shared.Filters.CategoriesPopulate.SubSubCategories;
+using QuickHire.Application.Shared.Filters.CountriesFilter;
+using QuickHire.Application.Shared.Filters.DeliveryTimeFilter;
+using QuickHire.Application.Shared.Filters.ModerationStatusFilter;
+using QuickHire.Application.Shared.Filters.OrderStatusFilter;
+using QuickHire.Application.Shared.Filters.PopulateLanguages;
+using QuickHire.Application.Shared.Filters.PriceFilter;
+using QuickHire.Application.Shared.Filters.RoleFilter;
+using QuickHire.Application.Shared.Filters.ServiceIncludesFilter;
+using QuickHire.Application.Users.Authentication.NotAuthenticatedPage;
 
 namespace QuickHire.Api.Modules.Shared;
 
@@ -26,7 +34,7 @@ public class SharedModule : CarterModule
             var result = await mediator.Send(command);
             return Results.Ok(result);
         })
-        .RequireAuthorization(new AuthorizeAttribute { Roles = "seller, admin" })
+        .RequireAuthorization(new AuthorizeAttribute { Roles = "seller,admin" })
         .WithName("AddFAQ")
         .WithTags("FAQs")
         .WithDescription("Adds a new FAQ for a gig or main category.");
@@ -36,7 +44,7 @@ public class SharedModule : CarterModule
             await mediator.Send(command);
             return Results.NoContent();
         })
-        .RequireAuthorization(new AuthorizeAttribute { Roles = "admin, seller" })
+        .RequireAuthorization(new AuthorizeAttribute { Roles = "admin,seller" })
         .WithName("EditFAQ")
         .WithTags("FAQs")
         .DisableAntiforgery()
@@ -47,7 +55,7 @@ public class SharedModule : CarterModule
             var result = await mediator.Send(query);
             return Results.Ok(result);
         })
-            .RequireAuthorization(new AuthorizeAttribute { Roles = "buyer, seller, admin" })
+        .RequireAuthorization(new AuthorizeAttribute { Roles = "buyer,seller,admin" })
         .WithName("SearchFAQs")
         .WithTags("FAQs")
         .WithDescription("Searches through FAQs by gig, main category or user id.");
@@ -57,7 +65,7 @@ public class SharedModule : CarterModule
             await mediator.Send(command);
             return Results.NoContent();
         })
-            .RequireAuthorization(new AuthorizeAttribute { Roles = "seller, admin" })
+        .RequireAuthorization(new AuthorizeAttribute { Roles = "seller,admin" })
         .WithName("DeleteFAQ")
         .WithTags("FAQs")
         .WithDescription("Deletes a FAQ by Id.");
@@ -65,12 +73,23 @@ public class SharedModule : CarterModule
         #endregion
 
         #region Filters
-        app.MapGet("admin/filters/moderation-status", async (IMediator mediator) =>
+        app.MapGet("gig-filters/populate/{Id}", async ([AsParameters] ServiceIncludesFilterQuery query, IMediator mediator) =>
+        {
+            var result = await mediator.Send(query);
+            return Results.Ok(
+                result);
+        })
+        .RequireAuthorization(new AuthorizeAttribute { Roles = "buyer,seller" })
+        .WithName("PopulateGigFilters")
+        .WithTags("Gig Filters")
+        .WithDescription("Populates gig filters for sub sub categories.");
+
+        app.MapGet("filters/moderation-status", async (IMediator mediator) =>
         {
             var result = await mediator.Send(new ModerationStatusQuery());
             return Results.Ok(result);
         })
-        .RequireAuthorization(new AuthorizeAttribute { Roles = "seller, admin" })
+        .RequireAuthorization(new AuthorizeAttribute { Roles = "admin,seller" })
         .WithName("GetModerationStatus")
         .WithTags("Filters")
         .WithDescription("Gets the moderation status for filtering.");
@@ -80,17 +99,27 @@ public class SharedModule : CarterModule
             var result = await mediator.Send(new PriceFilterQuery());
             return Results.Ok(result);
         })
-            .RequireAuthorization(new AuthorizeAttribute { Roles = "buyer" })
+        .RequireAuthorization(new AuthorizeAttribute { Roles = "buyer" })
         .WithName("GetPriceRange")
         .WithTags("Filters")
         .WithDescription("Gets the price range for filtering.");
-
+        
+        app.MapGet("/admin/filters/delivery-time", async (IMediator mediator) =>
+        {
+            var result = await mediator.Send(new DeliveryTimeFilterQuery());
+            return Results.Ok(result);
+        })
+        .RequireAuthorization(new AuthorizeAttribute { Roles = "buyer" })
+        .WithName("GetDeliveryTime")
+        .WithTags("Filters")
+        .WithDescription("Gets the delivery time for filtering.");
+        
         app.MapGet("/admin/filters/countries", async (IMediator mediator) =>
         {
             var result = await mediator.Send(new CountriesFilterQuery());
             return Results.Ok(result);
         })
-        .RequireAuthorization(new AuthorizeAttribute { Roles = "buyer, admin" })
+        .RequireAuthorization(new AuthorizeAttribute { Roles = "buyer,admin" })
         .WithName("GetCountries")
         .WithTags("Filters")
         .WithDescription("Gets the countries for filtering.");
@@ -100,21 +129,74 @@ public class SharedModule : CarterModule
             var result = await mediator.Send(new RoleFilterQuery());
             return Results.Ok(result);
         })
-            .RequireAuthorization(new AuthorizeAttribute { Roles = "admin" })
-         .WithName("GetRoles")
-         .WithTags("Filters")
-         .WithDescription("Gets the roles for filtering.");
+        .RequireAuthorization(new AuthorizeAttribute { Roles = "admin" })
+        .WithName("GetRoles")
+        .WithTags("Filters")
+        .WithDescription("Gets the roles for filtering.");
 
         app.MapGet("/admin/filters/order-status", async (IMediator mediator) =>
         {
             var result = await mediator.Send(new OrderStatusQuery());
             return Results.Ok(result);
         })
-         .RequireAuthorization(new AuthorizeAttribute { Roles = "buyer, seller" })
-         .WithName("GetOrderStatus")
-         .WithTags("Filters")
-         .WithDescription("Gets the order status for filtering.");
+        .RequireAuthorization(new AuthorizeAttribute { Roles = "buyer,seller" })
+        .WithName("GetOrderStatus")
+        .WithTags("Filters")
+        .WithDescription("Gets the order status for filtering.");
+
+        app.MapGet("/main-categories/populate", async (IMediator mediator) =>
+        {
+            var result = await mediator.Send(new PopulateMainCategoriesQuery());
+            return Results.Ok(result);
+        })
+        .RequireAuthorization(new AuthorizeAttribute { Roles = "seller,admin" })
+        .WithName("PopulateMainCategories")
+        .WithTags("Filters")
+        .WithDescription("Populates main categories.");
+
+        app.MapGet("/sub-categories/populate", async (IMediator mediator) =>
+        {
+            var result = await mediator.Send(new PopulateSubCategoriesQuery());
+            return Results.Ok(result);
+        })
+        .RequireAuthorization(new AuthorizeAttribute { Roles = "admin" })
+        .WithName("PopulateSubCategories")
+        .WithTags("Filters")
+        .WithDescription("Populates sub categories.");
+
+        app.MapGet("/languages/populate", async ([AsParameters] PopulateLanguagesQuery query, IMediator mediator) =>
+        {
+            var result = await mediator.Send(query);
+            return Results.Ok(result);
+        })
+        .RequireAuthorization(new AuthorizeAttribute { Roles = "seller,buyer" })
+        .WithName("PopulateLanguages")
+        .WithTags("Seller")
+        .WithDescription("Populate the languages for the seller's profile.");
+
+        app.MapGet("/sub-sub-categories/populate", async (IMediator mediator) =>
+        {
+            var result = await mediator.Send(new PopulateSubSubCategoriesQuery());
+            return Results.Ok(result);
+        })
+        .WithName("PopulateSubSubCategories")
+        .WithTags("Sub Sub Categories")
+        .RequireAuthorization(new AuthorizeAttribute { Roles = "admin,buyer,seller" })
+        .WithDescription("Populates sub sub categories.");
 
         #endregion
+
+        #region NotAuthenticated
+
+        app.MapGet("/not-authenticated", async ([AsParameters] NotAuthenticatedPageQuery query, IMediator mediator) =>
+        {
+            var result = await mediator.Send(query);
+            return Results.Ok(result);
+        })
+       .WithName("NotAuthenticatedPage")
+       .WithTags("Not Authenticated")
+       .WithDescription("Returns the not authenticated page content based on the provided query parameters.");
+        #endregion
     }
+
 }

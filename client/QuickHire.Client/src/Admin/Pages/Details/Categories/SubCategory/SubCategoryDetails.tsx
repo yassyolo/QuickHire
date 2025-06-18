@@ -1,15 +1,15 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { EditSubCategoryModal } from "../../../../Components/Modals/Edit/EditSubCategoryModal";
+import { EditSubCategoryModal } from "../../../../../Shared/Modals/Edit/SubCategory/EditSubCategoryModal";
 import { Breadcrumb } from "../../../../../Shared/PageItems/Breadcrumb/Breadcrumb";
-import { EditSubSubCategoryModal } from "../../../../Components/Modals/Edit/EditSubSubCategoryModal";
-import { DeactivateSubSubCategoryModal } from "../../../../Components/Modals/Deactivate/SubSubCategory/DeactivateSubSubCategoryModal";
-import { AddSubSubCategoryModal } from "../../../../Components/Modals/Add/SubSubCategory/AddSubSubCategoryModal";
+import { EditSubSubCategoryModal } from "../../../../../Shared/Modals/Edit/SubSubCategory/EditSubSubCategoryModal";
+import { DeactivateSubSubCategoryModal } from "../../../../../Shared/Modals/Deactivate/SubSubCategory/DeactivateSubSubCategoryModal";
+import { AddSubSubCategoryModal } from "../../../../../Shared/Modals/Add/SubSubCategory/AddSubSubCategoryModal";
 import { CategoryActions } from "../../Common/Actions/CategoryActions";
 import { CategoryDetails } from "../../Common/CategoryDetails/CategoryDetails";
 import { SubCategoriesTableSection } from "../../Common/Tables/SubCategoriesTableSection";
 import { IconButton } from "../../../../../Shared/Buttons/IconButton/IconButton";
-import { DeactivateSubCategoryModal } from "../../../../Components/Modals/Deactivate/SubCategory/DeactivateSubCategoryModal";
+import { DeactivateSubCategoryModal } from "../../../../../Shared/Modals/Deactivate/SubCategory/DeactivateSubCategoryModal";
 import { SideNavigation } from "../../../../../Shared/PageItems/SideNavigation/SideNavigation";
 import axios from "../../../../../axiosInstance";
 
@@ -156,7 +156,7 @@ export function SubCategoryDetails() {
                                     showModal={showAddSubSubCategoryModal}
                                     onClose={handleAddSubSubCategoryModalVisibility}
                                     onAddSubSubCategorySuccess={handleAddSubSubCategorySuccess}
-                                    title="Sub Sub Category" showCategoriesPopulate={false} submitedSubCategoryId={parsedId}                                />
+                                    title="sub sub category" showCategoriesPopulate={false} submitedSubCategoryId={parsedId}                                />
                             }
                             renderActions={(item) => (
                                 <>

@@ -23,6 +23,7 @@ using QuickHire.Infrastructure.Persistence.Identity;
 using QuickHire.Infrastructure.Persistence.Repositories;
 using QuickHire.Infrastructure.Realtime.Services;
 using QuickHire.Infrastructure.Services;
+using Stripe.Tax;
 using System.Text;
 
 namespace QuickHire.Infrastructure.Extensions;
@@ -53,8 +54,8 @@ public static class ServiceCollectionExtensions
 {
     options.Cookie.Name = "Google_Cookie";
     options.SlidingExpiration = true;
-    options.Cookie.SameSite = SameSiteMode.None; 
-    options.Cookie.SecurePolicy = CookieSecurePolicy.Always; 
+    options.Cookie.SameSite = SameSiteMode.Lax; 
+    options.Cookie.SecurePolicy = CookieSecurePolicy.None; 
 })
 .AddJwtBearer(options =>
 {
@@ -94,12 +95,12 @@ public static class ServiceCollectionExtensions
 {
     options.ClientId = configuration["GoogleAuthenticationOptions:ClientId"];
     options.ClientSecret = configuration["GoogleAuthenticationOptions:ClientSecret"];
-    options.SignInScheme = CookieAuthenticationDefaults.AuthenticationScheme; 
+    options.CallbackPath = "/signin-google"; 
     options.SaveTokens = true;
-    options.CallbackPath = "/google-redirect";
 
-    options.CorrelationCookie.SameSite = SameSiteMode.None;
-    options.CorrelationCookie.SecurePolicy = CookieSecurePolicy.Always;
+    options.CorrelationCookie.SameSite = SameSiteMode.Lax;
+    options.CorrelationCookie.SecurePolicy = CookieSecurePolicy.None;
+
 
 });
 
@@ -156,11 +157,7 @@ public static class ServiceCollectionExtensions
     {
         services.TryAddScoped<NewProjectBriefMadeNotificationGenerator>();
         services.AddScoped<CustomOfferReceivedNotificationGenerator>();
-        services.AddScoped<CustomOfferAcceptedNotificationGenerator>();
-        services.AddScoped<CustomOfferCancelledNotificationGenerator>();
-        services.AddScoped<CustomRequestPlacedNotificationGenerator>();
-        services.AddScoped<CustomRequestReceivedNotificationGenerator>();
-        services.AddScoped<HotGigNotificationGenerator>();
+        services.AddScoped<NewOrderNotificationGenerator>();
         services.AddScoped<NewGigUploadedNotificationGenerator>();
         services.AddScoped<OrderDeliveredNotificationGenerator>();
         services.AddScoped<OrderPlacedNotificationGenerator>();
@@ -171,22 +168,18 @@ public static class ServiceCollectionExtensions
         services.AddScoped<RevisionReceivedNotificationGenerator>();
         services.AddScoped<ReportedUserNotificationGenerator>();
         services.AddScoped<ReportedGigNotificationGEnerator>();
+        services.AddScoped<ReviewReceivedNotificationGenerator>();
 
         services.TryAddScoped<INotificationGeneratorFactory>(provider =>
         {
             var notificationGenerators = new Dictionary<NotificationType, INotificationGenerator>
         {
             { NotificationType.NewProjectBriefMade, provider.GetRequiredService<NewProjectBriefMadeNotificationGenerator>() },
-                        { NotificationType.ReportedUser, provider.GetRequiredService<ReportedUserNotificationGenerator>() },
-
+            { NotificationType.ReportedUser, provider.GetRequiredService<ReportedUserNotificationGenerator>() },
+                        { NotificationType.ReviewReceived, provider.GetRequiredService<ReviewReceivedNotificationGenerator>() },
                                     { NotificationType.ReportedGig, provider.GetRequiredService<ReportedGigNotificationGEnerator>() },
-
             { NotificationType.CustomOfferReceived, provider.GetRequiredService<CustomOfferReceivedNotificationGenerator>() },
-            { NotificationType.CustomOfferAccepted, provider.GetRequiredService<CustomOfferAcceptedNotificationGenerator>() },
-            { NotificationType.CustomOfferCancelled, provider.GetRequiredService<CustomOfferCancelledNotificationGenerator>() },
-            { NotificationType.CustomRequestPlaced, provider.GetRequiredService<CustomRequestPlacedNotificationGenerator>() },
-            { NotificationType.CustomRequestReceived, provider.GetRequiredService<CustomRequestReceivedNotificationGenerator>() },
-            { NotificationType.HotGig, provider.GetRequiredService<HotGigNotificationGenerator>() },
+            { NotificationType.NewOrder, provider.GetRequiredService<NewOrderNotificationGenerator>() },          
             { NotificationType.NewGigUploaded, provider.GetRequiredService<NewGigUploadedNotificationGenerator>() },
             { NotificationType.OrderDelivered, provider.GetRequiredService<OrderDeliveredNotificationGenerator>() },
             { NotificationType.OrderPlaced, provider.GetRequiredService<OrderPlacedNotificationGenerator>() },

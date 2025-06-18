@@ -24,18 +24,35 @@ public class DeleteSubSubCategoryCommandHandler : ICommandHandler<DeleteSubSubCa
             throw new NotFoundException(nameof(SubSubCategory), request.Id);
         }
 
-        if (subSubCategory.GigFilters.Any())
-        {
-            throw new BadRequestException("Cannot delete a sub sub category that has filters.", $"{nameof(SubCategory.Name)} has filters and cannot be deleted.");
-        }
-
-        if(subSubCategory.Gigs.Any())
+        if (subSubCategory.Gigs!.Any())
         {
             throw new BadRequestException("Cannot delete a sub sub category that has gigs.", $"{nameof(SubCategory.Name)} has gigs and cannot be deleted.");
         }
 
-        await _repository.DeleteAsync(subSubCategory);
-        await _repository.SaveChangesAsync();
+        try
+        {
+            var gigFilters = _repository.GetAllIncluding<GigFilter>().Where(x => x.SubSubCategoryId == subSubCategory.Id);
+            var gigFiltersList = await _repository.ToListAsync(gigFilters);
+
+            if (gigFiltersList.Any())
+            {
+                foreach (var filter in gigFiltersList)
+                {
+                    filter.IsDeleted = true;
+                    filter.DeletedAt = DateTime.Now;
+                    await _repository.UpdateAsync(filter);
+                }
+            }
+
+            subSubCategory.IsDeleted = true;
+            subSubCategory.DeletedAt = DateTime.Now;
+
+            await _repository.UpdateAsync(subSubCategory);
+        }
+        catch (Exception ex)
+        {
+            throw new BadRequestException("Error while deleting sub sub category", ex.Message);
+        }
 
         return Unit.Value;
     }

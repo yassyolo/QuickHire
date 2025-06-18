@@ -5,12 +5,17 @@ import '../Seller/SellerProfileDropdown.css';
 import { useAuth } from "../../../../../../AuthContext";  
 
 export function BuyerProfileDropdown() {
-  const { switchMode, logout } = useAuth();  
+  const { switchMode, logout, user } = useAuth();  
   const navigate = useNavigate();
 
   const handleSwitchToSelling = () => {
+    if(user?.roles.includes("seller")) {
     switchMode("seller");
     navigate("/seller/dashboard");
+    }
+    else{
+      navigate("/seller/new");
+    }
   };
 
   const handleLogoutClick = async () => {

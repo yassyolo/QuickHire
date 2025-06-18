@@ -16,8 +16,8 @@ internal class OrderConfiguration : IEntityTypeConfiguration<Order>
         builder.Property(x => x.OrderNumber).IsRequired().HasMaxLength(CustomItemNumberMaxLength);
 
         builder.HasOne(x => x.SelectedPaymentPlan)
-            .WithOne()
-            .HasForeignKey<Order>(x => x.SelectedPaymentPlanId);
+            .WithMany()
+            .HasForeignKey(x => x.SelectedPaymentPlanId);
 
         builder.Property(x => x.CreatedAt).IsRequired();
 

@@ -22,33 +22,40 @@ public class EditSubCategoryCommandHandler : ICommandHandler<EditSubCategoryComm
 
     public async Task<AddSubCategoryReturnModel> Handle(EditSubCategoryCommand request, CancellationToken cancellationToken)
     {
-        var subCategory = await _repository.GetByIdAsync<SubCategory, int>(request.Id);
+        var subCategory = await _repository.GetByIdAsync<SubCategory, int>(request.Id)!;
         if (subCategory == null)
         {
             throw new NotFoundException(nameof(SubCategory), request.Id);
         }
 
-        subCategory.Name = request.Name;
-
-        if(request.Image != null)
+        try
         {
-            var imagePath = _cloudinaryService.UploadFile(request.Image);
-            if (imagePath == null)
+            subCategory.Name = request.Name;
+
+            if (request.Image != null)
             {
-                throw new BadRequestException("Image upload failed", "Image upload failed.");
+                var imagePath = _cloudinaryService.UploadFile(request.Image);
+                if (imagePath == null)
+                {
+                    throw new BadRequestException("Image upload failed", "Image upload failed.");
+                }
+
+                subCategory.ImageUrl = imagePath;
             }
 
-            subCategory.ImageUrl = imagePath;
+            await _repository.UpdateAsync(subCategory);
+            await _repository.SaveChangesAsync();
+
+            return new AddSubCategoryReturnModel
+            {
+                Id = subCategory.Id,
+                ImageUrl = subCategory.ImageUrl!
+            };
         }
-
-        await _repository.UpdateAsync(subCategory);
-        await _repository.SaveChangesAsync();
-
-        return new AddSubCategoryReturnModel
+        catch (Exception ex)
         {
-            Id = subCategory.Id,
-            ImageUrl = subCategory.ImageUrl
-        };
+            throw new BadRequestException("Error while trying to edin sub category", ex.Message);
+        }
     }
 }
 

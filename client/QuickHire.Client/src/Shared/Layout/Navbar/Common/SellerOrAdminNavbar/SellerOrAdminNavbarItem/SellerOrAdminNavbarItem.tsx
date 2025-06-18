@@ -23,10 +23,10 @@ export function SellerOrAdminNavbarItem ({ to, label, hasDropdown}: SellerNavbar
       )}
       {hasDropdown && dropdownVisible && <ul className="seller-dropdown-menu">
         <NavLink to="/seller/orders" className="seller-dropdown-item">Orders</NavLink>
-        <div className="dropdown-divider"></div>
+        <div className="seller-dropdown-divider"></div>
         <NavLink to="/seller/gigs" className="seller-dropdown-item">Gigs</NavLink>
         <NavLink to="/seller/project-briefs" className="seller-dropdown-item">Projects</NavLink>
-        <div className="dropdown-divider"></div>
+        <div className="seller-dropdown-divider"></div>
         <NavLink to="/seller/profile" className="seller-dropdown-item">Profile</NavLink>
         <NavLink to="/seller/earnings" className="seller-dropdown-item">Earnings</NavLink>
 

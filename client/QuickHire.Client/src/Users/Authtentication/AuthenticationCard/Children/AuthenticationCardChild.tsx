@@ -6,8 +6,9 @@ import axios from "axios";
 import './AuthenticationCardChild.css';
 import { IconActionButton } from "../../../../Shared/Buttons/IconActionButton/IconActionButton";
 import { IconButton } from "../../../../Shared/Buttons/IconButton/IconButton";
-import { PasswordCheckItem } from "../../PasswordCheckItem";
+import { PasswordCheckItem } from "../Common/PasswordCheck/PasswordCheckItem";
 import { useAuth } from "../../../../AuthContext";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 export function AuthentionCardChild() {
     const [showSignInModal, setShowSignInModal] = useState(false);
@@ -15,10 +16,15 @@ export function AuthentionCardChild() {
     const [showRegisterOrSignInModal, setShowRegisterOrSignInModal] = useState(true);
     const [showEmailTooltip, handleEmailTooltip] = useTooltip();
     const [showThanksForRegisteringModal, handleThanksForRegisteringModal] = useState(false);
+    const [showPasswordTooltip, handlePasswordTooltip] = useTooltip();
+    const navigate = useNavigate();
     const [password, setPassword] = useState("");
     const [username, setUsername] = useState("");
     const [validationErrors, setValidationErrors] = useState<{ Email?: string[]; Password?: string[] }>({});
     const [email, setEmail] = useState("");
+    const [searchParams] = useSearchParams();
+    const redirectTo = searchParams.get("redirectTo");
+
 
     const { login } = useAuth();
 
@@ -46,10 +52,6 @@ export function AuthentionCardChild() {
         setShowRegisterOrSignInModal(true);
     };
 
-    const handleContinueWithGoogleClick = () => {
-  const returnUrl = encodeURIComponent("http://localhost:5173/google-redirect");
-  window.location.href = `https://localhost:7267/auth/google?returnUrl=${returnUrl}`;
-};
 
 
     const handleRegistration = async () => {
@@ -97,6 +99,9 @@ export function AuthentionCardChild() {
             setPassword("");
             setUsername("");
             setShowRegisterOrSignInModal(false);
+            if (redirectTo) {
+                navigate(redirectTo);
+            }
         } catch (error: unknown) {
             if (axios.isAxiosError(error) && error.response?.status === 400) {
                 setValidationErrors({
@@ -126,13 +131,6 @@ export function AuthentionCardChild() {
                         </div>
                     </div>
                     <div className="card-button-choices d-flex flex-column">
-                        <IconActionButton
-                            icon={<i className="bi bi-google"></i>}
-                            text="Continue with Google"
-                            onClick={handleContinueWithGoogleClick}
-                            ariaLabel="Continue with Google"
-                        />
-                        <div className="or-choice">OR</div>
                         <IconActionButton
                             icon={<i className="bi bi-envelope"></i>}
                             text="Continue with email"
@@ -180,6 +178,8 @@ export function AuthentionCardChild() {
                         type="password"
                         value={password}
                         onChange={handlePasswordChange}
+                        showTooltip={showPasswordTooltip}
+                        onShowTooltip={handlePasswordTooltip}
                         placeholder="Enter Password"
                         ariaDescribedBy="password-help"
                     />
@@ -202,7 +202,7 @@ export function AuthentionCardChild() {
                         />
                     </div>
                     <button
-                        className="btn btn-primary"
+                        className="continue-button-email"
                         onClick={handleRegistration}
                         disabled={handleContinueButtonDisability}
                     >
@@ -235,30 +235,33 @@ export function AuthentionCardChild() {
                         </div>
                         <div className="card-title">Use your email or username</div>
 
-                        <FormGroup
-                            error={validationErrors.Email || []}
-                            id="email"
-                            label="Email or username"
-                            tooltipDescription="Enter your email address or username. You'll use this to sign in and receive important notifications."
-                            type="text"
-                            value={email}
-                            onChange={handleEmailChange}
-                            placeholder="Enter your email or username"
-                            ariaDescribedBy="email-help"
-                            onShowTooltip={handleEmailTooltip}
-                            showTooltip={showEmailTooltip}
-                        />
-                        <FormGroup
-                            error={validationErrors.Password || []}
-                            id="password"
-                            label="Password"
-                            tooltipDescription="Use at least 8 characters with a mix of letters, numbers, and symbols to keep your account secure."
-                            type="password"
-                            value={password}
-                            onChange={handlePasswordChange}
-                            placeholder="Enter Password"
-                            ariaDescribedBy="password-help"
-                        />
+<FormGroup
+  error={validationErrors.Email || []}
+  id="email"
+  label="Email or Username"
+  tooltipDescription="Enter the email address or username associated with your account to log in."
+  type="text"
+  value={email}
+  onChange={handleEmailChange}
+  placeholder="Email or username"
+  ariaDescribedBy="email-help"
+  onShowTooltip={handleEmailTooltip}
+  showTooltip={showEmailTooltip}
+/>
+
+<FormGroup
+  error={validationErrors.Password || []}
+  id="password"
+  label="Password"
+  tooltipDescription="Enter your account password. Passwords are case-sensitive."
+  type="password"
+  value={password}
+  onChange={handlePasswordChange}
+  onShowTooltip={handlePasswordTooltip}
+    showTooltip={showPasswordTooltip}
+  placeholder="Password"
+  ariaDescribedBy="password-help"
+/>
                         <button
                             className="continue-button-email"
                             onClick={handleLogin}

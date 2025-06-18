@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { UserRow } from "../../../Users/Users";
-import { DataTable } from "../../../../Components/Tables/Common/AdminDataTable";
-import { UserActions } from "../../../../Components/Tables/TableActions/UserActions";
+import { DataTable } from "../../../../../Shared/Tables/Common/DataTable/AdminDataTable";
+import { UserActions } from "../../../../../Shared/Tables/TableActions/Users/UserActions";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../../../../axiosInstance";
 

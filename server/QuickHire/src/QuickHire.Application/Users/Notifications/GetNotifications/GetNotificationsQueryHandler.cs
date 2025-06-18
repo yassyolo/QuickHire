@@ -21,6 +21,5 @@ public class GetNotificationsQueryHandler : IQueryHandler<GetNotificationsQuery,
 
         return notifications.Adapt<IEnumerable<GetNotificationsResponseModel>>();
     }
-
 }
 

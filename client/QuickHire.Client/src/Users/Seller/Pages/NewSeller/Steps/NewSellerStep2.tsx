@@ -4,6 +4,10 @@ import { useTooltip } from "../../../../../Shared/Forms/Common/Tooltips/Tooltip"
 import { NewAddedCertification } from "../../SellerProfile/NewAddedItems/Certification/NewAddedCertification";
 import { NewAddedSkill } from "../../SellerProfile/NewAddedItems/Skill/NewAddedSkill";
 import { NewAddedEducation } from "../../SellerProfile/NewAddedItems/Education/NewAddedEducation";
+import { SelectDropdown } from "../../../../../Shared/Dropdowns/Select/SelectDropdown";
+import { useEffect, useState } from "react";
+import axios from "../../../../../axiosInstance";
+import { MainCategoryPopulate } from "../../../../../Shared/Modals/Add/SubCategory/AddSubCategoryModal";
 
 interface Certification {
   id: number;
@@ -26,15 +30,17 @@ interface Education {
 }
 
 interface Props {
+  categoryId: number | null;
+  onChangeCategoryId: (value: number | null) => void;
   certifications: Certification[];
   skills: Skill[];
-  educations: Education[]; // 👈 New
+  educations: Education[]; 
   validationErrors: {
     Certification?: string[];
     Issuer?: string[];
     Date?: string[];
     Skill?: string[];
-    Institution?: string[]; // 👈 New
+    Institution?: string[];
     Degree?: string[];
     EndYear?: string[];
     Major?: string[];
@@ -78,6 +84,8 @@ interface Props {
 
 
 export function ProfessionalInfoStep({
+  categoryId,
+  onChangeCategoryId,
   certifications,
   skills,
   validationErrors,
@@ -110,11 +118,41 @@ export function ProfessionalInfoStep({
 const [tooltipDegree, showTooltipDegree] = useTooltip();
 const [tooltipEndYear, showTooltipEndYear] = useTooltip();
 const [tooltipMajor, showTooltipMajor] = useTooltip();
+  const [showMainCategoryTooltip, handleShowMainCategoryTooltip] = useTooltip();
+  const [categories, setCategories] = useState<MainCategoryPopulate[]>([]);
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const response = await axios.get<MainCategoryPopulate[]>("https://localhost:7267/main-categories/populate");
+                setCategories(response.data);
+            } catch (error) {
+                console.error("Error fetching main categories:", error);
+            }
+        };
+        fetchCategories();
+    }, []);
 
   return (
     <div className="wizard-form">
       <div className="brief-description-title">Add your professional details</div>
-      <FormGroup
+<SelectDropdown
+  id="main-category"
+  label="Please select the industry relevant to your professional skills"
+  options={categories}
+  value={categoryId === null ? undefined : categoryId}
+  onChange={(value) => onChangeCategoryId(value === undefined ? null : value)}
+  getOptionLabel={(opt) => opt.name}
+  getOptionValue={(opt) => opt.id}
+  tooltipDescription={"Choose the industry that best describes the field your skills belong to. This helps us categorize your profile accurately."}
+  showTooltip={showMainCategoryTooltip}
+  ariaDescribedBy={"dropdown-help"}
+  onShowTooltip={handleShowMainCategoryTooltip}
+/>
+      <div className="new-seller-title" style={{fontSize: '18px', fontWeight: '600'}}>Education</div>
+
+<div style={{display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '20px', border: '1px solid #ccc', padding: '20px', borderRadius: '8px'}}>
+        <FormGroup
   id="institution"
   label="Institution"
   tooltipDescription="Enter the name of the institution."
@@ -171,7 +209,7 @@ const [tooltipMajor, showTooltipMajor] = useTooltip();
 />
 
 <ActionButton
-  text="Add Education"
+  text="Add +"
   onClick={onAddEducation}
   className="add-new-button"
   ariaLabel="Add new education"
@@ -188,7 +226,10 @@ const [tooltipMajor, showTooltipMajor] = useTooltip();
     onRemove={() => onRemoveEducation(edu.id)}
   />
 ))}
+</div>
+<div className="new-seller-title" style={{fontSize: '18px', fontWeight: '600'}}>Certifications</div>
 
+<div style={{display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '20px', border: '1px solid #ccc', padding: '20px', borderRadius: '8px'}}>
       <FormGroup
         id="certification"
         label="Certification"
@@ -230,7 +271,7 @@ const [tooltipMajor, showTooltipMajor] = useTooltip();
       />
 
       <ActionButton
-        text="Add Certification"
+        text="Add +"
         onClick={onAddCertification}
         className="add-new-button"
         ariaLabel="Add new certification"
@@ -244,6 +285,10 @@ const [tooltipMajor, showTooltipMajor] = useTooltip();
           onEdit={() => onEditCertification(cert)}
         />
       ))}
+      </div>
+      <div className="new-seller-title" style={{fontSize: '18px', fontWeight: '600'}}>Skills</div>
+
+<div style={{display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '20px', border: '1px solid #ccc', padding: '20px', borderRadius: '8px'}}>
 
       <FormGroup
         id="skill"
@@ -260,7 +305,7 @@ const [tooltipMajor, showTooltipMajor] = useTooltip();
       />
 
       <ActionButton
-        text="Add Skill"
+        text="Add +"
         onClick={onAddSkill}
         className="add-new-button"
         ariaLabel="Add new skill"
@@ -274,11 +319,12 @@ const [tooltipMajor, showTooltipMajor] = useTooltip();
           onEdit={() => onEditSkill(skill)}
         />
       ))}
+      </div>
 
       <ActionButton
         text="Save and continue"
         onClick={onNextStep}
-        className="add-new-button"
+        className="save-and-continue-button"
         ariaLabel="Save professional info and go to next step"
       />
     </div>

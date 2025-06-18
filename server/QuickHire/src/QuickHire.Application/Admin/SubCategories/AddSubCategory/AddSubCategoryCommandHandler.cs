@@ -27,30 +27,39 @@ public class AddSubCategoryCommandHandler : ICommandHandler<AddSubCategoryComman
             throw new NotFoundException(nameof(MainCategory), request.MainCategoryId);
         }
 
-        var subCategory = new SubCategory
+        try
         {
-            Name = request.Name,
-            MainCategoryId = request.MainCategoryId,
-            Clicks = 0,
-            CreatedOn = DateTime.Now,
-        };
+            var subCategory = new SubCategory
+            {
+                Name = request.Name,
+                MainCategoryId = request.MainCategoryId,
+                Clicks = 0,
+                CreatedOn = DateTime.Now,
+            };
 
-        var imagePath = _cloudinaryService.UploadFile(request.Image);
-        if (imagePath == null)
-        {
-            throw new BadRequestException("Image upload failed", "Image upload failed.");
+            var imagePath = _cloudinaryService.UploadFile(request.Image);
+            if (imagePath == null)
+            {
+                throw new BadRequestException("Image upload failed", "");
+            }
+
+            subCategory.ImageUrl = imagePath;
+
+            await _repository.AddAsync(subCategory);
+            await _repository.SaveChangesAsync();
+
+
+            return new AddSubCategoryReturnModel
+            {
+                Id = subCategory.Id,
+                ImageUrl = subCategory.ImageUrl,
+            };
         }
-
-        subCategory.ImageUrl = imagePath;
-
-        await _repository.AddAsync(subCategory);
-        await _repository.SaveChangesAsync();
-
-        return new AddSubCategoryReturnModel
+        catch (Exception ex)
         {
-            Id = subCategory.Id,
-            ImageUrl = subCategory.ImageUrl,
-        };
+            throw new BadRequestException("Failed to add subcategory", ex.Message);
+        }
+       
     }
 }
 

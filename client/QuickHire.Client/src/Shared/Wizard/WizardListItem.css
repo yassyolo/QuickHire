@@ -25,6 +25,10 @@
   background-color: var(--fiverr-green-color);
 }
 
+.wizard-list-item-step.completed {
+  background-color: var(--fiverr-green-color); 
+  color: #fff;               
+}
 
 .wizard-list-item-step-title.valid {
   color: var(--fiverr-green-color);

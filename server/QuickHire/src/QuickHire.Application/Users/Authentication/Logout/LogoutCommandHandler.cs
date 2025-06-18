@@ -16,10 +16,10 @@ internal class LogoutCommandHandler : ICommandHandler<LogoutCommand, Unit>
 
     public async Task<Unit> Handle(LogoutCommand request, CancellationToken cancellationToken)
     {
-       var user = await _userService.GetCurrentUserAsync();
+        var user = await _userService.GetCurrentUserAsync();
         if (user == null)
         {
-            throw new NotFoundException("User not found", "User not found.");
+            throw new NotFoundException("ApplicationUser", "User not found.");
         }
 
         await _userService.LogoutUserAsync(user);

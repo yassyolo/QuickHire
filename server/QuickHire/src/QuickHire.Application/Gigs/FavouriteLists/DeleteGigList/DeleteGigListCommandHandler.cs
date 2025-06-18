@@ -17,15 +17,14 @@ public class DeleteGigListCommandHandler : ICommandHandler<DeleteGigListCommand,
 
     public async Task<Unit> Handle(DeleteGigListCommand request, CancellationToken cancellationToken)
     {
-        var gigListQueryable = _repository.GetAllReadOnly<FavouriteGigsList>().Where(x => x.Id == request.Id);
-        gigListQueryable = _repository.GetAllIncluding<FavouriteGigsList>(x => x.FavouriteGigs);
+        var gigListQueryable = _repository.GetAllIncluding<FavouriteGigsList>(x => x.FavouriteGigs).Where(x => x.Id == request.Id);
         var gigList = await _repository.FirstOrDefaultAsync<FavouriteGigsList>(gigListQueryable);
         if (gigList == null)
         {
             throw new NotFoundException(nameof(FavouriteGigsList), request.Id);
         }
 
-        foreach (var gig in gigList.FavouriteGigs)
+        foreach (var gig in gigList.FavouriteGigs.ToList())
         {
             await _repository.DeleteAsync(gig);
         }

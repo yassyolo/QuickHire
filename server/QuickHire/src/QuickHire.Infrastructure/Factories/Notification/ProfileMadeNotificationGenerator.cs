@@ -8,7 +8,7 @@ namespace QuickHire.Infrastructure.Factories.Notification;
 internal class ProfileMadeNotificationGenerator : INotificationGenerator
 {
     public NotificationType Type => NotificationType.ProfileMade;
-    public string Title { get; set; } = "Your Profile Has Been Created";
+    public string Title { get; set; } = "Welcome to QuickHire";
     public string Message { get; set; } = "Welcome, {UserName}! Your profile has been successfully created. Take a moment to complete your details and start using all the features available to you.";
 
     public Domain.Users.Notification Generate(int recipientId, NotificationRecipientType recipientType, Dictionary<string, string>? placeholders = null)

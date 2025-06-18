@@ -18,7 +18,7 @@ public class RatingDistributionStatisticsQueryHandler : IQueryHandler<RatingDist
 
     public async Task<PieChartDataModel> Handle(RatingDistributionStatisticsQuery request, CancellationToken cancellationToken)
     {
-        /*var gig = await _repository.GetByIdAsync<Gig, int>(request.Id);
+        var gig = await _repository.GetByIdAsync<Gig, int>(request.Id);
         if (gig == null)
         {
             throw new NotFoundException(nameof(Gig), request.Id);
@@ -55,7 +55,7 @@ public class RatingDistributionStatisticsQueryHandler : IQueryHandler<RatingDist
         var fourStarPercentage = (fourStarCount * 100 / totalReviews).ToString();
         var fiveStarPercentage = (fiveStarCount * 100 / totalReviews).ToString();
 
-        /*return new PieChartDataModel
+        return new PieChartDataModel
         {
             Data = new List<PieChartDataPointModel>
             {
@@ -64,18 +64,6 @@ public class RatingDistributionStatisticsQueryHandler : IQueryHandler<RatingDist
                 new PieChartDataPointModel { Label = "3 *", Value = threeStarCount.ToString(), Percentage = threeStarPercentage },
                 new PieChartDataPointModel { Label = "4 *", Value = fourStarCount.ToString(), Percentage = fourStarPercentage },
                 new PieChartDataPointModel { Label = "5 *", Value = fiveStarCount.ToString(), Percentage = fiveStarPercentage }
-            }
-        };*/
-
-        return new PieChartDataModel
-        {
-            Data = new List<PieChartDataPointModel>
-            {
-                new PieChartDataPointModel { Label = "1 *", Value = "3", Percentage = "10" },
-                new PieChartDataPointModel { Label = "2 *", Value = "3", Percentage = "10" },
-                new PieChartDataPointModel { Label = "3 *", Value = "3", Percentage = "10" },
-                new PieChartDataPointModel { Label = "4 *", Value = "3", Percentage = "10" },
-                new PieChartDataPointModel { Label = "5 *", Value = "24", Percentage = "60" }
             }
         };
     }

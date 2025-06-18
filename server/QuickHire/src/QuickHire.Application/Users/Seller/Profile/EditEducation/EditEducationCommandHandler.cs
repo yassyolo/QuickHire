@@ -42,6 +42,7 @@ public class EditEducationCommandHandler : ICommandHandler<EditEducationCommand,
                 existingEducation.Degree = education.Degree;
                 existingEducation.GraduationYear = int.Parse(education.EndYear);
                 existingEducation.Major = education.Major;
+                await _repository.UpdateAsync(existingEducation);
             }
             else
             {

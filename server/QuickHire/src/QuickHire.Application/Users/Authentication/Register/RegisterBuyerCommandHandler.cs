@@ -1,4 +1,5 @@
 ﻿using QuickHire.Application.Common.Interfaces.Abstractions;
+using QuickHire.Application.Common.Interfaces.Factories.Notification;
 using QuickHire.Application.Common.Interfaces.Services;
 using QuickHire.Application.Users.Models.Authentication;
 using QuickHire.Domain.Shared.Exceptions;
@@ -9,11 +10,13 @@ internal class RegisterBuyerCommandHandler : ICommandHandler<RegisterBuyerComman
 {
     private readonly IUserService _userService;
     private readonly IEmailSenderService _emailSenderService;
+    private readonly INotificationService _notificationService;
 
-    public RegisterBuyerCommandHandler(IUserService userService, IEmailSenderService emailSenderService)
+    public RegisterBuyerCommandHandler(IUserService userService, IEmailSenderService emailSenderService, INotificationService notificationService)
     {
         _userService = userService;
         _emailSenderService = emailSenderService;
+        _notificationService = notificationService;
     }
 
     public async Task<RegisterUserResponseModel> Handle(RegisterBuyerCommand request, CancellationToken cancellationToken)
@@ -25,29 +28,31 @@ internal class RegisterBuyerCommandHandler : ICommandHandler<RegisterBuyerComman
             throw new ConflictException("User already exists", $"Email: {request.Email} already in use.");
         }
 
-        var createdUserResult = await _userService.CreateUserAsync(request.Email, request.Password);
-
-        if (!createdUserResult.IsSuccess)
+        try
         {
-            throw new BadRequestException("User registration failed", string.Join("; ", createdUserResult.Errors.Select(e => e.ToString())));    
-        }
+            var createdUserResult = await _userService.CreateUserAsync(request.Email, request.Password);
 
-        var user = await _userService.GetUserByEmailAsync(request.Email);
+            if (!createdUserResult.IsSuccess)
+            {
+                throw new BadRequestException("User registration failed", string.Join("; ", createdUserResult.Errors.Select(e => e.ToString())));
+            }
 
-        if (user == null)
-        {
-            throw new NotFoundException("ApplicationUser", request.Email);
-        }
+            var user = await _userService.GetUserByEmailAsync(request.Email);
 
-        var emailVerificationToken = await _userService.GenerateEmailVerificationTokenAsync(user.Id);
+            if (user == null)
+            {
+                throw new NotFoundException("ApplicationUser", request.Email);
+            }
 
-        var verificationLink = $"https://localhost:7267/auth/verify-email?userId={user.Id}&token={Uri.EscapeDataString(emailVerificationToken)}";
+            var emailVerificationToken = await _userService.GenerateEmailVerificationTokenAsync(user.Id);
 
-        var emailModel = new EmailModel
-        {
-            To = user.Email!,
-            Subject = "Email Verification",
-            Body = $@"
+            var verificationLink = $"https://localhost:7267/auth/verify-email?userId={user.Id}&token={Uri.EscapeDataString(emailVerificationToken)}";
+
+            var emailModel = new EmailModel
+            {
+                To = user.Email!,
+                Subject = "Email Verification",
+                Body = $@"
         <html>
             <head>
                 <style>
@@ -94,13 +99,19 @@ internal class RegisterBuyerCommandHandler : ICommandHandler<RegisterBuyerComman
                 </div>
             </body>
         </html>"
-        };
+            };
 
-        await _emailSenderService.SendEmailAsync(emailModel, cancellationToken);
-
-        return new RegisterUserResponseModel
+            await _emailSenderService.SendEmailAsync(emailModel, cancellationToken);
+          
+            return new RegisterUserResponseModel
+            {
+                Username = user.UserName!
+            };
+          
+        }
+        catch (Exception ex)
         {
-            Username = user.UserName!
-        };
+            throw new BadRequestException("User registration failed", ex.Message);
+        }        
     }
 }

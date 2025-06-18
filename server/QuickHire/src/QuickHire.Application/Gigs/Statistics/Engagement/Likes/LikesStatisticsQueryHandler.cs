@@ -19,19 +19,19 @@ public class LikesStatisticsQueryHandler : IQueryHandler<LikesStatisticsQuery, S
 
     public async Task<StatisticsLineChartModel> Handle(LikesStatisticsQuery request, CancellationToken cancellationToken)
     {
-        /*var gig = await _repository.GetByIdAsync<Gig, int>(request.Id);
+        var gig = await _repository.GetByIdAsync<Gig, int>(request.Id);
         if (gig == null)
         {
             throw new NotFoundException(nameof(Gig), request.Id);
-        }*/
+        }
 
-        var likes = _repository.GetAllReadOnly<FavouriteGig>().Where(x => x.GigId == request.Id);
-        var likesList = await _repository.ToListAsync(likes);
+        var likesQuery = _repository.GetAllReadOnly<FavouriteGig>().Where(x => x.GigId == request.Id);
+        var likesList = await _repository.ToListAsync(likesQuery);
 
         var totalItem = new TotalItemModel
         {
             Label = "Likes",
-            Count = likesList.Count().ToString(),
+            Count = likesList.Count().ToString()
         };
 
         var peakLikes = likesList.GroupBy(x => x.AddedAt.Date)
@@ -40,64 +40,52 @@ public class LikesStatisticsQueryHandler : IQueryHandler<LikesStatisticsQuery, S
                 Date = x.Key,
                 Count = x.Count()
             })
-            .OrderByDescending(x => x.Count);
+            .OrderByDescending(x => x.Count)
+            .FirstOrDefault();
 
         var peak = new PeakModel
         {
-            Date = peakLikes.Select(x => x.Date).FirstOrDefault().ToString("dd MMM")
+            Date = peakLikes?.Date.ToString("dd MMM") ?? "-"
         };
 
-        var thisMonthLikes = likesList.Where(x => x.AddedAt.Month == DateTime.Now.Month && x.AddedAt.Year == DateTime.Now.Year).Count();
-        var lastMonthLikes = likesList.Where(x => x.AddedAt.Month == DateTime.Now.AddMonths(-1).Month && x.AddedAt.Year == DateTime.Now.AddMonths(-1).Year).Count();
+        var now = DateTime.Now;
+        var thisMonthLikes = likesList.Count(x => x.AddedAt.Month == now.Month && x.AddedAt.Year == now.Year);
 
-        var thisMonth = new ThisMonthModel
+        var lastMonth = now.AddMonths(-1);
+        var lastMonthLikes = likesList.Count(x => x.AddedAt.Month == lastMonth.Month && x.AddedAt.Year == lastMonth.Year);
+
+        var percentageChange = lastMonthLikes == 0 ? 0 : (thisMonthLikes - lastMonthLikes) * 100 / lastMonthLikes;
+
+        var thisMonthItem = new ThisMonthModel
         {
             Count = thisMonthLikes.ToString(),
-            Percentage = (lastMonthLikes == 0 ? 0 : (thisMonthLikes - lastMonthLikes) * 100 / lastMonthLikes).ToString(),
+            Percentage = percentageChange.ToString()
         };
 
-        var statistics = likesList.GroupBy(x => x.AddedAt.Month)
-                        .Select(x => new LineChartDataPointModel
-                        {
-                            Month = x.Key.ToString("MMMM", System.Globalization.CultureInfo.InvariantCulture),
-                            Value = x.Count().ToString()
-                        })
-                        .OrderBy(x => DateTime.ParseExact(x.Month, "MMMM", CultureInfo.CurrentCulture))
-                        .ToList();
-
-        /*return new StatisticsLineChartModel
-        {
-            TotalItem = totalItem,
-            PeakItem = peak,
-            ThisMonthItem = thisMonth,
-            Data = statistics,
-        };*/
+        var statistics = likesList
+            .GroupBy(x => new { x.AddedAt.Year, x.AddedAt.Month })
+            .Select(x => new
+            {
+                Year = x.Key.Year,
+                MonthNumber = x.Key.Month,
+                MonthName = CultureInfo.InvariantCulture.DateTimeFormat.GetMonthName(x.Key.Month),
+                Count = x.Count()
+            })
+            .OrderBy(x => x.Year)
+            .ThenBy(x => x.MonthNumber)
+            .Select(x => new LineChartDataPointModel
+            {
+                Month = x.MonthName,
+                Value = x.Count.ToString()
+            })
+            .ToList();
 
         return new StatisticsLineChartModel
         {
-            TotalItem = new TotalItemModel
-            {
-                Label = "Likes",
-                Count = "1234"
-            },
-            PeakItem = new PeakModel
-            {
-                Date = "12 Mar"
-            },
-            ThisMonthItem = new ThisMonthModel
-            {
-                Count = "234",
-                Percentage = "25"
-            },
-            Data = new List<LineChartDataPointModel>
-            {
-                new LineChartDataPointModel { Month = "January", Value = "150" },
-                new LineChartDataPointModel { Month = "February", Value = "180" },
-                new LineChartDataPointModel { Month = "March", Value = "210" },
-                new LineChartDataPointModel { Month = "April", Value = "220" },
-                new LineChartDataPointModel { Month = "May", Value = "234" },
-            }
+            TotalItem = totalItem,
+            PeakItem = peak,
+            ThisMonthItem = thisMonthItem,
+            Data = statistics
         };
     }
 }
-

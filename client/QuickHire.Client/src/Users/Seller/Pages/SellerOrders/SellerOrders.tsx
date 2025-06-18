@@ -2,8 +2,8 @@ import { useCallback, useEffect, useState } from "react";
 import { SellerPage } from "../Common/SellerPage";
 import { PageTitle } from "../../../../Shared/PageItems/PageTitle/PageTitle";
 import { TitleFilterSelector } from "../../../../Shared/PageItems/TitleFilterSection/TitleFilterSection";
-import { DataTable } from "../../../../Admin/Components/Tables/Common/AdminDataTable";
-import { OrderActions } from "../../../../Admin/Components/Tables/TableActions/OrderActions";
+import { DataTable } from "../../../../Shared/Tables/Common/DataTable/AdminDataTable";
+import { OrderActions } from "../../../../Shared/Tables/TableActions/Orders/OrderActions";
 import axios from "../../../../axiosInstance";
 
 
@@ -53,6 +53,7 @@ export function SellerOrders (){
 
     useEffect(() => {
         fetchGigs();
+        setModerationStatusId(3); 
     }
     , [ moderationStatusId, fetchGigs]);
 
@@ -63,9 +64,9 @@ export function SellerOrders (){
 breadcrumbs={[{ label: <i className="bi bi-house-door"></i>, to: "/seller/dashboard" }, { label: "Orders" }]}/>         
               {loading ? (<div className="loading">Loading...</div>
               ) : (
-                <><TitleFilterSelector selectedId={moderationStatusId} setSelectedId={handleSelectedModerationStatusId} endpoint="https://localhost:7267/admin/filters/order-status" /><div className="categories-list">
+                <div style={{marginTop: '10px'}}><TitleFilterSelector selectedId={moderationStatusId} setSelectedId={handleSelectedModerationStatusId} endpoint="https://localhost:7267/admin/filters/order-status" /><div className="categories-list">
                 <DataTable data={orders} columns={["id", "buyerUsername", "gigTitle", "dueOn", "total", "status"]} headers={tableHeaders} renderActions={(row: OrderRow) => (<OrderActions order={row}  />)} />
-              </div></>
+              </div></div>
               )}
             </div>
         </SellerPage>

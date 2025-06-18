@@ -1,11 +1,11 @@
-import { TagList } from "../../../../../Gigs/Tags/TagList";
+import { TagList } from "../../../../../Gigs/Common/Tags/TagList";
 import "./GigInfo.css";
-import { FAQList } from "../../../../../Shared/FAQ/FAQList/FAQList";
-import { ComparePackagesTable } from "../../../../../Gigs/PaymentPlan/PaymentPlan";
-import { GigInfo } from "../../../../../Gigs/Details/GigDetails/GigInfo";
+import { FAQList } from "../../../../../Gigs/Common/FAQ/FAQList/FAQList";
+import { ComparePackagesTable } from "../../../../../Gigs/Common/PaymentPlans/ComparePackages/PaymentPlan";
+import { GigInfo } from "../../../../../Gigs/Pages/GigDetails/GigDetails/GigInfo/GigInfo";
 import { useParams } from "react-router-dom";
 import axiosInstance from "../../../../../axiosInstance";
-import { PaymentPlan } from "../../../../../Gigs/Preview/GigPreview";
+import { PaymentPlan } from "../../../../../Gigs/Pages/GigPreview/GigPreview";
 import { useEffect, useState } from "react";
 
 interface GigDetails{
@@ -51,19 +51,26 @@ export function GigDetails() {
     }, [gigId]);
 
     return (
-        <div className="gig-info">
-                    <div className="gig-preview-info d-flex flex-column">                       
-                                <GigInfo
+        <div className="gig-info" style={{width: '1000px'}}>
+                    <div className="gig-preview-info d-flex flex-column">
+                        <div style={{height: '800px', width: '100%'}}>
+                             <GigInfo
                                     description={gigDetails?.description ?? ""}
                                     title={gigDetails?.title ?? ""}
                                     imageUrls={gigDetails?.imageUrls ?? []}
                                     ordersInQueue={gigDetails?.ordersInQueue ?? 0}
                                     gigMetadata={gigDetails?.gigMetaData ?? []}
-                                />
-                                
+                                />   
+                        </div>
+                                               
+                               
+                            <div style={{marginBottom: '10px', fontSize: '20px', fontWeight: '600', width: '100%'}}>Compare packages</div>
                                 <ComparePackagesTable plans={gigDetails?.paymentPlans ?? []} />     
-                                <FAQList title={gigDetails?.title ?? ""} gigId={gigId ?? undefined} />
-                                <TagList gigId={gigId ?? undefined} />
+                                <FAQList title={""} gigId={gigId ?? undefined} />
+                                <div className="tags-lis-gig-info" style={{ marginTop: "20px" , justifyContent: "flex-start", width: "100%" }}>
+                                    <div style={{marginBottom: '10px', fontSize: '20px', fontWeight: '600'}}>Tags</div>
+                                                                    <TagList gigId={gigId ?? undefined} />
+                                </div>
                     </div>
                                                
                 </div>

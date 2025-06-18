@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { EditLanguageModalForm, UserLanguage } from "../Forms/EditLanguageModalForm";
 import { LanguageTag } from "../Tags/Language/LanguageTag";
 import "./SellerInfoCard.css";
-import { GigCardRating } from "../../../../../Gigs/GigCard/GigCardRating/GigCardRating";
+import { GigCardRating } from "../../../../../Gigs/Common/GigCard/GigCardRating/GigCardRating";
 import { AddOrEditDetailsModal } from "../Modals/EditOrDeleteModal/AddOrEditDetailsModal";
 import { useEffect } from "react";
 

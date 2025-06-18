@@ -14,13 +14,11 @@ internal class GigRequirementAnswerConfiguration : IEntityTypeConfiguration<GigR
 
         builder.Property(x => x.Answer).IsRequired().HasMaxLength(GigRequirementAnswerMaxLength);
 
-        builder.Property(x => x.AttachmentUrls).HasMaxLength(FileUrlMaxLength);
-
         builder.Property(x => x.BuyerId).IsRequired();
 
         builder.HasOne(x => x.GigRequirement)
-            .WithOne()
-            .HasForeignKey<GigRequirementAnswer>(x => x.GigRequirementId); 
+            .WithMany()
+    .HasForeignKey(x => x.GigRequirementId);
 
         builder.HasOne(x => x.Order)
             .WithMany(x => x.GigRequirementAnswers)

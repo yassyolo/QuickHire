@@ -46,7 +46,7 @@ export function EditProjectPortfolioModalForm({
     const fetchCategories = async () => {
       try {
         const response = await axios.get<Item[]>(
-          "https://localhost:7267/admin/main-categories/populate"
+          "https://localhost:7267/main-categories/populate"
         );
         setCategories(response.data);
       } catch (error) {
@@ -129,7 +129,6 @@ export function EditProjectPortfolioModalForm({
       formData.append(`Portfolios[${index}].Description`, portfolio.description);
       formData.append(`Portfolios[${index}].MainCategoryId`, portfolio.mainCategoryId.toString());
 
-      // Append image only if changed (if imageFile exists)
       if (portfolio.imageFile) {
         formData.append(`Portfolios[${index}].Image`, portfolio.imageFile);
       }

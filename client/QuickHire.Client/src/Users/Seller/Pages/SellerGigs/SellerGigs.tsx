@@ -2,9 +2,12 @@ import { useCallback, useEffect, useState } from "react";
 import { SellerPage } from "../Common/SellerPage";
 import { PageTitle } from "../../../../Shared/PageItems/PageTitle/PageTitle";
 import { TitleFilterSelector } from "../../../../Shared/PageItems/TitleFilterSection/TitleFilterSection";
-import { DataTable } from "../../../../Admin/Components/Tables/Common/AdminDataTable";
-import { SellerGigActions } from "../../../../Admin/Components/Tables/TableActions/SellerGigActions";
+import { DataTable } from "../../../../Shared/Tables/Common/DataTable/AdminDataTable";
+import { SellerGigActions } from "../../../../Shared/Tables/TableActions/Seller/SellerGigActions";
 import axios from "../../../../axiosInstance";
+import { ActionButton } from "../../../../Shared/Buttons/ActionButton/ActionButton";
+import { useNavigate } from "react-router-dom";
+import "./SellerGigs.css";
 export interface GigRow{
   id: number;
   clicks: number;
@@ -26,6 +29,10 @@ export function SellerGigs (){
     const [moderationStatusId, setModerationStatusId] = useState<number>(0);
     const [gigs, setGigs] = useState<GigRow[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
+    const navigate = useNavigate();
+    const onCreateGigButtonClick = () => {
+        navigate("/seller/gigs/new");
+    }
    
     const handleSelectedModerationStatusId = (id: number) => setModerationStatusId(id);
 
@@ -84,12 +91,22 @@ export function SellerGigs (){
     return(
         <SellerPage>
           <div className="filter-table">
+                
               <PageTitle title="Gigs" description="Manage your gigs — create, edit, or remove listings and track their success."breadcrumbs={[{ label: <i className="bi bi-house-door"></i>, to: "/seller/dashboard" }, { label: "Gigs" }]}/>         
+            
               {loading ? (<div className="loading">Loading...</div>
               ) : (
-                <><TitleFilterSelector selectedId={moderationStatusId} setSelectedId={handleSelectedModerationStatusId} endpoint="https://localhost:7267/admin/filters/moderation-status" /><div className="categories-list">
+                <div style={{marginTop: '10px'}}>
+                                <div className="page-title-button">
+
+                    <TitleFilterSelector selectedId={moderationStatusId} setSelectedId={handleSelectedModerationStatusId} endpoint="https://localhost:7267/filters/moderation-status" /><div className="categories-list">
+                        <div className="create-gig-button-wrapper">
+                                    <ActionButton text={"CREATE A NEW GIG"} onClick={onCreateGigButtonClick} className="add-category-button" ariaLabel={"Create new gig button"} />
+                </div>
+                            </div>
+
                 <DataTable data={gigs} columns={["id", "title", "clicks", "likes", "orders", "revenue"]} headers={tableHeaders} renderActions={(row: GigRow) => (<SellerGigActions gig={row} paused={moderationStatusId === 4} onActivateGigSuccess={handleOnActivateGigSuccess} onDeactivateGigSuccess={handleOnPauseGigSuccess} onDeleteSuccess={onDeleteSuccess} />)} />
-              </div></>
+              </div></div>
               )}
             </div>
         </SellerPage>

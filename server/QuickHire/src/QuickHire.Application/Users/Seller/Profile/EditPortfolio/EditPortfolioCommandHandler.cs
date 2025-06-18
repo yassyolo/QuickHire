@@ -32,9 +32,7 @@ public class EditPortfolioCommandHandler : ICommandHandler<EditPortfolioCommand,
 
         var requestIds = request.Portfolios.Select(x => x.Id).ToList();
 
-        var portfoliosToDelete = existingPortfolios
-            .Where(x => !requestIds.Contains(x.Id))
-            .ToList();
+        var portfoliosToDelete = existingPortfolios.Where(x => !requestIds.Contains(x.Id)).ToList();
 
         if (portfoliosToDelete.Any())
         {
@@ -42,12 +40,11 @@ public class EditPortfolioCommandHandler : ICommandHandler<EditPortfolioCommand,
             {
                 p.IsDeleted = true;
                 p.DeletedAt = DateTime.Now;
+                await _repository.UpdateAsync(p);
             }
         }
 
-        var existingPortfolioIdsToUpdate = existingPortfolios
-            .Where(x => requestIds.Contains(x.Id))
-            .ToList();
+        var existingPortfolioIdsToUpdate = existingPortfolios.Where(x => requestIds.Contains(x.Id)).ToList();
 
         foreach (var p in existingPortfolioIdsToUpdate)
         {
@@ -68,6 +65,8 @@ public class EditPortfolioCommandHandler : ICommandHandler<EditPortfolioCommand,
 
                     p.ImageUrl = imagePath;
                 }
+
+                await _repository.UpdateAsync(p);
             }
         }
 
@@ -95,8 +94,9 @@ public class EditPortfolioCommandHandler : ICommandHandler<EditPortfolioCommand,
             await _repository.AddAsync(newPortfolioToAdd);
         }
 
-        var portfoliosForSellerQueryable = _repository.GetAllReadOnly<Portfolio>()
-            .Where(x => x.SellerId == sellerId);
+        await _repository.SaveChangesAsync();
+
+        var portfoliosForSellerQueryable = _repository.GetAllReadOnly<Portfolio>().Where(x => x.SellerId == sellerId);
         portfoliosForSellerQueryable = _repository.GetAllIncluding<Portfolio>(x => x.MainCategory);
         var portfoliosForSeller = await _repository.ToListAsync<Portfolio>(portfoliosForSellerQueryable);
 

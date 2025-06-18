@@ -2,6 +2,7 @@
 using QuickHire.Application.Common.Interfaces.Repository;
 using QuickHire.Application.Common.Interfaces.Services;
 using QuickHire.Application.Gigs.Models.FavouriteLists;
+using QuickHire.Domain.Users;
 using System.Collections.Generic;
 
 namespace QuickHire.Application.Gigs.FavouriteLists.GetFavouriteLists;
@@ -18,39 +19,29 @@ public class GetFavouriteListsQueryHandler : IQueryHandler<GetFavouriteListsQuer
     }
     public async Task<IEnumerable<FavouriteListModel>> Handle(GetFavouriteListsQuery request, CancellationToken cancellationToken)
     {
-        /*var buyerId = await _userService.GetBuyerIdByUserIdAsync();
-        var favouriteListsQueryable = _repository.GetAllReadOnly<Domain.Users.FavouriteGigsList>().Where(x => x.BuyerId == buyerId);
-        favouriteListsQueryable = _repository.GetAllIncluding<Domain.Users.FavouriteGigsList>(x => x.FavouriteGigs);
+        var buyerId = await _userService.GetBuyerIdByUserIdAsync();
+        var favouriteListsQueryable = _repository.GetAllIncluding<Domain.Users.FavouriteGigsList>().Where(x => x.BuyerId == buyerId);
         var favouriteLists = await _repository.ToListAsync<Domain.Users.FavouriteGigsList>(favouriteListsQueryable);
 
-        return favouriteLists.Select(x => new FavouriteListModel
+        var models = await Task.WhenAll(favouriteLists.Select(async x =>
         {
-            Id = x.Id,
-            Name = x.Name,
-            Description = x.Description,
-            GigCount = x.FavouriteGigs.Count(),
-            ImageUrls = x.FavouriteGigs.SelectMany(fg => fg.Gig.ImageUrls.Take(1)).Distinct().Take(3)
-        });*/
+            var favourriteGigsQueryable = _repository.GetAllIncluding<Domain.Users.FavouriteGig>(x => x.Gig).Where(s => s.FavouriteGigsListId == x.Id);
+            var favouriteGigsList = await _repository.ToListAsync<Domain.Users.FavouriteGig>(favourriteGigsQueryable);
+            var images = favouriteGigsList.SelectMany(fg => fg.Gig.ImageUrls.Take(1)).Distinct()
+                .Take(3)
+                .ToList() ?? new List<string>();
 
-        return new List<FavouriteListModel>
-        {
-            new FavouriteListModel
+            return new FavouriteListModel
             {
-                Id = 1,
-                Name = "My Favourite Gigs",
-                Description = "A collection of my favourite gigs.",
-                GigCount = 5,
-                ImageUrls = new List<string> { "https://picsum.photos/200/300", "https://picsum.photos/200/300" }
-            },
-            new FavouriteListModel
-            {
-                Id = 2,
-                Name = "Top Rated Gigs",
-                Description = "Gigs that have received the highest ratings.",
-                GigCount = 3,
-                ImageUrls = new List<string> { "https://picsum.photos/200/300" }
-            }
-        };
+                Id = x.Id,
+                Name = x.Name,
+                Description = x.Description,
+                GigCount = x.FavouriteGigs?.Count() ?? 0,
+                ImageUrls = images
+            };
+        }));
+
+        return models;
     }
 }
 

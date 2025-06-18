@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { ActionButton } from "../../../../../Shared/Buttons/ActionButton/ActionButton";
-import { Th } from "../../../../Components/Tables/Common/Th";
+import { Th } from "../../../../../Shared/Tables/Common/Th/Th";
 import './SubCategoriesTableSection.css';
 import { GigFilter } from "../../Categories/SubSubCategory/SubSubCategoryDetails";
-import { AddGigFilterModal } from "../../../../Components/Modals/Add/GigFilter/AddGigFilterModal";
+import { AddGigFilterModal } from "../../../../../Shared/Modals/Add/GigFilter/AddGigFilterModal";
 import { IconButton } from "../../../../../Shared/Buttons/IconButton/IconButton";
-import { EditFiterModal } from "../../../../Components/Modals/Edit/EditGigFilterModal";
-import { DeactivateGigFilterModal } from "../../../../Components/Modals/Deactivate/GigFilter/DeactivateGigFilter";
-import { EditFiterOptionModal } from "../../../../Components/Modals/Edit/EditFilterOption";
-import { DeactivateFilterOptionsModal } from "../../../../Components/Modals/Deactivate/FilterOption/DeactivateFilterOption";
+import { EditFiterModal } from "../../../../../Shared/Modals/Edit/GigFilter/EditGigFilterModal";
+import { DeactivateGigFilterModal } from "../../../../../Shared/Modals/Deactivate/GigFilter/DeactivateGigFilter";
+import { EditFiterOptionModal } from "../../../../../Shared/Modals/Edit/FilterOption/EditFilterOption";
+import { DeactivateFilterOptionsModal } from "../../../../../Shared/Modals/Deactivate/FilterOption/DeactivateFilterOption";
 
 interface SubCategoryTableSectionProps {
   items: GigFilter[];
@@ -33,15 +33,14 @@ export function SubSubCategoriesTableSection({
   const [editingOptionId, setEditingOptionId] = useState<number | null>(null);
   const [deactivatingOptionId, setDeactivatingOptionId] = useState<number | null>(null);
   const [showEditFilterModal, setShowEditFilterModal] = useState(false);
-  const [showEditOptionModal, setShowEditOptionModal] = useState(false);
 
   const handleOnEditSuccessAndClose = () => {
     setShowEditFilterModal(!showEditFilterModal);
   }
 
-  const handleOnEditOptionSuccessAndClose = () => {
-    setShowEditOptionModal(!showEditOptionModal);
-  }
+const handleOnEditOptionSuccessAndClose = () => {
+  setEditingOptionId(null);
+};  
 
   return (
     <div className="sub-categories-section">

@@ -142,7 +142,7 @@ const handleOnEditEducation = (education: Education[]) => {
             education: education
         });
     }
-    setShowEditDescriptionModal(false);
+    setShowEditEducationModal(false);
 }
 
 const handleOnEditPortfolioSucess = (portfolios: Portfolio[]) => {

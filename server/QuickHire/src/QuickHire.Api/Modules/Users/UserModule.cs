@@ -42,14 +42,11 @@ public class UserModule : CarterModule
         //users/billings-and-payments/add
         app.MapPost("/users/billings-and-payments", async ([FromBody] AddBillingInfoCommand command, IMediator mediator) =>
         {
-            await mediator.Send(command);
-            return Results.NoContent();
+            var result = await mediator.Send(command);
+            return Results.Ok(result);
         })
             .WithName("AddBillingInfo")
             .WithTags("Users")
-            .Produces(StatusCodes.Status200OK)
-            .Produces(StatusCodes.Status400BadRequest)
-            .ProducesValidationProblem()
             .WithDescription("Adds a new billing and payment method for the user.");
 
         app.MapPut("/users/billings-and-payments", async ([FromBody] EditBillingInfoCommand command, IMediator mediator) =>

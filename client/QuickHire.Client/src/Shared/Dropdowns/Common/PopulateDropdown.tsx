@@ -17,14 +17,7 @@ interface PopulateDropdownProps<TId> {
   label: string;
 }
 
-export function PopulateDropdown<TId extends string | number>({
-  show,
-  setShow,
-  setSelectedId,
-  selectedId,
-  data,
-  label,
-}: PopulateDropdownProps<TId>) {
+export function PopulateDropdown<TId extends string | number>({ show, setShow, setSelectedId, selectedId, data, label,}: PopulateDropdownProps<TId>) {
   const [localSelectedId, setLocalSelectedId] = useState<TId | undefined>(selectedId);
 
   useEffect(() => {

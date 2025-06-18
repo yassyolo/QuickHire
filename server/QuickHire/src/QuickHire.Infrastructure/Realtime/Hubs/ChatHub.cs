@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.SignalR;
+﻿using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using QuickHire.Application.Common.Interfaces.Repository;
 using QuickHire.Application.Common.Interfaces.Services;
@@ -7,7 +6,6 @@ using QuickHire.Application.Users.Models.Messaging;
 using QuickHire.Domain.Messaging;
 using QuickHire.Domain.Messaging.Enums;
 using QuickHire.Domain.Shared.Exceptions;
-using QuickHire.Infrastructure.CloudStorage;
 using System.Text.Json;
 
 public class ChatHub : Hub
@@ -26,11 +24,11 @@ public class ChatHub : Hub
     public class NewMessageSignalRDto
     {
         public int ConversationId { get; set; }
-        public MessagesForConversationModel Message { get; set; }
-        public GetAllMessagesItemModel ConversationPreview { get; set; }
+        public MessagesForConversationModel Message { get; set; } = default!;
+        public GetAllMessagesItemModel ConversationPreview { get; set; } = default!;
     }
 
-    public async Task SendMessage(string Text, int? ConversationId, string? AttachmentUrl, CustomOfferPayloadModel? Payload, string? ReceiverId)
+    public async Task SendMessage(string Text, int? ConversationId, string? AttachmentUrl, string? PayloadJson, MessageType? PayloadType, string? ReceiverId)
     {
         var senderId = _userService.GetCurrentUserIdAndMode();
 
@@ -39,18 +37,19 @@ public class ChatHub : Hub
 
         if (ConversationId.HasValue)
         {
-            var existingConversation = await _repository.GetAll<Conversation>().FirstOrDefaultAsync(x => x.Id == ConversationId.Value);
-            if (existingConversation == null)
-                throw new NotFoundException(nameof(Conversation), "Conversation not found.");
+            var existingConversation = await _repository.GetAll<Conversation>()
+                .FirstOrDefaultAsync(x => x.Id == ConversationId.Value)
+                ?? throw new NotFoundException(nameof(Conversation), "Conversation not found.");
 
             conversationId = existingConversation.Id;
-
             receiverId = existingConversation.ParticipantAId == senderId.UserId ? existingConversation.ParticipantBId : existingConversation.ParticipantAId;
         }
         else if (!string.IsNullOrEmpty(ReceiverId))
         {
             var existingConversation = await _repository.GetAll<Conversation>()
-                .Where(x => (x.ParticipantAId == senderId.UserId && x.ParticipantBId == ReceiverId) || (x.ParticipantBId == senderId.UserId && x.ParticipantAId == ReceiverId)).FirstOrDefaultAsync();
+                .Where(x => (x.ParticipantAId == senderId.UserId && x.ParticipantBId == ReceiverId) ||
+                            (x.ParticipantBId == senderId.UserId && x.ParticipantAId == ReceiverId))
+                .FirstOrDefaultAsync();
 
             if (existingConversation != null)
             {
@@ -64,15 +63,12 @@ public class ChatHub : Hub
                     ParticipantAMode = senderId.Mode,
                     ParticipantBId = receiverId,
                     ParticipantBMode = senderId.Mode == "seller" ? "buyer" : "seller",
-                    CreatedAt = DateTime.Now,
-                    LastMessageAt = DateTime.Now,
-                    IsStarredByParticipantA = false,
-                    IsStarredByParticipantB = false,
+                    CreatedAt = DateTime.UtcNow,
+                    LastMessageAt = DateTime.UtcNow
                 };
 
                 await _repository.AddAsync(newConversation);
                 await _repository.SaveChangesAsync();
-
                 conversationId = newConversation.Id;
             }
         }
@@ -81,12 +77,23 @@ public class ChatHub : Hub
             throw new ArgumentException("Must provide either ConversationId or ReceiverId");
         }
 
+        object? payload = null;
+        if (!string.IsNullOrEmpty(PayloadJson) && PayloadType.HasValue)
+        {
+            payload = PayloadType switch
+            {
+                MessageType.CustomOffer => JsonSerializer.Deserialize<CustomOfferPayloadModel>(PayloadJson),
+                MessageType.Revision => JsonSerializer.Deserialize<RevisionPayloadModel>(PayloadJson),
+                _ => null
+            };
+        }
+
         var newMessageModel = new NewMessageModel
         {
             Text = Text,
             ConversationId = conversationId,
             AttachmentUrl = AttachmentUrl,
-            Payload = Payload,
+            Payload = payload,
             SenderId = senderId.UserId,
             SenderRole = senderId.Mode,
             ReceiverId = receiverId,
@@ -94,7 +101,6 @@ public class ChatHub : Hub
         };
 
         var message = await CreateNewMessage(newMessageModel);
-
 
         var preview = new GetAllMessagesItemModel
         {
@@ -120,6 +126,28 @@ public class ChatHub : Hub
 
     private async Task<MessagesForConversationModel> CreateNewMessage(NewMessageModel newMessageModel)
     {
+        MessageType type;
+        string? payloadJson = null;
+
+        if (newMessageModel.Payload is CustomOfferPayloadModel customOffer)
+        {
+            type = MessageType.CustomOffer;
+            payloadJson = JsonSerializer.Serialize(customOffer);
+        }
+        else if (newMessageModel.Payload is RevisionPayloadModel revision)
+        {
+            type = MessageType.Revision;
+            payloadJson = JsonSerializer.Serialize(revision);
+        }
+        else if (!string.IsNullOrEmpty(newMessageModel.AttachmentUrl))
+        {
+            type = MessageType.FileInclude;
+        }
+        else
+        {
+            type = MessageType.Text;
+        }
+
         var message = new Message
         {
             SenderId = newMessageModel.SenderId,
@@ -130,25 +158,24 @@ public class ChatHub : Hub
             SentAt = DateTime.UtcNow,
             IsRead = false,
             ConversationId = newMessageModel.ConversationId,
-            AttachmentUrl = newMessageModel.AttachmentUrl != null ? newMessageModel.AttachmentUrl : null,
-            PayloadJson = JsonSerializer.Serialize<CustomOfferPayloadModel>(newMessageModel.Payload),
-            Type = newMessageModel.AttachmentUrl != null ? MessageType.FileInclude : newMessageModel.Payload != null ? MessageType.CustomOffer : MessageType.Text
+            AttachmentUrl = newMessageModel.AttachmentUrl,
+            PayloadJson = payloadJson,
+            Type = type
         };
 
         await _repository.AddAsync(message);
         await _repository.SaveChangesAsync();
 
-        var conversation = await _repository.GetAll<Conversation>().Where(x => x.Id == newMessageModel.ConversationId).FirstOrDefaultAsync();
-        if (conversation == null)
-        {
-            throw new NotFoundException(nameof(Conversation), "Conversation not found for the given message ID.");
-        }
+        var conversation = await _repository.GetAll<Conversation>()
+            .FirstOrDefaultAsync(x => x.Id == newMessageModel.ConversationId)
+            ?? throw new NotFoundException(nameof(Conversation), "Conversation not found for the given message ID.");
 
         conversation.LastMessageAt = message.SentAt;
         await _repository.UpdateAsync(conversation);
         await _repository.SaveChangesAsync();
 
         var participantInfo = await _userService.GetUsernameAndProfilePictureAsync(message.SenderId);
+
         return new MessagesForConversationModel
         {
             Id = message.Id,
@@ -157,14 +184,26 @@ public class ChatHub : Hub
             Timestamp = message.SentAt.ToString("dd-MM"),
             SenderUsername = participantInfo.Username,
             MessageType = message.Type.ToString().ToLower(),
-            Payload = message.PayloadJson != null ? JsonSerializer.Deserialize<CustomOfferPayloadModel>(message.PayloadJson) : null,
+            Payload = DeserializePayload(message.PayloadJson, message.Type),
             FileUrl = message.AttachmentUrl
         };
-    }  
+    }
+
+    private object? DeserializePayload(string? payloadJson, MessageType messageType)
+    {
+        if (string.IsNullOrEmpty(payloadJson)) return null;
+
+        return messageType switch
+        {
+            MessageType.CustomOffer => JsonSerializer.Deserialize<CustomOfferPayloadModel>(payloadJson),
+            MessageType.Revision => JsonSerializer.Deserialize<RevisionPayloadModel>(payloadJson),
+            _ => null
+        };
+    }
 
     public override async Task OnConnectedAsync()
     {
-        var userId = Context.UserIdentifier; 
+        var userId = Context.UserIdentifier;
         if (userId != null)
         {
             await Groups.AddToGroupAsync(Context.ConnectionId, userId);

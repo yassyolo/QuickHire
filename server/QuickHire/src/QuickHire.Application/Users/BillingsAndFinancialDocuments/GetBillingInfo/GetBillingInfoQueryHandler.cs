@@ -16,13 +16,24 @@ public class GetBillingInfoQueryHandler : IQueryHandler<GetBillingInfoQuery, Get
         _repository = repository;
         _userService = userService;
     }
+
     public async Task<GetBillingInfoModel> Handle(GetBillingInfoQuery request, CancellationToken cancellationToken)
     {
         var userId = _userService.GetCurrentUserIdAsync();
 
-        var billingInfoQueryable = _repository.GetAllReadOnly<Domain.Users.BillingDetails>().Where(x => x.UserId == userId);
+        var billingInfoQueryable = _repository.GetAllIncluding<Domain.Users.BillingDetails>(x => x.Address.Country).Where(x => x.UserId == userId);
         var billingInfo = await _repository.FirstOrDefaultAsync<Domain.Users.BillingDetails>(billingInfoQueryable);
 
-        return billingInfo.Adapt<GetBillingInfoModel>();
+        return new GetBillingInfoModel
+        {
+            Id = billingInfo.Id,
+            FullName = billingInfo.FullName,
+            CompanyName = billingInfo.CompanyName!,
+            Street = billingInfo.Address.Street,
+            City = billingInfo.Address.City,
+            ZipCode = billingInfo.Address.ZipCode,
+            Country = billingInfo.Address.Country.Name,
+            CountryId = billingInfo.Address.CountryId
+        };
     }
 }

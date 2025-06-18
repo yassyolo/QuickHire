@@ -3,7 +3,7 @@ import { MessageItem } from "../Common/MessageItem";
 import "./CustomOfferMessage.css";
 import { useAuth } from "../../../../../AuthContext";
 import { useState } from "react";
-import { CustomOfferPreview } from "../../../../Buyer/CustomOffers/CustomOfferPreview";
+import { CustomOfferPreview } from "../../../../../CustomOffers/Preview/CustomOfferPreview";
 import { ActionButton } from "../../../../../Shared/Buttons/ActionButton/ActionButton";
 
 interface CustomOfferProps {
@@ -47,19 +47,15 @@ export function CustomOfferMessage({ senderProfilePictureUrl, senderUsername, ti
                 </div>
                  <div className="offer-actions d-flex flex-row">
                                   <ActionButton className="view-offer-button" onClick={handleShowOfferModal} text={"View"} ariaLabel={"View custom offer"}></ActionButton>
-          {user?.mode === "buyer" ? (
+          {user?.mode === "buyer" && (
             <>
             
                 <ActionButton className="withdraw-offer-button" onClick={handleShowOfferModal} text={"Order"} ariaLabel={"View custom offer"}></ActionButton>
-                            {showOfferModal && <CustomOfferPreview onClose={() => setShowOfferModal(false)} id={payload.offerId} showSellerInfo={true} />}
 
             </>
-          ) : user?.mode === "seller" ? (
-            <>
-                <ActionButton className="withdraw-offer-button" onClick={handleShowOfferModal} text={"Withdraw"} ariaLabel={"View custom offer"}></ActionButton>
-                            {showOfferModal && <CustomOfferPreview onClose={() => setShowOfferModal(false)} id={payload.offerId} showSellerInfo={false} />}
-            </>
-          ) : null}
+          ) }
+                          {showOfferModal && <CustomOfferPreview onClose={() => setShowOfferModal(false)} id={payload.offerId} showSellerInfo={true} />}
+
         </div>
             </div>
 

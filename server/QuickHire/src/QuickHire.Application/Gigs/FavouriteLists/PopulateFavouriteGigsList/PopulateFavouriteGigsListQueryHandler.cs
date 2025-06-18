@@ -19,24 +19,14 @@ public class PopulateFavouriteGigsListQueryHandler : IQueryHandler<PopulateFavou
 
     public async Task<IEnumerable<PopulateFavouriteGigListModel>> Handle(PopulateFavouriteGigsListQuery request, CancellationToken cancellationToken)
     {
-        /*var buyerId = await _userService.GetBuyerIdByUserIdAsync();
-        var favouriteGigsQueryable = _repository.GetAllReadOnly<QuickHire.Domain.Users.FavouriteGig>().Where(x => x.BuyerId == buyerId);
-        var favouriteGigsList = await _repository.ToListAsync<QuickHire.Domain.Users.FavouriteGig>(favouriteGigsQueryable);
+        var buyerId = await _userService.GetBuyerIdByUserIdAsync();
+        var favouriteGigsListQueryable = _repository.GetAllReadOnly<QuickHire.Domain.Users.FavouriteGigsList>().Where(x => x.BuyerId == buyerId);
+        var favouriteGigsList = await _repository.ToListAsync<QuickHire.Domain.Users.FavouriteGigsList>(favouriteGigsListQueryable);
 
-        return favouriteGigsList.Adapt<IEnumerable<PopulateFavouriteGigListModel>>().ToList();*/
-
-        return new List<PopulateFavouriteGigListModel>
+        return favouriteGigsList.Select(x => new PopulateFavouriteGigListModel
         {
-            new PopulateFavouriteGigListModel
-            {
-                Id = 1,
-                Name = "Sample Gig 1",
-            },
-            new PopulateFavouriteGigListModel
-            {
-                Id = 2,
-                Name = "Sample Gig 2",
-            }
-        };
+            Id = x.Id,
+            Name = x.Name,
+        });
     }
 }

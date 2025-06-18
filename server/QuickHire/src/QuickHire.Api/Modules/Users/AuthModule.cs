@@ -38,33 +38,37 @@ public class AuthModule : CarterModule
         .WithDescription("Authenticates a buyer using email or username and password.");
 
 
-        app.MapGet("/auth/google", (HttpContext context, SignInManager<ApplicationUser> signInManager) =>
+        app.MapGet("/auth/google", (HttpContext context) =>
         {
-            var returnUrl = context.Request.Query["returnUrl"].ToString();
-            if (string.IsNullOrEmpty(returnUrl))
-                returnUrl = "/";
-
-            var redirectUrl = $"/signin-google?returnUrl={Uri.EscapeDataString(returnUrl)}";
-            var properties = signInManager.ConfigureExternalAuthenticationProperties("Google", redirectUrl);
-
-            return Results.Challenge(properties, new[] { "Google" });
-        })
-.WithName("GoogleLogin");
-        app.MapGet("/signin-google", async (HttpContext context, IMediator mediator) =>
-        {
-            var googleAuthResult = await context.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
-            var cookieAuthResult = await context.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            var externalAuthResult = await context.AuthenticateAsync(IdentityConstants.ExternalScheme);
-            Console.WriteLine($"Google Auth Result: {googleAuthResult?.Principal?.Identity?.Name}");
-            Console.WriteLine($"Cookie Auth Result: {cookieAuthResult?.Principal?.Identity?.Name}");
             var returnUrl = context.Request.Query["returnUrl"].ToString() ?? "/";
-            await mediator.Send(new GoogleLoginCommand(context, returnUrl));
+            var properties = new AuthenticationProperties
+            {
+                RedirectUri = $"/signin-google?returnUrl={Uri.EscapeDataString(returnUrl)}"
+            };
+            return Results.Challenge(properties, new[] { GoogleDefaults.AuthenticationScheme });
+        });
 
-            context.Response.Redirect(returnUrl);
-        })
-            .Produces(StatusCodes.Status302Found)
-            .Produces(StatusCodes.Status400BadRequest)
-            .Produces(StatusCodes.Status401Unauthorized);
+        app.MapGet("/auth/google-callback", async (HttpContext context, IMediator mediator) =>
+        {
+            var result = await context.AuthenticateAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            if (!result.Succeeded)
+                return Results.BadRequest("Authentication failed");
+
+            var returnUrl = context.Request.Query["returnUrl"].ToString() ?? "/";
+
+            try
+            {
+                await mediator.Send(new GoogleLoginCommand(context, returnUrl));
+            }
+            catch (Exception ex)
+            {
+                return Results.Redirect("/login?error=google_auth_failed");
+            }
+
+            return Results.Redirect(returnUrl);
+        });
+
+
         app.MapPost("auth/register", async ([FromBody] RegisterBuyerCommand command, IMediator mediator) =>
         {
             var result = await mediator.Send(command);

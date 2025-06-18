@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { GigRow, PaginatedResult } from "../../../Gigs/Gigs";
-import { DataTable } from "../../../../Components/Tables/Common/AdminDataTable";
+import { DataTable } from "../../../../../Shared/Tables/Common/DataTable/AdminDataTable";
 import { Pagination } from "../../../../../Shared/PageItems/Pagination/Pagination/Pagination";
-import { GigActions } from "../../../../Components/Tables/TableActions/GigActions";
+import { GigActions } from "../../../../../Shared/Tables/TableActions/Gigs/GigActions";
 import axios from "../../../../../axiosInstance";
 const tableHeaders = {
   id: "ID",

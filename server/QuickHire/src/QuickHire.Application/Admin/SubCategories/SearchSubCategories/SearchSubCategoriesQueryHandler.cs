@@ -28,8 +28,7 @@ public class SearchSubCategoriesQueryHandler : IQueryHandler<SearchSubCategories
 
         if (!string.IsNullOrWhiteSpace(request.Keyword))
         {
-            subCategoriesQuery = subCategoriesQuery.Where(x => x.Name.ToLower().Contains(request.Keyword.ToLower())
-            || x.MainCategory.Name.ToLower().Contains(request.Keyword.ToLower()));
+            subCategoriesQuery = subCategoriesQuery.Where(x => x.Name.ToLower().Contains(request.Keyword.ToLower()));
         }
 
         if (request.MainCategoryId != null)
@@ -47,8 +46,7 @@ public class SearchSubCategoriesQueryHandler : IQueryHandler<SearchSubCategories
         }
         else
         {
-            var pagedQuery = subCategoriesQuery.OrderBy(x => x.Name).Skip((request.CurrentPage - 1) * request.ItemsPerPage)
-                .Take(request.ItemsPerPage);
+            var pagedQuery = subCategoriesQuery.OrderBy(x => x.Name).Skip((request.CurrentPage - 1) * request.ItemsPerPage).Take(request.ItemsPerPage);
 
             subCategoriesList = await _repository.ToListAsync(pagedQuery);
         }

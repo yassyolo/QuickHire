@@ -7,7 +7,7 @@ using QuickHire.Domain.Shared.Exceptions;
 
 namespace QuickHire.Application.Admin.SubCategories.SubCategoryDetails;
 
-public class SubCategoryDetailsQueryHandler : IQueryHandler<SubCategoryDetailsQuery, SubCategoryDetailsModel?>
+public class SubCategoryDetailsQueryHandler : IQueryHandler<SubCategoryDetailsQuery, SubCategoryDetailsModel>
 {
     private readonly IRepository _repository;
 
@@ -16,7 +16,7 @@ public class SubCategoryDetailsQueryHandler : IQueryHandler<SubCategoryDetailsQu
         _repository = repository;
     }
 
-    public async Task<SubCategoryDetailsModel?> Handle(SubCategoryDetailsQuery request, CancellationToken cancellationToken)
+    public async Task<SubCategoryDetailsModel> Handle(SubCategoryDetailsQuery request, CancellationToken cancellationToken)
     {
         var subCategoryQueryable = _repository.GetAllIncluding<SubCategory>(x => x.SubSubCategories).Where(x => x.Id == request.Id);
         var subCategory = await _repository.FirstOrDefaultAsync<SubCategory>(subCategoryQueryable);

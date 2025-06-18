@@ -12,10 +12,6 @@ public class GetGigDetailsQueryValidator : AbstractValidator<GetGigDetailsQuery>
             .WithMessage(string.Format(Required, "Id"))
             .GreaterThan(0)
             .WithMessage(string.Format(GreaterThan, "Id", 0));
-
-        RuleFor(x => x.Preview)
-            .NotEmpty()
-            .WithMessage(string.Format(Required, "Preview"));
     }
 }
 

@@ -1,0 +1,39 @@
+.page-title-button {
+    width: 100%;
+    display: flex;
+    justify-content: space-between; 
+    align-items: center; 
+    flex-wrap: wrap; 
+    gap: 10px; 
+    border-bottom: 1px solid #ccc;
+}
+
+.browsing-history-items{
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 40px;
+    margin-top: 20px;
+}
+
+.no-history {
+    gap: 20px;
+    color: var(--text-black-color);
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    padding: 60px 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.no-history-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-black-color);
+}
+
+.no-history-desc {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--text-black-color);
+}

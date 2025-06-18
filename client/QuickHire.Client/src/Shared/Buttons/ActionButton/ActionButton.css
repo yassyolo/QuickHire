@@ -205,15 +205,48 @@
     padding: 8px 15px;
     width: 160px;
     border-radius: 5px !important;
-    margin: 20px 0;
     font-size: 14px !important;
     align-self: flex-end; 
+}
+
+.join-button{
+    background-color: var(--text-black-color) !important;
+    color: var(--white-color) !important;
+    padding: 8px 15px;
+    width: 90px;
+    border-radius: 5px !important;
+    font-size: 15px !important;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    align-self:center;
+    box-shadow: none !important;
+}
+
+.sign-up-button{
+    background-color: var(--white-color) !important;
+    color: var(--text-grey-color) !important;
+    padding: 5px 15px;
+    width: 100px;
+    border-radius: 5px !important;
+    box-shadow: none !important;
+    font-size: 16px !important;
+    align-self: flex-end; 
+    border: 2px solid var(--text-grey-color) !important;
 }
 
 .back-button:hover{
     background-color: var(--text-grey-color) !important;
 }
-
+.proceed-to-payemt-button{
+    background-color: var(--text-black-color) !important;
+    color: var(--white-color) !important;
+    padding: 8px 15px;
+    width: 200px;
+    border-radius: 5px !important;
+    font-size: 14px !important;
+    align-self: flex-end; 
+}
 .continue-button, .send-offer-button{
     background-color: var(--text-black-color) !important;
     color: var(--white-color) !important;
@@ -236,8 +269,12 @@
     border-radius: 5px !important;
 }
 
+.save-and-continue-button{
+    width: 200px;
+}
+
 .role{
-    width: 90px !important;
+    width: 110px !important;
 }
 
 .show-more-button{
@@ -315,12 +352,12 @@
 .dropdown-button{
     background-color: var(--white-color) !important;
     color: var(--text-black-color) !important;
-    width: 150px;
-    height: 37px;
+    width: 190px;
+    padding: 11px 15px !important;
     border-radius: 5px !important;
-    font-size: 14px !important;
-    font-weight: 520 !important;
-    border: 1px solid #ddd !important;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    border: 1px solid #ccc !important;
     box-shadow: none !important;
 }
 
@@ -329,8 +366,12 @@
     transform: none !important;
 }
 
+.service-includes{
+    width: 200px !important;
+}
+
 .sub-sub{
-    width: 190px !important;
+    width: 200px !important;
 }
 
 .status{
@@ -338,7 +379,7 @@
 }
 
 .price-range{
-    width: 120px !important;
+    width: 150px !important;
 }
 
 .clear-all-button, .details-modal-clear-button{
@@ -407,7 +448,7 @@
     padding: 8px 15px;
     width: 150px;
     border-radius: 5px !important;
-    font-size: 16px !important;
+    font-size: 15px !important;
     align-self: flex-end; 
     margin-top: 15px;
 }

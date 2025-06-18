@@ -3,6 +3,7 @@ using QuickHire.Application.Common.Interfaces.Repository;
 using QuickHire.Application.Common.Interfaces.Services;
 using QuickHire.Application.Gigs.Models.FavouriteLists;
 using QuickHire.Application.Gigs.Models.Shared;
+using QuickHire.Domain.Users;
 
 namespace QuickHire.Application.Gigs.FavouriteLists.GetFavouriteListItems;
 
@@ -19,9 +20,9 @@ public class GetFavouriteListItemsQueryHandler : IQueryHandler<GetFavouriteListI
 
     public async Task<FavouriteListItemModel> Handle(GetFavouriteListItemsQuery request, CancellationToken cancellationToken)
     {
-       /* var favouriteListQueryable = _repository.GetAllReadOnly<QuickHire.Domain.Users.FavouriteGigsList>()
-            .Where(x => x.Id == request.Id);
-        var favouriteList = await _repository.FirstOrDefaultAsync<QuickHire.Domain.Users.FavouriteGigsList>(favouriteListQueryable);
+        var favouriteList = await _repository.GetByIdAsync<FavouriteGigsList, int>(request.Id);
+        var favouriteGigs = _repository.GetAllIncluding<FavouriteGig>(x => x.Gig.Orders).Where(x => x.FavouriteGigsListId == favouriteList.Id);
+        var favouriteGigsList = await _repository.ToListAsync<FavouriteGig>(favouriteGigs);
 
         var result = new FavouriteListItemModel()
         {
@@ -57,31 +58,7 @@ public class GetFavouriteListItemsQueryHandler : IQueryHandler<GetFavouriteListI
         }
 
         result.Gigs = gigCardresult;
-        return result;*/
-
-        return new FavouriteListItemModel
-        {
-            Id = request.Id,
-            Name = "Sample Favourite List",
-            Description = "This is a sample description for the favourite list.",
-            Gigs = new List<GigCardModel>
-            {
-                new GigCardModel
-                {
-                    Id = 1,
-                    Title = "Sample Gig",
-                    FromPrice = 100.00m,
-                    ImageUrls = new List<string> { "https://picsum.photos/200/300" },
-                    SellerName = "Sample Seller",
-                    SellerId = 1,
-                    SellerProfileImageUrl = "https://picsum.photos/200/300",
-                    TopRatedSeller = true,
-                    ReviewsCount = 10,
-                    AverageRating = 4.5,
-                    Liked = true
-                }
-            }
-        };
+        return result;
     }
 }
 

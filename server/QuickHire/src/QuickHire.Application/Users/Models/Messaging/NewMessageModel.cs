@@ -10,6 +10,6 @@ public class NewMessageModel
     public string Text { get; set; } = string.Empty;
     public int ConversationId { get; set; }
     public string? AttachmentUrl { get; set; } 
-    public CustomOfferPayloadModel? Payload { get; set; }
+    public object? Payload { get; set; }
 }
 

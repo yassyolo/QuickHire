@@ -1,0 +1,12 @@
+.page-title-button{
+    position: relative;
+    width: 100%;
+}
+
+.create-gig-button-wrapper {
+    position: absolute;
+    right: 0;
+    top:3%;
+    display: flex;
+    align-items: center;
+}

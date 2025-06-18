@@ -12,7 +12,7 @@ public class ReportedGigNotificationGEnerator : INotificationGenerator
     public string Title { get; set; } = "Your gig has been reported";
 
     public string Message { get; set; } =
-        "One of your gigs titled \"{GigTitle}\" has been reported for review. " +
+        "One of your gigs  \"{GigTitle}\" has been reported for review. " +
         "Reason: {ReportReason}. Our moderation team will investigate and take any necessary actions. ";
 
     public Domain.Users.Notification Generate(int recipientId, NotificationRecipientType recipientType, Dictionary<string, string>? placeholders = null)

@@ -1,7 +1,0 @@
-﻿using QuickHire.Application.Common.Interfaces.Abstractions;
-using QuickHire.Application.Gigs.Models.Shared;
-
-namespace QuickHire.Application.Gigs.BrowsingHistory.BrowsingHistory;
-
-public record BrowsingHistoryQuery() : IQuery<IEnumerable<GigCardModel>>;
-

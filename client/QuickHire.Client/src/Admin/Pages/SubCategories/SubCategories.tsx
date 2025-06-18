@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
 import {Pagination} from "../../../Shared/PageItems/Pagination/Pagination/Pagination";
 import { ActionButton } from "../../../Shared/Buttons/ActionButton/ActionButton";
-import { DataTable } from "../../Components/Tables/Common/AdminDataTable";
-import { AddSubCategoryModal } from "../../Components/Modals/Add/SubCategory/AddSubCategoryModal";
+import { DataTable } from "../../../Shared/Tables/Common/DataTable/AdminDataTable";
+import { AddSubCategoryModal } from "../../../Shared/Modals/Add/SubCategory/AddSubCategoryModal";
 import { SubCategoriesFilter } from "../PageFilters/SubCategoriesFilter";
 import axios from "../../../axiosInstance";
 import { PageTitle } from "../../../Shared/PageItems/PageTitle/PageTitle";
-import { SubCategoryActions } from "../../Components/Tables/TableActions/SubCategoryActions";
+import { SubCategoryActions } from "../../../Shared/Tables/TableActions/Categories/SubCategory/SubCategoryActions";
 
 export interface SubCategoryRow{
 id: number;
@@ -21,7 +21,7 @@ imageUrl: string;
 const tableHeaders = {
     id: "ID",
     name: "Name",
-    mainCategoryName: "Main Category Name",
+    mainCategoryName: "Main Category",
     subSubCategories: "Sub Sub Categories",
     clicks: "Clicks",
     createdOn: "Created On",
@@ -102,7 +102,7 @@ export function SubCategories (){
 
     return(
             <><div className="filter-table">
-            <PageTitle title="Sub Categories" description="Manage and organize your platform’s sub categories efficiently." breadcrumbs={[{ label: <i className="bi bi-house-door"></i>, to: "/admin" }, { label: "Sub Categories" }]} />
+            <PageTitle title="Sub Categories" description="Manage and organize your platform’s sub categories efficiently." breadcrumbs={[{ label: <i className="bi bi-house-door"></i> }, { label: "Sub Categories" }]} />
             <div className="d-flex flex-column">
                 <SubCategoriesFilter setId={setId} setKeyword={setKeyword} setSelectedMainCategoryId={handleMainCategoryIdSelect} selectedMainCategoryId={mainCategoryId} />
                 <ActionButton onClick={handleAddModalVisbility} text={"CREATE A NEW CATEGORY"} className="add-category-button" ariaLabel={"Add Sub Category Button"} />

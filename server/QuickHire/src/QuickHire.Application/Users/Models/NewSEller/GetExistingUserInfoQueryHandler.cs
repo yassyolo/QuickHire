@@ -20,27 +20,6 @@ public class GetExistingUserInfoQueryHandler : IQueryHandler<GetExistingUserInfo
 
     public async Task<GetExistingUserInfoModel> Handle(GetExistingUserInfoQuery request, CancellationToken cancellationToken)
     {
-        //return await _userService.GetExistingUserInfoAsync();
-
-        return new GetExistingUserInfoModel
-        {
-            FullName = "test",
-            Username = "test",
-            Description = "test",
-            ProfilePictureUrl = "test",
-            Languages = new List<UserLanguageModel>
-            {
-                new UserLanguageModel
-                {
-                    LanguageName = "English",
-                    LanguageId = 1,
-                },
-                new UserLanguageModel
-                {
-                    LanguageName = "Spanish",
-                    LanguageId = 2,
-                }
-            }
-        };
+        return await _userService.GetExistingUserInfoAsync();
     }
 }

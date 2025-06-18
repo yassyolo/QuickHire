@@ -242,10 +242,16 @@ namespace QuickHire.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -271,9 +277,15 @@ namespace QuickHire.Infrastructure.Migrations
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("ImageUrl")
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<int>("MainCategoryId")
                         .HasColumnType("int");
@@ -303,6 +315,12 @@ namespace QuickHire.Infrastructure.Migrations
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DeletedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -535,9 +553,6 @@ namespace QuickHire.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsFileUpload")
                         .HasColumnType("bit");
 
                     b.Property<string>("Question")
@@ -806,7 +821,6 @@ namespace QuickHire.Infrastructure.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -848,14 +862,11 @@ namespace QuickHire.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ReportedUserId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GigId")
-                        .IsUnique()
-                        .HasFilter("[GigId] IS NOT NULL");
+                    b.HasIndex("GigId");
 
                     b.ToTable("ReportedItems");
                 });
@@ -867,9 +878,6 @@ namespace QuickHire.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime?>("AcceptedAt")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("AttachmentUrls")
                         .IsRequired()
@@ -924,10 +932,6 @@ namespace QuickHire.Infrastructure.Migrations
                         .HasMaxLength(300)
                         .HasColumnType("nvarchar(300)");
 
-                    b.Property<string>("AttachmentUrls")
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
                     b.Property<string>("BuyerId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -946,8 +950,7 @@ namespace QuickHire.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("GigRequirementId")
-                        .IsUnique();
+                    b.HasIndex("GigRequirementId");
 
                     b.HasIndex("OrderId");
 
@@ -1079,47 +1082,11 @@ namespace QuickHire.Infrastructure.Migrations
 
                     b.HasIndex("GigId");
 
-                    b.HasIndex("SelectedPaymentPlanId")
-                        .IsUnique();
+                    b.HasIndex("SelectedPaymentPlanId");
 
                     b.HasIndex("SellerId");
 
                     b.ToTable("Orders");
-                });
-
-            modelBuilder.Entity("QuickHire.Domain.Orders.OrderDeliveryDate", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ChangeDateReason")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DeliveryDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsChanged")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId")
-                        .IsUnique();
-
-                    b.ToTable("OrderDeliveryDates");
                 });
 
             modelBuilder.Entity("QuickHire.Domain.Orders.Review", b =>
@@ -2195,8 +2162,8 @@ namespace QuickHire.Infrastructure.Migrations
             modelBuilder.Entity("QuickHire.Domain.Moderation.ReportedItem", b =>
                 {
                     b.HasOne("QuickHire.Domain.Gigs.Gig", "Gig")
-                        .WithOne()
-                        .HasForeignKey("QuickHire.Domain.Moderation.ReportedItem", "GigId");
+                        .WithMany()
+                        .HasForeignKey("GigId");
 
                     b.Navigation("Gig");
                 });
@@ -2223,8 +2190,8 @@ namespace QuickHire.Infrastructure.Migrations
             modelBuilder.Entity("QuickHire.Domain.Orders.GigRequirementAnswer", b =>
                 {
                     b.HasOne("QuickHire.Domain.Gigs.GigRequirement", "GigRequirement")
-                        .WithOne()
-                        .HasForeignKey("QuickHire.Domain.Orders.GigRequirementAnswer", "GigRequirementId")
+                        .WithMany()
+                        .HasForeignKey("GigRequirementId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -2279,8 +2246,8 @@ namespace QuickHire.Infrastructure.Migrations
                         .HasForeignKey("GigId");
 
                     b.HasOne("QuickHire.Domain.Gigs.PaymentPlan", "SelectedPaymentPlan")
-                        .WithOne()
-                        .HasForeignKey("QuickHire.Domain.Orders.Order", "SelectedPaymentPlanId")
+                        .WithMany()
+                        .HasForeignKey("SelectedPaymentPlanId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -2297,17 +2264,6 @@ namespace QuickHire.Infrastructure.Migrations
                     b.Navigation("SelectedPaymentPlan");
 
                     b.Navigation("Seller");
-                });
-
-            modelBuilder.Entity("QuickHire.Domain.Orders.OrderDeliveryDate", b =>
-                {
-                    b.HasOne("QuickHire.Domain.Orders.Order", "Order")
-                        .WithOne()
-                        .HasForeignKey("QuickHire.Domain.Orders.OrderDeliveryDate", "OrderId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("QuickHire.Domain.Orders.Review", b =>

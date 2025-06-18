@@ -30,7 +30,10 @@ public class DeleteSubCategoryQueryHandler : IQueryHandler<DeleteSubCategoryQuer
             throw new BadRequestException("Cannot delete a sub category that has subsubcategories.", $"{nameof(SubCategory.Name)} has subsubcategories and cannot be deleted.");
         }
 
-        await _repository.DeleteAsync(subCategory);
+        subCategory.IsDeleted = true;
+        subCategory.DeletedAt = DateTime.Now;
+
+        await _repository.UpdateAsync(subCategory);
 
         return Unit.Value;
     }

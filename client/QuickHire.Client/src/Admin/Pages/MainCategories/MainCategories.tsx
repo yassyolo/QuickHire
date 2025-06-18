@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
-import { AddMainCategoryModal } from "../../Components/Modals/Add/MainCategory/AddMainCategoryModal";
-import { DataTable } from "../../Components/Tables/Common/AdminDataTable";
+import { AddMainCategoryModal } from "../../../Shared/Modals/Add/MainCategory/AddMainCategoryModal";
+import { DataTable } from "../../../Shared/Tables/Common/DataTable/AdminDataTable";
 import { ActionButton } from "../../../Shared/Buttons/ActionButton/ActionButton";
 import { MainCategoriesFilter } from "../PageFilters/MainCategoriesFilter";
 import { Pagination } from "../../../Shared/PageItems/Pagination/Pagination/Pagination";
 import { PageTitle } from "../../../Shared/PageItems/PageTitle/PageTitle";
-import { MainCategoryActions } from "../../Components/Tables/TableActions/MainCategoryActions";
+import { MainCategoryActions } from "../../../Shared/Tables/TableActions/Categories/MainCategory/MainCategoryActions";
 import axios from "../../../axiosInstance";
 
 
@@ -38,7 +38,7 @@ export function MainCategories() {
     const [categories, setCategories] = useState<MainCategoryRowModel[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const [currentPage, setCurrentPage] = useState<number>(1);
-    const itemsPerPage = 5;
+    const itemsPerPage = 10;
     const [totalPages, setTotalPages] = useState<number>(0);
     const [showAddModal, setShowAddModal] = useState<boolean>(false);
 
@@ -91,12 +91,12 @@ export function MainCategories() {
 
     return (
             <><div className="filter-table">
-            <PageTitle title="Main Categories" description="Manage and organize your platform’s main categories efficiently." breadcrumbs={[{ label: <i className="bi bi-house-door"></i>, to: "/admin" }, { label: "Main Categories" }]} />
+            <PageTitle title="Main Categories" description="Manage and organize your platform’s main categories efficiently." breadcrumbs={[{ label: <i className="bi bi-house-door"></i> }, { label: "Main Categories" }]} />
             <div className="d-flex flex-column">
                 <MainCategoriesFilter setId={setId} setKeyword={setKeyword} />
                 <ActionButton text={"CREATE A NEW CATEGORY"} onClick={handleAddModalVisbility} className="add-category-button" ariaLabel={"Add Main Category Button"} />
             </div>
-            <AddMainCategoryModal title={"Main Category"} showModal={showAddModal} onClose={handleAddModalVisbility} onAddMainCategorySuccess={handleAddMainCategorySuccess} />
+            <AddMainCategoryModal title={"main category"} showModal={showAddModal} onClose={handleAddModalVisbility} onAddMainCategorySuccess={handleAddMainCategorySuccess} />
             {loading ? (
                 <div className="loading">Loading...</div>
             ) : (

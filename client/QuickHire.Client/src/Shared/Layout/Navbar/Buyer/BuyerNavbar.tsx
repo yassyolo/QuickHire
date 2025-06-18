@@ -4,7 +4,7 @@ import { NotificationButtonDropdown } from '../../../../Users/Notifications/Noti
 import { ProfileIconDropdown } from '../Common/Profile/Common/ProfileDropdown/ProfileIconDropdown';
 import { Footer } from '../../Footer/Footer';
 import { BuyerProfileDropdown } from '../Common/Profile/Buyer/BuyerProfileDropdown';
-import { MainCategoriesHeader } from '../../../Categories/MainCategories/MainCategoriesHeader';
+import { MainCategoriesHeader } from '../../../../Users/Buyer/Common/MainCategoriesHeader/MainCategoriesHeader';
 import './BuyerNavbar.css';
 import { Logo } from '../../Logo/Logo';
 import { SearchGig } from '../../../Forms/SearchInputs/SearchGigsByKeyword/SearchGig';

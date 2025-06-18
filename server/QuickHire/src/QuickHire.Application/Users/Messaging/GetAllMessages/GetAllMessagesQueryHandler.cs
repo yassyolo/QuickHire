@@ -24,17 +24,16 @@ public class GetAllMessagesQueryHandler : IQueryHandler<GetAllMessagesQuery, Lis
     {
         var currentUserIdAndMode = _userService.GetCurrentUserIdAndMode();
 
-        var conversationsQueryable = _repository.GetAllIncluding<Conversation>(x => x.Messages)
-            .Where(x => (x.ParticipantAId == currentUserIdAndMode.UserId && x.ParticipantAMode == currentUserIdAndMode.Mode) || (x.ParticipantBId == currentUserIdAndMode.UserId && x.ParticipantBMode == currentUserIdAndMode.Mode));
+        var conversationsQueryable = _repository.GetAllIncluding<Conversation>(x => x.Messages!).Where(x => (x.ParticipantAId == currentUserIdAndMode.UserId && x.ParticipantAMode == currentUserIdAndMode.Mode) || (x.ParticipantBId == currentUserIdAndMode.UserId && x.ParticipantBMode == currentUserIdAndMode.Mode));
 
-        if (request.IsStarred.HasValue&& request.IsStarred == true)
+        if (request.IsStarred.HasValue && request.IsStarred == true)
         {
             conversationsQueryable = conversationsQueryable.Where(x => x.ParticipantAId == currentUserIdAndMode.UserId ? x.IsStarredByParticipantA: x.IsStarredByParticipantB);
         }
 
         if (request.HasCustomOffer.HasValue && request.HasCustomOffer.Value)
         {           
-            conversationsQueryable = conversationsQueryable.Where(x => x.Messages.Any(x => x.PayloadJson != null));
+            conversationsQueryable = conversationsQueryable.Where(x => x.Messages!.Any(x => x.PayloadJson != null));
         }
 
         if(request.OrderStatusIds != null && request.OrderStatusIds.Any())
@@ -47,8 +46,7 @@ public class GetAllMessagesQueryHandler : IQueryHandler<GetAllMessagesQuery, Lis
 
         var conversationsList = await _repository.ToListAsync(conversationsQueryable);
 
-        var messages = conversationsList.SelectMany(x => x.Messages).OrderByDescending(x => x.SentAt).GroupBy(x => x.ConversationId).Select(x => x.FirstOrDefault()).Where(x => x != null)
-            .ToList();
+        var messages = conversationsList.SelectMany(x => x.Messages!).OrderByDescending(x => x.SentAt).GroupBy(x => x.ConversationId).Select(x => x.FirstOrDefault()).Where(x => x != null).ToList();
 
         var result = new List<GetAllMessagesItemModel>();
         foreach (var message in messages)

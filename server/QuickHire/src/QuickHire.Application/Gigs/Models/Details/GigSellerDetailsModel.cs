@@ -7,6 +7,7 @@ public class GigSellerDetailsModel
     public List<ReviewsForUserModel> Reviews { get; set; } = new List<ReviewsForUserModel>();
     public int Id { get; set; } 
     public string FullName { get; set; } = string.Empty;
+    public string UserId { get; set; } = string.Empty;
     public string ProfileImageUrl { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public double Rating { get; set; }

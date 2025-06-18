@@ -7,8 +7,8 @@ namespace QuickHire.Infrastructure.Factories.Notification;
 internal class ProfileUpdateNotificationGenerator : INotificationGenerator
 {
     public NotificationType Type => NotificationType.ProfileUpdate;
-    public string Title { get; set; } = "Your Profile Has been updated";
-    public string Message { get; set; } = "Hello, {UserName}! Your profile has been successfully updated. Please review the changes and let us know if anything looks incorrect.";
+    public string Title { get; set; } = "Profile Update";
+    public string Message { get; set; } = "Hello! Your profile has been successfully updated.";
 
     public Domain.Users.Notification Generate(int recipientId, NotificationRecipientType recipientType, Dictionary<string, string>? placeholders = null)
     {

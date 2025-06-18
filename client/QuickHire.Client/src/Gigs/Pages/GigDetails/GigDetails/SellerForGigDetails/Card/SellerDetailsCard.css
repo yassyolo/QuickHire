@@ -1,0 +1,74 @@
+.seller-details-card-header{
+    font-size: 19px;
+    font-weight: 600;
+    color: var(--text-black-color);
+}
+
+.seller-details-card-top{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+}
+
+.seller-details-profile-image{
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.seller-details-name{
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-black-color);
+    cursor: pointer;
+}
+
+.seller-details-name:hover
+{
+    text-decoration: underline;
+}
+.seller-details-info-details{
+    gap: 2px;
+}
+
+.seller-details-card-content{
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    border-radius: 5px;
+    padding: 20px;
+    background-color: var(--white-color);
+    border: 1px solid #ddd;
+}
+
+.seller-details-card-content-top{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.seller-details-card-content-item{
+    gap: 10px;
+}
+
+.seller-details-card-content-item-header{
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-black-color);
+}
+
+.seller-details-card-content-item-value{
+    font-size: 14px;
+    color: var(--text-grey-color);
+}
+
+.seller-description{
+    font-size: 16px;
+    color: var(--text-black-color);
+    margin-top: 10px;
+    padding: 10px 0;
+    border-top: 1px solid #ddd;
+    padding-top: 10px;
+}

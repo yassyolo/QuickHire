@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { ButtonDropdownContainer } from "../../../Shared/Dropdowns/Common/Dropdown/ButtonDropdownContainer";
 import { ActionButton } from "../../../Shared/Buttons/ActionButton/ActionButton";
-import { AllMessagesItem } from "../InboxPage";
-import { AllMessagesItemComponent } from "./AllMessagesItem";
-import { MessageFilterDropdown } from "./MessagesFilter";
+import { AllMessagesItem } from "../InboxPage/InboxPage";
+import { AllMessagesItemComponent } from "./AllMessagesItem/AllMessagesItem";
+import { MessageFilterDropdown } from "../../../Shared/Dropdowns/Populate/Messages/MessagesFilter";
 import "./AllMessages.css";
 
 interface AllMessagesProps {
@@ -65,11 +65,12 @@ export function AllMessages({
 
       <div className="all-messages-container">
         {messages.length === 0 ? (
-          <><div className="no-messages-yet">
+          <><div className="no-messages-yet d-flex flex-column">
             No messages yet
-          </div><div className="no-messages-yet-description">
+            <div className="no-messages-yet-description">
               You haven't received any messages yet. Once you do, they will appear here.
-            </div></>
+            </div>
+          </div></>
         ) : (
           messages.map((message) => (
             <AllMessagesItemComponent

@@ -29,12 +29,46 @@ public class GetGigDetailsQueryHandler : IQueryHandler<GetGigDetailsQuery, GigDe
             throw new NotFoundException(nameof(QuickHire.Domain.Gigs.Gig), request.Id);
         }
 
+        if (!request.Preview)
+        {
+            var buyerId = await _userService.GetBuyerIdByUserIdAsync();
+            var browsingHistoryQueryable = _repository.GetAllIncluding<QuickHire.Domain.Users.BrowsingHistory>(x => x.Gig).Where(x => x.GigId == gig.Id && x.BuyerId == buyerId);
+            var browsingHistory = await _repository.FirstOrDefaultAsync(browsingHistoryQueryable);
+            var gigSellerUserId = await _userService.GetUserIdBySellerIdAsync(gig.SellerId);
+            var buyerUserId = await _userService.GetUserIdByBuyerIdAsync(buyerId);
+
+            if (browsingHistory == null)
+            {
+                if (gigSellerUserId != buyerUserId)
+                {
+                    browsingHistory = new QuickHire.Domain.Users.BrowsingHistory
+                    {
+                        GigId = gig.Id,
+                        BuyerId = buyerId,
+                        ViewedAt = DateTime.Now
+                    };
+                    await _repository.AddAsync(browsingHistory);
+                    await _repository.SaveChangesAsync();
+                }
+            }
+            else
+            {
+                if (gigSellerUserId != buyerUserId)
+                {
+                    browsingHistory.ViewedAt = DateTime.Now;
+                    await _repository.UpdateAsync(browsingHistory);
+                    await _repository.SaveChangesAsync();
+                }
+            }
+        }
+
         var model = new GigDetailsModel
         {
             MainCategoryId = gig.SubSubCategory.SubCategory.MainCategory.Id,
             SubCategoryId = gig.SubSubCategory.SubCategory.Id,
             MainCategoryName = gig.SubSubCategory.SubCategory.MainCategory.Name,
             SubCategoryName = gig.SubSubCategory.SubCategory.Name,
+            UserId = await _userService.GetUserIdBySellerIdAsync(gig.SellerId),
             Title = gig.Title,
             Description = gig.Description,
             ImageUrls = gig.ImageUrls.ToArray()  

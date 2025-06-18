@@ -30,17 +30,23 @@ internal class VerifyEmailCommandHandler : IRequestHandler<VerifyEmailCommand, U
             throw new BadRequestException("Email already verified", $"Email {user.Email} is already verified.");
         }
 
-        var result = await _userService.VerifyEmailAsync(user.Id, request.Token);
-
-        if (!result.IsSuccess)
+        try
         {
-            throw new BadRequestException("Invalid token", string.Join(";", result.Errors.Select(x => x.ToString())));
+            var result = await _userService.VerifyEmailAsync(user.Id, request.Token);
+
+            if (!result.IsSuccess)
+            {
+                throw new BadRequestException("Invalid token", string.Join(";", result.Errors.Select(x => x.ToString())));
+            }
+
+            var buyerId = await _userService.GetBuyerIdByUserIdAsync();
+
+            await _notificationService.MakeNotification(buyerId, Common.Interfaces.Factories.Notification.NotificationRecipientType.Buyer, Domain.Users.Enums.NotificationType.ProfileMade, new Dictionary<string, string> { { "UserName", user.UserName! } });
         }
-
-        var buyerId = await _userService.GetBuyerIdByUserIdAsync();
-
-        await _notificationService.MakeNotification( buyerId, Common.Interfaces.Factories.Notification.NotificationRecipientType.Buyer, Domain.Users.Enums.NotificationType.ProfileMade, 
-            new Dictionary<string, string> { { "UserName", user.UserName! } });
+        catch (Exception ex)
+        {
+            throw new BadRequestException("Email verification failed", $"Failed to verify email for user {user.UserName}. Error: {ex.Message}");
+        }
 
         return Unit.Value;
     }

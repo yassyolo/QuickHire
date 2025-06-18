@@ -17,7 +17,7 @@ public class RevisionsStatisticsQueryHandler : IQueryHandler<RevisionsStatistics
     }
     public async Task<PieChartDataModel> Handle(RevisionsStatisticsQuery request, CancellationToken cancellationToken)
     {
-        /*var gig = await _repository.GetByIdAsync<Gig, int>(request.Id);
+        var gig = await _repository.GetByIdAsync<Gig, int>(request.Id);
         if (gig == null)
         {
             throw new NotFoundException(nameof(Gig), request.Id);
@@ -50,26 +50,11 @@ public class RevisionsStatisticsQueryHandler : IQueryHandler<RevisionsStatistics
             }
         }
             };
-        }*/
-
+        }
 
         return new PieChartDataModel
         {
-            Data = new List<PieChartDataPointModel>
-            {
-                new PieChartDataPointModel
-                {
-                    Label = "Yes",
-                    Value = "123",
-                    Percentage = "44"
-                },
-                new PieChartDataPointModel
-                {
-                    Label = "No",
-                    Value = "140",
-                    Percentage = "56"
-                }
-            }
+            Data = groupedData
         };
     }
 }

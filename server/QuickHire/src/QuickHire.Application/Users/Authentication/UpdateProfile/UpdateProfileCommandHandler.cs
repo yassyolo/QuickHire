@@ -18,15 +18,18 @@ public class UpdateProfileCommandHandler : ICommandHandler<UpdateProfileCommand,
     }
     public async Task<Unit> Handle(UpdateProfileCommand request, CancellationToken cancellationToken)
     {
-        var result = await _userService.UpdateCurrentUser(request.FullName, request.Email, request.Username, request.CountryId, request.City, request.ZipCode, request.Street);
-
-        if (!result.isSuccess)
+        try
         {
-            throw new BadRequestException("Failed to update profile", "");
-        }
+            var result = await _userService.UpdateCurrentUser(request.FullName, request.Email, request.Username, request.CountryId, request.City, request.ZipCode, request.Street);
 
-        await _notificationService.MakeNotification(result.userId, Common.Interfaces.Factories.Notification.NotificationRecipientType.Seller, Domain.Users.Enums.NotificationType.ProfileUpdate,
-        new Dictionary<string, string> { { "UserName", result.username! } });
+            var buyerId = await _userService.GetBuyerIdByUserIdAsync();
+
+            await _notificationService.MakeNotification(buyerId, Common.Interfaces.Factories.Notification.NotificationRecipientType.Buyer, Domain.Users.Enums.NotificationType.ProfileUpdate, new Dictionary<string, string> { });
+        }
+        catch (Exception ex)
+        {
+            throw new BadRequestException("An error occurred while updating the profile.", ex.Message);
+        }       
 
         return Unit.Value;
     }

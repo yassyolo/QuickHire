@@ -18,7 +18,6 @@ public class DeleteMainCategoryCommandHandler : ICommandHandler<DeleteMainCatego
     public async Task<Unit> Handle(DeleteMainCategoryCommand request, CancellationToken cancellationToken)
     {
         var mainCategoryQueryable = _repository.GetAllIncluding<MainCategory>(x => x.SubCategories, x => x.FAQs).Where(x => x.Id == request.Id);
-
         var mainCategory = await _repository.FirstOrDefaultAsync(mainCategoryQueryable);
 
         if (mainCategory == null)
@@ -31,17 +30,27 @@ public class DeleteMainCategoryCommandHandler : ICommandHandler<DeleteMainCatego
             throw new BadRequestException("Cannot delete a main category that has subcategories.", $"{nameof(MainCategory.Name)} has subcategories and cannot be deleted.");
         }
 
-        if(mainCategory.FAQs.Any())
+        try
         {
-            foreach (var faq in mainCategory.FAQs)
+            if (mainCategory.FAQs.Any())
             {
-                faq.IsDeleted = true;
-                faq.DeletedAt = DateTime.Now;
-                await _repository.UpdateAsync(faq);
+                foreach (var faq in mainCategory.FAQs)
+                {
+                    faq.IsDeleted = true;
+                    faq.DeletedAt = DateTime.Now;
+                    await _repository.UpdateAsync(faq);
+                }
             }
-        }
 
-        await _repository.DeleteAsync(mainCategory);
+            mainCategory.IsDeleted = true;
+            mainCategory.DeletedAt = DateTime.Now;
+            await _repository.UpdateAsync(mainCategory);
+            await _repository.SaveChangesAsync();
+        }
+        catch (Exception ex)
+        {
+            throw new BadRequestException("An error occurred while deleting the main category.", ex.Message);
+        }       
 
         return Unit.Value;
     }

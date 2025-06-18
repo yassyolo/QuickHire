@@ -4,11 +4,11 @@ import "../../Gigs/GigDetailsPage.css";
 import { Breadcrumb } from "../../../../../Shared/PageItems/Breadcrumb/Breadcrumb";
 import { SideNavigation } from "../../../../../Shared/PageItems/SideNavigation/SideNavigation";
 import { IconButton } from "../../../../../Shared/Buttons/IconButton/IconButton";
-import { EditMainCategoryModal } from "../../../../Components/Modals/Edit/EditMainCategoryModal";
-import { DeactivateMainCategoryModal } from "../../../../Components/Modals/Deactivate/MainCategory/DeactivateMainCategoryModal";
-import { EditSubCategoryModal } from "../../../../Components/Modals/Edit/EditSubCategoryModal";
-import { DeactivateSubCategoryModal } from "../../../../Components/Modals/Deactivate/SubCategory/DeactivateSubCategoryModal";
-import { AddSubCategoryModal } from "../../../../Components/Modals/Add/SubCategory/AddSubCategoryModal";
+import { EditMainCategoryModal } from "../../../../../Shared/Modals/Edit/MainCategory/EditMainCategoryModal";
+import { DeactivateMainCategoryModal } from "../../../../../Shared/Modals/Deactivate/MainCategory/DeactivateMainCategoryModal";
+import { EditSubCategoryModal } from "../../../../../Shared/Modals/Edit/SubCategory/EditSubCategoryModal";
+import { DeactivateSubCategoryModal } from "../../../../../Shared/Modals/Deactivate/SubCategory/DeactivateSubCategoryModal";
+import { AddSubCategoryModal } from "../../../../../Shared/Modals/Add/SubCategory/AddSubCategoryModal";
 import { CategoryActions } from "../../Common/Actions/CategoryActions";
 import { CategoryDetails } from "../../Common/CategoryDetails/CategoryDetails";
 import { SubCategoriesTableSection } from "../../Common/Tables/SubCategoriesTableSection";
@@ -122,7 +122,7 @@ export function MainCategoryDetails() {
         {isLoading && <div>Loading...</div>}
 
         {!isLoading && details && view === "details" && (
-          <div className="d-flex flex-row" style={{marginTop: "20px"}}>
+          <div className="d-flex flex-row" style={{marginTop: "20px", width: '100%'}}>
             <CategoryDetails details={details} showFAQ={true} faqMainCategoryId={details.id} />
             <CategoryActions onEditModalVisibility={() => setShowEditMainModal(true)} onDeactivateModalVisibility={() => setShowDeactivateMainModal(true)}/>
 

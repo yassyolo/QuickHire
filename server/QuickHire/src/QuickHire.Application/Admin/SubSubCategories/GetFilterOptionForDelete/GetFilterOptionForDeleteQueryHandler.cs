@@ -15,7 +15,7 @@ public class GetFilterOptionForDeleteQueryHandler : IQueryHandler<GetFilterOptio
     }
     public async Task<string> Handle(GetFilterOptionForDeleteQuery request, CancellationToken cancellationToken)
     {
-        var gigsWithOptionQueryable = _repository.GetAllIncluding<FilterOption>(x => x.GigFilter.SubSubCategory.Gigs).Where(x => x.Id == request.Id);
+        var gigsWithOptionQueryable = _repository.GetAllIncluding<FilterOption>(x => x.GigFilter.SubSubCategory!.Gigs!).Where(x => x.Id == request.Id);
         var gigFilterOption = await _repository.FirstOrDefaultAsync<FilterOption>(gigsWithOptionQueryable);
         if (gigFilterOption == null)
         {

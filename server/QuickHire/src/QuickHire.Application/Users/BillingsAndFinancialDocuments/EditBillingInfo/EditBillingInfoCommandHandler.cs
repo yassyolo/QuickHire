@@ -21,18 +21,11 @@ public class EditBillingInfoCommandHandler : ICommandHandler<EditBillingInfoComm
     {
         var userId = _userService.GetCurrentUserIdAsync();
 
-        var existingBillingDetailsQueryable = _repository.GetAllReadOnly<Domain.Users.BillingDetails>().Where(x => x.Id == request.Id);
-        var existingBillingDetails = await _repository.FirstOrDefaultAsync<Domain.Users.BillingDetails>(existingBillingDetailsQueryable);
-
+        var existingBillingDetails = await _repository.GetByIdAsync<Domain.Users.BillingDetails, int>(request.Id);
         if (existingBillingDetails == null)
         {
             throw new NotFoundException(nameof(Domain.Users.BillingDetails), request.Id);
         }
-
-        existingBillingDetails.FullName = request.FullName;
-        existingBillingDetails.CompanyName = request.CompanyName;
-
-        await _repository.UpdateAsync(existingBillingDetails);
 
         var address = await _repository.GetByIdAsync<Domain.Users.Address, int>(existingBillingDetails.AddressId);
         if (address == null)
@@ -40,13 +33,22 @@ public class EditBillingInfoCommandHandler : ICommandHandler<EditBillingInfoComm
             throw new NotFoundException(nameof(Domain.Users.Address), existingBillingDetails.AddressId);
         }
 
-        address.Street = request.Street;
-        address.City = request.City;
-        address.ZipCode = request.ZipCode;
-        address.CountryId = request.CountryId;
+        try
+        {
+            existingBillingDetails.FullName = request.FullName;
+            existingBillingDetails.CompanyName = request.CompanyName;
+            await _repository.UpdateAsync(existingBillingDetails);
 
-        await _repository.UpdateAsync(address);
-        await _repository.SaveChangesAsync();
+            address.Street = request.Street;
+            address.City = request.City;
+            address.ZipCode = request.ZipCode;
+            address.CountryId = request.CountryId;
+            await _repository.UpdateAsync(address);
+        }
+        catch (Exception ex)
+        {
+            throw new BadRequestException("An error occurred while updating billing information.", ex.Message);
+        }       
 
         return Unit.Value;
     }

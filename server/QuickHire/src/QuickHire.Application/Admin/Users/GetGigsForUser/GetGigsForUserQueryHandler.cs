@@ -35,9 +35,7 @@ public class GetGigsForUserQueryHandler : IQueryHandler<GetGigsForUserQuery, Pag
         }
         else
         {
-            var pagedQuery = gigsQueryable
-                .Skip((request.CurrentPage - 1) * request.ItemsPerPage)
-                .Take(request.ItemsPerPage);
+            var pagedQuery = gigsQueryable.Skip((request.CurrentPage - 1) * request.ItemsPerPage).Take(request.ItemsPerPage);
 
             gigsList = await _repository.ToListAsync(pagedQuery);
         }

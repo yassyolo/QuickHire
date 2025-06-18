@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 
-import { DataTable } from "../../../../Components/Tables/Common/AdminDataTable";
+import { DataTable } from "../../../../../Shared/Tables/Common/DataTable/AdminDataTable";
 import { IconButton } from "../../../../../Shared/Buttons/IconButton/IconButton";
-import { DeactivateUser } from "../../../../Components/Modals/Deactivate/DeactivateUser";
+import { DeactivateUser } from "../../../../../Shared/Modals/Deactivate/User/DeactivateUser";
 import { useNavigate } from "react-router-dom";
 import axios from "../../../../../axiosInstance";
 import "./UserModerationStatus.css";

@@ -27,9 +27,9 @@ public class GetCurrentConversationQueryHandler : IQueryHandler<GetCurrentConver
 
         var messagesQueryable = _repository.GetAllIncluding<Message>(x => x.Conversation).Where(x => x.Id == request.Id);
         var message = await _repository.FirstOrDefaultAsync(messagesQueryable);
+
         message.IsRead = true; 
         await _repository.UpdateAsync(message);
-        await _repository.SaveChangesAsync();
         if (message == null)
         {
             throw new NotFoundException(nameof(Message), "Message not found for the given message ID.");

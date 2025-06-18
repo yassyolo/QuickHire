@@ -47,15 +47,10 @@ builder.Services.AddCors(options =>
 builder.Services.AddSignalR();
 builder.Services.RegisterInfrastructure(builder.Configuration);
 builder.Services.RegisterApplication(assembly);
-builder.Services.AddAuthorization();
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddAuthorization();
 builder.Services.AddExceptionHandler<CustomExceptionHandling>();
 
-
-builder.Services.AddAntiforgery(options =>
-{
-    options.SuppressXFrameOptionsHeader = true;
-});
 
 builder.Services.AddScoped<SeedData>();
 

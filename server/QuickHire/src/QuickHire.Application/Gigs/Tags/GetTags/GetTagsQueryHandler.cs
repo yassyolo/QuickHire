@@ -16,54 +16,33 @@ public class GetTagsQueryHandler : IQueryHandler<GetTagsQuery, List<GetTagsRespo
         _repository = repository;
     }
 
-    //Todo
     public async Task<List<GetTagsResponseModel>> Handle(GetTagsQuery request, CancellationToken cancellationToken)
     {
-        /*var gigQueryable = _repository.GetAllReadOnly<Gig>();
-        gigQueryable = _repository.GetAllIncluding<Gig>(x => x.SubSubCategory.SubCategory);
         if (request.GigId.HasValue)
         {
-            gigQueryable = gigQueryable.Where(x => x.Id == request.GigId.Value);
+            var tags = _repository.GetAllReadOnly<Tag>().Where(x => x.GigId == request.GigId.Value);
+            var tagsList = await _repository.ToListAsync(tags);
+
+            return tags.Select(x => new GetTagsResponseModel
+            {
+                Label = x.Name,
+            }).ToList();
         }
 
         if (request.MainCategoryId.HasValue)
         {
-            gigQueryable = gigQueryable.Where(x => x.SubSubCategory.SubCategory.MainCategoryId == request.MainCategoryId.Value);
+            var gigQueryable = _repository.GetAllIncluding<Gig>(x => x.SubSubCategory.SubCategory.MainCategory).Where(x => x.SubSubCategory.SubCategory.MainCategoryId == request.MainCategoryId.Value);
+            var gigs = await _repository.ToListAsync(gigQueryable);
+            var gigIds = gigs.Select(x => x.Id).ToList();
+            var tags = _repository.GetAllIncluding<Tag>(x => x.Gig.Orders).Where(x => gigIds.Contains(x.GigId));
+            var tagsList = await _repository.ToListAsync(tags);
+            tagsList = tagsList.OrderByDescending(x => x.Gig.Orders.Count()).ThenByDescending(x => x.Gig.Clicks).DistinctBy(x => x.Name).ToList(); 
+            return tagsList.Select(x => new GetTagsResponseModel
+            {
+                Label = x.Name,
+            }).ToList();
         }
-
-        var gig = await _repository.FirstOrDefaultAsync(gigQueryable);
-        if (gig == null)
-        {
-            throw new NotFoundException(nameof(Gig), "Entity not found");
-        }
-
-        var tags = _repository.GetAllReadOnly<Tag>().Where(x => x.GigId == gig.Id);
-        var tagsList = await _repository.ToListAsync(tags);
-
-        return tags.Adapt<GetTagsResponseModel>();*/
-
-        return new List<GetTagsResponseModel>
-        {
-            new GetTagsResponseModel
-            {
-                Label = "Tag 1",
-            },
-            new GetTagsResponseModel
-            {
-                Label = "Tag 2",
-            },
-            new GetTagsResponseModel
-            {
-                Label = "Tag 3",
-            },
-            new GetTagsResponseModel
-            {
-                Label = "Tag 4",
-            },
-            new GetTagsResponseModel
-            {
-                Label = "Tag 5",
-            },
-        };
+        return new List<GetTagsResponseModel>();
+        
     }
 }

@@ -1,7 +1,7 @@
 import React from "react";
 import { DetailsRow } from "../DetailsRow/DetailsRow";
 import './CategoryDetails.css';
-import { FAQList } from "../../../../../Shared/FAQ/FAQList/FAQList";
+import { FAQList } from "../../../../../Gigs/Common/FAQ/FAQList/FAQList";
 
 interface MainCategoryDetailsProps {
   details: {
@@ -35,7 +35,7 @@ export function CategoryDetails ({ details, showFAQ = false, faqMainCategoryId, 
         </div>
       </div>
 
-      {showFAQ && faqMainCategoryId !== undefined && ( <div className="category-details-faq-list"> <FAQList mainCategoryId={faqMainCategoryId} showActions={true} title={details.name} /></div>)}
+      {showFAQ && faqMainCategoryId !== undefined && ( <div className="category-details-faq-list" style={{width: '100%'}}> <FAQList mainCategoryId={faqMainCategoryId} showActions={true} title={details.name} /></div>)}
       {children}
     </div>
   );

@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import {Pagination} from "../../../Shared/PageItems/Pagination/Pagination/Pagination";
-import { DataTable } from "../../Components/Tables/Common/AdminDataTable";
+import { DataTable } from "../../../Shared/Tables/Common/DataTable/AdminDataTable";
 import { GigsFilter } from "../PageFilters/GigsFilter";
-import { GigActions } from "../../Components/Tables/TableActions/GigActions";
+import { GigActions } from "../../../Shared/Tables/TableActions/Gigs/GigActions";
 import { PageTitle } from "../../../Shared/PageItems/PageTitle/PageTitle";
 import { TitleFilterSelector } from "../../../Shared/PageItems/TitleFilterSection/TitleFilterSection";
 import axios from "../../../axiosInstance";
@@ -41,7 +41,7 @@ export function Gigs (){
     const [moderationStatusId, setModerationStatusId] = useState<number>(0);
     const [gigs, setGigs] = useState<GigRow[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
-    const itemsPerPage = 2;
+    const itemsPerPage = 10;
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [totalPages, setTotalPages] = useState<number>(0);
     
@@ -103,7 +103,7 @@ export function Gigs (){
             </div>
             {loading ? (<div className="loading">Loading...</div>
             ) : (
-                <><TitleFilterSelector selectedId={moderationStatusId} setSelectedId={handleSelectedModerationStatusId} endpoint="https://localhost:7267/admin/filters/moderation-status" /><div className="categories-list">
+                <><TitleFilterSelector selectedId={moderationStatusId} setSelectedId={handleSelectedModerationStatusId} endpoint="https://localhost:7267/filters/moderation-status" /><div className="categories-list">
                     <DataTable data={gigs} columns={["id", "createdOn", "service", "orders", "revenue", "clicks", "avgReview"]} headers={tableHeaders} renderActions={(row: GigRow) => (<GigActions gig={row} onDeactivateSuccess={handleOnDeactivateSuccess} />)} />
                 </div></>
             )}

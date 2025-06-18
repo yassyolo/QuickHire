@@ -17,13 +17,13 @@ export function CategoriesPopulate({ show, setShow, setSelectedId, type, selecte
     const fetchData = async () => {
       try {
         if (type === "Main") {
-          const response = await axios.get<Item<number>[]>("https://localhost:7267/admin/main-categories/populate");
+          const response = await axios.get<Item<number>[]>("https://localhost:7267/main-categories/populate");
           setPopulatedData(response.data);
         } else if (type === "Sub") {
-           const response = await axios.get<Item<number>[]>(`https://localhost:7267/admin/sub-categories/populate`);
+           const response = await axios.get<Item<number>[]>(`https://localhost:7267/sub-categories/populate`);
           setPopulatedData(response.data);
         } else if (type === "Sub Sub") {
-            const response = await axios.get<Item<number>[]>(`https://localhost:7267/admin/sub-sub-categories/populate`);
+            const response = await axios.get<Item<number>[]>(`https://localhost:7267/sub-sub-categories/populate`);
           setPopulatedData(response.data);
         }
       } catch (error) {

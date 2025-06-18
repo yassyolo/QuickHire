@@ -44,15 +44,13 @@ type AuthContextType = {
   signalRConnection: signalR.HubConnection | null;
   sendMessage: (message: NewMessage) => Promise<void>;
   registerOnReceiveMessage: (callback: (message: unknown) => void) => void;
-    fetchUser: () => Promise<void>;
-
+  fetchUser: () => Promise<void>;
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
 export const useAuth = () => useContext(AuthContext)!;
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children,
 }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
@@ -98,10 +96,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   }, []);
 
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
-
   const stopSignalRConnection = useCallback(async () => {
     if (connectionRef.current) {
       try {
@@ -114,31 +108,43 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   }, []);
 
-  const fetchUser = useCallback(async () => {
-    try {
-      const res = await axios.get("https://localhost:7267/auth/me");
-      setUser(res.data);
-      await startSignalRConnection();
-    } catch {
-      setUser(null);
-      await stopSignalRConnection();
-    } finally {
-      setLoading(false);
-    }
-  }, [startSignalRConnection, stopSignalRConnection]);
+const fetchUser = useCallback(async () => {
+  try {
+    const res = await axios.get("https://localhost:7267/auth/me");
+    setUser(res.data);
+    await startSignalRConnection();
+    return res.data;  
+  } catch {
+    setUser(null);
+    await stopSignalRConnection();
+    return null;
+  } finally {
+    setLoading(false);
+  }
+}, [startSignalRConnection, stopSignalRConnection]);
 
-  const login = useCallback(
-    async (email: string, password: string) => {
-      await axios.post(
-        "https://localhost:7267/auth/login",
-        { emailOrUsername: email, password },
-        { withCredentials: true }
-      );
-      await fetchUser();
-      navigate("/buyer");
-    },
-    [fetchUser, navigate]
-  );
+
+ const login = useCallback(
+  async (email: string, password: string) => {
+    await axios.post(
+      "https://localhost:7267/auth/login",
+      { emailOrUsername: email, password },
+      { withCredentials: true }
+    );
+    const fetchedUser = await fetchUser();
+    console.log("User logged in:", fetchedUser);
+
+    if (fetchedUser.roles.includes("admin")) {
+  console.log("Redirecting to admin");
+  navigate("/admin/main-categories");
+} else {
+  console.log("Redirecting to buyer");
+  navigate("/buyer");
+}
+
+  },
+  [fetchUser, navigate]
+);
 
   const logout = useCallback(async () => {
     await axios.post("https://localhost:7267/auth/logout", {}, { withCredentials: true });
@@ -157,31 +163,37 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       await fetchUser();
     },
     [fetchUser]
-  );
+  ); 
+  
+  type MessageType = "CustomOffer" | "Revision" | "Delivery";
 
-  const sendMessage = useCallback(
-    async (message: NewMessage) => {
-      const conn = connectionRef.current;
-      if (conn?.state !== signalR.HubConnectionState.Connected) {
-        console.error("SignalR not connected. Message not sent.");
-        return;
-      }
+ const sendMessage = useCallback(
+  async (message: NewMessage & { payloadType?: MessageType }) => {
+    const conn = connectionRef.current;
+    if (conn?.state !== signalR.HubConnectionState.Connected) {
+      console.error("SignalR not connected. Message not sent.");
+      return;
+    }
 
-      try {
-        await conn.invoke(
-          "SendMessage",
-          message.text,
-          message.conversationId ?? null,
-          message.attachmentUrl ?? null,
-          message.payload ?? null,
-          message.receiverId
-        );
-      } catch (error) {
-        console.error("Error sending message:", error);
-      }
-    },
-    []
-  );
+    try {
+      const payloadJson = message.payload ? JSON.stringify(message.payload) : null;
+
+      await conn.invoke(
+        "SendMessage",
+        message.text,
+        message.conversationId ?? null,
+        message.attachmentUrl ?? null,
+        payloadJson,                    
+        message.payload ? message.payloadType ?? "CustomOffer" : null, 
+        message.receiverId
+      );
+    } catch (error) {
+      console.error("Error sending message:", error);
+    }
+  },
+  []
+);
+
 
   useEffect(() => {
     if (window.location.pathname !== "/login") {

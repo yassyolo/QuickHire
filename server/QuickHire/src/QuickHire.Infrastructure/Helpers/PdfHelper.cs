@@ -1,205 +1,143 @@
-﻿using DinkToPdf;
-using DinkToPdf.Contracts;
+﻿using iText.Kernel.Pdf;
+using iText.Layout;
+using iText.Layout.Element;
+using iText.Layout.Properties;
+using iText.Kernel.Colors;
+using iText.IO.Image;
 using Microsoft.AspNetCore.Http;
+using System.IO;
 using QuickHire.Application.Orders.Models.Invoice;
-
-namespace QuickHire.Infrastructure.Helpers;
+using QuickHire.Infrastructure.Helpers;
+using iText.Layout.Borders;
+using iText.Kernel.Font;
+using iText.IO.Font.Constants;
 
 internal class PdfHelper : IPdfHelper
 {
-    private readonly IConverter _converter;
-
-    public PdfHelper()
+    public MemoryStream GeneratePdfStream(InvoiceModel invoice)
     {
-        _converter = new BasicConverter(new PdfTools());
+        var memoryStream = new MemoryStream();
+
+        using (var writer = new PdfWriter(memoryStream))
+        using (var pdf = new PdfDocument(writer))
+        using (var document = new Document(pdf))
+        {
+            var black = ColorConstants.BLACK;
+            var gray = ColorConstants.GRAY;
+
+            PdfFont regularFont = PdfFontFactory.CreateFont(StandardFonts.HELVETICA);
+            PdfFont boldFont = PdfFontFactory.CreateFont(StandardFonts.HELVETICA_BOLD);
+
+            var headerTable = new Table(UnitValue.CreatePercentArray(new float[] { 70, 30 })).UseAllAvailableWidth();
+
+            var invoiceTitle = new Paragraph($"Invoice {invoice.InvoiceNumber}")
+                .SetFont(boldFont)
+                .SetFontSize(20)
+                .SetFontColor(black);
+            headerTable.AddCell(new Cell().Add(invoiceTitle).SetBorder(Border.NO_BORDER));
+
+            try
+            {
+                var rightCell = new Cell().SetBorder(Border.NO_BORDER).SetTextAlignment(TextAlignment.RIGHT);
+                rightCell.Add(new Paragraph("QuickHire")
+                    .SetFont(boldFont)
+                    .SetFontSize(14)
+                    .SetFontColor(black)
+                    .SetTextAlignment(TextAlignment.RIGHT));
+
+                headerTable.AddCell(rightCell);
+            }
+            catch
+            {
+                headerTable.AddCell(new Cell().SetBorder(Border.NO_BORDER));
+            }
+
+            document.Add(headerTable);
+            document.Add(new Paragraph("\n"));
+
+            var detailsTable = new Table(UnitValue.CreatePercentArray(new float[] { 50, 50 })).UseAllAvailableWidth();
+
+            var buyerInfo = new Paragraph()
+                .Add(new Text("To:\n").SetFont(boldFont))
+                .Add($"{invoice.BuyerName}\n")
+                .Add($"Address: {invoice.BuyerAddress}\n")
+                .Add($"Company name: {invoice.BuyerCompanyName}\n")
+                .SetFont(regularFont);
+            detailsTable.AddCell(new Cell().Add(buyerInfo).SetBorder(Border.NO_BORDER));
+
+            var issueInfo = new Paragraph()
+                .Add(new Text("Issued on:\n").SetFont(boldFont))
+                .Add($"{invoice.CreatedAt:yyyy-MM-dd}\n\n")
+                .Add(new Text("Order №:\n").SetFont(boldFont))
+                .Add($"{invoice.OrderNumber}")
+                .SetFont(regularFont);
+            detailsTable.AddCell(new Cell().Add(issueInfo).SetBorder(Border.NO_BORDER));
+
+            document.Add(detailsTable);
+            document.Add(new Paragraph("\n"));
+
+            var itemTable = new Table(UnitValue.CreatePercentArray(new float[] { 50, 25, 25 })).UseAllAvailableWidth();
+
+            itemTable.AddHeaderCell(new Cell().Add(new Paragraph("Service").SetFont(boldFont)));
+            itemTable.AddHeaderCell(new Cell().Add(new Paragraph("Quantity").SetFont(boldFont)));
+            itemTable.AddHeaderCell(new Cell().Add(new Paragraph("Total").SetFont(boldFont)));
+
+            foreach (var item in invoice.Items)
+            {
+                itemTable.AddCell(new Cell().Add(new Paragraph(item.ItemName).SetFont(regularFont)));
+                itemTable.AddCell(new Cell().Add(new Paragraph(item.Quantity.ToString()).SetFont(regularFont)));
+                itemTable.AddCell(new Cell().Add(new Paragraph($"${item.TotalAmount:F2}").SetFont(regularFont)));
+            }
+
+            document.Add(itemTable);
+            document.Add(new Paragraph("\n"));
+
+            var summaryTable = new Table(UnitValue.CreatePercentArray(new float[] { 75, 25 })).UseAllAvailableWidth();
+
+            summaryTable.AddCell(new Cell()
+                .Add(new Paragraph("Subtotal:").SetFont(boldFont))
+                .SetBorder(Border.NO_BORDER)
+                .SetTextAlignment(TextAlignment.RIGHT));
+            summaryTable.AddCell(new Cell()
+                .Add(new Paragraph($"${invoice.SubTotal:F2}").SetFont(regularFont))
+                .SetBorder(Border.NO_BORDER));
+
+            summaryTable.AddCell(new Cell()
+                .Add(new Paragraph("Tax (15%):").SetFont(boldFont))
+                .SetBorder(Border.NO_BORDER)
+                .SetTextAlignment(TextAlignment.RIGHT));
+            summaryTable.AddCell(new Cell()
+                .Add(new Paragraph($"${invoice.Tax:F2}").SetFont(regularFont))
+                .SetBorder(Border.NO_BORDER));
+
+            summaryTable.AddCell(new Cell().Add(new Paragraph("")).SetBorder(Border.NO_BORDER));
+            summaryTable.AddCell(new Cell().Add(new Paragraph("")).SetBorder(Border.NO_BORDER));
+
+            summaryTable.AddCell(new Cell()
+                .Add(new Paragraph("Total:").SetFont(boldFont))
+                .SetBorder(Border.NO_BORDER)
+                .SetTextAlignment(TextAlignment.RIGHT));
+            summaryTable.AddCell(new Cell()
+                .Add(new Paragraph($"${invoice.TotalAmount:F2}").SetFont(regularFont))
+                .SetBorder(Border.NO_BORDER));
+
+            document.Add(summaryTable);
+        }
+
+        var pdfBytes = memoryStream.ToArray();
+        return new MemoryStream(pdfBytes);
     }
 
     public IFormFile GeneratePdfFromHtml(InvoiceModel invoice)
-    {   
-        var htmlContent = GenerateInvoiceHtml(invoice);
+    {
+        var stream = GeneratePdfStream(invoice);
 
-        var doc = new HtmlToPdfDocument()
+        var formFile = new FormFile(stream, 0, stream.Length, "file", $"INV_{invoice.InvoiceNumber}.pdf")
         {
-            GlobalSettings = {ColorMode = ColorMode.Color,
-                              Orientation = Orientation.Portrait,
-                              PaperSize = PaperKind.A4},
-            Objects = {new ObjectSettings() 
-                      {HtmlContent = htmlContent,
-                       WebSettings = new WebSettings() {LoadImages = true,
-                                                        PrintMediaType = true}}}
+            Headers = new HeaderDictionary(),
+            ContentType = "application/pdf"
         };
 
-        using (var memoryStream = new MemoryStream())
-        {
-            _converter.Convert(doc); 
-
-            memoryStream.Position = 0;
-
-            var formFile = new FormFile(memoryStream, 0, memoryStream.Length, "file", $"INV_{invoice.InvoiceNumber}.pdf")
-            {
-                Headers = new HeaderDictionary(),
-                ContentType = "application/pdf"
-            };
-
-            return formFile;
-        }
-    }
-
-    public string GenerateInvoiceHtml(InvoiceModel invoice)
-    {
-        string html = $@"
-                           <!DOCTYPE html>
-<html lang='en'>
-<head>
-    <meta charset='UTF-8'>
-    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-    <title>Invoice</title>
-    <style>
-        body {{
-            font-family: 'Macan', sans-serif;
-            margin: 20px;
-        }}
-        .invoice-container {{
-            width: 100%;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            background-color: #ffffff;
-        }}
-        .invoice-header {{
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 70px;
-        }}
-        .invoice-info h2 {{
-            margin: 0;
-            color: #222325;
-        }}
-        .logo {{
-            text-align: center;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }}
-        .logo img {{
-            width: 80px;
-        }}
-        .invoice-details {{
-            margin-top: 20px;
-            margin-bottom: 30px;
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-        }}
-        .invoice-details p {{
-            margin: 5px 0;
-        }}
-        .invoice-table {{
-            width: 100%;
-            margin-top: 30px;
-            border-collapse: collapse;
-        }}
-        .invoice-table th, .invoice-table td {{
-            padding: 10px;
-            text-align: left;
-            border-bottom: 1px solid #ddd;
-        }}
-        .invoice-table th {{
-            background-color: #f2f2f2;
-        }}
-        .invoice-table td {{
-            border: none;
-        }}
-        .invoice-summary {{
-            display: flex;
-            justify-content: flex-end;
-            margin-top: 30px;
-        }}
-        .invoice-summary .total {{
-            font-weight: bold;
-            font-size: 16px;
-        }}
-        .invoice-info {{
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }}
-        thead, tbody {{
-            border-bottom: 1px solid #000;
-        }}
-        strong {{
-            color: #222325;
-        }}
-        tr {{
-            margin-bottom: 10px;
-        }}
-    </style>
-</head>
-<body>
-
-<div class='invoice-container'>
-    <div class='invoice-header'>
-        <div class='invoice-info'>
-            <h2>Invoice {invoice.InvoiceNumber}</h2>
-        </div>
-        <div class='logo'>
-            <img src='your-logo.png' alt='Logo'/>
-            <h3>QuickHire</h3>
-        </div>
-    </div>
-
-    <div class='invoice-details'>
-        <div class='invoice-info'>
-            <p><strong>To:</strong> {invoice.BuyerName}</p>
-            <p><strong>Address:</strong> {invoice.BuyerAddress}</p>
-            <p><strong>Company name:</strong> {invoice.BuyerCompanyName}</p>
-        </div>
-        <div class='invoice-info'>
-            <p><strong>Issued on:</strong> {invoice.CreatedAt:yyyy-MM-dd}</p>
-            <p><strong>Order &numero;:</strong> {invoice.OrderNumber}</p>
-        </div>
-    </div>
-
-    <table class='invoice-table'>
-        <thead>
-            <tr>
-                <th>Service</th>
-                <th>Quantity</th>
-                <th>Total</th>
-            </tr>
-        </thead>
-        <tbody>";
-
-        foreach (var item in invoice.Items)
-        {
-            html += $@"
-                <tr>
-                    <td>{item.ItemName}</td>
-                    <td>{item.Quantity}</td>
-                    <td>${item.TotalAmount:F2}</td>
-                </tr>";
-        }
-
-        html += $@"
-        </tbody>
-    </table>
-
-    <div class='invoice-summary'>
-        <div class='total'>
-            <p><strong>Subtotal:</strong> ${invoice.SubTotal}</p>
-            <p><strong>Tax (10%):</strong> ${invoice.Tax}</p>
-            <div style='border-bottom: 1px solid #000; width: 100%; margin: 10px 0;'></div>
-            <p><strong>Total:</strong> ${invoice.TotalAmount}</p>
-        </div>
-    </div>
-</div>
-
-</body>
-</html>";
-
-        return html;
+        return formFile;
     }
 }

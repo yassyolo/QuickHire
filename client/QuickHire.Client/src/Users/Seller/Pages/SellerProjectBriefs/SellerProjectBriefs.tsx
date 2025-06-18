@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { SellerPage } from "../Common/SellerPage";
 import { PageTitle } from "../../../../Shared/PageItems/PageTitle/PageTitle";
-import { DataTable } from "../../../../Admin/Components/Tables/Common/AdminDataTable";
-import { ProjectBriefActions } from "../../../../Admin/Components/Tables/TableActions/ProjectBriefActions";
+import { DataTable } from "../../../../Shared/Tables/Common/DataTable/AdminDataTable";
+import { ProjectBriefActions } from "../../../../Shared/Tables/TableActions/ProjectBriefs/ProjectBriefActions";
 import axios from "../../../../axiosInstance";
 
 export interface ProjectBriefRow{
@@ -64,9 +64,9 @@ export function SellerProjectBriefs (){
 breadcrumbs={[{ label: <i className="bi bi-house-door"></i>, to: "/seller/dashboard" }, { label: "Project briefs" }]}/>         
               {loading ? (<div className="loading">Loading...</div>
               ) : (
-                <>
+                <div style={{ marginTop: "30px" }}>
                 <DataTable data={orders} columns={["id", "buyerUsername", "description", "deliveryTimeInDays", "budget"]} headers={tableHeaders} renderActions={(row: ProjectBriefRow) => (<ProjectBriefActions project={row} onSendCustomOfferSuccess={onSendCustomOfferSuccess} showNuyerInfo={true}  />)} />
-              </>
+              </div>
               )}
             </div>
         </SellerPage>

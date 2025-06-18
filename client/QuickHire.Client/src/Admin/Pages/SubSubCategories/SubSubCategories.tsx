@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
 import {Pagination} from "../../../Shared/PageItems/Pagination/Pagination/Pagination";
 import { ActionButton } from "../../../Shared/Buttons/ActionButton/ActionButton";
-import { DataTable } from "../../Components/Tables/Common/AdminDataTable";
+import { DataTable } from "../../../Shared/Tables/Common/DataTable/AdminDataTable";
 import { SubSubCategoriesFilter } from "../PageFilters/SubSubCategoriesFilter";
-import { SubSubCategoryActions } from "../../Components/Tables/TableActions/SubSubCategoryActions";
+import { SubSubCategoryActions } from "../../../Shared/Tables/TableActions/Categories/SubSubcategory/SubSubCategoryActions";
 import axios from "../../../axiosInstance";
 import { PageTitle } from "../../../Shared/PageItems/PageTitle/PageTitle";
-import { AddSubSubCategoryModal } from "../../Components/Modals/Add/SubSubCategory/AddSubSubCategoryModal";
+import { AddSubSubCategoryModal } from "../../../Shared/Modals/Add/SubSubCategory/AddSubSubCategoryModal";
 
 export interface SubSubCategoryRow{
 id: number;

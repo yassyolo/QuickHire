@@ -1,0 +1,10 @@
+.page-filter-section {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+}
+
+.financial-documents-page{
+    margin-bottom: 50px;
+}
+

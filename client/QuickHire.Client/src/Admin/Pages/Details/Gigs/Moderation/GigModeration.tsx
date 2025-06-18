@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 
-import { DataTable } from "../../../../Components/Tables/Common/AdminDataTable";
+import { DataTable } from "../../../../../Shared/Tables/Common/DataTable/AdminDataTable";
 import { IconButton } from "../../../../../Shared/Buttons/IconButton/IconButton";
 import { useNavigate } from "react-router-dom";
 import axios from "../../../../../axiosInstance"; 
 import "./GigModerationStatus.css";
-import { DeactivateGig } from "../../../../Components/Modals/Deactivate/DeactivateGig";
+import { DeactivateGig } from "../../../../../Shared/Modals/Deactivate/Gig/DeactivateGig";
 
 interface ModerationStatusRow{
     id: number;

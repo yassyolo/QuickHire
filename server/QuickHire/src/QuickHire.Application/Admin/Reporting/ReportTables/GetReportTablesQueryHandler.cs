@@ -33,9 +33,8 @@ public class GetReportTablesQueryHandler : IQueryHandler<GetReportTablesQuery, M
 
         var reportedItems = await _repository.ToListAsync(reportedItemsQueryable);
 
-        var reportTable = await Task.WhenAll(
-    reportedItems.Select(async x =>
-    {
+        var reportTable = await Task.WhenAll( reportedItems.Select(async x =>
+        {
         var reportedByUserInfo = await _userService.GetUserEmailByUserIdAsync(x.ReportedById);
         return new ReportTableModel
         {
@@ -44,7 +43,7 @@ public class GetReportTablesQueryHandler : IQueryHandler<GetReportTablesQuery, M
             Reason = x.Reason,
             CreatedOn = x.CreatedAt.ToString("yyyy-MM-dd"),
         };
-    }));
+        }));
 
         var status = string.Empty;
         if(request.GigId.HasValue)
@@ -53,8 +52,7 @@ public class GetReportTablesQueryHandler : IQueryHandler<GetReportTablesQuery, M
             status = gig?.ModerationStatus.ToString();
         }
         else if (!string.IsNullOrEmpty(request.UserId))
-        {
-            
+        {           
             status = await _userService.GetUserModerationStatusAsync(request.UserId);
         }
 
@@ -63,7 +61,6 @@ public class GetReportTablesQueryHandler : IQueryHandler<GetReportTablesQuery, M
             ModerationStatus = reportTable.ToList(),
             Status = SplitPascalCase(status)
         };
-
     }
 
     private string SplitPascalCase(string input)

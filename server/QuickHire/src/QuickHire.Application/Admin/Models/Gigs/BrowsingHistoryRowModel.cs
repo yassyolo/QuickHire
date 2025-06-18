@@ -6,4 +6,5 @@ public class BrowsingHistoryRowModel
     public string Title { get; set; } = string.Empty;
     public bool Liked { get; set; }
     public string ImageUrl { get; set; } = string.Empty;
+    public int GigId { get; set; }
 }

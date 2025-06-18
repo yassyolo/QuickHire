@@ -1,32 +1,31 @@
 ﻿using Carter;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using QuickHire.Application.Gigs.Models.Shared;
+using QuickHire.Application.CustomOffers.GetCustomOffer;
+using QuickHire.Application.CustomOffers.Seller.ChooseFromGigs;
+using QuickHire.Application.CustomOffers.Seller.ChooseFromInclusives;
+using QuickHire.Application.CustomOffers.Seller.CreateCustomOffer;
+using QuickHire.Application.Gigs.Seller.DeleteGig;
+using QuickHire.Application.Gigs.Seller.GetGigForDelete;
+using QuickHire.Application.Gigs.Seller.SellerGigs;
+using QuickHire.Application.Gigs.Seller.SellerGigsTable;
+using QuickHire.Application.Gigs.Seller.ToggleActivationStatus;
+using QuickHire.Application.Orders.GetOrdersTable;
+using QuickHire.Application.ProjectBriefs.ProjectBriefPreview;
+using QuickHire.Application.ProjectBriefs.SellerProjectBriefsTable;
 using QuickHire.Application.Users.Models.Dashboard;
-using QuickHire.Application.Users.Models.Profile;
 using QuickHire.Application.Users.Models.Statistics;
-using QuickHire.Application.Users.ProjectBriefs.ProjectBriefPreview;
-using QuickHire.Application.Users.Seller.CustomOffers.ChooseFromGigs;
-using QuickHire.Application.Users.Seller.CustomOffers.ChooseFromInclusives;
-using QuickHire.Application.Users.Seller.CustomOffers.CreateCustomOffer;
-using QuickHire.Application.Users.Seller.CustomOffers.GetCustomOffer;
 using QuickHire.Application.Users.Seller.Dashboard.GetSellerDashboard;
 using QuickHire.Application.Users.Seller.Dashboard.GetSellerDashboardOrders;
-using QuickHire.Application.Users.Seller.Gigs.DeleteGig;
-using QuickHire.Application.Users.Seller.Gigs.GetGigForDelete;
-using QuickHire.Application.Users.Seller.Gigs.SellerGigs;
-using QuickHire.Application.Users.Seller.Gigs.SellerGigsTable;
-using QuickHire.Application.Users.Seller.Gigs.ToggleActivationStatus;
+using QuickHire.Application.Users.Seller.NewSeller.AddNewSeller;
 using QuickHire.Application.Users.Seller.NewSeller.GetExistingUserInfo;
-using QuickHire.Application.Users.Seller.Orders.GetOrdersTable;
 using QuickHire.Application.Users.Seller.Profile.EditCertification;
 using QuickHire.Application.Users.Seller.Profile.EditDescription;
 using QuickHire.Application.Users.Seller.Profile.EditEducation;
 using QuickHire.Application.Users.Seller.Profile.EditPortfolio;
 using QuickHire.Application.Users.Seller.Profile.EditSkill;
 using QuickHire.Application.Users.Seller.Profile.GetSellerProfile;
-using QuickHire.Application.Users.Seller.Profile.PopulateLAnguages;
-using QuickHire.Application.Users.Seller.ProjectBriefs.GetProjectBriefsTable;
 using QuickHire.Application.Users.Seller.Statistics.Earnings.Cards;
 using QuickHire.Application.Users.Seller.Statistics.Earnings.Statistics;
 using QuickHire.Application.Users.Seller.Statistics.Engagement.Cards;
@@ -179,22 +178,20 @@ public class SellerModule : CarterModule
             var result = await mediator.Send(query);
             return Results.Ok(result);
         })
-            .WithName("GetSellerProfile")
-            .WithTags("Seller")
-            .Produces(StatusCodes.Status404NotFound)
-            .Produces<SellerProfileModel>(StatusCodes.Status200OK)
-            .WithDescription("Get the seller profile data including personal information, statistics, and other relevant details.");
+        .RequireAuthorization(new AuthorizeAttribute { Roles = "seller" })
+        .WithName("GetSellerProfile")
+        .WithTags("Seller")
+        .WithDescription("Get the seller profile data including personal information, statistics, and other relevant details.");
 
         app.MapPut("/seller/profile/description", async([FromBody] EditDescriptionCommand command, IMediator mediator) =>
         {
             var result = await mediator.Send(command);
             return Results.Ok(result);
         })
-            .WithName("EditSellerDescription")
-            .WithTags("Seller")
-            .Produces(StatusCodes.Status404NotFound)
-            .Produces<SellerProfileModel>(StatusCodes.Status200OK)
-            .WithDescription("Edit the seller's profile description.");
+        .RequireAuthorization(new AuthorizeAttribute { Roles = "seller" })
+        .WithName("EditSellerDescription")
+        .WithTags("Seller")
+        .WithDescription("Edit the seller's profile description.");
 
         app.MapPut("/seller/profile/certifications", async([FromBody] EditCertificationCommand command, IMediator mediator) =>
         {
@@ -202,54 +199,43 @@ public class SellerModule : CarterModule
             var result = await mediator.Send(command);
             return Results.Ok(result);
         })
-            .WithName("EditSellerCertifications")
-            .WithTags("Seller")
-            .Produces(StatusCodes.Status404NotFound)
-            .WithDescription("Edit the seller's certifications in their profile.");
+        .RequireAuthorization(new AuthorizeAttribute { Roles = "seller" })
+        .WithName("EditSellerCertifications")
+        .WithTags("Seller")
+        .WithDescription("Edit the seller's certifications in their profile.");
 
         app.MapPut("/seller/profile/educations", async ([FromBody] EditEducationCommand command, IMediator mediator) =>
         {
             var result = await mediator.Send(command);
             return Results.Ok(result);
         })
-            .WithName("EditSellerEducations")
-            .WithTags("Seller")
-            .Produces(StatusCodes.Status404NotFound)
-            .WithDescription("Edit the seller's educations in their profile.");
+        .RequireAuthorization(new AuthorizeAttribute { Roles = "seller" })
+        .WithName("EditSellerEducations")
+        .WithTags("Seller")
+        .WithDescription("Edit the seller's educations in their profile.");
 
         app.MapPut("/seller/profile/skills", async ([FromBody] EditSkillCommand command, IMediator mediator) =>
         {
              var result = await mediator.Send(command);
              return Results.Ok(result);
-         })
+        })
+        .RequireAuthorization(new AuthorizeAttribute { Roles = "seller" })
         .WithName("EditSellerSkills")
         .WithTags("Seller")
-        .Produces(StatusCodes.Status404NotFound)
         .ProducesValidationProblem()
-         .WithDescription("Edit the seller's skills in their profile.");
+        .WithDescription("Edit the seller's skills in their profile.");
 
         app.MapPut("/seller/profile/portfolio", async ([FromForm] EditPortfolioCommand command, IMediator mediator) =>
         {
             var result = await mediator.Send(command);
             return Results.Ok(result);
         })
-            .WithName("EditSellerPortfolio")
-            .WithTags("Seller")
-            .Produces(StatusCodes.Status404NotFound)
-            .Produces<SellerProfileModel>(StatusCodes.Status200OK)
-            .DisableAntiforgery()
-            .WithDescription("Edit the seller's portfolio in their profile.");
+        .RequireAuthorization(new AuthorizeAttribute { Roles = "seller" })
+        .WithName("EditSellerPortfolio")
+        .WithTags("Seller")            
+        .DisableAntiforgery()
+        .WithDescription("Edit the seller's portfolio in their profile.");
 
-        app.MapGet("/languages/populate", async ([AsParameters] PopulateLanguagesQuery query, IMediator mediator) =>
-        {
-            var result = await mediator.Send(query);
-            return Results.Ok(result);
-        })
-            .WithName("PopulateLanguages")
-            .WithTags("Seller")
-            .Produces(StatusCodes.Status404NotFound)
-            .Produces<IEnumerable<PopulationModel>>(StatusCodes.Status200OK)
-            .WithDescription("Populate the languages for the seller's profile.");
 
 
 
@@ -290,10 +276,9 @@ public class SellerModule : CarterModule
             var result = await mediator.Send(query);
             return Results.Ok(result);
         })
+        .RequireAuthorization(new AuthorizeAttribute { Roles = "seller" })
         .WithName("GetSellerGigsTable")
-            .WithTags("Seller")
-            .Produces(StatusCodes.Status404NotFound)
-            .Produces<IEnumerable<GigCardModel>>(StatusCodes.Status200OK)
+        .WithTags("Seller")
          .WithDescription("Get the seller's gigs table.");
 
         app.MapGet("/seller/gigs", async ([AsParameters] GetSellerGigsQuery query, IMediator mediator) =>
@@ -301,10 +286,9 @@ public class SellerModule : CarterModule
             var result = await mediator.Send(query);        
           return Results.Ok(result);
          })
-            .WithName("GetSellerGigs")
+                    .RequireAuthorization(new AuthorizeAttribute { Roles = "buyer" })
+        .WithName("GetSellerGigs")
         .WithTags("Seller")
-        .Produces(StatusCodes.Status404NotFound)
-        .Produces<IEnumerable<GigCardModel>>(StatusCodes.Status200OK)
         .WithDescription("Get the seller's gigs with pagination and filtering options.");
 
         //                const url = `https://localhost:7267/seller/orders/table?${params.toString()}`;
@@ -331,7 +315,6 @@ public class SellerModule : CarterModule
             .Produces(StatusCodes.Status404NotFound)
             .WithDescription("Get the seller's project briefs table with pagination and filtering options.");
 
-        //      const res = await axios.get("https://localhost:7267/seller/new");
         app.MapGet("/seller/new", async ([AsParameters]  GetExistingUserInfoQuery query, IMediator mediator) =>
         {
             var result = await mediator.Send(query);
@@ -341,6 +324,19 @@ public class SellerModule : CarterModule
                 .WithTags("Seller")
                 .Produces(StatusCodes.Status200OK)
                 .WithDescription("Get info for new seller form.");
+
+        ///seller/new
+        app.MapPost("/seller/new", async([FromForm] AddNewSellerCommand command, IMediator mediator) =>
+        {
+            await mediator.Send(command);
+            return Results.NoContent();
+        })
+            .WithName("CreateNewSeller")
+            .WithTags("Seller")
+            .DisableAntiforgery()
+            .Produces(StatusCodes.Status404NotFound)
+            .Produces(StatusCodes.Status200OK)
+            .WithDescription("Create a new seller profile.");
 
         app.MapGet("/project-brief/preview/{Id}", async([AsParameters] ProjectBriefPreviewQuery query, IMediator mediator) =>
         {

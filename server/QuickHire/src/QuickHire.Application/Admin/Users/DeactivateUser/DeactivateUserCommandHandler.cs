@@ -5,6 +5,7 @@ using QuickHire.Application.Common.Interfaces.Services;
 using QuickHire.Application.Users.Models.Authentication;
 using QuickHire.Domain.Gigs;
 using QuickHire.Domain.Moderation;
+using QuickHire.Domain.Shared.Exceptions;
 
 namespace QuickHire.Application.Admin.Users.DeactivateUser;
 
@@ -27,32 +28,31 @@ public class DeactivateUserCommandHandler : ICommandHandler<DeactivateUserComman
         var gigsQueryable = _repository.GetAllReadOnly<Gig>().Where(x => x.SellerId == sellerId);
         var gigs = await _repository.ToListAsync<Gig>(gigsQueryable);
 
-        foreach (var gig in gigs)
+        try
         {
-            gig.ModerationStatus = Domain.Moderation.Enums.ModerationStatus.Deactivated;
-        }
+            foreach (var gig in gigs)
+            {
+                gig.ModerationStatus = Domain.Moderation.Enums.ModerationStatus.Deactivated;
+            }
 
-        var existingReportQueryable = _repository.GetAllReadOnly<ReportedItem>().Where(x => x.ReportedUserId == request.Id);
-        var existingReport = await _repository.FirstOrDefaultAsync<ReportedItem>(existingReportQueryable);
+            var deactivationRecord = new DeactivatedRecord()
+            {
+                UserId = request.Id,
+                Reason = request.Reason,
+                CreatedAt = DateTime.UtcNow,
+            };
 
-        var deactivationRecord = new DeactivatedRecord()
-        {
-            UserId = request.Id,
-            Reason = request.Reason,
-            CreatedAt = DateTime.UtcNow,
-        };
+            await _repository.AddAsync(deactivationRecord);
+            await _repository.SaveChangesAsync();
 
-        await _repository.AddAsync(deactivationRecord);
-        await _repository.SaveChangesAsync();
+            await _userService.DeactivateUserAsync(request.Id);
+            var userEmail = await _userService.GetUserEmailByUserIdAsync(request.Id);
 
-        await _userService.DeactivateUserAsync(request.Id);
-        var userEmail = await _userService.GetUserEmailByUserIdAsync(request.Id);
-
-        var emailModel = new EmailModel
-        {
-            To = userEmail,
-            Subject = "Account Deactivation Notice",
-            Body = $@"
+            var emailModel = new EmailModel
+            {
+                To = userEmail,
+                Subject = "Account Deactivation Notice",
+                Body = $@"
 <html>
     <head>
         <style>
@@ -101,9 +101,14 @@ public class DeactivateUserCommandHandler : ICommandHandler<DeactivateUserComman
         </div>
     </body>
 </html>"
-        };
+            };
 
-        await _emailSenderService.SendEmailAsync(emailModel, cancellationToken);        
+            await _emailSenderService.SendEmailAsync(emailModel, cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            throw new BadRequestException("Error deactivating user", ex.Message);
+        }      
 
         return Unit.Value;  
     }

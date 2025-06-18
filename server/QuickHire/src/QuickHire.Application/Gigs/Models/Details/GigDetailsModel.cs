@@ -4,6 +4,7 @@ public class GigDetailsModel
 {
     public int MainCategoryId { get; set; }
     public int SubCategoryId { get; set; }
+    public string UserId { get; set; } = string.Empty;
     public string MainCategoryName { get; set; } = string.Empty;
     public string SubCategoryName { get; set; } = string.Empty;
     public string Title { get; set; } = string.Empty;

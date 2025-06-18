@@ -9,8 +9,7 @@ import { SkillsTag } from "../../../../../Users/Seller/Pages/SellerProfile/Tags/
 import { CertificationTag } from "../../../../../Users/Seller/Pages/SellerProfile/Tags/Certification/CertificationTag";
 import { EducationTag } from "../../../../../Users/Seller/Pages/SellerProfile/Tags/Education/EducationTag";
 import { PortfolioTag } from "../../../../../Users/Seller/Pages/SellerProfile/Tags/Portfolio/PortfolioTag";
-import "../../../../../Users/Buyer/SellerDetails/SellerDetailsPage.css";
-
+import "./UserInfo.css";
 
 interface SellerDetails{
     profilePictureUrl: string;
@@ -57,7 +56,7 @@ export function UserInfo() {
 
    
     return(
-        <div className="seller-details-page" style={{padding: '0'}}>
+        <div className="seller-details-page" style={{padding: '0', gap: '20px', display: 'flex', flexDirection: 'column'}}>
             <div className="seller-details-page-top d-flex flex-row justify-content-between">
                 <div className="seller-details-dex-skills">
                     <div className="d-flex flex-row">

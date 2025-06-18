@@ -18,7 +18,7 @@ public class GetSubSubCategoryForDeleteQueryHandler : IQueryHandler<GetSubSubCat
 
     public async Task<SubSubCategoryForDeleteModel> Handle(GetSubSubCategoryForDeleteQuery request, CancellationToken cancellationToken)
     {
-        var subSubCategoryQueryable = _repository.GetAllIncluding<SubSubCategory>(x => x.Gigs, x => x.GigFilters).Where(x => x.Id == request.Id);
+        var subSubCategoryQueryable = _repository.GetAllIncluding<SubSubCategory>(x => x.Gigs!, x => x.GigFilters).Where(x => x.Id == request.Id);
         var subSubCategory = await _repository.FirstOrDefaultAsync(subSubCategoryQueryable);
 
         if (subSubCategory == null)
@@ -26,14 +26,12 @@ public class GetSubSubCategoryForDeleteQueryHandler : IQueryHandler<GetSubSubCat
             throw new NotFoundException(nameof(SubSubCategory), request.Id);
         }
 
-        var result = new SubSubCategoryForDeleteModel
+        return new SubSubCategoryForDeleteModel
         {
             Id = subSubCategory.Id,
-            Gigs = subSubCategory.Gigs.Count(),
+            Gigs = subSubCategory.Gigs!.Count(),
             SubSubCategoryFilters = subSubCategory.GigFilters.Adapt<List<FilterForSubSubCategoryModel>>()
         };
-
-        return result;
     }
 }
 

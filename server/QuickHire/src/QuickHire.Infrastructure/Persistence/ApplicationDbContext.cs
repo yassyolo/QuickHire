@@ -109,7 +109,6 @@ public class ApplicationDbContext
     public DbSet<GigRequirementAnswer> GigRequirementAnswers { get; set; }
     public DbSet<Invoice> Invoices { get; set; }
     public DbSet<Order> Orders { get; set; }
-    public DbSet<OrderDeliveryDate> OrderDeliveryDates { get; set; }
     public DbSet<Review> Reviews { get; set; }
     public DbSet<Revision> Revisions { get; set; }
     public DbSet<ProjectBrief> ProjectBriefs { get; set; }

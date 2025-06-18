@@ -2,14 +2,8 @@
 using QuickHire.Domain.Categories;
 using QuickHire.Domain.Moderation.Enums;
 using QuickHire.Domain.Users;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-using QuickHire.Domain.Users.Enums;
-using static QuickHire.Domain.Shared.Constants.EntityPropertyLength;
 using ApplicationUser = QuickHire.Infrastructure.Persistence.Identity.ApplicationUser;
+using Tag = QuickHire.Domain.Gigs.Tag;
 using FAQ = QuickHire.Domain.Categories.FAQ;
 using MainCategory = QuickHire.Domain.Categories.MainCategory;
 using Language = QuickHire.Domain.Users.Language;
@@ -26,15 +20,9 @@ using FilterOption = QuickHire.Domain.Categories.FilterOption;
 using PaymentPlanInclude = QuickHire.Domain.Gigs.PaymentPlanInclude;
 using PaymentPlan = QuickHire.Domain.Gigs.PaymentPlan;
 using GigRequirement = QuickHire.Domain.Gigs.GigRequirement;
-
-using System.Runtime.CompilerServices;
-using Microsoft.AspNetCore.Http.HttpResults;
 using QuickHire.Domain.Categories.Enums;
-using QuickHire.Infrastructure.Persistence.Identity;
-using Microsoft.Extensions.DependencyInjection;
-using QuickHire.Domain.Moderation;
 using QuickHire.Domain.Gigs;
-using static System.Net.WebRequestMethods;
+using static QuickHire.Domain.Shared.Constants.EntityPropertyLength;
 
 namespace QuickHire.Infrastructure.Persistence.Seed;
 
@@ -99,6 +87,17 @@ public class SeedData
     public ApplicationUser User8 { get; set; } = null!;
     public ApplicationUser User9 { get; set; } = null!;
     public ApplicationUser User10 { get; set; } = null!;
+    public ApplicationUser User11 { get; set; } = null!;
+    public ApplicationUser User12 { get; set; } = null!;
+    public ApplicationUser User13 { get; set; } = null!;
+    public ApplicationUser User14 { get; set; } = null!;
+    public ApplicationUser User15 { get; set; } = null!;
+    public ApplicationUser User16{ get; set; } = null!;
+    public ApplicationUser User17 { get; set; } = null!;
+    public ApplicationUser User18 { get; set; } = null!;
+    public ApplicationUser User19 { get; set; } = null!;
+    public ApplicationUser User20 { get; set; } = null!;
+
 
 
     public Buyer Buyer1 { get; set; } = null!;
@@ -552,6 +551,15 @@ public class SeedData
 
     public GigFilter GigFilter1ForSubSubCategory3ForSubCategory3ForMainCategory1 { get; set; } = null!;
     public GigFilter GigFilter3ForSubSubCategory3ForSubCategory3ForMainCategory1 { get; set; } = null!;
+    public Buyer Buyer11 { get; set; } = null!;
+    public Buyer Buyer12 { get; set; } = null!;
+    public Buyer Buyer13 { get; set; } = null!;
+    public Buyer Buyer14 { get; set; } = null!;
+    public Buyer Buyer15 { get; set; } = null!;
+    public Buyer Buyer16 { get; set; } = null!;
+    public Buyer Buyer17 { get; set; } = null!;
+    public Buyer Buyer18 { get; set; } = null!;
+    public Buyer Buyer19 { get; set; } = null!;
 
     //App type
     public FilterOption FilterOption1ForGigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1 { get; set; } = null!;
@@ -576,15 +584,6 @@ public class SeedData
     public FilterOption FilterOption2ForGigFilter3ForSubSubCategory3ForSubCategory2ForMainCategory1 { get; set; } = null!;
     public FilterOption FilterOption3ForGigFilter3ForSubSubCategory3ForSubCategory2ForMainCategory1 { get; set; } = null!;
     public FilterOption FilterOption4ForGigFilter3ForSubSubCategory3ForSubCategory2ForMainCategory1 { get; set; } = null!;
-
-    public ApplicationRole UserRole1 { get; set; } = null!;
-    public ApplicationRole UserRole2 { get; set; } = null!;
-    public ApplicationRole UserRole3 { get; set; } = null!;
-
-    public ReportedItem ReportedItem1 { get; set; } = null!;
-    public ReportedItem ReportedItem2 { get; set; } = null!;
-    public ReportedItem ReportedItem3 { get; set; } = null!;
-    public ReportedItem ReportedItem4 { get; set; } = null!;
 
     public Gig Gig1 { get; set; } = null!;
     public Gig Gig2 { get; set; } = null!;
@@ -616,7 +615,6 @@ public class SeedData
         await SeedCertifications();
         await SeedSkills();
         await SeedPortfolios();
-        await SeedReportedItems();
        // await SeedGigs();
     }
 
@@ -624,6 +622,125 @@ public class SeedData
     {
         if (!_context.Users.Any())
         {
+            User11 = new ApplicationUser
+            {
+                Id = Guid.NewGuid().ToString(),
+                UserName = "emily.clark@example.com",
+                Email = "emily.clark@example.com",
+                EmailConfirmed = true,
+                FullName = "Emily Clark",
+                Description = "Freelance UX writer and content strategist.",
+                JoinedAt = DateTime.UtcNow.AddDays(-75),
+                ProfileImageUrl = "https://randomuser.me/api/portraits/women/45.jpg",
+                ModerationStatus = ModerationStatus.Active,
+            };
+            User12 = new ApplicationUser
+            {
+                Id = Guid.NewGuid().ToString(),
+                UserName = "marco.bianchi@example.com",
+                Email = "marco.bianchi@example.com",
+                EmailConfirmed = true,
+                FullName = "Marco Bianchi",
+                Description = "UI designer focused on responsive design principles.",
+                JoinedAt = DateTime.UtcNow.AddDays(-180),
+                ProfileImageUrl = "https://randomuser.me/api/portraits/men/34.jpg",
+                ModerationStatus = ModerationStatus.Active,
+            };
+            User13 = new ApplicationUser
+            {
+                Id = Guid.NewGuid().ToString(),
+                UserName = "sofia.garcia@example.com",
+                Email = "sofia.garcia@example.com",
+                EmailConfirmed = true,
+                FullName = "Sofia Garcia",
+                Description = "Graphic designer with a passion for typography.",
+                JoinedAt = DateTime.UtcNow.AddDays(-210),
+                ProfileImageUrl = "https://randomuser.me/api/portraits/women/52.jpg",
+                ModerationStatus = ModerationStatus.Active,
+            };
+            User14 = new ApplicationUser
+            {
+                Id = Guid.NewGuid().ToString(),
+                UserName = "jack.wilson@example.com",
+                Email = "jack.wilson@example.com",
+                EmailConfirmed = true,
+                FullName = "Jack Wilson",
+                Description = "Motion graphics designer and animation specialist.",
+                JoinedAt = DateTime.UtcNow.AddDays(-320),
+                ProfileImageUrl = "https://randomuser.me/api/portraits/men/56.jpg",
+                ModerationStatus = ModerationStatus.Active,
+            };
+            User15 = new ApplicationUser
+            {
+                Id = Guid.NewGuid().ToString(),
+                UserName = "hana.kawasaki@example.com",
+                Email = "hana.kawasaki@example.com",
+                EmailConfirmed = true,
+                FullName = "Hana Kawasaki",
+                Description = "Brand designer with experience in product packaging.",
+                JoinedAt = DateTime.UtcNow.AddDays(-45),
+                ProfileImageUrl = "https://randomuser.me/api/portraits/women/19.jpg",
+                ModerationStatus = ModerationStatus.Active,
+            };
+            User16 = new ApplicationUser
+            {
+                Id = Guid.NewGuid().ToString(),
+                UserName = "alexandre.moreau@example.com",
+                Email = "alexandre.moreau@example.com",
+                EmailConfirmed = true,
+                FullName = "Alexandre Moreau",
+                Description = "UI/UX designer for mobile-first applications.",
+                JoinedAt = DateTime.UtcNow.AddDays(-150),
+                ProfileImageUrl = "https://randomuser.me/api/portraits/men/39.jpg",
+                ModerationStatus = ModerationStatus.Active,
+            };
+            User17 = new ApplicationUser
+            {
+                Id = Guid.NewGuid().ToString(),
+                UserName = "olivia.nelson@example.com",
+                Email = "olivia.nelson@example.com",
+                EmailConfirmed = true,
+                FullName = "Olivia Nelson",
+                Description = "Product designer with a focus on SaaS platforms.",
+                JoinedAt = DateTime.UtcNow.AddDays(-90),
+                ProfileImageUrl = "https://randomuser.me/api/portraits/women/28.jpg",
+                ModerationStatus = ModerationStatus.Active,
+            };
+            User18 = new ApplicationUser
+            {
+                Id = Guid.NewGuid().ToString(),
+                UserName = "matthew.smith@example.com",
+                Email = "matthew.smith@example.com",
+                EmailConfirmed = true,
+                FullName = "Matthew Smith",
+                Description = "UI developer and web accessibility consultant.",
+                JoinedAt = DateTime.UtcNow.AddDays(-240),
+                ProfileImageUrl = "https://randomuser.me/api/portraits/men/15.jpg",
+                ModerationStatus = ModerationStatus.Active,
+            };
+            User19 = new ApplicationUser
+            {
+                Id = Guid.NewGuid().ToString(),
+                UserName = "zoe.martinez@example.com",
+                Email = "zoe.martinez@example.com",
+                EmailConfirmed = true,
+                FullName = "Zoe Martinez",
+                Description = "UX designer with experience in AR/VR interfaces.",
+                JoinedAt = DateTime.UtcNow.AddDays(-55),
+                ProfileImageUrl = "https://randomuser.me/api/portraits/women/13.jpg",
+                ModerationStatus = ModerationStatus.Active,
+            };
+            User20 = new ApplicationUser
+            {
+                Id = Guid.NewGuid().ToString(),
+                UserName = "admin@user",
+                Email = "admin@example.com",
+                EmailConfirmed = true,
+                FullName = "Admin",
+                JoinedAt = DateTime.UtcNow.AddDays(-310),
+                ProfileImageUrl = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALEAAACUCAMAAADrljhyAAAAMFBMVEXk5ueutLfo6uu/xMeqsbTY29zh4+TJzc+6v8KnrrG3vL/R1NbO0dPFycuzubze4OGQjycwAAAENUlEQVR4nO2cy7LjKAxAjQwYDIb//9vGzmOS3DwAEYlMcRbdi5nFKUqRZCR6mgaDwWAwGAwGg8FgMMgAgNsgn+SqnPPeqdi/N0xRbUZYa6WU6U8rzLJ7c3u9ArSbQ1IVNyTxsDndpTNMyyrubK/WIiw9hsdin+pepH1fsQGTC298d2xwHSmDnt/rniJ66yacQX064LPzGjtR9jJLOClbxe16sGT6Hs6+g1MuEU7wKxcKp1Pm9YVS4ZTmWLMcKFsqnFB8yqBDhbBYNZvxZIpjYkfOXL7ga3x3Za5Q1pXCCR5jmKti4jjkjUU51uSJC5FBGAxCWGwMwgojLAL9IcNWHcU7DMU6VhWPm0MmN3aoI07tBXmrXJ/aTpAnOI1JbSdlYuOqpu3emLaFQ2aKg4XWGO0rxExrjD9i4jY5NjAmLXugWhhT/vQqPkifQNnXw9JAmPS2BTJuBj8bU6a3YTyM/xfG288ZN8nHpNkN+wVyQHoz9HNVetItejfSC4AW3aah7Y9RF0InaD9NwaMPmfpKFv8tbUl9E8grofTDo76QxdYQ0op3gLvaTMbEvlPt1OYqTD+9qR7bnGGYqdfN8i5HbBhmeriUzDJQx9xkGQbfveWsriKWazRde+staS8J/6N23CQD2yi99lPEcQnXDnp5RrwX5fKkLGk7+T/EvFW3G+GV1Tehyk65gy09KNqykIFdOKHX7MCQpo8NWZ2bMeTcza6pz6rX3Mt5t0D8HBky9BERV/z7NCdX/oXNByAu4mVs2OC7ieBbtBfPdumlDY5xi/AtAHFbw76Avu9Qy+OvsC6xx4cKV5K0W7bZmNUYM2+L61v3BADoE7/xuukXHKfjWCcdlXI+BcQagjwRwnpEhlJRH/9PJySTFLvJNGUF+fCs6fj5pQQSkrlXugfr9Evzcwji0fRPitv/ezCbYpVOkeDmpyn4tbi1q48TS71OoeALdc9YaRZFXgJhOp7ileuejzokacrwSKVNPH+KV4KhuhiCSZmaYPjL3h9R+Lq5PhoekXvT8V1fUC9eZlYTlq8mDpX/EZrNFx90pt9bm/h9xK7fGTHAx6ek1UjxhQedMDWYRL+jeaprsgLyDju3zHSgG6wbf0Ku7Y4Zpi+kiCfKzdZwQDVOwa+d27zEAUejeyi3mP1ip7mFyvjLzwbLKmXKM1K5zSpekTJuYk19widljHCLRbxy5fqJKkQGX4F58oTaoEBRW0qwz8PqqXsq0mb/tQ5Zt1qG3sHDKFfMIFpsZmIojgvKbuIpxR2Gxq2zNaCwW+YodvcUlz62VHylbPsJsWbVjlBkzG27U/KimqcD+kNBR9TkERCeglrN1wLdk1342KvHmfzv1BbPt5uQ/caFv95dyM0WceU2PSNz1yX7yG2i4I6IsZW/J3thkvyO4iW5//TJbGUvZBovcy/k3g9BP2Secd/8A5PsOkHLyXDMAAAAAElFTkSuQmCC",
+                ModerationStatus = ModerationStatus.Active,
+            };
             User1 = new ApplicationUser
             {
                 Id = Guid.NewGuid().ToString(),
@@ -647,7 +764,7 @@ public class SeedData
                 Description = "Full-stack developer specializing in modern JavaScript frameworks.",
                 JoinedAt = DateTime.UtcNow.AddDays(-200),
                 ProfileImageUrl = "https://randomuser.me/api/portraits/men/76.jpg",
-                ModerationStatus = ModerationStatus.PendingReview,
+                ModerationStatus = ModerationStatus.Active,
             };
             User3 = new ApplicationUser
             {
@@ -660,7 +777,7 @@ public class SeedData
                 Description = "Freelance illustrator and mobile UI artist.",
                 JoinedAt = DateTime.UtcNow.AddDays(-50),
                 ProfileImageUrl = "https://randomuser.me/api/portraits/women/9.jpg",
-                ModerationStatus = ModerationStatus.Deactivated,
+                ModerationStatus = ModerationStatus.Active,
             };
             User4 = new ApplicationUser
             {
@@ -754,7 +871,11 @@ public class SeedData
                 ModerationStatus = ModerationStatus.Active,
             };
 
-            var users = new[] { User1, User2, User3, User4, User5, User6, User7, User8, User9, User10 };
+            var users = new[]
+            {
+    User1, User2, User3, User4, User5, User6, User7, User8, User9, User10,
+    User11, User12, User13, User14, User15, User16, User17, User18, User19, User20
+};
 
             foreach (var user in users)
             {
@@ -765,31 +886,6 @@ public class SeedData
                     throw new Exception($"Failed to create user {user.UserName}: {errors}");
                 }
             }
-        }
-    }
-
-    private async Task SeedReportedItems()
-    {
-        if(!_context.ReportedItems.Any())
-        {
-            ReportedItem1 = new ReportedItem
-            {              
-                Reason = "Inappropriate content",
-                ReportedUserId = User2.Id,
-                ReportedById = User1.Id,
-                CreatedAt = DateTime.Now
-            };
-            ReportedItem2 = new ReportedItem
-            {
-                Reason = "I dont like this user",
-                ReportedUserId = User2.Id,
-                ReportedById = User3.Id,
-                CreatedAt = DateTime.Now
-            };
-           
-
-            _context.ReportedItems.AddRange(ReportedItem1, ReportedItem2);
-            await _context.SaveChangesAsync();
         }
     }
 
@@ -807,6 +903,17 @@ public class SeedData
             Buyer8 = new Buyer { UserId = User8.Id };
             Buyer9 = new Buyer { UserId = User9.Id };
             Buyer10 = new Buyer { UserId = User10.Id };
+            Buyer11 = new Buyer { UserId = User11.Id };
+            Buyer12 = new Buyer { UserId = User12.Id };
+            Buyer13 = new Buyer { UserId = User13.Id };
+            Buyer14 = new Buyer { UserId = User14.Id };
+            Buyer15 = new Buyer { UserId = User15.Id };
+            Buyer16 = new Buyer { UserId = User16.Id };
+            Buyer17 = new Buyer { UserId = User17.Id };
+            Buyer18 = new Buyer { UserId = User18.Id };
+            Buyer19 = new Buyer { UserId = User19.Id };
+
+
 
             var buyers = new List<Buyer>
 {
@@ -819,7 +926,16 @@ public class SeedData
     Buyer7,
     Buyer8,
     Buyer9,
-    Buyer10
+    Buyer10,
+    Buyer11,
+    Buyer12,
+    Buyer13,
+    Buyer14,
+    Buyer15,
+    Buyer16,
+    Buyer17,
+    Buyer18,
+    Buyer19
 };
 
             _context.Buyers.AddRange(buyers);
@@ -833,14 +949,14 @@ public class SeedData
             Seller1 = new Seller
             {
                 UserId = User1.Id,
-                Clicks = 100,
+                Clicks = 1000,
                 IndustryId = MainCategory1.Id,
             };
 
             Seller2 = new Seller
             {
                 UserId = User2.Id,
-                Clicks = 150,
+                Clicks = 350,
                 IndustryId = MainCategory1.Id,
             };
 
@@ -900,6 +1016,8 @@ public class SeedData
                 IndustryId = MainCategory1.Id,
             };
 
+
+
             var sellers = new List<Seller>
 {
     Seller1, Seller2, Seller3, Seller4, Seller5,
@@ -945,121 +1063,121 @@ public class SeedData
         {
             Address1 = new Address
             {
-                Street = "123 Main St",
-                City = "New York",
-                ZipCode = "10001",
+                Street = "221B Baker St",
+                City = "London",
+                ZipCode = "NW1 6XE",
                 IsBillingAddress = true,
-                Country = Country1,
-                CountryId = Country1.Id,
+                CountryId = Country3.Id,
                 UserId = User1.Id
             };
 
             Address2 = new Address
             {
-                Street = "456 Maple Ave",
-                City = "Toronto",
-                ZipCode = "M4B1B4",
+                Street = "10 Downing St",
+                City = "London",
+                ZipCode = "SW1A 2AA",
                 UserId = User2.Id,
                 IsBillingAddress = true,
-                Country = Country2,
-                CountryId = Country2.Id,
+                CountryId = Country3.Id,
             };
 
             Address3 = new Address
             {
-                Street = "789 King’s Rd",
-                City = "London",
-                ZipCode = "SW3 5UZ",
+                Street = "50 Queen’s Rd",
+                City = "Brighton",
+                ZipCode = "BN1 3XB",
                 UserId = User3.Id,
                 IsBillingAddress = true,
-                Country = Country3,
-                CountryId = Country3.Id
+                CountryId = Country3.Id,
+
             };
 
             Address4 = new Address
             {
-                Street = "12 Rue de Paris",
-                City = "Paris",
-                ZipCode = "75001",
+                Street = "14 King St",
+                City = "Manchester",
+                ZipCode = "M2 6AG",
                 UserId = User4.Id,
                 IsBillingAddress = true,
-                Country = Country4,
-                CountryId = Country4.Id
+                CountryId = Country3.Id,
+
             };
 
             Address5 = new Address
             {
-                Street = "34 Berliner Strasse",
-                City = "Berlin",
-                ZipCode = "10115",
+                Street = "25 Royal Ave",
+                City = "Belfast",
+                ZipCode = "BT1 1FB",
                 UserId = User5.Id,
                 IsBillingAddress = true,
-                Country = Country5,
-                CountryId = Country5.Id
+                CountryId = Country3.Id,
+
             };
 
             Address6 = new Address
             {
-                Street = "56 Calle Mayor",
-                City = "Madrid",
-                ZipCode = "28013",
+                Street = "18 Princes St",
+                City = "Edinburgh",
+                ZipCode = "EH2 2AN",
                 UserId = User6.Id,
                 IsBillingAddress = true,
-                Country = Country6,
-                CountryId = Country6.Id
+                CountryId = Country3.Id,
+
             };
 
             Address7 = new Address
             {
-                Street = "78 Via Roma",
-                City = "Rome",
-                ZipCode = "00185",
+                Street = "12 Victoria Rd",
+                City = "Glasgow",
+                ZipCode = "G42 7AA",
                 UserId = User7.Id,
                 IsBillingAddress = true,
-                Country = Country7,
-                CountryId = Country7.Id
+                CountryId = Country3.Id,
+
             };
 
             Address8 = new Address
             {
-                Street = "90 George St",
-                City = "Sydney",
-                ZipCode = "2000",
+                Street = "123 Main St",
+                City = "New York",
+                ZipCode = "10001",
                 UserId = User8.Id,
                 IsBillingAddress = true,
-                Country = Country8,
-                CountryId = Country8.Id
+                CountryId = Country1.Id,
+
             };
 
             Address9 = new Address
             {
-                Street = "123 MG Road",
-                City = "Mumbai",
-                ZipCode = "400001",
+                Street = "456 Elm St",
+                City = "Chicago",
+                ZipCode = "60610",
                 UserId = User9.Id,
                 IsBillingAddress = true,
-                Country = Country9,
-                CountryId = Country9.Id
+                Country = Country1, // USA
+                CountryId = Country1.Id
             };
 
             Address10 = new Address
             {
-                Street = "456 Avenida Paulista",
-                City = "São Paulo",
-                ZipCode = "01310-100",
+                Street = "789 Sunset Blvd",
+                City = "Los Angeles",
+                ZipCode = "90028",
                 UserId = User10.Id,
                 IsBillingAddress = true,
-                Country = Country10,
-                CountryId = Country10.Id
+                Country = Country1, // USA
+                CountryId = Country1.Id
             };
 
-
-            var list = new List<Address>() { Address1, Address2, Address3, Address4, Address5, Address6, Address7, Address8, Address9, Address10 };
+            var list = new List<Address>()
+        {
+            Address1, Address2, Address3, Address4, Address5, Address6, Address7,
+            Address8, Address9, Address10
+        };
 
             _context.AddRange(list);
             await _context.SaveChangesAsync();
         }
-    
     }
     private async Task SeedCertifications()
     {
@@ -1351,70 +1469,70 @@ public class SeedData
             {
                 Name = "Graphics & Design",
                 Description = "Designs to make you stand out.",
-                Clicks = random.Next(0, 1000),
+                Clicks = 10,
                 CreatedOn = DateTime.UtcNow.AddDays(-random.Next(1, 365))
             };
            MainCategory2 = new MainCategory
            {
                Name = "Programming & Tech",
                Description = "Solutions built to power your ideas.",
-               Clicks = random.Next(0, 1000),
+               Clicks = 1,
                CreatedOn = DateTime.UtcNow.AddDays(-random.Next(1, 365))
            };
             MainCategory3 = new MainCategory
             {
                 Name = "Digital Marketing",
                 Description = "Marketing that moves the needle.",
-                Clicks = random.Next(0, 1000),
+                Clicks = 2,
                 CreatedOn = DateTime.UtcNow.AddDays(-random.Next(1, 365))
             };
            MainCategory4 = new MainCategory
            {
                Name = "Video & Animation",
                Description = "Bring your story to life on screen.",
-               Clicks = random.Next(0, 1000),
+               Clicks = 3,
                CreatedOn = DateTime.UtcNow.AddDays(-random.Next(1, 365))
            };
          MainCategory5 = new MainCategory
          {
              Name = "Writing & Translation",
              Description = "Words that inspire, sell, and connect.",
-             Clicks = random.Next(0, 1000),
+             Clicks = 4,
              CreatedOn = DateTime.UtcNow.AddDays(-random.Next(1, 365))
          };
           MainCategory6 = new MainCategory
           {
               Name = "Music & Audio",
               Description = "Soundtracks to elevate your brand.",
-              Clicks = random.Next(0, 1000),
+              Clicks = 5,
               CreatedOn = DateTime.UtcNow.AddDays(-random.Next(1, 365))
           };
            MainCategory7 = new MainCategory
            {
                Name = "Business",
                Description = "Support and strategy for serious growth.",
-               Clicks = random.Next(0, 1000),
+               Clicks = 6,
                CreatedOn = DateTime.UtcNow.AddDays(-random.Next(1, 365))
            };
             MainCategory8 = new MainCategory
             {
                 Name = "Finance",
                 Description = "Expert help to manage your money smarter.",
-                Clicks = random.Next(0, 1000),
+                Clicks = 7,
                 CreatedOn = DateTime.UtcNow.AddDays(-random.Next(1, 365))
             };
             MainCategory9 = new MainCategory
             {
                 Name = "AI Services",
                 Description = "Intelligent tools built by AI experts.",
-                Clicks = random.Next(0, 1000),
+                Clicks = 8,
                 CreatedOn = DateTime.UtcNow.AddDays(-random.Next(1, 365))
             };
             MainCategory10 = new MainCategory
             {
                 Name = "Personal Growth",
                 Description = "Coaching and courses to level up your life.",
-                Clicks = random.Next(0, 1000),
+                Clicks = 9,
                 CreatedOn = DateTime.UtcNow.AddDays(-random.Next(1, 365))
             };
 
@@ -1690,7 +1808,7 @@ public class SeedData
                 Name = "Logo & Brand Identity",
                 MainCategoryId = MainCategory1.Id,
                 ImageUrl = "https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto/v1/attachments/generic_asset/asset/68011f21cd41c664951df861d9f876ac-1682402649968/Logo%20_%20Brand%20Identity.png",
-                Clicks = 240,
+                Clicks = 24,
                 CreatedOn = DateTime.UtcNow.AddDays(-3)
             };
 
@@ -1699,7 +1817,7 @@ public class SeedData
                 Name = "Web & App Design",
                 MainCategoryId = MainCategory1.Id,
                 ImageUrl = "https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto/v1/attachments/generic_asset/asset/68011f21cd41c664951df861d9f876ac-1682402649980/Web%20_%20App%20Design.png",
-                Clicks = 195,
+                Clicks = 30,
                 CreatedOn = DateTime.UtcNow.AddDays(-2)
             };
 
@@ -1707,7 +1825,7 @@ public class SeedData
             {
                 Name = "Art & Illustration",
                 MainCategoryId = MainCategory1.Id,
-                Clicks = 220,
+                Clicks = 22,
                 ImageUrl= "https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto/v1/attachments/generic_asset/asset/68011f21cd41c664951df861d9f876ac-1682402649988/Art%20_%20Illustration.png",
                 CreatedOn = DateTime.UtcNow.AddDays(-1)
             };
@@ -1717,7 +1835,7 @@ public class SeedData
                 Name = "Architecture & Building Design",
                 MainCategoryId = MainCategory1.Id,
                 ImageUrl = "https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto/v1/attachments/generic_asset/asset/68011f21cd41c664951df861d9f876ac-1682402649984/Architecture%20_%20Building%E2%80%A8Design.png",
-                Clicks = 140,
+                Clicks = 14,
                 CreatedOn = DateTime.UtcNow.AddDays(-4)
             };
 
@@ -1726,7 +1844,7 @@ public class SeedData
                 Name = "Product & Gaming",
                 MainCategoryId = MainCategory1.Id,
                 ImageUrl = "https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto/v1/attachments/generic_asset/asset/68011f21cd41c664951df861d9f876ac-1682402649966/Product%20_%20Gaming.png",
-                Clicks = 180,
+                Clicks = 18,
                 CreatedOn = DateTime.UtcNow.AddDays(-5)
             };
 
@@ -1735,7 +1853,7 @@ public class SeedData
                 Name = "Visual Design",
                 ImageUrl = "https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto/v1/attachments/generic_asset/asset/68011f21cd41c664951df861d9f876ac-1682402649982/Visual%20Design.png",
                 MainCategoryId = MainCategory1.Id,
-                Clicks = 160,
+                Clicks = 16,
                 CreatedOn = DateTime.UtcNow.AddDays(-6)
             };
 
@@ -1744,7 +1862,7 @@ public class SeedData
                 Name = "Print Design",
                 ImageUrl = "https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto/v1/attachments/generic_asset/asset/68011f21cd41c664951df861d9f876ac-1682402649969/Print%20Design.png",
                 MainCategoryId = MainCategory1.Id,
-                Clicks = 130,
+                Clicks = 13,
                 CreatedOn = DateTime.UtcNow.AddDays(-7)
             };
 
@@ -1753,7 +1871,7 @@ public class SeedData
                 Name = "Packaging & Covers",
                 ImageUrl = "https://fiverr-res.cloudinary.com/image/upload/f_auto,q_auto/v1/attachments/generic_asset/asset/68011f21cd41c664951df861d9f876ac-1682402649987/Packaging%20_%20Labels.png",
                 MainCategoryId = MainCategory1.Id,
-                Clicks = 145,
+                Clicks = 10,
                 CreatedOn = DateTime.UtcNow.AddDays(-8)
             };
 
@@ -1769,7 +1887,7 @@ public class SeedData
             {
                 Name = "Mobile App Development",
                 MainCategoryId = MainCategory2.Id,
-                Clicks = 180,
+                Clicks = 18,
                 CreatedOn = DateTime.UtcNow.AddDays(-2)
             };
 
@@ -1777,7 +1895,7 @@ public class SeedData
             {
                 Name = "Software Development",
                 MainCategoryId = MainCategory2.Id,
-                Clicks = 220,
+                Clicks = 2,
                 CreatedOn = DateTime.UtcNow.AddDays(-3)
             };
 
@@ -1785,7 +1903,7 @@ public class SeedData
             {
                 Name = "Game Development",
                 MainCategoryId = MainCategory2.Id,
-                Clicks = 100,
+                Clicks = 1,
                 CreatedOn = DateTime.UtcNow.AddDays(-4)
             };
 
@@ -1794,7 +1912,7 @@ public class SeedData
             {
                 Name = "Social Media Marketing",
                 MainCategoryId = MainCategory3.Id,
-                Clicks = 250,
+                Clicks = 2,
                 CreatedOn = DateTime.UtcNow.AddDays(-1)
             };
 
@@ -1802,7 +1920,7 @@ public class SeedData
             {
                 Name = "SEO & SEM",
                 MainCategoryId = MainCategory3.Id,
-                Clicks = 180,
+                Clicks = 1,
                 CreatedOn = DateTime.UtcNow.AddDays(-2)
             };
 
@@ -1810,7 +1928,7 @@ public class SeedData
             {
                 Name = "Email Marketing",
                 MainCategoryId = MainCategory3.Id,
-                Clicks = 120,
+                Clicks = 1,
                 CreatedOn = DateTime.UtcNow.AddDays(-3)
             };
 
@@ -1818,7 +1936,7 @@ public class SeedData
             {
                 Name = "Content Marketing",
                 MainCategoryId = MainCategory3.Id,
-                Clicks = 150,
+                Clicks = 1,
                 CreatedOn = DateTime.UtcNow.AddDays(-4)
             };
 
@@ -1826,7 +1944,7 @@ public class SeedData
             {
                 Name = "Explainer Videos",
                 MainCategoryId = MainCategory4.Id,
-                Clicks = 200,
+                Clicks = 1,
                 CreatedOn = DateTime.UtcNow.AddDays(-1)
             };
 
@@ -1834,7 +1952,7 @@ public class SeedData
             {
                 Name = "Whiteboard Animation",
                 MainCategoryId = MainCategory4.Id,
-                Clicks = 160,
+                Clicks = 1,
                 CreatedOn = DateTime.UtcNow.AddDays(-2)
             };
 
@@ -1842,7 +1960,7 @@ public class SeedData
             {
                 Name = "2D/3D Animation",
                 MainCategoryId = MainCategory4.Id,
-                Clicks = 220,
+                Clicks = 1,
                 CreatedOn = DateTime.UtcNow.AddDays(-3)
             };
 
@@ -1850,7 +1968,7 @@ public class SeedData
             {
                 Name = "Video Editing",
                 MainCategoryId = MainCategory4.Id,
-                Clicks = 180,
+                Clicks = 1,
                 CreatedOn = DateTime.UtcNow.AddDays(-4)
             };
 
@@ -1858,7 +1976,7 @@ public class SeedData
             {
                 Name = "Copywriting",
                 MainCategoryId = MainCategory5.Id,
-                Clicks = 150,
+                Clicks = 1,
                 CreatedOn = DateTime.UtcNow.AddDays(-1)
             };
 
@@ -1866,7 +1984,7 @@ public class SeedData
             {
                 Name = "SEO Writing",
                 MainCategoryId = MainCategory5.Id,
-                Clicks = 200,
+                Clicks = 1,
                 CreatedOn = DateTime.UtcNow.AddDays(-2)
             };
 
@@ -1874,7 +1992,7 @@ public class SeedData
             {
                 Name = "Translation Services",
                 MainCategoryId = MainCategory5.Id,
-                Clicks = 220,
+                Clicks = 1,
                 CreatedOn = DateTime.UtcNow.AddDays(-3)
             };
 
@@ -1882,7 +2000,7 @@ public class SeedData
             {
                 Name = "Creative Writing",
                 MainCategoryId = MainCategory5.Id,
-                Clicks = 180,
+                Clicks = 1,
                 CreatedOn = DateTime.UtcNow.AddDays(-4)
             };
 
@@ -1890,7 +2008,7 @@ public class SeedData
             {
                 Name = "Voice Over",
                 MainCategoryId = MainCategory6.Id,
-                Clicks = 210,
+                Clicks = 1,
                 CreatedOn = DateTime.UtcNow.AddDays(-1)
             };
 
@@ -1898,7 +2016,7 @@ public class SeedData
             {
                 Name = "Music Production",
                 MainCategoryId = MainCategory6.Id,
-                Clicks = 190,
+                Clicks = 1,
                 CreatedOn = DateTime.UtcNow.AddDays(-2)
             };
 
@@ -1906,7 +2024,7 @@ public class SeedData
             {
                 Name = "Podcast Editing",
                 MainCategoryId = MainCategory6.Id,
-                Clicks = 160,
+                Clicks = 1,
                 CreatedOn = DateTime.UtcNow.AddDays(-3)
             };
 
@@ -1914,7 +2032,7 @@ public class SeedData
             {
                 Name = "Sound Design",
                 MainCategoryId = MainCategory6.Id,
-                Clicks = 130,
+                Clicks = 1,
                 CreatedOn = DateTime.UtcNow.AddDays(-4)
             };
 
@@ -1922,7 +2040,7 @@ public class SeedData
             {
                 Name = "Business Consulting",
                 MainCategoryId = MainCategory7.Id,
-                Clicks = 200,
+                Clicks = 1,
                 CreatedOn = DateTime.UtcNow.AddDays(-1)
             };
 
@@ -1930,7 +2048,7 @@ public class SeedData
             {
                 Name = "Virtual Assistant",
                 MainCategoryId = MainCategory7.Id,
-                Clicks = 150,
+                Clicks = 1,
                 CreatedOn = DateTime.UtcNow.AddDays(-2)
             };
 
@@ -1938,7 +2056,7 @@ public class SeedData
             {
                 Name = "Market Research",
                 MainCategoryId = MainCategory7.Id,
-                Clicks = 180,
+                Clicks = 1,
                 CreatedOn = DateTime.UtcNow.AddDays(-3)
             };
 
@@ -1946,7 +2064,7 @@ public class SeedData
             {
                 Name = "Project Management",
                 MainCategoryId = MainCategory7.Id,
-                Clicks = 120,
+                Clicks = 1,
                 CreatedOn = DateTime.UtcNow.AddDays(-4)
             };
 
@@ -1954,7 +2072,7 @@ public class SeedData
             {
                 Name = "Financial Consulting",
                 MainCategoryId = MainCategory8.Id,
-                Clicks = 250,
+                Clicks = 1,
                 CreatedOn = DateTime.UtcNow.AddDays(-1)
             };
 
@@ -1962,7 +2080,7 @@ public class SeedData
             {
                 Name = "Accounting Services",
                 MainCategoryId = MainCategory8.Id,
-                Clicks = 210,
+                Clicks = 1,
                 CreatedOn = DateTime.UtcNow.AddDays(-2)
             };
 
@@ -1970,7 +2088,7 @@ public class SeedData
             {
                 Name = "Tax Preparation",
                 MainCategoryId = MainCategory8.Id,
-                Clicks = 190,
+                Clicks = 1,
                 CreatedOn = DateTime.UtcNow.AddDays(-3)
             };
 
@@ -1978,7 +2096,7 @@ public class SeedData
             {
                 Name = "Investment Advice",
                 MainCategoryId = MainCategory8.Id,
-                Clicks = 160,
+                Clicks = 1,
                 CreatedOn = DateTime.UtcNow.AddDays(-4)
             };
 
@@ -1986,7 +2104,7 @@ public class SeedData
             {
                 Name = "Machine Learning",
                 MainCategoryId = MainCategory9.Id,
-                Clicks = 300,
+                Clicks = 1,
                 CreatedOn = DateTime.UtcNow.AddDays(-1)
             };
 
@@ -1994,7 +2112,7 @@ public class SeedData
             {
                 Name = "AI Chatbots",
                 MainCategoryId = MainCategory9.Id,
-                Clicks = 220,
+                Clicks = 1,
                 CreatedOn = DateTime.UtcNow.AddDays(-2)
             };
 
@@ -2002,7 +2120,7 @@ public class SeedData
             {
                 Name = "AI-Powered Automation",
                 MainCategoryId = MainCategory9.Id,
-                Clicks = 180,
+                Clicks = 1,
                 CreatedOn = DateTime.UtcNow.AddDays(-3)
             };
 
@@ -2010,7 +2128,7 @@ public class SeedData
             {
                 Name = "Data Analysis & Predictive Modeling",
                 MainCategoryId = MainCategory9.Id,
-                Clicks = 160,
+                Clicks = 1,
                 CreatedOn = DateTime.UtcNow.AddDays(-4)
             };
 
@@ -2018,7 +2136,7 @@ public class SeedData
             {
                 Name = "Life Coaching",
                 MainCategoryId = MainCategory10.Id,
-                Clicks = 180,
+                Clicks = 1,
                 CreatedOn = DateTime.UtcNow.AddDays(-1)
             };
 
@@ -2026,7 +2144,7 @@ public class SeedData
             {
                 Name = "Mindfulness & Meditation",
                 MainCategoryId = MainCategory10.Id,
-                Clicks = 150,
+                Clicks = 1,
                 CreatedOn = DateTime.UtcNow.AddDays(-2)
             };
 
@@ -2034,7 +2152,7 @@ public class SeedData
             {
                 Name = "Motivational Speaking",
                 MainCategoryId = MainCategory10.Id,
-                Clicks = 120,
+                Clicks = 1,
                 CreatedOn = DateTime.UtcNow.AddDays(-3)
             };
 
@@ -2042,7 +2160,7 @@ public class SeedData
             {
                 Name = "Wellness Coaching",
                 MainCategoryId = MainCategory10.Id,
-                Clicks = 100,
+                Clicks = 1,
                 CreatedOn = DateTime.UtcNow.AddDays(-4)
             };
 
@@ -2105,7 +2223,7 @@ public class SeedData
             {
                 Name = "Logo Design",
                 SubCategoryId = SubCategory1ForMainCategory1.Id,
-                Clicks = 350,
+                Clicks = 3,
                 CreatedOn = DateTime.Now.AddDays(-200)
             };
 
@@ -2113,7 +2231,7 @@ public class SeedData
             {
                 Name = "Brand Style Guides",
                 SubCategoryId = SubCategory1ForMainCategory1.Id,
-                Clicks = 340,
+                Clicks = 34,
                 CreatedOn = DateTime.Now.AddDays(-198)
             };
 
@@ -2121,7 +2239,7 @@ public class SeedData
             {
                 Name = "Business Cards & Stationery",
                 SubCategoryId = SubCategory1ForMainCategory1.Id,
-                Clicks = 330,
+                Clicks = 33,
                 CreatedOn = DateTime.Now.AddDays(-196)
             };
 
@@ -2129,7 +2247,7 @@ public class SeedData
             {
                 Name = "Fonts & Typography",
                 SubCategoryId = SubCategory1ForMainCategory1.Id,
-                Clicks = 320,
+                Clicks = 32,
                 CreatedOn = DateTime.Now.AddDays(-194)
             };
 
@@ -2137,7 +2255,7 @@ public class SeedData
             {
                 Name = "Website Design",
                 SubCategoryId = SubCategory2ForMainCategory1.Id,
-                Clicks = 310,
+                Clicks = 20,
                 CreatedOn = DateTime.Now.AddDays(-190)
             };
 
@@ -2145,7 +2263,7 @@ public class SeedData
             {
                 Name = "App Design",
                 SubCategoryId = SubCategory2ForMainCategory1.Id,
-                Clicks = 300,
+                Clicks = 30,
                 CreatedOn = DateTime.Now.AddDays(-188)
             };
 
@@ -2153,7 +2271,7 @@ public class SeedData
             {
                 Name = "UX Design",
                 SubCategoryId = SubCategory2ForMainCategory1.Id,
-                Clicks = 290,
+                Clicks = 40,
                 CreatedOn = DateTime.Now.AddDays(-186)
             };
 
@@ -2161,7 +2279,7 @@ public class SeedData
             {
                 Name = "Landing Page Design",
                 SubCategoryId = SubCategory2ForMainCategory1.Id,
-                Clicks = 280,
+                Clicks = 20,
                 CreatedOn = DateTime.Now.AddDays(-184)
             };
 
@@ -2169,7 +2287,7 @@ public class SeedData
             {
                 Name = "Icon Design",
                 SubCategoryId = SubCategory2ForMainCategory1.Id,
-                Clicks = 270,
+                Clicks = 27,
                 CreatedOn = DateTime.Now.AddDays(-182)
             };
 
@@ -2177,7 +2295,7 @@ public class SeedData
             {
                 Name = "Illustration",
                 SubCategoryId = SubCategory3ForMainCategory1.Id,
-                Clicks = 260,
+                Clicks = 26,
                 CreatedOn = DateTime.Now.AddDays(-180)
             };
 
@@ -2185,7 +2303,7 @@ public class SeedData
             {
                 Name = "AI Artists",
                 SubCategoryId = SubCategory3ForMainCategory1.Id,
-                Clicks = 250,
+                Clicks = 25,
                 CreatedOn = DateTime.Now.AddDays(-178)
             };
 
@@ -2193,7 +2311,7 @@ public class SeedData
             {
                 Name = "AI Avatar Design",
                 SubCategoryId = SubCategory3ForMainCategory1.Id,
-                Clicks = 240,
+                Clicks = 24,
                 CreatedOn = DateTime.Now.AddDays(-176)
             };
 
@@ -2201,7 +2319,7 @@ public class SeedData
             {
                 Name = "Children's Book Illustration",
                 SubCategoryId = SubCategory3ForMainCategory1.Id,
-                Clicks = 230,
+                Clicks = 23,
                 CreatedOn = DateTime.Now.AddDays(-174)
             };
 
@@ -2209,7 +2327,7 @@ public class SeedData
             {
                 Name = "Portraits & Caricatures",
                 SubCategoryId = SubCategory3ForMainCategory1.Id,
-                Clicks = 220,
+                Clicks = 22,
                 CreatedOn = DateTime.Now.AddDays(-172)
             };
 
@@ -2217,7 +2335,7 @@ public class SeedData
             {
                 Name = "Cartoons & Comics",
                 SubCategoryId = SubCategory3ForMainCategory1.Id,
-                Clicks = 210,
+                Clicks = 21,
                 CreatedOn = DateTime.Now.AddDays(-170)
             };
 
@@ -2225,7 +2343,7 @@ public class SeedData
             {
                 Name = "Pattern Design",
                 SubCategoryId = SubCategory3ForMainCategory1.Id,
-                Clicks = 200,
+                Clicks = 20,
                 CreatedOn = DateTime.Now.AddDays(-168)
             };
 
@@ -2233,7 +2351,7 @@ public class SeedData
             {
                 Name = "Tattoo Design",
                 SubCategoryId = SubCategory3ForMainCategory1.Id,
-                Clicks = 190,
+                Clicks = 19,
                 CreatedOn = DateTime.Now.AddDays(-166)
             };
 
@@ -2241,7 +2359,7 @@ public class SeedData
             {
                 Name = "Storyboards",
                 SubCategoryId = SubCategory3ForMainCategory1.Id,
-                Clicks = 180,
+                Clicks = 18,
                 CreatedOn = DateTime.Now.AddDays(-164)
             };
 
@@ -2249,7 +2367,7 @@ public class SeedData
             {
                 Name = "NFT Art",
                 SubCategoryId = SubCategory3ForMainCategory1.Id,
-                Clicks = 170,
+                Clicks = 17,
                 CreatedOn = DateTime.Now.AddDays(-162)
             };
 
@@ -2258,7 +2376,7 @@ public class SeedData
             {
                 Name = "Architecture & Interior Design",
                 SubCategoryId = SubCategory4ForMainCategory1.Id,
-                Clicks = 160,
+                Clicks = 16,
                 CreatedOn = DateTime.Now.AddDays(-160)
             };
 
@@ -2266,7 +2384,7 @@ public class SeedData
             {
                 Name = "Landscape Design",
                 SubCategoryId = SubCategory4ForMainCategory1.Id,
-                Clicks = 150,
+                Clicks = 15,
                 CreatedOn = DateTime.Now.AddDays(-158)
             };
 
@@ -2274,7 +2392,7 @@ public class SeedData
             {
                 Name = "Building Engineering",
                 SubCategoryId = SubCategory4ForMainCategory1.Id,
-                Clicks = 140,
+                Clicks = 14,
                 CreatedOn = DateTime.Now.AddDays(-156)
             };
 
@@ -2282,7 +2400,7 @@ public class SeedData
             {
                 Name = "Lighting Design",
                 SubCategoryId = SubCategory4ForMainCategory1.Id,
-                Clicks = 130,
+                Clicks = 13,
                 CreatedOn = DateTime.Now.AddDays(-154)
             };
 
@@ -2290,7 +2408,7 @@ public class SeedData
             {
                 Name = "Building Information Modeling",
                 SubCategoryId = SubCategory4ForMainCategory1.Id,
-                Clicks = 120,
+                Clicks = 12,
                 CreatedOn = DateTime.Now.AddDays(-152)
             };
 
@@ -2298,7 +2416,7 @@ public class SeedData
             {
                 Name = "Industrial & Product Design",
                 SubCategoryId = SubCategory5ForMainCategory1.Id,
-                Clicks = 110,
+                Clicks = 11,
                 CreatedOn = DateTime.Now.AddDays(-150)
             };
 
@@ -2306,7 +2424,7 @@ public class SeedData
             {
                 Name = "Character Modeling",
                 SubCategoryId = SubCategory5ForMainCategory1.Id,
-                Clicks = 100,
+                Clicks = 10,
                 CreatedOn = DateTime.Now.AddDays(-148)
             };
 
@@ -2314,7 +2432,7 @@ public class SeedData
             {
                 Name = "Game Art",
                 SubCategoryId = SubCategory5ForMainCategory1.Id,
-                Clicks = 90,
+                Clicks = 9,
                 CreatedOn = DateTime.Now.AddDays(-146)
             };
 
@@ -2322,7 +2440,7 @@ public class SeedData
             {
                 Name = "Graphics for Streamers",
                 SubCategoryId = SubCategory5ForMainCategory1.Id,
-                Clicks = 80,
+                Clicks = 8,
                 CreatedOn = DateTime.Now.AddDays(-144)
             };
 
@@ -2330,7 +2448,7 @@ public class SeedData
             {
                 Name = "Twitch Store",
                 SubCategoryId = SubCategory5ForMainCategory1.Id,
-                Clicks = 70,
+                Clicks = 7,
                 CreatedOn = DateTime.Now.AddDays(-142)
             };
 
@@ -2338,7 +2456,7 @@ public class SeedData
             {
                 Name = "Trade Booth Design",
                 SubCategoryId = SubCategory5ForMainCategory1.Id,
-                Clicks = 60,
+                Clicks = 6,
                 CreatedOn = DateTime.Now.AddDays(-140)
             };
 
@@ -2346,7 +2464,7 @@ public class SeedData
             {
                 Name = "Image Editing",
                 SubCategoryId = SubCategory6ForMainCategory1.Id,
-                Clicks = 50,
+                Clicks = 5,
                 CreatedOn = DateTime.Now.AddDays(-138)
             };
 
@@ -2354,7 +2472,7 @@ public class SeedData
             {
                 Name = "AI Image Editing",
                 SubCategoryId = SubCategory6ForMainCategory1.Id,
-Clicks = 45,
+Clicks = 4,
 CreatedOn = DateTime.Now.AddDays(-136)
 };
 
@@ -2362,7 +2480,7 @@ CreatedOn = DateTime.Now.AddDays(-136)
         {
             Name = "Presentation Design",
             SubCategoryId = SubCategory6ForMainCategory1.Id,
-            Clicks = 40,
+            Clicks = 4,
             CreatedOn = DateTime.Now.AddDays(-134)
         };
 
@@ -2370,7 +2488,7 @@ CreatedOn = DateTime.Now.AddDays(-136)
         {
             Name = "Infographic Design",
             SubCategoryId = SubCategory6ForMainCategory1.Id,
-            Clicks = 35,
+            Clicks = 3,
             CreatedOn = DateTime.Now.AddDays(-132)
         };
 
@@ -2378,7 +2496,7 @@ CreatedOn = DateTime.Now.AddDays(-136)
         {
             Name = "Vector Tracing",
             SubCategoryId = SubCategory6ForMainCategory1.Id,
-            Clicks = 30,
+            Clicks = 3,
             CreatedOn = DateTime.Now.AddDays(-130)
         };
 
@@ -2386,7 +2504,7 @@ CreatedOn = DateTime.Now.AddDays(-136)
         {
             Name = "Resume Design",
             SubCategoryId = SubCategory6ForMainCategory1.Id,
-            Clicks = 25,
+            Clicks = 2,
             CreatedOn = DateTime.Now.AddDays(-128)
         };
 
@@ -2395,7 +2513,7 @@ CreatedOn = DateTime.Now.AddDays(-136)
         {
             Name = "Flyer Design",
             SubCategoryId = SubCategory7ForMainCategory1.Id,
-            Clicks = 20,
+            Clicks = 2,
             CreatedOn = DateTime.Now.AddDays(-126)
         };
 
@@ -2403,7 +2521,7 @@ CreatedOn = DateTime.Now.AddDays(-136)
         {
             Name = "Brochure Design",
             SubCategoryId = SubCategory7ForMainCategory1.Id,
-            Clicks = 18,
+            Clicks = 1,
             CreatedOn = DateTime.Now.AddDays(-124)
         };
 
@@ -2411,7 +2529,7 @@ CreatedOn = DateTime.Now.AddDays(-136)
         {
             Name = "Poster Design",
             SubCategoryId = SubCategory7ForMainCategory1.Id,
-            Clicks = 16,
+            Clicks = 1,
             CreatedOn = DateTime.Now.AddDays(-122)
         };
 
@@ -2419,7 +2537,7 @@ CreatedOn = DateTime.Now.AddDays(-136)
         {
             Name = "Catalog Design",
             SubCategoryId = SubCategory7ForMainCategory1.Id,
-            Clicks = 14,
+            Clicks = 1,
             CreatedOn = DateTime.Now.AddDays(-120)
         };
 
@@ -2427,7 +2545,7 @@ CreatedOn = DateTime.Now.AddDays(-136)
         {
             Name = "Menu Design",
             SubCategoryId = SubCategory7ForMainCategory1.Id,
-            Clicks = 12,
+            Clicks = 1,
             CreatedOn = DateTime.Now.AddDays(-118)
         };
 
@@ -2435,7 +2553,7 @@ CreatedOn = DateTime.Now.AddDays(-136)
         {
             Name = "Invitation Design",
             SubCategoryId = SubCategory7ForMainCategory1.Id,
-            Clicks = 10,
+            Clicks = 1,
             CreatedOn = DateTime.Now.AddDays(-116)
         };
 
@@ -4162,19 +4280,19 @@ GigFilter3ForSubSubCategory1ForSubCategory1ForMainCategory1 = new GigFilter
             await _context.SaveChangesAsync();
         }
     }
-  private async Task SeedGigs()
+    private async Task SeedGigs()
     {
 
         var gig1 = new Gig
         {
             Title = "I will design seamless, intuitive user flows that drive engagement in your mobile app",
-            Description = "Struggling to keep users engaged with your mobile app? I specialize in crafting intuitive, user-centered flow designs that guide your audience effortlessly through your product. With a focus on clarity, simplicity, and user psychology, I’ll ensure every tap and swipe makes sense, increasing retention, satisfaction, and overall app success. Let’s transform your app’s usability together.",
+            Description = "Struggling to keep users engaged with your mobile app? I specialize in crafting intuitive, user-centered flow designs that guide your audience effortlessly through your product. With a focus on clarity, simplicity, and user psychology, I’ll ensure every tap and swipe makes sense, increasing retention, satisfaction, and overall app success. Let’s transform your app’s usability together. In today's competitive mobile app market, user engagement can make or break your success. I provide comprehensive user flow design services that focus on understanding your users' needs, behaviors, and pain points. By mapping out clear, logical pathways within your app, I help eliminate confusion, reduce drop-offs, and create a smooth, enjoyable experience that keeps users coming back.\\n\\n\" +\r\n                      \"My approach integrates best practices in UX design, behavioral psychology, and accessibility to ensure your app is intuitive for all users. Whether you need flows for onboarding, feature discovery, or task completion, I tailor every design to your specific goals and audience. Expect detailed wireframes, interactive prototypes, and actionable recommendations to optimize usability.\\n\\n\" +\r\n                      \"Together, we will enhance your app's navigation, reduce friction, and drive meaningful engagement that translates into higher retention and better reviews. Let’s collaborate to create user flows that not only look good but truly work.",
             SellerId = Seller1.Id,
             SubSubCategoryId = SubSubCategory3ForSubCategory2ForMainCategory1.Id,
             CreatedAt = DateTime.UtcNow,
             Clicks = 120,
             ModerationStatus = ModerationStatus.Active,
-            ImageUrls = new List<string> { "https://fiverr-res.cloudinary.com/images/t_main1,q_auto,f_auto,q_auto,f_auto/gigs/350317870/original/124775437d2adef5dde293b4632d79417fab3ece/do-ux-wireframe-mockup-design-and-user-flow-for-mobile-and-web.jpg" }
+            ImageUrls = new List<string> { "https://fiverr-res.cloudinary.com/t_gig_cards_web_x2,q_auto,f_auto/gigs/194476801/original/cf1635f59548e65ccb0c8a41416792e7d9ee416a.png", "https://fiverr-res.cloudinary.com/images/t_main1,q_auto,f_auto,q_auto,f_auto/gigs/350317870/original/124775437d2adef5dde293b4632d79417fab3ece/do-ux-wireframe-mockup-design-and-user-flow-for-mobile-and-web.jpg" }
         };
 
         var gig2 = new Gig
@@ -4221,6 +4339,32 @@ GigFilter3ForSubSubCategory1ForSubCategory1ForMainCategory1 = new GigFilter
 
     private async Task SeedGigDetails(ApplicationDbContext context, Gig gig1, Gig gig2, Gig gig3, Gig gig4)
     {
+        await context.GigMetadatas.AddRangeAsync(
+    // gig1 (User Flow Diagrams)
+    new GigMetadata { Gig = gig1, FilterOptionId = FilterOption1ForGigFilter3ForSubSubCategory3ForSubCategory2ForMainCategory1.Id }, // User Flow Diagrams
+    new GigMetadata { Gig = gig1, FilterOptionId = FilterOption4ForGigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1.Id }, // Adobe Photoshop
+    new GigMetadata { Gig = gig1, FilterOptionId = FilterOption1.Id }, // Under $50
+    new GigMetadata { Gig = gig1, FilterOptionId = FilterOption4.Id }, // Express 24H
+
+    // gig2 (Personas)
+    new GigMetadata { Gig = gig2, FilterOptionId = FilterOption2ForGigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1.Id }, // Adobe XD
+    new GigMetadata { Gig = gig2, FilterOptionId = FilterOption2ForGigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1.Id }, // Web Application
+    new GigMetadata { Gig = gig2, FilterOptionId = FilterOption2.Id }, // $100 - $200
+    new GigMetadata { Gig = gig2, FilterOptionId = FilterOption5.Id }, // Up to 3 days
+
+    // gig3 (Wireframes)
+    new GigMetadata { Gig = gig3, FilterOptionId = FilterOption2ForGigFilter3ForSubSubCategory3ForSubCategory2ForMainCategory1.Id }, // Wireframes
+    new GigMetadata { Gig = gig3, FilterOptionId = FilterOption1ForGigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1.Id }, // Figma
+    new GigMetadata { Gig = gig3, FilterOptionId = FilterOption2.Id }, // $100 - $200
+    new GigMetadata { Gig = gig3, FilterOptionId = FilterOption5.Id }, // Up to 3 days
+
+    // gig4 (UX Audit)
+    new GigMetadata { Gig = gig4, FilterOptionId = FilterOption6ForGigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1.Id }, // Landing Page / Marketing Site
+    new GigMetadata { Gig = gig4, FilterOptionId = FilterOption3ForGigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1.Id }, // Sketch
+    new GigMetadata { Gig = gig4, FilterOptionId = FilterOption3.Id }, // Over $500
+    new GigMetadata { Gig = gig4, FilterOptionId = FilterOption6.Id } // Up to 7 days
+);
+
         context.FAQs.AddRange(
             new FAQ { GigId = gig1.Id, Question = "Do you provide wireframes?", Answer = "Yes, I will provide wireframes in Figma or Adobe XD." },
             new FAQ { GigId = gig1.Id, Question = "Can you redesign my existing app?", Answer = "Absolutely, I specialize in revamping old interfaces." },
@@ -4233,10 +4377,10 @@ GigFilter3ForSubSubCategory1ForSubCategory1ForMainCategory1 = new GigFilter
         );
 
         await context.GigRequirements.AddRangeAsync(
-            new GigRequirement { GigId = gig1.Id, Question = "Please describe your app's primary functionality.", IsFileUpload = false },
-            new GigRequirement { GigId = gig2.Id, Question = "Provide details about your target market or ideal customer.", IsFileUpload = false },
-            new GigRequirement { GigId = gig3.Id, Question = "Share your website objectives and target audience.", IsFileUpload = false },
-            new GigRequirement { GigId = gig4.Id, Question = "Provide your website URL and goals for the audit.", IsFileUpload = false }
+            new GigRequirement { GigId = gig1.Id, Question = "Please describe your app's primary functionality."},
+            new GigRequirement { GigId = gig2.Id, Question = "Provide details about your target market or ideal customer." },
+            new GigRequirement { GigId = gig3.Id, Question = "Share your website objectives and target audience." },
+            new GigRequirement { GigId = gig4.Id, Question = "Provide your website URL and goals for the audit."}
         );
 
         var paymentPlan1Basic = new PaymentPlan
@@ -4357,8 +4501,43 @@ GigFilter3ForSubSubCategory1ForSubCategory1ForMainCategory1 = new GigFilter
             paymentPlan3Basic, paymentPlan3Standard, paymentPlan3Premium,
             paymentPlan4Basic, paymentPlan4Standard, paymentPlan4Premium
         );
+        context.FAQs.AddRange(
+    new FAQ { GigId = gig1.Id, Question = "What if I don’t have a clear app idea yet?", Answer = "No worries! I can help you clarify your concept and suggest optimal flows based on your goals." },
+    new FAQ { GigId = gig1.Id, Question = "Can you collaborate with my developer?", Answer = "Yes, I’m happy to coordinate with your development team to ensure smooth handoff." },
+    new FAQ { GigId = gig1.Id, Question = "Are revisions included?", Answer = "Yes, each package comes with a specific number of revisions. Additional revisions can be arranged if needed." }
+);
+        await context.GigRequirements.AddRangeAsync(
+            new GigRequirement { GigId = gig1.Id, Question = "Do you have any competitor apps you admire for reference?" },
+            new GigRequirement { GigId = gig1.Id, Question = "What is the main goal you want your users to achieve with this app?" },
+            new GigRequirement { GigId = gig1.Id, Question = "Are there specific branding guidelines or color schemes to follow?" }
+        );
+
+        await context.Tags.AddRangeAsync(
+       new Tag { GigId = gig1.Id, Name = "Mobile UX" },
+       new Tag { GigId = gig1.Id, Name = "User Flow Design" },
+       new Tag { GigId = gig1.Id, Name = "Figma" },
+       new Tag { GigId = gig1.Id, Name = "User Journey" },
+       new Tag { GigId = gig1.Id, Name = "App Design" },
+       new Tag { GigId = gig1.Id, Name = "Retention Optimization" }
+   );
+
 
         await context.SaveChangesAsync();
+
+        await context.PaymentPlanIncludes.AddRangeAsync(
+// Extra inclusions for gig1 Basic
+new PaymentPlanInclude { PaymentPlanId = paymentPlan1Basic.Id, Name = "User Flow Format", Value = "Interactive prototype link" },
+new PaymentPlanInclude { PaymentPlanId = paymentPlan1Basic.Id, Name = "Revision Support", Value = "Email only" },
+
+// Extra inclusions for gig1 Standard
+new PaymentPlanInclude { PaymentPlanId = paymentPlan1Standard.Id, Name = "User Flow Format", Value = "Clickable prototype + PDF" },
+new PaymentPlanInclude { PaymentPlanId = paymentPlan1Standard.Id, Name = "Revision Support", Value = "Email + Chat" },
+
+// Extra inclusions for gig1 Premium
+new PaymentPlanInclude { PaymentPlanId = paymentPlan1Premium.Id, Name = "Priority Support", Value = "24-hour response time" },
+new PaymentPlanInclude { PaymentPlanId = paymentPlan1Premium.Id, Name = "Consultation Calls", Value = "Includes strategy call" },
+new PaymentPlanInclude { PaymentPlanId = paymentPlan1Premium.Id, Name = "Bonus", Value = "Free post-delivery support for 1 week" }
+);
 
         await context.PaymentPlanIncludes.AddRangeAsync(
             // Gig 1
@@ -4418,5 +4597,488 @@ GigFilter3ForSubSubCategory1ForSubCategory1ForMainCategory1 = new GigFilter
 
         await context.SaveChangesAsync();
     }
+
+    private async Task SeedSeller2Gigs(ApplicationDbContext context, Guid seller2Id, Guid uxDesignSubSubCategoryId)
+    {
+        var gig5 = new Gig
+        {
+            SellerId = Seller2.Id,
+            Title = "I will create intuitive UX flows for web applications",
+            Description = "I specialize in designing user experiences that maximize engagement and conversions for web platforms.",
+            SubSubCategoryId = SubSubCategory3ForSubCategory2ForMainCategory1.Id,
+            CreatedAt = DateTime.UtcNow,
+            ModerationStatus = ModerationStatus.Active,
+            ImageUrls = new List<string> { "https://fiverr-res.cloudinary.com/images/t_main1,q_auto,f_auto,q_auto,f_auto/gigs/236795969/original/bcf590258d0fd5b80678a9767897a3e8fa13d14f/develop-your-ui-ux-web-flow-on-figma-and-illustrator.png" }
+        };
+
+        var gig6 = new Gig
+        {
+            SellerId = Seller2.Id,
+            Title = "I will audit your UX and provide actionable improvements",
+            Description = "Get a detailed UX review of your existing product with prioritized recommendations and redesign suggestions.",
+            SubSubCategoryId = SubSubCategory3ForSubCategory2ForMainCategory1.Id,
+            CreatedAt = DateTime.UtcNow,
+            ModerationStatus = ModerationStatus.Active,
+            ImageUrls = new List<string> { "https://fiverr-res.cloudinary.com/images/t_main1,q_auto,f_auto,q_auto,f_auto/gigs/420981423/original/b51b57e1cb2e05455932fce858e6ac4dec1e7a0d/design-an-eye-catching-landing-page-with-conversion-focused.jpg" }
+        };
+
+        var gig7 = new Gig
+        {
+            SellerId = Seller2.Id,
+            Title = "I will design mobile-first UX wireframes",
+            Description = "Mobile-first design is key today. I will craft detailed UX wireframes for your app to optimize usability and flow.",
+            SubSubCategoryId = SubSubCategory3ForSubCategory2ForMainCategory1.Id,
+            CreatedAt = DateTime.UtcNow,
+            ModerationStatus = ModerationStatus.Active,
+            ImageUrls = new List<string> { "https://fiverr-res.cloudinary.com/t_gig_cards_web_x2,q_auto,f_auto/gigs/181358952/original/71ce59dd7a3bf2007ad6a8e9edb4a313012e3554.png" }
+        };
+
+        await context.Gigs.AddRangeAsync(gig5, gig6, gig7);
+        await context.SaveChangesAsync();
+
+        var gigMetadata = new List<GigMetadata>
+    {
+        // For gig5 (e.g. "I will create intuitive UX flows for web applications")
+        new GigMetadata
+        {
+            GigId = gig5.Id,
+            FilterOptionId = FilterOption5ForGigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1.Id // "SaaS Dashboard"
+        },
+        new GigMetadata
+        {
+            GigId = gig5.Id,
+            FilterOptionId = FilterOption2ForGigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1.Id // "Web Application"
+        },
+
+        // For gig6
+        new GigMetadata
+        {
+            GigId = gig6.Id,
+            FilterOptionId = FilterOption1ForGigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1.Id // "Figma"
+        },
+        new GigMetadata
+        {
+            GigId = gig6.Id,
+            FilterOptionId = FilterOption3ForGigFilter3ForSubSubCategory3ForSubCategory2ForMainCategory1.Id // "Interactive Prototypes"
+        },
+
+        // For gig7
+        new GigMetadata
+        {
+            GigId = gig7.Id,
+            FilterOptionId = FilterOption7ForGigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1.Id // "Progressive Web App (PWA)"
+        },
+        new GigMetadata
+        {
+            GigId = gig7.Id,
+            FilterOptionId = FilterOption4ForGigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1.Id // "E-commerce Platform"
+        }
+    };
+        await context.GigMetadatas.AddRangeAsync(gigMetadata);
+
+        // PaymentPlans
+        var plans = new List<PaymentPlan>
+    {
+        new PaymentPlan { GigId = gig5.Id, Name = "Basic", Price = 120, DeliveryTimeInDays = 3, Revisions = 2, Description = "UX flow for up to 3 web screens." },
+        new PaymentPlan { GigId = gig5.Id, Name = "Standard", Price = 250, DeliveryTimeInDays = 5, Revisions = 3, Description = "UX flow for up to 6 web screens." },
+        new PaymentPlan { GigId = gig5.Id, Name = "Premium", Price = 400, DeliveryTimeInDays = 7, Revisions = 5, Description = "UX flow for up to 10 screens with prototype feedback." },
+
+        new PaymentPlan { GigId = gig6.Id, Name = "Basic", Price = 80, DeliveryTimeInDays = 2, Revisions = 1, Description = "UX audit with 3 key recommendations." },
+        new PaymentPlan { GigId = gig6.Id, Name = "Standard", Price = 150, DeliveryTimeInDays = 4, Revisions = 2, Description = "UX audit with 6 recommendations and screenshots." },
+        new PaymentPlan { GigId = gig6.Id, Name = "Premium", Price = 250, DeliveryTimeInDays = 6, Revisions = 3, Description = "UX audit with 10 recommendations + wireframe suggestions." },
+
+        new PaymentPlan { GigId = gig7.Id, Name = "Basic", Price = 140, DeliveryTimeInDays = 3, Revisions = 2, Description = "Mobile UX wireframes for 3 screens." },
+        new PaymentPlan { GigId = gig7.Id, Name = "Standard", Price = 280, DeliveryTimeInDays = 5, Revisions = 3, Description = "Mobile UX wireframes for 6 screens." },
+        new PaymentPlan { GigId = gig7.Id, Name = "Premium", Price = 450, DeliveryTimeInDays = 7, Revisions = 5, Description = "Complete mobile-first UX wireframes for up to 10 screens." }
+    };
+        await context.PaymentPlans.AddRangeAsync(plans);
+        await context.SaveChangesAsync();
+
+        // PaymentPlanIncludes
+        var includes = new List<PaymentPlanInclude>
+    {
+        new PaymentPlanInclude { PaymentPlanId = plans[0].Id, Name = "User flow diagram" },
+        new PaymentPlanInclude { PaymentPlanId = plans[1].Id, Name = "Clickable prototype (optional)" },
+        new PaymentPlanInclude { PaymentPlanId = plans[2].Id, Name = "Clickable prototype + feedback loop" },
+
+        new PaymentPlanInclude { PaymentPlanId = plans[3].Id, Name = "3 recommendations" },
+        new PaymentPlanInclude { PaymentPlanId = plans[4].Id, Name = "6 recommendations with screenshots" },
+        new PaymentPlanInclude { PaymentPlanId = plans[5].Id, Name = "Full report + wireframe suggestions" },
+
+        new PaymentPlanInclude { PaymentPlanId = plans[6].Id, Name = "3 screen wireframes" },
+        new PaymentPlanInclude { PaymentPlanId = plans[7].Id, Name = "6 screen wireframes" },
+        new PaymentPlanInclude { PaymentPlanId = plans[8].Id, Name = "Up to 10 screen wireframes with notes" }
+    };
+        await context.PaymentPlanIncludes.AddRangeAsync(includes);
+        await context.SaveChangesAsync();
+
+        // FAQs
+        await context.FAQs.AddRangeAsync(
+            new FAQ { GigId = gig5.Id, Question = "Do you provide clickable prototypes?", Answer = "Yes, available for Premium packages." },
+            new FAQ { GigId = gig5.Id, Question = "Can you follow existing design guidelines?", Answer = "Absolutely, just provide your brand guidelines." },
+
+            new FAQ { GigId = gig6.Id, Question = "What formats will the UX audit be in?", Answer = "Typically PDF with screenshots and recommendations." },
+            new FAQ { GigId = gig6.Id, Question = "Is the audit suitable for mobile apps?", Answer = "Yes, I tailor audits to the platform you specify." },
+
+            new FAQ { GigId = gig7.Id, Question = "Can you design for both iOS and Android?", Answer = "Yes, wireframes will consider both platform guidelines." },
+            new FAQ { GigId = gig7.Id, Question = "Do you use tools like Figma or Sketch?", Answer = "Yes, Figma is my primary tool for wireframes." }
+        );
+        await context.SaveChangesAsync();
+
+        // GigRequirements
+        await context.GigRequirements.AddRangeAsync(
+            new GigRequirement { GigId = gig5.Id, Question = "Provide a description of your product and target audience." },
+            new GigRequirement { GigId = gig6.Id, Question = "Provide link to your existing platform or screenshots." },
+            new GigRequirement { GigId = gig7.Id, Question = "Describe the core functionality of your app and preferred platform (iOS/Android)." }
+        );
+        await context.SaveChangesAsync();
+
+        // Tags
+        await context.Tags.AddRangeAsync(
+            new Tag { GigId = gig5.Id, Name = "UX Design" },
+            new Tag { GigId = gig5.Id, Name = "User Flow" },
+            new Tag { GigId = gig6.Id, Name = "UX Audit" },
+            new Tag { GigId = gig6.Id, Name = "Usability Review" },
+            new Tag { GigId = gig7.Id, Name = "Mobile UX" },
+            new Tag { GigId = gig7.Id, Name = "Wireframes" }
+        );
+        await context.SaveChangesAsync();
+    }
+
+    private async Task SeedSeller4Gigs(ApplicationDbContext context, Guid seller4Id, Guid uxDesignSubSubCategoryId)
+    {
+        // Create 4 gigs for Seller4
+        var gig1 = new Gig
+        {
+            SellerId = Seller4.Id,
+            Title = "I will design engaging UX for your mobile apps",
+            Description = "Creating seamless and intuitive user experiences tailored for mobile platforms (iOS and Android).",
+            SubSubCategoryId = SubSubCategory3ForSubCategory2ForMainCategory1.Id,
+            CreatedAt = DateTime.UtcNow,
+            ModerationStatus = ModerationStatus.Active,
+            ImageUrls = new List<string> { "https://fiverr-res.cloudinary.com/t_gig_cards_web_x2,q_auto,f_auto/gigs/316929973/original/e7078dbec5944fc4e08b9474e19ee1ce5920f49a.jpg" }
+        };
+
+        var gig2 = new Gig
+        {
+            SellerId = Seller4.Id,
+            Title = "I will craft wireframes and prototypes for your web projects",
+            Description = "Delivering detailed wireframes and interactive prototypes to visualize your web app ideas effectively.",
+            SubSubCategoryId = SubSubCategory3ForSubCategory2ForMainCategory1.Id,
+            CreatedAt = DateTime.UtcNow,
+            ModerationStatus = ModerationStatus.Active,
+            ImageUrls = new List<string> { "https://fiverr-res.cloudinary.com/t_gig_cards_web_x2,q_auto,f_auto/gigs/154467581/original/24bafd54bf8963111e9f844c25ee4223705b6168.png" }
+        };
+
+        var gig3 = new Gig
+        {
+            SellerId = Seller4.Id,
+            Title = "I will perform UX audits and usability testing",
+            Description = "Comprehensive UX audits with actionable feedback to improve user engagement and flow.",
+            SubSubCategoryId = SubSubCategory3ForSubCategory2ForMainCategory1.Id,
+            CreatedAt = DateTime.UtcNow,
+            ModerationStatus = ModerationStatus.Active,
+            ImageUrls = new List<string> { "https://fiverr-res.cloudinary.com/t_gig_cards_web_x2,q_auto,f_auto/gigs/259429616/original/f7388c43bcf192fe4097296675c6eba6bd2c7e6e.png" }
+        };
+
+        var gig4 = new Gig
+        {
+            SellerId = Seller4.Id,
+            Title = "I will create SaaS dashboard UX designs",
+            Description = "Designing scalable and user-friendly dashboards optimized for SaaS platforms.",
+            SubSubCategoryId = SubSubCategory3ForSubCategory2ForMainCategory1.Id,
+            CreatedAt = DateTime.UtcNow,
+            ModerationStatus = ModerationStatus.Active,
+            ImageUrls = new List<string> { "https://fiverr-res.cloudinary.com/t_gig_cards_web_x2,q_auto,f_auto/gigs/294093683/original/e707e043d404810dbcb59da14caabe41500c3d90.png" }
+        };
+
+        await context.Gigs.AddRangeAsync(gig1, gig2, gig3, gig4);
+        await context.SaveChangesAsync();
+
+        // Add GigMetadata for filter options
+        var gigMetadata = new List<GigMetadata>
+    {
+        // gig1 - Mobile app focus
+        new GigMetadata { GigId = gig1.Id, FilterOptionId = FilterOption1ForGigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1.Id }, // Mobile App (iOS/Android)
+        new GigMetadata { GigId = gig1.Id, FilterOptionId = FilterOption1ForGigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1.Id }, // Figma
+
+        // gig2 - Web projects with wireframes and prototypes
+        new GigMetadata { GigId = gig2.Id, FilterOptionId = FilterOption2ForGigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1.Id }, // Web Application
+        new GigMetadata { GigId = gig2.Id, FilterOptionId = FilterOption2ForGigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1.Id }, // Adobe XD
+        new GigMetadata { GigId = gig2.Id, FilterOptionId = FilterOption3ForGigFilter3ForSubSubCategory3ForSubCategory2ForMainCategory1.Id }, // Interactive Prototypes
+
+        // gig3 - UX audits
+        new GigMetadata { GigId = gig3.Id, FilterOptionId = FilterOption4ForGigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1.Id }, // Adobe Photoshop
+        new GigMetadata { GigId = gig3.Id, FilterOptionId = FilterOption1ForGigFilter3ForSubSubCategory3ForSubCategory2ForMainCategory1.Id }, // User Flow Diagrams
+
+        // gig4 - SaaS dashboard
+        new GigMetadata { GigId = gig4.Id, FilterOptionId = FilterOption5ForGigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1.Id }, // SaaS Dashboard
+        new GigMetadata { GigId = gig4.Id, FilterOptionId = FilterOption5ForGigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1.Id }  // Adobe Illustrator
+    };
+        await context.GigMetadatas.AddRangeAsync(gigMetadata);
+
+        // PaymentPlans for each gig
+        var plans = new List<PaymentPlan>
+    {
+        // gig1 plans
+        new PaymentPlan { GigId = gig1.Id, Name = "Basic", Price = 100, DeliveryTimeInDays = 3, Revisions = 1, Description = "Basic UX design for up to 3 mobile screens." },
+        new PaymentPlan { GigId = gig1.Id, Name = "Standard", Price = 200, DeliveryTimeInDays = 5, Revisions = 2, Description = "UX design for up to 7 mobile screens." },
+        new PaymentPlan { GigId = gig1.Id, Name = "Premium", Price = 350, DeliveryTimeInDays = 7, Revisions = 3, Description = "Complete UX design for up to 10 mobile screens with prototype." },
+
+        // gig2 plans
+        new PaymentPlan { GigId = gig2.Id, Name = "Basic", Price = 90, DeliveryTimeInDays = 2, Revisions = 1, Description = "Wireframes for up to 3 web pages." },
+        new PaymentPlan { GigId = gig2.Id, Name = "Standard", Price = 180, DeliveryTimeInDays = 4, Revisions = 2, Description = "Wireframes + basic interactive prototype for 5 pages." },
+        new PaymentPlan { GigId = gig2.Id, Name = "Premium", Price = 300, DeliveryTimeInDays = 6, Revisions = 3, Description = "Wireframes + interactive prototype for up to 10 pages." },
+
+        // gig3 plans
+        new PaymentPlan { GigId = gig3.Id, Name = "Basic", Price = 70, DeliveryTimeInDays = 3, Revisions = 1, Description = "UX audit with 3 recommendations." },
+        new PaymentPlan { GigId = gig3.Id, Name = "Standard", Price = 140, DeliveryTimeInDays = 5, Revisions = 2, Description = "UX audit with detailed report and 6 recommendations." },
+        new PaymentPlan { GigId = gig3.Id, Name = "Premium", Price = 250, DeliveryTimeInDays = 7, Revisions = 3, Description = "Full UX audit with usability testing and 10 recommendations." },
+
+        // gig4 plans
+        new PaymentPlan { GigId = gig4.Id, Name = "Basic", Price = 120, DeliveryTimeInDays = 4, Revisions = 1, Description = "Basic SaaS dashboard UX for 3 widgets." },
+        new PaymentPlan { GigId = gig4.Id, Name = "Standard", Price = 230, DeliveryTimeInDays = 6, Revisions = 2, Description = "SaaS dashboard UX with 6 widgets." },
+        new PaymentPlan { GigId = gig4.Id, Name = "Premium", Price = 400, DeliveryTimeInDays = 9, Revisions = 4, Description = "Complete SaaS dashboard UX design with prototype and feedback." }
+    };
+        await context.PaymentPlans.AddRangeAsync(plans);
+        await context.SaveChangesAsync();
+
+        // PaymentPlanIncludes
+        var includes = new List<PaymentPlanInclude>
+    {
+        // gig1 includes
+        new PaymentPlanInclude { PaymentPlanId = plans[0].Id, Name = "Basic mobile UX screens" },
+        new PaymentPlanInclude { PaymentPlanId = plans[1].Id, Name = "Extended mobile UX screens" },
+        new PaymentPlanInclude { PaymentPlanId = plans[2].Id, Name = "Interactive prototype with feedback" },
+
+        // gig2 includes
+        new PaymentPlanInclude { PaymentPlanId = plans[3].Id, Name = "Basic wireframes" },
+        new PaymentPlanInclude { PaymentPlanId = plans[4].Id, Name = "Wireframes + clickable prototype" },
+        new PaymentPlanInclude { PaymentPlanId = plans[5].Id, Name = "Full interactive prototype" },
+
+        // gig3 includes
+        new PaymentPlanInclude { PaymentPlanId = plans[6].Id, Name = "Summary report with recommendations" },
+        new PaymentPlanInclude { PaymentPlanId = plans[7].Id, Name = "Detailed audit report" },
+        new PaymentPlanInclude { PaymentPlanId = plans[8].Id, Name = "Usability testing results and report" },
+
+        // gig4 includes
+        new PaymentPlanInclude { PaymentPlanId = plans[9].Id, Name = "Basic dashboard UX" },
+        new PaymentPlanInclude { PaymentPlanId = plans[10].Id, Name = "Dashboard UX + interaction design" },
+        new PaymentPlanInclude { PaymentPlanId = plans[11].Id, Name = "Full dashboard UX with prototype" }
+    };
+        await context.PaymentPlanIncludes.AddRangeAsync(includes);
+        await context.SaveChangesAsync();
+
+        // FAQs
+        await context.FAQs.AddRangeAsync(
+            // gig1 FAQs
+            new FAQ { GigId = gig1.Id, Question = "Can you design for both iOS and Android?", Answer = "Yes, I design UX optimized for both platforms." },
+            new FAQ { GigId = gig1.Id, Question = "Do you provide clickable prototypes?", Answer = "Clickable prototypes are included in Standard and Premium plans." },
+
+            // gig2 FAQs
+            new FAQ { GigId = gig2.Id, Question = "What tools do you use?", Answer = "I mainly use Figma and Adobe XD for wireframes and prototypes." },
+            new FAQ { GigId = gig2.Id, Question = "Can I request revisions?", Answer = "Yes, revisions depend on the plan you choose." },
+
+            // gig3 FAQs
+            new FAQ { GigId = gig3.Id, Question = "How is the UX audit delivered?", Answer = "You will receive a detailed PDF report with screenshots and recommendations." },
+            new FAQ { GigId = gig3.Id, Question = "Is usability testing included?", Answer = "Included only in Premium packages." },
+
+            // gig4 FAQs
+            new FAQ { GigId = gig4.Id, Question = "Do you follow SaaS best practices?", Answer = "Absolutely, I design dashboards optimized for SaaS user needs." },
+            new FAQ { GigId = gig4.Id, Question = "Can you provide ongoing support?", Answer = "Yes, please contact me for custom support plans." }
+        );
+        await context.SaveChangesAsync();
+
+        // GigRequirements
+        await context.GigRequirements.AddRangeAsync(
+            new GigRequirement { GigId = gig1.Id, Question = "Please provide your app idea and target users." },
+            new GigRequirement { GigId = gig2.Id, Question = "Share any existing wireframes or designs you have." },
+            new GigRequirement { GigId = gig3.Id, Question = "Provide access or screenshots of your current product for audit." },
+            new GigRequirement { GigId = gig4.Id, Question = "Describe your SaaS platform and dashboard requirements." }
+        );
+        await context.SaveChangesAsync();
+
+        // Tags
+        await context.Tags.AddRangeAsync(
+            new Tag { GigId = gig1.Id, Name = "Mobile UX" },
+            new Tag { GigId = gig1.Id, Name = "App Design" },
+            new Tag { GigId = gig2.Id, Name = "Wireframes" },
+            new Tag { GigId = gig2.Id, Name = "Prototypes" },
+            new Tag { GigId = gig3.Id, Name = "UX Audit" },
+            new Tag { GigId = gig3.Id, Name = "Usability" },
+            new Tag { GigId = gig4.Id, Name = "SaaS Dashboard" },
+            new Tag { GigId = gig4.Id, Name = "Dashboard UX" }
+        );
+        await context.SaveChangesAsync();
+    }
+
+    private async Task SeedSeller5Gigs(ApplicationDbContext context, Guid seller5Id, Guid uxDesignSubSubCategoryId)
+    {
+        // Create 4 gigs for Seller5
+        var gig1 = new Gig
+        {
+            SellerId = Seller5.Id,
+            Title = "I will design intuitive UX for your e-commerce site",
+            Description = "Crafting user-friendly and engaging UX designs tailored for e-commerce platforms.",
+            SubSubCategoryId = SubSubCategory3ForSubCategory2ForMainCategory1.Id,
+            CreatedAt = DateTime.UtcNow,
+            ModerationStatus = ModerationStatus.Active,
+            ImageUrls = new List<string> { "https://fiverr-res.cloudinary.com/t_gig_cards_web_x2,q_auto,f_auto/gigs/363963639/original/66775e4135ae7a3664f6ceb6366ccddfadbd2cbb.png" }
+        };
+
+        var gig2 = new Gig
+        {
+            SellerId = Seller5.Id,
+            Title = "I will create responsive UX wireframes and mockups",
+            Description = "Developing responsive wireframes and mockups to enhance usability across devices.",
+            SubSubCategoryId = SubSubCategory3ForSubCategory2ForMainCategory1.Id,
+            CreatedAt = DateTime.UtcNow,
+            ModerationStatus = ModerationStatus.Active,
+            ImageUrls = new List<string> { "https://fiverr-res.cloudinary.com/t_gig_cards_web_x2,q_auto,f_auto/gigs/259633200/original/8bc33392a1d6d4f5eb139e656b401f258ffe0b48.jpg" }
+        };
+
+        var gig3 = new Gig
+        {
+            SellerId = Seller5.Id,
+            Title = "I will conduct UX research and persona development",
+            Description = "Performing detailed UX research and creating personas to guide design strategy.",
+            SubSubCategoryId = SubSubCategory3ForSubCategory2ForMainCategory1.Id,
+            CreatedAt = DateTime.UtcNow,
+            ModerationStatus = ModerationStatus.Active,
+            ImageUrls = new List<string> { "https://fiverr-res.cloudinary.com/t_gig_cards_web_x2,q_auto,f_auto/gigs/410953063/original/c3ec8687bc10ea00ce21e15f06c9ebaf7132c2d4.png" }
+        };
+
+        var gig4 = new Gig
+        {
+            SellerId = Seller5.Id,
+            Title = "I will optimize SaaS UX for better user retention",
+            Description = "Improving SaaS platform UX focusing on user retention and engagement.",
+            SubSubCategoryId = SubSubCategory3ForSubCategory2ForMainCategory1.Id,
+            CreatedAt = DateTime.UtcNow,
+            ModerationStatus = ModerationStatus.Active,
+            ImageUrls = new List<string> { "https://fiverr-res.cloudinary.com/t_gig_cards_web_x2,q_auto,f_auto/gigs/314592551/original/6efd4b7752e90cf965bf95aa60501035e7161053.jpg" }
+        };
+
+        await context.Gigs.AddRangeAsync(gig1, gig2, gig3, gig4);
+        await context.SaveChangesAsync();
+
+        // Add GigMetadata for filter options
+        var gigMetadata = new List<GigMetadata>
+    {
+        // gig1 - E-commerce UX focus
+        new GigMetadata { GigId = gig1.Id, FilterOptionId = FilterOption4ForGigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1.Id }, // E-commerce Platform
+        new GigMetadata { GigId = gig1.Id, FilterOptionId = FilterOption1ForGigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1.Id }, // Figma
+
+        // gig2 - Responsive wireframes
+        new GigMetadata { GigId = gig2.Id, FilterOptionId = FilterOption2ForGigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1.Id }, // Web Application
+        new GigMetadata { GigId = gig2.Id, FilterOptionId = FilterOption3ForGigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1.Id }, // Sketch
+        new GigMetadata { GigId = gig2.Id, FilterOptionId = FilterOption2ForGigFilter3ForSubSubCategory3ForSubCategory2ForMainCategory1.Id }, // Wireframes
+
+        // gig3 - UX research
+        new GigMetadata { GigId = gig3.Id, FilterOptionId = FilterOption1ForGigFilter3ForSubSubCategory3ForSubCategory2ForMainCategory1.Id }, // User Flow Diagrams
+        new GigMetadata { GigId = gig3.Id, FilterOptionId = FilterOption4ForGigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1.Id }, // Adobe Photoshop
+
+        // gig4 - SaaS UX optimization
+        new GigMetadata { GigId = gig4.Id, FilterOptionId = FilterOption5ForGigFilter1ForSubSubCategory3ForSubCategory2ForMainCategory1.Id }, // SaaS Dashboard
+        new GigMetadata { GigId = gig4.Id, FilterOptionId = FilterOption5ForGigFilter2ForSubSubCategory3ForSubCategory2ForMainCategory1.Id }  // Adobe Illustrator
+    };
+        await context.GigMetadatas.AddRangeAsync(gigMetadata);
+
+        // PaymentPlans for each gig
+        var plans = new List<PaymentPlan>
+    {
+        // gig1 plans
+        new PaymentPlan { GigId = gig1.Id, Name = "Basic", Price = 110, DeliveryTimeInDays = 3, Revisions = 1, Description = "Basic UX for e-commerce homepage." },
+        new PaymentPlan { GigId = gig1.Id, Name = "Standard", Price = 210, DeliveryTimeInDays = 5, Revisions = 2, Description = "UX design for up to 5 e-commerce pages." },
+        new PaymentPlan { GigId = gig1.Id, Name = "Premium", Price = 360, DeliveryTimeInDays = 8, Revisions = 3, Description = "Full e-commerce UX design including checkout flow." },
+
+        // gig2 plans
+        new PaymentPlan { GigId = gig2.Id, Name = "Basic", Price = 95, DeliveryTimeInDays = 2, Revisions = 1, Description = "Responsive wireframes for 3 pages." },
+        new PaymentPlan { GigId = gig2.Id, Name = "Standard", Price = 190, DeliveryTimeInDays = 4, Revisions = 2, Description = "Wireframes + mockups for 6 pages." },
+        new PaymentPlan { GigId = gig2.Id, Name = "Premium", Price = 310, DeliveryTimeInDays = 7, Revisions = 3, Description = "Complete responsive wireframes and mockups for 10 pages." },
+
+        // gig3 plans
+        new PaymentPlan { GigId = gig3.Id, Name = "Basic", Price = 80, DeliveryTimeInDays = 4, Revisions = 1, Description = "Basic UX research and 2 personas." },
+        new PaymentPlan { GigId = gig3.Id, Name = "Standard", Price = 150, DeliveryTimeInDays = 6, Revisions = 2, Description = "Detailed UX research and 4 personas." },
+        new PaymentPlan { GigId = gig3.Id, Name = "Premium", Price = 270, DeliveryTimeInDays = 9, Revisions = 3, Description = "Comprehensive research, personas, and user journey maps." },
+
+        // gig4 plans
+        new PaymentPlan { GigId = gig4.Id, Name = "Basic", Price = 130, DeliveryTimeInDays = 4, Revisions = 1, Description = "Basic SaaS UX improvements for 3 features." },
+        new PaymentPlan { GigId = gig4.Id, Name = "Standard", Price = 240, DeliveryTimeInDays = 6, Revisions = 2, Description = "UX optimization for 6 SaaS features." },
+        new PaymentPlan { GigId = gig4.Id, Name = "Premium", Price = 420, DeliveryTimeInDays = 10, Revisions = 4, Description = "Complete UX overhaul and prototyping for SaaS." }
+    };
+        await context.PaymentPlans.AddRangeAsync(plans);
+        await context.SaveChangesAsync();
+
+        // PaymentPlanIncludes
+        var includes = new List<PaymentPlanInclude>
+    {
+        // gig1 includes
+        new PaymentPlanInclude { PaymentPlanId = plans[0].Id, Name = "Basic homepage UX" },
+        new PaymentPlanInclude { PaymentPlanId = plans[1].Id, Name = "Extended product pages UX" },
+        new PaymentPlanInclude { PaymentPlanId = plans[2].Id, Name = "Complete e-commerce UX with checkout" },
+
+        // gig2 includes
+        new PaymentPlanInclude { PaymentPlanId = plans[3].Id, Name = "Responsive wireframes" },
+        new PaymentPlanInclude { PaymentPlanId = plans[4].Id, Name = "Wireframes + mockups" },
+        new PaymentPlanInclude { PaymentPlanId = plans[5].Id, Name = "Full wireframes and mockups" },
+
+        // gig3 includes
+        new PaymentPlanInclude { PaymentPlanId = plans[6].Id, Name = "Basic UX research and personas" },
+        new PaymentPlanInclude { PaymentPlanId = plans[7].Id, Name = "Detailed research and personas" },
+        new PaymentPlanInclude { PaymentPlanId = plans[8].Id, Name = "Research, personas, and journey maps" },
+
+        // gig4 includes
+        new PaymentPlanInclude { PaymentPlanId = plans[9].Id, Name = "Basic UX improvements" },
+        new PaymentPlanInclude { PaymentPlanId = plans[10].Id, Name = "UX optimization for multiple features" },
+        new PaymentPlanInclude { PaymentPlanId = plans[11].Id, Name = "Full UX overhaul and prototyping" }
+    };
+        await context.PaymentPlanIncludes.AddRangeAsync(includes);
+        await context.SaveChangesAsync();
+
+        // FAQs
+        await context.FAQs.AddRangeAsync(
+            // gig1 FAQs
+            new FAQ { GigId = gig1.Id, Question = "Do you design custom e-commerce flows?", Answer = "Yes, I tailor the UX specifically for your product and customers." },
+            new FAQ { GigId = gig1.Id, Question = "Can you include mobile UX?", Answer = "Absolutely, mobile optimization is included." },
+
+            // gig2 FAQs
+            new FAQ { GigId = gig2.Id, Question = "Are wireframes responsive?", Answer = "Yes, all wireframes are designed for multiple screen sizes." },
+            new FAQ { GigId = gig2.Id, Question = "Can I request changes?", Answer = "Revisions are available according to the selected plan." },
+
+            // gig3 FAQs
+            new FAQ { GigId = gig3.Id, Question = "What research methods do you use?", Answer = "I use interviews, surveys, and analytics review." },
+            new FAQ { GigId = gig3.Id, Question = "Will I get user personas?", Answer = "Yes, personas are included in all plans." },
+
+            // gig4 FAQs
+            new FAQ { GigId = gig4.Id, Question = "How do you improve user retention?", Answer = "By analyzing user behavior and refining UX flows." },
+            new FAQ { GigId = gig4.Id, Question = "Do you provide prototypes?", Answer = "Prototypes are included in the Premium plan." }
+        );
+        await context.SaveChangesAsync();
+
+        // GigRequirements
+        await context.GigRequirements.AddRangeAsync(
+            new GigRequirement { GigId = gig1.Id, Question = "Please provide your e-commerce platform details and goals." },
+            new GigRequirement { GigId = gig2.Id, Question = "Share any current wireframes or design ideas." },
+            new GigRequirement { GigId = gig3.Id, Question = "Provide information on your users and market." },
+            new GigRequirement { GigId = gig4.Id, Question = "Describe your SaaS platform and user challenges." }
+        );
+        await context.SaveChangesAsync();
+
+        // Tags
+        await context.Tags.AddRangeAsync(
+            new Tag { GigId = gig1.Id, Name = "E-commerce UX" },
+            new Tag { GigId = gig1.Id, Name = "User Experience" },
+            new Tag { GigId = gig2.Id, Name = "Responsive Design" },
+            new Tag { GigId = gig2.Id, Name = "Wireframes" },
+            new Tag { GigId = gig3.Id, Name = "UX Research" },
+            new Tag { GigId = gig3.Id, Name = "Personas" },
+            new Tag { GigId = gig4.Id, Name = "SaaS UX" },
+            new Tag { GigId = gig4.Id, Name = "User Retention" }
+        );
+        await context.SaveChangesAsync();
+    }
+
+
 
 }

@@ -26,35 +26,47 @@ public class DeactivateGigAdminCommandHandler : ICommandHandler<DeactivateGigAdm
 
     public async Task<Unit> Handle(DeactivateGigAdminCommand request, CancellationToken cancellationToken)
     {
-        var gig = await _repository.GetByIdAsync<Gig, int>(request.Id);
+        var gisQueryable = _repository.GetAllIncluding<Gig>(x => x.Orders).Where(x => x.Id == request.Id);
+        var gig = await _repository.FirstOrDefaultAsync(gisQueryable);
         if (gig == null)
         {
             throw new NotFoundException(nameof(Gig), request.Id);
         }
 
-        gig.ModerationStatus = ModerationStatus.Deactivated;
-
-        var deactivatedRecord = new DeactivatedRecord
+        if(gig.ModerationStatus == ModerationStatus.Deactivated)
         {
-            GigId = request.Id,
-            Reason = request.Reason,
-            CreatedAt = DateTime.Now,
-        };
+            throw new InvalidOperationException("This gig is already deactivated.");
+        }
 
-        gig.ModerationStatus = ModerationStatus.Deactivated;
-
-        await _repository.AddAsync(deactivatedRecord);
-        await _repository.UpdateAsync(gig);
-
-        await _repository.SaveChangesAsync();
-
-        var gigSellerEmail = await _userService.GetGigSellerEmailAsync(request.Id);
-
-        var emailModel = new EmailModel
+        if(gig.Orders.Where(x => x.Status == Domain.Orders.Enums.OrderStatus.Paid || x.Status == Domain.Orders.Enums.OrderStatus.InProgress).Any())
         {
-            To = gigSellerEmail!,
-            Subject = "Gig Deactivation Notice",
-            Body = $@"
+            throw new InvalidOperationException("This gig cannot be deactivated because it has active orders.");
+        }
+        try
+        {
+            gig.ModerationStatus = ModerationStatus.Deactivated;
+
+            var deactivatedRecord = new DeactivatedRecord
+            {
+                GigId = request.Id,
+                Reason = request.Reason,
+                CreatedAt = DateTime.Now,
+            };
+
+            gig.ModerationStatus = ModerationStatus.Deactivated;
+
+            await _repository.AddAsync(deactivatedRecord);
+            await _repository.UpdateAsync(gig);
+
+            await _repository.SaveChangesAsync();
+
+            var gigSellerEmail = await _userService.GetGigSellerEmailAsync(request.Id);
+
+            var emailModel = new EmailModel
+            {
+                To = gigSellerEmail!,
+                Subject = "Gig Deactivation Notice",
+                Body = $@"
 <html>
     <head>
         <style>
@@ -100,7 +112,7 @@ public class DeactivateGigAdminCommandHandler : ICommandHandler<DeactivateGigAdm
                 <div class='gig-title'>Gig Title: <span style='color:#1DBF73;'>{gig.Title}</span></div>
                 <p>Reason for deactivation:</p>
                 <div class='reason-box'>
-                    {{DEACTIVATION_REASON}}
+                    {request.Reason}
                 </div>
                 <p>If you believe this was an error or need clarification, please reach out to our support team.</p>
             </div>
@@ -110,9 +122,15 @@ public class DeactivateGigAdminCommandHandler : ICommandHandler<DeactivateGigAdm
         </div>
     </body>
 </html>"
-        };
+            };
 
-        await _emailService.SendEmailAsync(emailModel, cancellationToken);
+            await _emailService.SendEmailAsync(emailModel, cancellationToken);
+        }
+        catch (Exception ex)
+        {
+            throw new BadRequestException("Failed to deactivate gig.", ex.Message);
+        }
+      
         return Unit.Value;
     }
 }

@@ -10,7 +10,7 @@ internal class OrderPlacedNotificationGenerator : INotificationGenerator
     public NotificationType Type => NotificationType.OrderPlaced;
 
     public string Title { get; set; } = "Your Order Has Been Placed!";
-    public string Message { get; set; } = "Hello, {UserName}! Your order with number {OrderNumber} has been successfully placed. View its details here: {OrderId}.";
+    public string Message { get; set; } = "Hello! Your order with number: {OrderNumber} has been successfully placed. Check it out in the orders table.";
 
     public Domain.Users.Notification Generate(int recipientId, NotificationRecipientType recipientType, Dictionary<string, string>? placeholders = null)
     {

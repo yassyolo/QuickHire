@@ -4,6 +4,7 @@ namespace QuickHire.Application.Users.Models.SellerDetails;
 
 public class SellerDetailsForBuyerModel
 {
+    public string UserId { get; set; } = string.Empty;
     public string ProfilePictureUrl { get; set; } = string.Empty;
     public string FullName { get; set; } = string.Empty;
     public string Country { get; set; } = string.Empty;

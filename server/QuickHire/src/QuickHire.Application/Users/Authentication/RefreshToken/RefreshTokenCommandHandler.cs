@@ -17,19 +17,16 @@ internal class RefreshTokenCommandHandler : ICommandHandler<RefreshTokenCommand,
 
     public async Task<Unit> Handle(RefreshTokenCommand request, CancellationToken cancellationToken)
     {
-        var user = await _userService.GetUserByRefreshTokenAsync(request.Token);
-        
-        if (user == null)
+        try
         {
-            throw new NotFoundException("User not found", $"User with refresh token: {request.Token} not found.");
-        }
+            var user = await _userService.GetUserByRefreshTokenAsync(request.Token);
 
-        if(user.RefreshTokenExpirationDate < DateTime.Now)
+            await _userService.AssignJwtTokens(user, user.Mode);
+        }
+        catch (Exception)
         {
-            throw new UnauthorizedAccessException("Invalid token", "The provided refresh token is invalid.");
-        }
-
-        await _userService.AssignJwtTokens(user, user.Mode);
+            throw;
+        }       
 
         return Unit.Value;
     }

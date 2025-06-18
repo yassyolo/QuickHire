@@ -16,9 +16,8 @@ public class DeleteGigFilterCommandHandler : ICommandHandler<DeleteGigFilterComm
 
     public async Task<Unit> Handle(DeleteGigFilterCommand request, CancellationToken cancellationToken)
     {
-        var gigFilterQuerysble = _repository.GetAllIncluding<Domain.Categories.GigFilter>(x => x.Options)
-            .Where(x => x.Id == request.Id);
-        var gigFilter = await _repository.GetByIdAsync<Domain.Categories.GigFilter, int>(request.Id);
+        var gigFilterQuerysble = _repository.GetAllIncluding<Domain.Categories.GigFilter>(x => x.Options).Where(x => x.Id == request.Id);
+        var gigFilter = await _repository.GetByIdAsync<Domain.Categories.GigFilter, int>(request.Id)!;
         if (gigFilter == null)
         {
             throw new NotFoundException(nameof(Domain.Categories.GigFilter), request.Id);

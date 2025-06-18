@@ -2,10 +2,14 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using QuickHire.Application.Orders.Models.Reviews;
+using QuickHire.Application.Orders.OrderDetails;
+using QuickHire.Application.Orders.PlaceOrder.OrderForm;
+using QuickHire.Application.Orders.PlaceOrder.SubmitOrder;
+using QuickHire.Application.Orders.PlaceOrder.SuccessfulPayment;
 using QuickHire.Application.Orders.Ratings.Reviews;
 using QuickHire.Application.Orders.Reviews.GetRatings;
 using QuickHire.Application.Orders.Reviews.RatingDistribution;
-using QuickHire.Application.Users.Buyer.Profile;
+using Stripe;
 
 namespace QuickHire.Api.Modules.Orders;
 
@@ -42,6 +46,45 @@ public class OrderModule : CarterModule
             .WithTags("Orders")
             .WithDescription("Add a rating");
         #endregion
+
+        ///orders
+        app.MapPost("/orders", async([FromBody] SubmitOrderCommand command, IMediator mediator) =>
+        {
+            var result = await mediator.Send(command);
+            return Results.Ok(result);
+        })
+            .WithName("CreateOrder")
+            .WithTags("Orders")
+            .WithDescription("Create a new order");
+        ///orders/form
+        app.MapGet("/orders/form", async([AsParameters] GetOrderFormQuery query, IMediator mediator) =>
+        {
+            var result = await mediator.Send(query);
+            return Results.Ok(result);
+        })
+            .WithName("GetOrdersForm")
+            .WithTags("Orders")
+            .WithDescription("Get buyer profile for order form");
+
+        //"mark-paid
+        app.MapPost("/mark-paid", async([FromBody] MarkOrderPaidCommand command, IMediator mediator) =>
+        {
+            await mediator.Send(command);
+            return Results.NoContent();
+        })
+            .WithName("MarkOrderAsPaid")
+            .WithTags("Orders")
+            .WithDescription("Mark order as paid");
+
+        //orders/
+        app.MapGet("/orders/{Id}", async([AsParameters] GetOrderDetailsQuery query, IMediator mediator) =>
+        {
+            var result = await mediator.Send(query);
+            return Results.Ok(result);
+        })
+            .WithName("GetOrderById")
+            .WithTags("Orders")
+            .WithDescription("Get order by ID");
 
     }
 }

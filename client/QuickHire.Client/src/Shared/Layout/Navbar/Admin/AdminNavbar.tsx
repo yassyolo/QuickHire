@@ -16,6 +16,9 @@ export function AdminNavbar() {
           
         </SellerOrAdminNavbar>
         <main className="admin-main"> <Outlet /> </main>
+        <div className="buyer-footer"> <footer><div className="footer-bottom">
+                <p>© 2025 QuickHire. All rights reserved.</p>
+            </div></footer></div>
     </div>
   );
 }

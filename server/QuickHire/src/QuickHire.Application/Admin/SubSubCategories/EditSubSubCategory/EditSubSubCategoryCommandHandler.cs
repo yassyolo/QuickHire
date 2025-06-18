@@ -25,7 +25,6 @@ public class EditSubSubCategoryCommandHandler : ICommandHandler<EditSubSubCatego
         subSubCategory.Name = request.Name;       
 
         await _repository.UpdateAsync(subSubCategory);
-        await _repository.SaveChangesAsync();
 
         return Unit.Value;
     }

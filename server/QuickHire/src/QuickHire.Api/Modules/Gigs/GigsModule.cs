@@ -3,9 +3,6 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using QuickHire.Application.Admin.Gigs.DeactivateGigAdmin;
 using QuickHire.Application.Admin.Models.Gigs;
-using QuickHire.Application.Gigs.BrowsingHistory.BrowsingHistory;
-using QuickHire.Application.Gigs.BrowsingHistory.BrowsingHistoryRow;
-using QuickHire.Application.Gigs.BrowsingHistory.DeleteBrowsingHistory;
 using QuickHire.Application.Gigs.Details.GigDetails;
 using QuickHire.Application.Gigs.Details.SellerDetails;
 using QuickHire.Application.Gigs.FavouriteLists.AddFavouriteList;
@@ -17,9 +14,11 @@ using QuickHire.Application.Gigs.FavouriteLists.PopulateFavouriteGigsList;
 using QuickHire.Application.Gigs.FavouriteLists.RemoveGigFromList;
 using QuickHire.Application.Gigs.FavouriteLists.SaveGigToOldList;
 using QuickHire.Application.Gigs.FavouriteLists.UnfavouriteGig;
+using QuickHire.Application.Gigs.GigsInSubSubCategory;
 using QuickHire.Application.Gigs.Models.FavouriteLists;
 using QuickHire.Application.Gigs.Models.Statistics;
 using QuickHire.Application.Gigs.Models.Tags;
+using QuickHire.Application.Gigs.Seller.SellerDetails;
 using QuickHire.Application.Gigs.Statistics.CustomerFeedback.RatingDistribution;
 using QuickHire.Application.Gigs.Statistics.CustomerFeedback.ReviewResponseRate;
 using QuickHire.Application.Gigs.Statistics.CustomerFeedback.Reviews;
@@ -35,9 +34,10 @@ using QuickHire.Application.Gigs.Statistics.SalesAndRevenue.PaymentPlanChoice;
 using QuickHire.Application.Gigs.Statistics.SalesAndRevenue.Revenue;
 using QuickHire.Application.Gigs.Statistics.SalesAndRevenue.SalesVolume;
 using QuickHire.Application.Gigs.Tags.GetTags;
-using QuickHire.Application.Users.Buyer.SellerDetails;
+using QuickHire.Application.Users.Buyer.BrowsingHistory.BrowsingHistory;
+using QuickHire.Application.Users.Buyer.BrowsingHistory.BrowsingHistoryRow;
+using QuickHire.Application.Users.Buyer.BrowsingHistory.DeleteBrowsingHistory;
 using QuickHire.Domain.Users;
-using static iText.Kernel.Pdf.Colorspace.PdfShading;
 
 namespace QuickHire.Api.Modules.Gigs;
 
@@ -49,7 +49,7 @@ public class GigsModule : CarterModule
 
     public override void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapGet("/gigs/statistics/views-statistics/{id}", async ([AsParameters] ViewStatisticsQuery query, IMediator mediator) =>
+       app.MapGet("/gigs/statistics/views-statistics/{id}", async ([AsParameters] ViewStatisticsQuery query, IMediator mediator) =>
         {
             var result = await mediator.Send(query);
             return Results.Ok(result);
@@ -281,15 +281,14 @@ public class GigsModule : CarterModule
             .WithDescription("Get favourite gigs list populated for a buyer");
 
         //buyer/favourite-gigs/add/{id}
-        app.MapPost("/buyers/favourite-gigs/add/{id}", async([FromBody] SaveGigToOldListCommand command, IMediator mediator) =>
+        app.MapPost("/buyers/favourite-gigs/add", async([FromBody] SaveGigToOldListCommand command, IMediator mediator) =>
         {
             await mediator.Send(command);
             return Results.NoContent();
         })
             .WithName("AddGigToOldList")
             .WithTags("FavouriteGigs")
-            .Produces(StatusCodes.Status204NoContent)
-            .Produces(StatusCodes.Status404NotFound)
+
             .WithDescription("Add a gig to an old favourite list for a buyer");
         //buyer/favourite-gigs/delete/{id}
         app.MapDelete("/buyers/favourite-gigs/delete/{id}", async([FromBody] RemoveGigFromListCommand command, IMediator mediator) =>
@@ -299,9 +298,6 @@ public class GigsModule : CarterModule
         })
             .WithName("DeleteGigFromOldList")
             .WithTags("FavouriteGigs")
-            .Produces(StatusCodes.Status204NoContent)
-            .Produces(StatusCodes.Status404NotFound)
-                        .ProducesValidationProblem()
             .WithDescription("Delete a gig from an old favourite list for a buyer");
 
         //buyer/favourite-gigs
@@ -312,23 +308,16 @@ public class GigsModule : CarterModule
         })
             .WithName("AddNewFavouriteGigsList")
             .WithTags("FavouriteGigs")
-            .Produces(StatusCodes.Status204NoContent)
-            .Produces(StatusCodes.Status404NotFound)
-            .ProducesValidationProblem()
             .WithDescription("Add a new favourite gigs list for a buyer");
 
 
-        //buyers/favourite-gigs/{id}
-        app.MapDelete("/buyers/favourite-gigs/{id}", async([AsParameters] DeleteGigListCommand command, IMediator mediator) =>
+        app.MapDelete("/buyers/favourite-list/{id}", async([AsParameters] DeleteGigListCommand command, IMediator mediator) =>
         {
             await mediator.Send(command);
             return Results.NoContent();
         })
             .WithName("RemoveFavouriteGigList")
             .WithTags("FavouriteGigs")
-            .Produces(StatusCodes.Status204NoContent)
-            .Produces(StatusCodes.Status404NotFound)
-            .ProducesValidationProblem()
             .WithDescription("Remove a gig list for a buyer");
 
         app.MapPost("/buyers/favourite-gigs/{id}", async([AsParameters] EditFavouriteListCommand command, IMediator mediator) =>
@@ -338,9 +327,6 @@ public class GigsModule : CarterModule
         })
             .WithName("EditFavouriteGigList")
             .WithTags("FavouriteGigs")
-            .Produces(StatusCodes.Status204NoContent)
-            .Produces(StatusCodes.Status404NotFound)
-            .ProducesValidationProblem()
             .WithDescription("Edits a gig list for a buyer");
 
         app.MapGet("buyers/favourite-gigs/lists", async([AsParameters] GetFavouriteListsQuery query, IMediator mediator) =>
@@ -350,8 +336,6 @@ public class GigsModule : CarterModule
         })
             .WithName("GetFavouriteGigsLists")
             .WithTags("FavouriteGigs")
-            .Produces<IEnumerable<FavouriteListModel>>(StatusCodes.Status200OK)
-            .Produces(StatusCodes.Status404NotFound)
             .WithDescription("Get favourite gigs lists for a buyer");
 
         app.MapGet("buyers/favourite-gigs/lists/{id}", async([AsParameters] GetFavouriteListItemsQuery query, IMediator mediator) =>
@@ -361,8 +345,7 @@ public class GigsModule : CarterModule
         })  
             .WithName("GetFavouriteGigsListById")
             .WithTags("FavouriteGigs")
-            .Produces<FavouriteListModel>(StatusCodes.Status200OK)
-            .Produces(StatusCodes.Status404NotFound)
+
             .WithDescription("Get a favourite gigs list by id for a buyer");
 
         app.MapPut("buyers/favourite-gigs/unfavourite/{id}", async([AsParameters] UnfavouriteGigCommand command, IMediator mediator) =>
@@ -372,14 +355,10 @@ public class GigsModule : CarterModule
         })
             .WithName("RemoveGigFromFavourite")
             .WithTags("FavouriteGigs")
-            .Produces(StatusCodes.Status204NoContent)
-            .Produces(StatusCodes.Status404NotFound)
-            .ProducesValidationProblem()
             .WithDescription("Remove a gig from favourite for a buyer");
 
 
         #endregion
-
         app.MapGet("/gigs/seller", async([AsParameters] GetSellerDetailsQuery query, IMediator mediator) =>
         {
             var result = await mediator.Send(query);
@@ -398,8 +377,6 @@ public class GigsModule : CarterModule
         })
             .WithName("GetGigSellerDetails")
             .WithTags("Gigs")
-            .Produces(StatusCodes.Status404NotFound)
-            .ProducesValidationProblem()
             .WithDescription("Get seller details by gig id");
 
        app.MapGet("/gigs", async([AsParameters] GetGigDetailsQuery query, IMediator mediator) =>
@@ -409,9 +386,19 @@ public class GigsModule : CarterModule
         })
             .WithName("GigDetails")
             .WithTags("Gigs")
-            .Produces(StatusCodes.Status404NotFound)
-            .ProducesValidationProblem()
             .WithDescription("Search gigs with pagination and filtering options");
+
+        //sub-sub-category/gigs
+        app.MapPost("/sub-sub-category/gigs", async ([FromBody] GigsInSubSubCategoryQuery query, IMediator mediator) =>
+        {
+            var result = await mediator.Send(query);
+            return Results.Ok(result);
+        })
+.WithName("GetGigsInSubSubCategory")
+.WithTags("Gigs")
+.WithDescription("Get gigs in a sub-sub-category with pagination and filtering options");
+
+
 
     }
 }

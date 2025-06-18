@@ -6,6 +6,7 @@ import { NewAddedLanguage } from "../../SellerProfile/NewAddedItems/Language/New
 import { UserLanguage } from "../../SellerProfile/SellerProfile";
 import { Language } from "../../SellerProfile/Forms/EditLanguageModalForm";
 import { useTooltip } from "../../../../../Shared/Forms/Common/Tooltips/Tooltip";
+import { useEffect } from "react";
 
 interface Props {
   fullName: string;
@@ -15,7 +16,7 @@ interface Props {
   selectedLanguageId: number | null;
   availableLanguages: Language[];
   newLanguages: UserLanguage[];
-    profilePictureUrl: string | null;
+  profilePictureUrl: string | null;
 
 
   validationErrors: {
@@ -52,6 +53,9 @@ export function PersonalInfoStep({
   profilePictureUrl,
   onNextStep,
 }: Props) {
+  useEffect(() => {
+    console.log(profilePictureUrl);
+  }, [profilePictureUrl]);
     const [showLanguageTooltip, handleShowLanguageTooltip] = useTooltip();
           const [showFullNameTooltip, handleShowFullNameTooltip] = useTooltip();
       const [showUsernameTooltip, handleShowUsernameTooltip] = useTooltip();
@@ -61,6 +65,7 @@ export function PersonalInfoStep({
 
     <div className="wizard-form">
       <div className="brief-description-title">Let's get to know you better.</div>
+<div style={{display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '20px', border: '1px solid #ccc', padding: '20px', borderRadius: '8px'}}>
 
       <FormGroup
   id="fullName"
@@ -89,6 +94,7 @@ export function PersonalInfoStep({
   showTooltip={showUsernameTooltip}
   error={validationErrors.Username || []}
 />
+</div>
 
 <FormGroup
   id="description"
@@ -124,6 +130,9 @@ export function PersonalInfoStep({
     <img src={profilePictureUrl} alt="Current profile" style={{ width: 100, height: 100, borderRadius: "50%" }} />
   </div>
 )}
+<div className="new-seller-title" style={{fontSize: '18px', fontWeight: '600'}}>Languages</div>
+
+<div style={{display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '20px', border: '1px solid #ccc', padding: '20px', borderRadius: '8px'}}>
 
 <SelectDropdown
   id="language"
@@ -145,8 +154,8 @@ export function PersonalInfoStep({
         className="add-new-button"
         ariaLabel="Add new language"
       />
-
-      {newLanguages.map((lang) => (
+<div style={{display: 'flex', flexDirection: 'row', gap: '20px'}}>
+  {newLanguages.map((lang) => (
         <NewAddedLanguage
           key={lang.languageId}
           languageName={lang.languageName}
@@ -154,6 +163,9 @@ export function PersonalInfoStep({
           onEdit={() => onRemoveLanguage(lang.languageId)} 
         />
       ))}
+</div>
+      
+      </div>
 
       <ActionButton
         text="Save and continue"

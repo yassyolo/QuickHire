@@ -14,8 +14,6 @@ internal class GigRequirementConfiguration : IEntityTypeConfiguration<GigRequire
 
         builder.Property(x => x.Question).IsRequired().HasMaxLength(QuestionMaxLength);
 
-        builder.Property(x => x.IsFileUpload).IsRequired();
-
         builder.HasOne(x => x.Gig)
             .WithMany(x => x.Requirements)
             .HasForeignKey(x => x.GigId);

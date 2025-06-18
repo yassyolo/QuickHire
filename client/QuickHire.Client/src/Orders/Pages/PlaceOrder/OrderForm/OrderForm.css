@@ -1,0 +1,31 @@
+.order-form-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  z-index: 11000; 
+  overflow-y: auto; 
+}
+
+.gig-requirements-description {
+  font-size: 15px;
+  color: var(--text-grey-color);
+  margin-bottom: 20px;
+}
+
+.chosen-plan-container, .gig-requirements-container, .billing-details-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+}
+
+.billing-details-container{
+    gap: 50px;
+}

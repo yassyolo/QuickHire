@@ -11,3 +11,4 @@ public class GetBillingInfoModel
     public string Country { get; set; } = null!;
     public int CountryId { get; set; }
 }
+

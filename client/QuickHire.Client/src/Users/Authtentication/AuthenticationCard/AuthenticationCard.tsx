@@ -1,6 +1,6 @@
-import { Modal } from "../../../Admin/Components/Modals/Common/Modal";
+import { Modal } from "../../../Shared/Modals/Common/Modal";
 import "./AuthenticationCard.css";
-import { ImageSubTextItem } from "../ImageSubTextItem";
+import { ImageSubTextItem } from "./Common/Layout/ImageSubTextItem";
 
 interface AuthenticationCardProps {
     children: React.ReactNode;

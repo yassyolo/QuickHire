@@ -1,3 +1,11 @@
 .search-by-keyword{
     width: 300px;
 }
+
+.search-by-keyword input{
+    width: 100%;
+    height: 45.6px !important;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ddd !important;
+}

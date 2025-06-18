@@ -12,7 +12,7 @@ export function SearchById({ setId }: SearchByIdProps) {
     const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value;
         setInputValue(value);
-        setIsValid(true); // Reset validation feedback
+        setIsValid(true); 
 
         if (value.trim() === '') {
             setId(undefined);

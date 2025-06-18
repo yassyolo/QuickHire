@@ -19,7 +19,7 @@ public class ReviewResponseRateStatisticsQueryHandler : IQueryHandler<ReviewResp
 
     public async Task<PieChartDataModel> Handle(ReviewResponseRateStatisticsQuery request, CancellationToken cancellationToken)
     {
-        /*var gig = await _repository.GetByIdAsync<Gig, int>(request.Id);
+        var gig = await _repository.GetByIdAsync<Gig, int>(request.Id);
         if (gig == null)
         {
             throw new NotFoundException(nameof(Gig), request.Id);
@@ -48,7 +48,7 @@ public class ReviewResponseRateStatisticsQueryHandler : IQueryHandler<ReviewResp
         var yesPercentage = (respondedCount * 100 / totalOrders).ToString();
         var noPercentage = (notRespondedCount * 100 / totalOrders).ToString();
 
-        /*var pieChartDataModel = new PieChartDataModel
+        var pieChartDataModel = new PieChartDataModel
         {
             Data = new List<PieChartDataPointModel>
         {
@@ -67,26 +67,7 @@ public class ReviewResponseRateStatisticsQueryHandler : IQueryHandler<ReviewResp
         }
         };
 
-        return pieChartDataModel;*/
-
-        return new PieChartDataModel
-        {
-            Data = new List<PieChartDataPointModel>
-            {
-                new PieChartDataPointModel
-                {
-                    Label = "Yes",
-                    Value = "123",
-                    Percentage = "44"
-                },
-                new PieChartDataPointModel
-                {
-                    Label = "No",
-                    Value = "140",
-                    Percentage = "56"
-                }
-            }
-        };
+        return pieChartDataModel;
     }
 
 }
