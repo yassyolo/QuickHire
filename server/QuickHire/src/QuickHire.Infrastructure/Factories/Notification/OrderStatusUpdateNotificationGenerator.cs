@@ -9,8 +9,8 @@ internal class OrderStatusUpdateNotificationGenerator : INotificationGenerator
 {
     public NotificationType Type => NotificationType.OrderStatusUpdate;
 
-    public string Title { get; set; } = "Your Order Status Has Been Updated!";
-    public string Message { get; set; } = "Hello, {UserName}! The status of your order with number {OrderNumber} has changed to {NewStatus}. Check out details here: {OrderId}.";
+    public string Title { get; set; } = "New revision!";
+    public string Message { get; set; } = "Hello! You have received new revision for your order with number {OrderNumber}!";
 
     public Domain.Users.Notification Generate(int recipientId, NotificationRecipientType recipientType, Dictionary<string, string>? placeholders = null)
     {

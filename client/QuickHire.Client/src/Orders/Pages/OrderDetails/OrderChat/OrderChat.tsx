@@ -1,31 +1,36 @@
 import { useEffect, useRef, useState } from "react";
 import { useAuth } from "../../../../AuthContext";
 import { RevisionMessage } from "../../../../Users/Messaging/MessageBox/Messages/Revision/RevisionMessage";
-import { uploadFile } from "../../../../Users/Messaging/MessageBox/MessageBox/Message";
 import { FileMessage } from "../../../../Users/Messaging/MessageBox/Messages/File/FileMessage";
 import { MessageItem } from "../../../../Users/Messaging/MessageBox/Messages/Common/MessageItem";
 import { CustomOfferPayload } from "../../../../Users/Messaging/MessageBox/Messages/CustomOfferMessage/CustomOfferMessage";
 import { DeliveryMessage } from "../../../../Users/Messaging/MessageBox/Messages/Delivery/DeliveryMessage";
 import axios from "../../../../axiosInstance";
 import { SendWorkModal } from "../../../SendWork/SendWorkModal";
+import { uploadFile } from "../../../../Users/Messaging/MessageBox/MessageBox/Message";
+import { useNavigate } from "react-router-dom";
 
 export interface RevisionPayload {
-    attachments: string[];
+    attachment: string;
     description: string;
-    sourceFileUrl: string;
     revisionNumber: number;
-    acceptUntil: string;
     revisionId: number;
 }
 
 export interface DeliveryPayload {
-    attachments: string[];
+    attachment: string;
     description: string;
     sourceFileUrl: string;
 }
 
+interface SendWorkResponse{
+    delivery?: DeliveryPayload;
+    revision?: RevisionPayload;
+}
+
 interface MessageBoxProps {
   id: number;
+  orderId: number;
 }
 
 export interface Conversation {
@@ -58,7 +63,9 @@ export interface NewMessageSignalRDto {
   };
 }
 
-export function OrderChat({ id }: MessageBoxProps) {
+export function OrderChat({ id, orderId }: MessageBoxProps) {
+    const user = useAuth().user;
+    const navigate = useNavigate();
   const [conversation, setConversation] = useState<Conversation | null>(null);
   const [message, setMessage] = useState("");
   const [file, setFile] = useState<File | null>(null);
@@ -92,6 +99,37 @@ export function OrderChat({ id }: MessageBoxProps) {
     }
   };
 
+  const handleSendWork = (response: SendWorkResponse, type: "delivery" | "revision") => {
+  if (!conversation) return;
+
+  const payload = type === "delivery" ? response.delivery : response.revision;
+  if (!payload) return;
+
+  const payloadJson = JSON.stringify(payload);
+
+  const payloadType = type === "delivery" ? 4 : 3; 
+  
+  auth.signalRConnection?.invoke(
+    "SendMessage",
+    "New Work Submitted",
+    conversation.id,
+    null, 
+    payloadJson,
+    payloadType, 
+    null
+  );
+
+  if (type === "delivery") {
+    if( user?.mode === "buyer") {
+      navigate(`/buyer/orders/${orderId}`);
+    }
+    if( user?.mode === "seller") {
+      navigate(`/seller/orders/${orderId}`);
+    }
+  }
+
+};
+
   const handleSendMessage = async () => {
     if (!message && !file) return;
 
@@ -108,6 +146,7 @@ export function OrderChat({ id }: MessageBoxProps) {
       console.error("Error sending message:", error);
     }
   };
+
 
 
   useEffect(() => {
@@ -181,44 +220,32 @@ export function OrderChat({ id }: MessageBoxProps) {
                     timestamp={msg.timestamp}
                     payload={
                       (msg.payload as DeliveryPayload) ?? {
-                        attachments: [],
+                        attachment: "",
                         description: "",
                         sourceFileUrl: ""
                       }
                     }
                   />
                 );
-                case "revision":
-                if (
-                  !msg.payload ||
-                  (
-                    typeof msg.payload === "object" &&
-                    "revisionNumber" in msg.payload &&
-                    "acceptUntil" in msg.payload &&
-                    "revisionId" in msg.payload
-                  )
-                ) {
-                  return (
-                    <RevisionMessage
-                      key={msg.id}
-                      senderProfilePictureUrl={msg.senderProfilePictureUrl}
-                      senderUsername={msg.senderUsername}
-                      content={msg.content}
-                      timestamp={msg.timestamp}
-                      payload={
-                        (msg.payload as RevisionPayload) ?? {
-                          attachments: [],
-                          description: "",
-                          sourceFileUrl: "",
-                          revisionNumber: 0,
-                          acceptUntil: "",
-                          revisionId: 0,
-                        }
-                      }
-                    />
-                  );
-                }
-                return null;
+                case "revision":   
+    return (
+      <RevisionMessage
+        key={msg.id}
+        senderProfilePictureUrl={msg.senderProfilePictureUrl}
+        senderUsername={msg.senderUsername}
+        content={msg.content}
+        timestamp={msg.timestamp}
+        payload={
+          (msg.payload as RevisionPayload) ?? {
+            attachment: "",
+            description: "",
+            revisionNumber: 0,
+            revisionId: 0,
+          }
+        }
+      />
+    );
+
               case "fileinclude":
                 return (
                   <FileMessage
@@ -272,10 +299,10 @@ export function OrderChat({ id }: MessageBoxProps) {
           </button>
         </div>
 
-        <button onClick={handleSendWorkModalVisibility}  style={{
+        <button onClick={handleSendWorkModalVisibility} className="send-work-button"  style={{
     backgroundColor: 'white',
     color: '#1DBF73',
-    border: '2px solid #1DBF73',
+    border: '1px solid #1DBF73 !important',
     padding: '8px 20px',
     borderRadius: '5px',
     fontSize: '16px',
@@ -289,7 +316,13 @@ export function OrderChat({ id }: MessageBoxProps) {
     
   }} >Send work</button>
       </div>
-{showSendWorkModal && <SendWorkModal onClose={handleSendWorkModalVisibility} />}
+{showSendWorkModal && (
+  <SendWorkModal
+    onClose={handleSendWorkModalVisibility}
+    orderId={orderId}
+    onWorkSubmitted={handleSendWork} 
+  />
+)}
   
     </div>
   );

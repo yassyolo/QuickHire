@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { SortBy } from "../../../../Shared/Dropdowns/Common/Sort/SortBy";
 import { ReviewRow } from "./ReviewsListItem/ReviewRow";
-import axios from "axios";
 import { ActionButton } from "../../../../Shared/Buttons/ActionButton/ActionButton";
 import "./ReviewsList.css";
+import axios from "../../../../axiosInstance";
 
 export interface Review {
   fullName: string;

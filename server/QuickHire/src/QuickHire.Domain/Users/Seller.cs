@@ -8,7 +8,7 @@ using QuickHire.Domain.Shared.Implementations;
 namespace QuickHire.Domain.Users;
 public class Seller : BaseEntity<int>
 {
-    public string UserId { get; set; } = string.Empty;
+    public string UserId { get; set; } =  string.Empty;
     public int Clicks { get; set; }
     public int IndustryId { get; set; }
     public MainCategory Industry { get; set; } = null!;

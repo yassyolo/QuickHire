@@ -2,6 +2,8 @@ import { MessageItem } from "../Common/MessageItem";
 import { useAuth } from "../../../../../AuthContext";
 import { useState } from "react";
 import { ActionButton } from "../../../../../Shared/Buttons/ActionButton/ActionButton";
+import "./RevisionMessage.css";
+import { RevisionPayload } from "../../../../../Orders/Pages/OrderDetails/OrderChat/OrderChat";
 
 interface CustomOfferProps {
     senderProfilePictureUrl: string;
@@ -11,13 +13,6 @@ interface CustomOfferProps {
     payload: RevisionPayload;
 }
 
-export interface RevisionPayload {
-    attachments: string[];
-    description: string;
-    revisionNumber: number;
-    acceptUntil: string;
-    revisionId: number;
-}
 export function RevisionMessage({ senderProfilePictureUrl, senderUsername, timestamp, payload, content }: CustomOfferProps) {
     const { user } = useAuth();
     const [showAcceptRevisionModal, setAcceptRevisionModal] = useState(false);
@@ -33,14 +28,9 @@ export function RevisionMessage({ senderProfilePictureUrl, senderUsername, times
                 <div className="revision-description">{payload.description}</div>
                 <div className="decription-title">Attahcments</div>
                 <div className="revision-attachments d-flex flex-row" style={{ overflowX: 'auto', gap: '20px' }}>
-                    {payload.attachments.map((attachment, index) => (
-                        <img key={index} className="attachment-image" src={attachment} alt={`Attachment ${index + 1}`} />
-                    ))}
+                    <img className="attachment-image" src={payload.attachment}  />
                 </div>
-               
-<div className="has-until-container">
-    Buyer has until <span className="has-until-date">{payload.acceptUntil}</span> to accept this revision.
-</div>
+            
 
             </div>
           {user?.mode === "buyer" && (

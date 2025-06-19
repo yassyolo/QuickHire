@@ -1,13 +1,19 @@
-﻿using MediatR.NotificationPublishers;
+﻿using System.Text.Json.Serialization;
 
-namespace QuickHire.Application.Users.Models.Messaging;
-
-public class RevisionPayloadModel
+namespace QuickHire.Application.Users.Models.Messaging
 {
-    public string[] Attachments { get; set; } = Array.Empty<string>();
-    public string Description { get; set; } = string.Empty;
-    public string SourceFileUrl { get; set; } = string.Empty;
-    public int RevisionNumber { get; set; }
-    public string AcceptUntil { get; set; } = string.Empty;
-    public int RevisionId { get; set; }
+    public class RevisionPayloadModel
+    {
+        [JsonPropertyName("attachment")]
+        public string Attachment { get; set; } = string.Empty;
+
+        [JsonPropertyName("description")]
+        public string Description { get; set; } = string.Empty;
+
+        [JsonPropertyName("revisionNumber")]
+        public int RevisionNumber { get; set; }
+
+        [JsonPropertyName("revisionId")]
+        public int RevisionId { get; set; }
+    }
 }

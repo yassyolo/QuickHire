@@ -33,11 +33,11 @@ public class AddReviewCommandHandler : ICommandHandler<AddReviewCommand, Unit>
                 throw new NotFoundException(nameof(Order), request.OrderId);
             }
 
-            var user = await _userService.GetCurrentUserAsync();
+            var userId = _userService.GetCurrentUserIdAsync();
             var review = new Review
             {
                 OrderId = order.Id,
-                UserId = user.Id,
+                UserId = userId,
                 Rating = request.Rating,
                 Comment = request.Comment,
                 CreatedOn = DateTime.Now
@@ -47,7 +47,6 @@ public class AddReviewCommandHandler : ICommandHandler<AddReviewCommand, Unit>
             await _repository.SaveChangesAsync();
 
             await _notificationService.MakeNotification(order.SellerId, NotificationRecipientType.Seller, Domain.Users.Enums.NotificationType.ReviewReceived, new Dictionary<string, string> { { "OrderNumber", order.OrderNumber } });
-
         }
         catch (Exception ex)
         {

@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.VisualBasic;
 using QuickHire.Application.Common.Interfaces.Abstractions;
 using QuickHire.Application.Common.Interfaces.Repository;
 using QuickHire.Application.Common.Interfaces.Services;
@@ -48,6 +49,7 @@ public class ToggleConversationStarCommandHandler : ICommandHandler<ToggleConver
             {
                 throw new UnauthorizedAccessException("You do not have permission to star this conversation.");
             }
+            await _repository.UpdateAsync(conversation);
         }
         else if (request.ConversationId.HasValue)
         {
@@ -69,7 +71,8 @@ public class ToggleConversationStarCommandHandler : ICommandHandler<ToggleConver
             {
                 throw new UnauthorizedAccessException("You do not have permission to star this conversation.");
             }
-        }      
+            await _repository.UpdateAsync(conversation);
+        }
 
         return Unit.Value;
     }

@@ -92,7 +92,7 @@ public class GetGigDetailsQueryHandler : IQueryHandler<GetGigDetailsQuery, GigDe
         }).ToArray();
 
 
-        var gigMetadataQueryable = _repository.GetAllReadOnly<QuickHire.Domain.Gigs.GigMetadata>().Where(x => x.GigId == gig.Id);
+        var gigMetadataQueryable = _repository.GetAllIncluding<QuickHire.Domain.Gigs.GigMetadata>(x => x.FilterOption.GigFilter).Where(x => x.GigId == gig.Id && x.FilterOption.GigFilter.Type != Domain.Categories.Enums.GigFilterType.DeliveryTime && x.FilterOption.GigFilter.Type != Domain.Categories.Enums.GigFilterType.PriceRange);
         var gigMetadata = await _repository.ToListAsync(gigMetadataQueryable);
         var filterOptionIds = gigMetadata.Select(x => x.FilterOptionId).ToList();
         var filterOptionsQueryable = _repository.GetAllIncluding<QuickHire.Domain.Categories.FilterOption>(x => x.GigFilter).Where(x => filterOptionIds.Contains(x.Id));

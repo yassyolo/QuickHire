@@ -49,7 +49,7 @@ public class GetReviewsQueryHandler : IQueryHandler<GetReviewsQuery, List<Review
         reviewsQueryable = reviewsQueryable.Take(5);
     }
 
-    var reviewsList = await _repository.ToListAsync<QuickHire.Domain.Orders.Review>(reviewsQueryable);
+        var reviewsList = await _repository.ToListAsync<QuickHire.Domain.Orders.Review>(reviewsQueryable);
 
         var reviewModels = await Task.WhenAll(reviewsList.Select(async x =>
         {

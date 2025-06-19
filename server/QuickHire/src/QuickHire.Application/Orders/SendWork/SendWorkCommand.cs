@@ -4,4 +4,4 @@ using QuickHire.Application.Orders.Models.Details;
 using QuickHire.Application.Users.Models.Messaging;
 
 namespace QuickHire.Application.Orders.SendWork;
-public record SendWorkCommand(int Type, string Description, List<IFormFile> Images) : ICommand<SendWorkReturnModel>;
+public record SendWorkCommand(int Id, int Type, string Description, IFormFile Image) : ICommand<SendWorkReturnModel>;

@@ -11,6 +11,4 @@ public class Delivery : BaseSoftDeletableEntity<int>
     public DateTime CreatedAt { get; set; } 
     public List<string> AttachmentUrls { get; set; } = new List<string>();
     public string? SourceFileUrl { get; set; } = string.Empty;
-    public int MessageId { get; set; }
-    public Message Message { get; set; } = null!;
 }

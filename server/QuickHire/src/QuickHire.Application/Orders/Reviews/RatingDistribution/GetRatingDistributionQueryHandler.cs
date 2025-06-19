@@ -1,8 +1,6 @@
 ﻿using QuickHire.Application.Common.Interfaces.Abstractions;
 using QuickHire.Application.Common.Interfaces.Repository;
-using QuickHire.Application.Common.Interfaces.Services;
 using QuickHire.Application.Orders.Models.Reviews;
-using System.Reflection.Metadata.Ecma335;
 
 namespace QuickHire.Application.Orders.Reviews.RatingDistribution;
 
@@ -17,7 +15,7 @@ public class GetRatingDistributionQueryHandler : IQueryHandler<GetRatingDistribu
 
     public async Task<RatingDistributionResponseModel> Handle(GetRatingDistributionQuery request, CancellationToken cancellationToken)
     {
-        /*var reviewsQueryable = _repository.GetAllReadOnly<QuickHire.Domain.Orders.Review>();
+        var reviewsQueryable = _repository.GetAllReadOnly<QuickHire.Domain.Orders.Review>();
         reviewsQueryable = _repository.GetAllIncluding<QuickHire.Domain.Orders.Review>(x => x.Order.Gig, x => x.Order.Seller);
 
         if (request.GigId.HasValue)
@@ -58,22 +56,6 @@ public class GetRatingDistributionQueryHandler : IQueryHandler<GetRatingDistribu
             Total = totalReviews,
             Average = averageRating,
             Ratings = ratingDistribution
-        };*/
-
-       
-
-        return new RatingDistributionResponseModel
-        {
-            Total = 100,
-            Average = 3.4,
-            Ratings = new List<RatingDistributionModel>
-              {
-                    new RatingDistributionModel { Stars = 1, Count = 10 },
-                    new RatingDistributionModel { Stars = 2, Count = 5 },
-                    new RatingDistributionModel { Stars = 3, Count = 15 },
-                    new RatingDistributionModel { Stars = 4, Count = 20 },
-                    new RatingDistributionModel { Stars = 5, Count = 30 }
-                }
         };
     }
 }

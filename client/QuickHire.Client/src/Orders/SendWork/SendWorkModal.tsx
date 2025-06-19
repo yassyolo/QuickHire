@@ -4,22 +4,30 @@ import { FormGroup } from "../../Shared/Forms/FormGroup/FormGroup";
 import { SelectDropdown } from "../../Shared/Dropdowns/Select/SelectDropdown";
 import "./SendWorkModal.css";
 import { IconButton } from "../../Shared/Buttons/IconButton/IconButton";
+import { ImagePreview } from "../../Shared/Images/ImagePreview/ImagePreview";
+import { DeliveryPayload, RevisionPayload } from "../Pages/OrderDetails/OrderChat/OrderChat";
 
 interface Item {
   id: number;
   name: string;
 }
 
-export interface SendWorkModalProps {
-  onClose: () => void;
+export interface SendWorkResponse {
+  delivery?: DeliveryPayload;
+  revision?: RevisionPayload;
 }
 
-export function SendWorkModal({ onClose }: SendWorkModalProps) {
+export interface SendWorkModalProps {
+  onClose: () => void;
+  orderId: number;
+  onWorkSubmitted: (response: SendWorkResponse, type: "delivery" | "revision") => void; 
+}
+export function SendWorkModal({ onClose, orderId, onWorkSubmitted }: SendWorkModalProps) {
   const [populatedData, setPopulatedData] = useState<Item[]>([]);
   const [selectedType, setSelectedType] = useState<number | undefined>();
   const [description, setDescription] = useState<string>("");
-  const [attachment, setAttachment] = useState<File | null>(null);
-  const [images, setImages] = useState<File[]>([]);
+  const [image, setImage] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [validationErrors, setValidationErrors] = useState<Record<string, string[]>>({});
   const [loading, setLoading] = useState(false);
 
@@ -32,7 +40,12 @@ export function SendWorkModal({ onClose }: SendWorkModalProps) {
 
   const handleImagesChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     if (e.target instanceof HTMLInputElement && e.target.files) {
-      setImages(Array.from(e.target.files));
+      const files = e.target.files;
+      if (files.length > 0) {
+        const file = files[0];
+        setImage(file);
+        setImagePreview(URL.createObjectURL(file));
+      }
     }
   };
 
@@ -41,8 +54,7 @@ export function SendWorkModal({ onClose }: SendWorkModalProps) {
 
     if (!selectedType) errors.Type = ["Please select a type."];
     if (!description.trim()) errors.Description = ["Description cannot be empty."];
-    if (!attachment) errors.Attachment = ["Please attach a file."];
-    if (images.length === 0) errors.Images = ["Please upload at least one image."];
+    if (!image) errors.Images = ["Please upload at least one image."];
 
     setValidationErrors(errors);
 
@@ -53,9 +65,10 @@ export function SendWorkModal({ onClose }: SendWorkModalProps) {
       const url = "https://localhost:7267/orders/send-work";
       const formData = new FormData();
 
+      formData.append("Id", orderId.toString());
       formData.append("Type", selectedType!.toString());
       formData.append("Description", description);
-      images.forEach((image) => formData.append("Images", image));
+      formData.append("Image", image!);
 
       const response = await axios.post(url, formData, {
         headers: {
@@ -63,13 +76,18 @@ export function SendWorkModal({ onClose }: SendWorkModalProps) {
         }
       });
 
+      const type = selectedType === 1 ? "revision" : "delivery";
+
+      onWorkSubmitted(response.data, type); 
+
       console.log("Work submitted successfully:", response.data);
 
       setSelectedType(undefined);
       setDescription("");
-      setAttachment(null);
-      setImages([]);
+      setImage(null);
+      setImagePreview(null);
       setValidationErrors({});
+        onClose();
     } catch (error) {
       console.error("Error submitting work:", error);
       alert("Error submitting work. Please try again.");
@@ -81,49 +99,60 @@ export function SendWorkModal({ onClose }: SendWorkModalProps) {
   return (
     <div className="work-overlay">
       <div className="work-content d-flex flex-row">
-        <div className="d-flex flex-column" style={{gap: "1rem", width: "100%"}}>
-            <div className="work-content-title" >Send Work</div>
+        <div className="d-flex flex-column" style={{ gap: "1rem", width: "100%" }}>
+          <div className="work-content-title">Send your work</div>
 
-        <SelectDropdown
-                  id="type"
-                  label="Type"
-                  options={populatedData}
-                  value={selectedType}
-                  onChange={setSelectedType}
-                  getOptionLabel={(opt) => opt.name}
-                  getOptionValue={(opt) => opt.id}
-                  tooltipDescription="Is this a delivery or revision?" showTooltip={false} ariaDescribedBy={""} onShowTooltip={function (): void {
-                      throw new Error("Function not implemented.");
-                  } }        />
+          <SelectDropdown
+            id="type"
+            label="Type"
+            options={populatedData}
+            value={selectedType}
+            onChange={setSelectedType}
+            getOptionLabel={(opt) => opt.name}
+            getOptionValue={(opt) => opt.id}
+            tooltipDescription="Is this a delivery or revision?"
+            showTooltip={false}
+            ariaDescribedBy={""}
+            onShowTooltip={() => {}}
+          />
 
-        <FormGroup
-          id="description"
-          label="Description"
-          tooltipDescription="Provide details for this delivery or revision."
-          type="textarea"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          placeholder="Describe the work you're submitting"
-          error={validationErrors.Description || []}
-        />
+          <FormGroup
+            id="description"
+            label="Description"
+            tooltipDescription="Provide details for this delivery or revision."
+            type="textarea"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder="Describe the work you're submitting"
+            error={validationErrors.Description || []}
+          />
 
-        <FormGroup
-          id="images"
-          label="Images"
-          tooltipDescription="Upload multiple images if needed."
-          type="file"
-          onChange={handleImagesChange}
-          error={validationErrors.Images || []}
-        />
+          <FormGroup
+            id="images"
+            label="Images"
+            tooltipDescription="Upload an image."
+            type="file"
+            onChange={handleImagesChange}
+            error={validationErrors.Images || []}
+          />
 
-        <div className="d-flex flex-row justify-content-end">
-          <button className="add-faq-button" onClick={handleSubmit} disabled={loading}>
-            {loading ? "Submitting..." : "Submit"}
-          </button>
+          {imagePreview && (
+            <ImagePreview src={imagePreview} alt={"Preview of uploaded image"} />
+          )}
+
+          <div className="d-flex flex-row justify-content-end">
+            <button className="add-faq-button" onClick={handleSubmit} disabled={loading}>
+              {loading ? "Submitting..." : "Submit"}
+            </button>
+          </div>
         </div>
-        </div>
-                                    <IconButton icon={<i className="bi bi-x"></i>} onClick={onClose} className={"close-button"} ariaLabel={"Close customOffer preview"} />
-        
+
+        <IconButton
+          icon={<i className="bi bi-x"></i>}
+          onClick={onClose}
+          className={"close-button"}
+          ariaLabel={"Close customOffer preview"}
+        />
       </div>
     </div>
   );

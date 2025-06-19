@@ -43,7 +43,8 @@ export function GigSellerDetails({gigId}: SellerDetailsProps) {
     return (
         <div className="seller-details d-flex flex-column">
             {sellerDetails?.reviews.length !== 0 &&
-                        <ReviewsForUser reviewsList={sellerDetails?.reviews ?? []}   /> 
+            <div style={{marginBottom: '20px'}}>                        <ReviewsForUser reviewsList={sellerDetails?.reviews ?? []}   /> 
+</div>
 }
             <SellerDetailsCard
                 profileImageUrl={sellerDetails?.profileImageUrl ?? ""}

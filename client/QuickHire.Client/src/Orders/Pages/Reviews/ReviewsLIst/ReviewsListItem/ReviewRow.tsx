@@ -28,7 +28,7 @@ export function ReviewRow({review}: ReviewRowProps) {
             <div className="review-comment">{review.comment}</div>
             <div className="review-details">
                 <div className="review-details-info price">
-                    <div className="review-details-label">${review.price}</div>
+                    <div className="review-details-label">{review.price}</div>
                     <div className="review-details-info">Price</div>
                 </div>
                 <div className="review-details-info duration">

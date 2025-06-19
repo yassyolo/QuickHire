@@ -1,8 +1,16 @@
-﻿namespace QuickHire.Application.Users.Models.Messaging;
+﻿using System.Text.Json.Serialization;
 
-public class DeliveryPayloadModel
+namespace QuickHire.Application.Users.Models.Messaging
 {
-    public string[] Attachments { get; set; } = Array.Empty<string>();
-    public string Description { get; set; } = string.Empty;
-    public string? SourceFileUrl { get; set; } = string.Empty;
+    public class DeliveryPayloadModel
+    {
+        [JsonPropertyName("attachment")]
+        public string Attachment { get; set; } = string.Empty;
+
+        [JsonPropertyName("description")]
+        public string Description { get; set; } = string.Empty;
+
+        [JsonPropertyName("sourceFileUrl")]
+        public string? SourceFileUrl { get; set; } = string.Empty;
+    }
 }

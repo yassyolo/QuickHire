@@ -21,13 +21,14 @@
     font-weight: bold;
     color: var(--text-black-color);
     max-width: 70%;
-    flex-grow: 1;
     margin-bottom: 10px;
-
+    margin-left: 20px;
+    margin-top: 10px;
 }
 
 .revision-description{
     font-size: 14px;
+        margin-left: 20px;
     color: var(--text-black-color);
     margin-bottom: 10px;
 }

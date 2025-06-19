@@ -107,8 +107,8 @@ public class OrderModule : CarterModule
         ///orders/send-work
         app.MapPost("/orders/send-work", async([FromForm] SendWorkCommand command, IMediator mediator) =>
         {
-            await mediator.Send(command);
-            return Results.NoContent();
+            var result = await mediator.Send(command);
+            return Results.Ok(result);
         })
             .RequireAuthorization(new AuthorizeAttribute { Roles = "seller" })
             .WithName("SendWorkToBuyer")
