@@ -5,6 +5,7 @@ using QuickHire.Application.Common.Interfaces.Services;
 using QuickHire.Application.Gigs.Models.Shared;
 using QuickHire.Application.Users.Models.ProjectBriefs;
 using QuickHire.Domain.Gigs;
+using QuickHire.Domain.Orders;
 using QuickHire.Domain.Users;
 using QuickHire.Infrastructure.Persistence.Identity;
 
@@ -108,7 +109,7 @@ public class GigScoringService : IGigScoringService
 
     public async Task<PaginatedResultModel<GigCardModel>> GetTopScoringGigsByKeywordAsync(int? subCategoryId, string? keyword, int? subSubCategoryId, int buyerId, int? priceRangeId, int? deliveryTimeId, List<int>? countryIds, List<int>? languageIds, List<int>? selectedOptionsIds, int currentPage, int itemsPerPage)
     {
-        var gigsQuery = _repository.GetAllIncluding<Gig>(x => x.Tags, x => x.FAQs, x => x.Seller, x => x.PaymentPlans, x => x.SubSubCategory.SubCategory)
+        var gigsQuery = _repository.GetAllIncluding<Gig>(x => x.Tags, x => x.FAQs, x => x.Seller, x => x.PaymentPlans, x => x.SubSubCategory.SubCategory, x=> x.Orders)
             .OrderByDescending(x => x.Clicks).Where(x => x.ModerationStatus != Domain.Moderation.Enums.ModerationStatus.Deactivated);
 
         if(subCategoryId.HasValue)
@@ -234,7 +235,8 @@ public class GigScoringService : IGigScoringService
         foreach (var gig in gigs)
         {
             var seller = await _userService.GetSellerDetailsForGigCardByIdAsync(gig.SellerId);
-            var gigReviews = gig.Orders.SelectMany(x => x.Reviews).ToList();
+            var gigReviewsQueryable = _repository.GetAllIncluding<Review>(x => x.Order).Where(x => gig.Orders.Select(x => x.Id).ToList().Contains(x.OrderId));
+            var gigReviews = await _repository.ToListAsync(gigReviewsQueryable);
 
             gigCardModels.Add(new GigCardModel
             {
@@ -246,7 +248,7 @@ public class GigScoringService : IGigScoringService
                 SellerId = gig.SellerId,
                 SellerProfileImageUrl = seller.profileImageUrl,
                 TopRatedSeller = seller.topRated,
-                ReviewsCount = gigReviews.Count,
+                ReviewsCount = gigReviews.Count(),
                 AverageRating = gigReviews.Any() ? gigReviews.Average(x => x.Rating) : 0,
                 Liked = favouriteList?.FavouriteGigs.Any(x => x.GigId == gig.Id) ?? false
             });

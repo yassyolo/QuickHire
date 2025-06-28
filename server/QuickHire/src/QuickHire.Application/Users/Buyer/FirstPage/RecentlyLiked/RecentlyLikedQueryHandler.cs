@@ -2,6 +2,7 @@
 using QuickHire.Application.Common.Interfaces.Repository;
 using QuickHire.Application.Common.Interfaces.Services;
 using QuickHire.Application.Gigs.Models.Shared;
+using QuickHire.Domain.Orders;
 using QuickHire.Domain.Users;
 
 namespace QuickHire.Application.Users.Buyer.FirstPage.RecentlyLiked;
@@ -23,7 +24,7 @@ public class RecentlyLikedQueryHandler : IQueryHandler<RecentlyLikedQuery, List<
         var favouriteGigsIdsList = await _repository.ToListAsync(favouriteGigsQueryable);
         var favouriteGigsIds = favouriteGigsIdsList.Select(x => x.GigId).ToList();
 
-        var gigsQueryable = _repository.GetAllIncluding<Domain.Gigs.Gig>(x => x.Seller).Where(x => favouriteGigsIds.Contains(x.Id));
+        var gigsQueryable = _repository.GetAllIncluding<Domain.Gigs.Gig>(x => x.Seller, x => x.PaymentPlans, x => x.Orders).Where(x => favouriteGigsIds.Contains(x.Id));
         var gigsList = await _repository.ToListAsync(gigsQueryable);
         gigsList = gigsList.OrderByDescending(x => x.Clicks).Take(3).ToList();
         var result = new List<GigCardModel>();
@@ -32,7 +33,8 @@ public class RecentlyLikedQueryHandler : IQueryHandler<RecentlyLikedQuery, List<
         {
             var gig = bh;
             var gigSellerDetails = await _userService.GetSellerDetailsForGigCardByIdAsync(gig.SellerId);
-            var gigReviews = gig.Orders.Select(x => x.Reviews).SelectMany(x => x).ToList();
+            var gigReviewsQueryable = _repository.GetAllIncluding<Review>(x => x.Order).Where(x => gig.Orders.Select(x => x.Id).ToList().Contains(x.OrderId));
+            var gigReviews = await _repository.ToListAsync(gigReviewsQueryable);
 
             var gigCardModel = new GigCardModel
             {

@@ -3,6 +3,7 @@ using QuickHire.Application.Common.Interfaces.Repository;
 using QuickHire.Application.Common.Interfaces.Services;
 using QuickHire.Application.Gigs.Models.Shared;
 using QuickHire.Application.Users.Models.Gigs;
+using QuickHire.Domain.Orders;
 using QuickHire.Domain.Users;
 
 namespace QuickHire.Application.Users.Buyer.FirstPage.HotGigsInMainCategory;
@@ -44,7 +45,7 @@ public class HotGigsOnMainCategoryQueryHandler : IQueryHandler<HotGigsOnMainCate
         var favouriteGigsQueryable = _repository.GetAllReadOnly<FavouriteGig>().Where(x => x.BuyerId == buyerId);
         var favouriteGigsIdsList = await _repository.ToListAsync(favouriteGigsQueryable);
 
-        var gigsQueryable = _repository.GetAllIncluding<Domain.Gigs.Gig>(x => x.Seller).Where(x => x.SubSubCategory.SubCategory.MainCategoryId == mainCategoryId && x.ModerationStatus != Domain.Moderation.Enums.ModerationStatus.PendingReview);
+        var gigsQueryable = _repository.GetAllIncluding<Domain.Gigs.Gig>(x => x.Seller, x => x.PaymentPlans, x => x.Orders).Where(x => x.SubSubCategory.SubCategory.MainCategoryId == mainCategoryId && x.ModerationStatus != Domain.Moderation.Enums.ModerationStatus.PendingReview);
         var gigsList = await _repository.ToListAsync(gigsQueryable);
         gigsList = gigsList.OrderByDescending(x => x.Clicks).Take(8).ToList();
         var result = new List<GigCardModel>();
@@ -53,7 +54,8 @@ public class HotGigsOnMainCategoryQueryHandler : IQueryHandler<HotGigsOnMainCate
         {
             var gig = bh;
             var gigSellerDetails = await _userService.GetSellerDetailsForGigCardByIdAsync(gig.SellerId);
-            var gigReviews = gig.Orders.Select(x => x.Reviews).SelectMany(x => x).ToList();
+            var gigReviewsQueryable = _repository.GetAllIncluding<Review>(x => x.Order).Where(x => gig.Orders.Select(x => x.Id).ToList().Contains(x.OrderId));
+            var gigReviews = await _repository.ToListAsync(gigReviewsQueryable);
 
             var gigCardModel = new GigCardModel
             {

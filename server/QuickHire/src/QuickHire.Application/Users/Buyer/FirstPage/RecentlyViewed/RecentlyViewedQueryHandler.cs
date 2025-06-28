@@ -2,6 +2,7 @@
 using QuickHire.Application.Common.Interfaces.Repository;
 using QuickHire.Application.Common.Interfaces.Services;
 using QuickHire.Application.Gigs.Models.Shared;
+using QuickHire.Domain.Orders;
 using QuickHire.Domain.Users;
 using System.Linq;
 
@@ -27,7 +28,7 @@ public class RecentlyViewedQueryHandler : IQueryHandler<RecentlyViewedQuery, Lis
         var browsingHistoryList = await _repository.ToListAsync(browsingHistoryQueryable);
         var browsingHistoryListIds = browsingHistoryList.OrderByDescending(x => x.ViewedAt).Select(x => x.GigId);
 
-        var gigsQueryable = _repository.GetAllIncluding<Domain.Gigs.Gig>(x => x.Seller).Where(x => x.ModerationStatus != Domain.Moderation.Enums.ModerationStatus.PendingReview && browsingHistoryListIds.Contains(x.Id));
+        var gigsQueryable = _repository.GetAllIncluding<Domain.Gigs.Gig>(x => x.Seller, x => x.PaymentPlans, x => x.Orders).Where(x => x.ModerationStatus != Domain.Moderation.Enums.ModerationStatus.PendingReview && browsingHistoryListIds.Contains(x.Id));
         var gigsList = await _repository.ToListAsync(gigsQueryable);
         gigsList = gigsList.OrderByDescending(x => x.Clicks).Take(3).ToList();
         var result = new List<GigCardModel>();
@@ -36,7 +37,8 @@ public class RecentlyViewedQueryHandler : IQueryHandler<RecentlyViewedQuery, Lis
         {
             var gig = bh;
             var gigSellerDetails = await _userService.GetSellerDetailsForGigCardByIdAsync(gig.SellerId);
-            var gigReviews = gig.Orders.Select(x => x.Reviews).SelectMany(x => x).ToList();
+            var gigReviewsQueryable = _repository.GetAllIncluding<Review>(x => x.Order).Where(x => gig.Orders.Select(x => x.Id).ToList().Contains(x.OrderId));
+            var gigReviews = await _repository.ToListAsync(gigReviewsQueryable);
 
             var gigCardModel = new GigCardModel
             {
