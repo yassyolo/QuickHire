@@ -10,6 +10,7 @@ import { PersonalInfoStep } from "../Steps/NewSellerStep1";
 import { ProfessionalInfoStep } from "../Steps/NewSellerStep2";
 import { Certification } from "../../SellerProfile/Forms/EditCErtificationModalForm";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../../../AuthContext";
 
 interface Education {
   id: number;
@@ -20,6 +21,7 @@ interface Education {
 }
 
 export function NewSellerForm() {
+  const {switchMode} = useAuth();
   const [activeStep, setActiveStep] = useState(1);
 
   const [fullName, setFullName] = useState("");
@@ -244,11 +246,10 @@ const handleSaveNewUser = async () => {
   });
 
   try {
-    const res = await axios.post("https://localhost:7267/seller/new", formData);
-    if (res.status === 200) {
-      console.log("User created successfully");
+    await axios.post("https://localhost:7267/seller/new", formData);
+      switchMode("seller");
       navigate("/seller/profile");
-    }
+
   } catch (err) {
     console.error("Error saving user:", err);
   }
