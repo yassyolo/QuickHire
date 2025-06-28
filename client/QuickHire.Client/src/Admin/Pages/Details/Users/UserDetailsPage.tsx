@@ -7,12 +7,10 @@ import { GigsForUser } from "../../../Pages/Details/Users/GigsForUser/GigsForUse
 import { UserInfo } from "./UserInfo/UserInfo";
 import { SellerPage } from "../../../../Users/Seller/Pages/Common/SellerPage";
 import { UserModerationStatus } from "../../../Pages/Details/Users/Moderation/UserModerationStatus";
-import { UserStatisticsForAdmin } from "../../../Pages/Details/Users/Statistics/UserStatisticsForAdmin";
 
 export function UserDetailsForAdmin() { 
      const { id } = useParams<{ id: string }>();
      const [showUserDetails, setShowUserDetails] = useState(false);
-     const [showStatistics, setShowStatistics] = useState(false);
      const [showGigs, setShowGigs] = useState(false);
      const [showModeration, setShowModeration] = useState(false);
      const [view, setView] = useState<"details" | "gigs" | "statistics" | "moderation">("details");
@@ -24,31 +22,20 @@ export function UserDetailsForAdmin() {
         setView("moderation");
         setShowModeration(!showModeration);
         setShowUserDetails(false);
-        setShowStatistics(false);
         setShowGigs(false);
     }
 
      const handleUserDetailsVisibility = () => {
         setView("details");
         setShowUserDetails(!showUserDetails);
-        setShowStatistics(false);
         setShowGigs(false);
         setShowModeration(false);
      };
-
-     const handleStatisticsVisibility = () => {
-        setView("statistics");
-        setShowStatistics(!showStatistics);
-        setShowUserDetails(false);
-        setShowModeration(false);
-        setShowGigs(false);
-    };
 
     const handleGigsVisibility = () => { 
         setView("gigs");   
         setShowGigs(!showGigs);
         setShowUserDetails(false);
-        setShowStatistics(false);
         setShowModeration(false);
     };
 
@@ -91,10 +78,6 @@ export function UserDetailsForAdmin() {
                     }, {
                         label: "Gigs", onClick: handleGigsVisibility,
                         value: "gigs"
-                    },
-                    {
-                        label: "Statistics", onClick: handleStatisticsVisibility,
-                        value: "statistics"
                     }, {
                         label: "Moderation", onClick: handleModerationVisibility,
                         value: "moderation"
@@ -103,7 +86,6 @@ export function UserDetailsForAdmin() {
            
             {showUserDetails && <UserInfo/>}  
             {showGigs && (<GigsForUser userId={id ?? ""}/>)}
-            {showStatistics && <UserStatisticsForAdmin/> }
             {showModeration && <UserModerationStatus userId={id ?? ""} />}
         </div>
         </SellerPage>
