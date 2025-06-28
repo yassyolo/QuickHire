@@ -17,58 +17,77 @@ public class AverageOrderValueStatisticsQueryHandler : IQueryHandler<AverageOrde
         _repository = repository;
     }
 
-    public async Task<StatisticsLineChartModel> Handle(AverageOrderValueStatisticsQuery request, CancellationToken cancellationToken)
+public async Task<StatisticsLineChartModel> Handle(AverageOrderValueStatisticsQuery request, CancellationToken cancellationToken)
+{
+    var gig = await _repository.GetByIdAsync<Gig, int>(request.Id);
+    if (gig == null)
     {
-        var gig = await _repository.GetByIdAsync<Gig, int>(request.Id);
-        if (gig == null)
-        {
-            throw new NotFoundException(nameof(Gig), request.Id);
-        }
-
-        var orders = _repository.GetAllReadOnly<Order>().Where(x => x.GigId == request.Id);
-        var ordersList = await _repository.ToListAsync(orders);
-        var revenue = ordersList.Sum(x => x.TotalPrice);
-
-        var totalItem = new TotalItemModel
-        {
-            Label = "Average Order Value",
-            Count = revenue.ToString("C"),
-        };
-
-        var peakAverageOrderValue = ordersList.GroupBy(x => x.CreatedAt.Date)
-            .Select(x => new
-            {
-                Date = x.Key,
-                AverageOrderValue = x.Sum(y => y.TotalPrice) / x.Count()
-            })
-            .OrderByDescending(x => x.AverageOrderValue);
-
-        var peak = new PeakModel
-        {
-            Date = peakAverageOrderValue.Select(x => x.Date).FirstOrDefault().ToString("dd MMM")
-        };
-
-        var thisMonthAverageOrderValue = ordersList.Where(x => x.CreatedAt.Month == DateTime.Now.Month && x.CreatedAt.Year == DateTime.Now.Year).Sum(x => x.TotalPrice);
-        var lastMonthAverageOrderValue = ordersList.Where(x => x.CreatedAt.Month == DateTime.Now.AddMonths(-1).Month && x.CreatedAt.Year == DateTime.Now.AddMonths(-1).Year).Sum(x => x.TotalPrice);
-
-        var thisMonth = new ThisMonthModel
-        {
-            Count = thisMonthAverageOrderValue.ToString("C"),
-            Percentage = (lastMonthAverageOrderValue == 0 ? 0 : (thisMonthAverageOrderValue - lastMonthAverageOrderValue) * 100 / lastMonthAverageOrderValue).ToString("P"),
-        };
-
-        var statistics = ordersList.GroupBy(x => x.CreatedAt.Month)
-            .Select(x => new LineChartDataPointModel
-            {
-                Month = CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(x.Key),
-                Value = (x.Sum(y => y.TotalPrice) / x.Count()).ToString("C")
-            });
-        return new StatisticsLineChartModel
-        {
-            TotalItem = totalItem,
-            PeakItem = peak,
-            ThisMonthItem = thisMonth,
-            Data = statistics,
-        };
+        throw new NotFoundException(nameof(Gig), request.Id);
     }
+
+    var ordersQuery = _repository.GetAllReadOnly<Order>().Where(x => x.GigId == request.Id);
+    var ordersList = await _repository.ToListAsync(ordersQuery);
+
+    var revenue = ordersList.Sum(x => x.TotalPrice);
+
+    var totalItem = new TotalItemModel
+    {
+        Label = "Average Order Value",
+        Count = revenue.ToString("C"),  
+    };
+
+    var peakAverageOrderValue = ordersList
+        .GroupBy(x => x.CreatedAt.Date)
+        .Select(g => new
+        {
+            Date = g.Key,
+            AverageOrderValue = g.Average(y => y.TotalPrice)
+        })
+        .OrderByDescending(x => x.AverageOrderValue)
+        .FirstOrDefault();
+
+    var peak = new PeakModel
+    {
+        Date = peakAverageOrderValue?.Date.ToString("dd MMM") ?? "-"
+    };
+
+    var now = DateTime.Now;
+    var lastMonth = now.AddMonths(-1);
+
+    var thisMonthOrders = ordersList.Where(x => x.CreatedAt.Year == now.Year && x.CreatedAt.Month == now.Month);
+    var lastMonthOrders = ordersList.Where(x => x.CreatedAt.Year == lastMonth.Year && x.CreatedAt.Month == lastMonth.Month);
+
+    var thisMonthAverage = thisMonthOrders.Any() ? thisMonthOrders.Average(x => x.TotalPrice) : 0;
+    var lastMonthAverage = lastMonthOrders.Any() ? lastMonthOrders.Average(x => x.TotalPrice) : 0;
+
+    double percentageChange = (double)(lastMonthAverage == 0
+        ? 0
+        : ((thisMonthAverage - lastMonthAverage) / lastMonthAverage));
+
+    var thisMonth = new ThisMonthModel
+    {
+        Count = thisMonthAverage.ToString("C"),
+        Percentage = percentageChange.ToString("P1")  
+    };
+
+    var statistics = ordersList
+        .GroupBy(x => new { x.CreatedAt.Year, x.CreatedAt.Month })
+        .OrderBy(g => g.Key.Year)
+        .ThenBy(g => g.Key.Month)
+        .Select(g => new LineChartDataPointModel
+        {
+            Month = new DateTime(g.Key.Year, g.Key.Month, 1).ToString("MMM yyyy", CultureInfo.InvariantCulture),
+            Value = g.Average(y => y.TotalPrice).ToString("C")
+        })
+        .ToList();
+
+    return new StatisticsLineChartModel
+    {
+        TotalItem = totalItem,
+        PeakItem = peak,
+        ThisMonthItem = thisMonth,
+        Data = statistics,
+    };
+}
+
 }

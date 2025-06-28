@@ -56,13 +56,14 @@ public class SalesVolumeStatisticsVolumeQueryHandler : IQueryHandler<SalesVolume
         };
 
         var statistics = salesList.GroupBy(x => x.CreatedAt.Month)
-                        .Select(x => new LineChartDataPointModel
-                        {
-                            Month = x.Key.ToString("MMMM"),
-                            Value = x.Count().ToString()
-                        })
-                        .OrderBy(x => x.Month)
-                        .ToList();
+                .Select(g => new LineChartDataPointModel
+                {
+                    Month = new DateTime(1, g.Key, 1).ToString("MMMM"),
+                    Value = g.Count().ToString()
+                })
+                .OrderBy(dp => DateTime.ParseExact(dp.Month, "MMMM", System.Globalization.CultureInfo.InvariantCulture))
+                .ToList();
+
         return new StatisticsLineChartModel
         {
             TotalItem = totalItem,

@@ -4,6 +4,7 @@ using QuickHire.Application.Gigs.Models.Statistics;
 using QuickHire.Domain.Gigs;
 using QuickHire.Domain.Orders;
 using QuickHire.Domain.Shared.Exceptions;
+using System.Globalization;
 
 namespace QuickHire.Application.Gigs.Statistics.CustomerFeedback.Stars;
 
@@ -24,52 +25,76 @@ public class StarsStatisticsQueryHandler : IQueryHandler<StarsStatisticsQuery, S
             throw new NotFoundException(nameof(Gig), request.Id);
         }
 
-        var reviews = _repository.GetAllReadOnly<Review>().Where(x => x.Order.GigId == request.Id);
-        var reviewsList = await _repository.ToListAsync(reviews);
+        var reviewsQuery = _repository.GetAllReadOnly<Review>()
+            .Where(x => x.Order != null && x.Order.GigId == request.Id);
+
+        var reviewsList = await _repository.ToListAsync(reviewsQuery);
+
+        var fiveStarReviews = reviewsList.Where(x => x.Rating == 5).ToList();
+
+        if (!fiveStarReviews.Any())
+        {
+            return new StatisticsLineChartModel
+            {
+                TotalItem = new TotalItemModel { Label = "5-Star Reviews", Count = "0" },
+                PeakItem = new PeakModel { Date = "-" },
+                ThisMonthItem = new ThisMonthModel { Count = "0", Percentage = "0" },
+                Data = new List<LineChartDataPointModel>()
+            };
+        }
 
         var totalItem = new TotalItemModel
         {
-            Label = "Stars",
-            Count = reviewsList.Count(x => x.Rating == 5).ToString(),
+            Label = "5-Star Reviews",
+            Count = fiveStarReviews.Count.ToString(),
         };
 
-        var peakStars = reviewsList.Where(x => x.Rating == 5).GroupBy(x => x.CreatedOn.Date)
-            .Select(x => new
-            {
-                Date = x.Key,
-                Count = x.Count()
-            })
-            .OrderByDescending(x => x.Count);
+        var peakStars = fiveStarReviews
+            .GroupBy(x => x.CreatedOn.Date)
+            .Select(g => new { Date = g.Key, Count = g.Count() })
+            .OrderByDescending(g => g.Count)
+            .FirstOrDefault();
 
         var peak = new PeakModel
         {
-            Date = peakStars.Select(x => x.Date).FirstOrDefault().ToString("dd MMM")
+            Date = peakStars?.Date.ToString("dd MMM") ?? "-"
         };
 
-        var thisMonthStars = reviewsList.Where(x => x.CreatedOn.Month == DateTime.Now.Month && x.CreatedOn.Year == DateTime.Now.Year && x.Rating == 5).Count();
-        var lastMonthStars = reviewsList.Where(x => x.CreatedOn.Month == DateTime.Now.AddMonths(-1).Month && x.CreatedOn.Year == DateTime.Now.AddMonths(-1).Year && x.Rating == 5).Count();
-        var thisMonth = new ThisMonthModel
+        var now = DateTime.Now;
+        var lastMonth = now.AddMonths(-1);
+
+        var thisMonthStars = fiveStarReviews.Count(x => x.CreatedOn.Month == now.Month && x.CreatedOn.Year == now.Year);
+        var lastMonthStars = fiveStarReviews.Count(x => x.CreatedOn.Month == lastMonth.Month && x.CreatedOn.Year == lastMonth.Year);
+
+        var percentageChange = lastMonthStars == 0 ? 0 : (thisMonthStars - lastMonthStars) * 100 / lastMonthStars;
+
+        var thisMonthItem = new ThisMonthModel
         {
             Count = thisMonthStars.ToString(),
-            Percentage = (lastMonthStars == 0 ? 0 : (thisMonthStars - lastMonthStars) * 100 / lastMonthStars).ToString(),
+            Percentage = percentageChange.ToString()
         };
 
-        var statistics = reviewsList.GroupBy(x => x.CreatedOn.Month)
+        var statistics = fiveStarReviews
+            .GroupBy(x => new { x.CreatedOn.Year, x.CreatedOn.Month })
+            .Select(g => new
+            {
+                Date = new DateTime(g.Key.Year, g.Key.Month, 1),
+                Count = g.Count()
+            })
+            .OrderBy(x => x.Date)
             .Select(x => new LineChartDataPointModel
             {
-                Month = x.Key.ToString(),
-                Value = x.Count(x => x.Rating == 5).ToString()
+                Month = x.Date.ToString("MMM yyyy", CultureInfo.InvariantCulture),
+                Value = x.Count.ToString()
             })
-            .OrderBy(x => x.Month);
+            .ToList();
 
-       return new StatisticsLineChartModel
-       {
-           TotalItem = totalItem,
-           PeakItem = peak,
-           ThisMonthItem = thisMonth,
-           Data = statistics,
-       };
+        return new StatisticsLineChartModel
+        {
+            TotalItem = totalItem,
+            PeakItem = peak,
+            ThisMonthItem = thisMonthItem,
+            Data = statistics
+        };
     }
 }
-
-

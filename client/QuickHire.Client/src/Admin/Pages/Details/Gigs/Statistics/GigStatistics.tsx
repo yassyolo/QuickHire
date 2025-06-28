@@ -26,9 +26,7 @@ export function GigStatistics({id} : GigStatisticsProps) {
           const data: Item[] = [
     { id: 1, name: "Engagement" },
     { id: 2, name: "Customer Feedback" },
-    { id: 3, name: "Sales & Revenue" },
-    { id: 4, name: "Order Fulfillment" }
-          ];
+    { id: 3, name: "Sales & Revenue" }          ];
 
     const handleSelectedStatisticsType = (id: number | undefined) => {
         setSelectedId(id || 0);

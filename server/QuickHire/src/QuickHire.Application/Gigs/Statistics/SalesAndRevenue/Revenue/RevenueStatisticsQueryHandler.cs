@@ -54,14 +54,16 @@ public class RevenueStatisticsQueryHandler : IQueryHandler<RevenueStatisticsQuer
             Percentage = (lastMonthRevenue == 0 ? 0 : (thisMonthRevenue - lastMonthRevenue) * 100 / lastMonthRevenue).ToString("F2") + "%",
         };
 
-        var statistics = ordersList.GroupBy(x => x.CreatedAt.Month)
-                        .Select(x => new LineChartDataPointModel
-                        {
-                            Month = x.Key.ToString("MMMM"),
-                            Value = x.Sum(y => y.TotalPrice).ToString("C", System.Globalization.CultureInfo.CurrentCulture)
-                        })
-                        .OrderBy(x => x.Month)
-                        .ToList();
+        var statistics = ordersList
+    .GroupBy(x => new { x.CreatedAt.Year, x.CreatedAt.Month })
+    .OrderBy(g => g.Key.Year)
+    .ThenBy(g => g.Key.Month)
+    .Select(g => new LineChartDataPointModel
+    {
+        Month = new DateTime(g.Key.Year, g.Key.Month, 1).ToString("MMMM", System.Globalization.CultureInfo.CurrentCulture),
+        Value = g.Sum(y => y.TotalPrice).ToString("C", System.Globalization.CultureInfo.CurrentCulture)
+    })
+    .ToList();
 
         return new StatisticsLineChartModel
         {

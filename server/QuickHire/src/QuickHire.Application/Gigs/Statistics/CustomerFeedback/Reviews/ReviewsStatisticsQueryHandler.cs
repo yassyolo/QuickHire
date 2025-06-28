@@ -4,6 +4,7 @@ using QuickHire.Application.Gigs.Models.Statistics;
 using QuickHire.Domain.Gigs;
 using QuickHire.Domain.Orders;
 using QuickHire.Domain.Shared.Exceptions;
+using System.Globalization;
 
 namespace QuickHire.Application.Gigs.Statistics.CustomerFeedback.Reviews;
 
@@ -24,8 +25,9 @@ public class ReviewsStatisticsQueryHandler : IQueryHandler<ReviewsStatisticsQuer
             throw new NotFoundException(nameof(Gig), request.Id);
         }
 
-        var reviews = _repository.GetAllReadOnly<Review>().Where(x => x.Order.GigId == request.Id);
-        var reviewsList = await _repository.ToListAsync(reviews);
+        var reviewsQuery = _repository.GetAllReadOnly<Review>().Where(x => x.Order.GigId == request.Id);
+
+        var reviewsList = await _repository.ToListAsync(reviewsQuery);
 
         var totalItem = new TotalItemModel
         {
@@ -33,44 +35,51 @@ public class ReviewsStatisticsQueryHandler : IQueryHandler<ReviewsStatisticsQuer
             Count = reviewsList.Count().ToString(),
         };
 
-        var peakReviews = reviewsList.GroupBy(x => x.CreatedOn.Date)
-            .Select(x => new
+        var peakReviews = reviewsList.GroupBy(x => new { x.CreatedOn.Year, x.CreatedOn.Month })
+            .Select(g => new
             {
-                Date = x.Key,
-                Count = x.Count()
+                Date = new DateTime(g.Key.Year, g.Key.Month, 1),
+                Average = g.Average(r => r.Rating)
             })
-            .OrderByDescending(x => x.Count);
+            .OrderByDescending(g => g.Average)
+            .FirstOrDefault();
 
         var peak = new PeakModel
         {
-            Date = peakReviews.Select(x => x.Date).FirstOrDefault().ToString("dd MMM")
+            Date = peakReviews?.Date.ToString("MMM yyyy") ?? "-"
         };
 
-        var thisMonthReviews = reviewsList.Where(x => x.CreatedOn.Month == DateTime.Now.Month && x.CreatedOn.Year == DateTime.Now.Year).Count();
-        var lastMonthReviews = reviewsList.Where(x => x.CreatedOn.Month == DateTime.Now.AddMonths(-1).Month && x.CreatedOn.Year == DateTime.Now.AddMonths(-1).Year).Count();
+        var now = DateTime.Now;
+        var thisMonthReviews = reviewsList.Count(x => x.CreatedOn.Month == now.Month && x.CreatedOn.Year == now.Year);
 
-        var thisMonth = new ThisMonthModel
+        var lastMonth = now.AddMonths(-1);
+        var lastMonthReviews = reviewsList.Count(x => x.CreatedOn.Month == lastMonth.Month && x.CreatedOn.Year == lastMonth.Year);
+
+        var percentageChange = lastMonthReviews == 0 ? 0 : (thisMonthReviews - lastMonthReviews) * 100 / lastMonthReviews;
+
+        var thisMonthItem = new ThisMonthModel
         {
             Count = thisMonthReviews.ToString(),
-            Percentage = (lastMonthReviews == 0 ? 0 : (thisMonthReviews - lastMonthReviews) * 100 / lastMonthReviews).ToString(),
+            Percentage = percentageChange.ToString()
         };
 
-        var statistics = reviewsList.GroupBy(x => x.CreatedOn.Month)
-                        .Select(x => new LineChartDataPointModel
-                        {
-                            Month = x.Key.ToString("MMMM", System.Globalization.CultureInfo.InvariantCulture),
-                            Value = x.Count().ToString()
-                        })
-                        .OrderBy(x => x.Month)
-                        .ToList();
+        var statistics = reviewsList
+            .GroupBy(x => new { x.CreatedOn.Year, x.CreatedOn.Month })
+            .Select(g => new LineChartDataPointModel
+            {
+                Month = new DateTime(g.Key.Year, g.Key.Month, 1)
+                            .ToString("MMM yyyy", CultureInfo.InvariantCulture),
+                Value = (g.Sum(r => r.Rating) / (double)g.Count()).ToString("0.0") 
+            })
+            .OrderBy(dp => DateTime.ParseExact(dp.Month, "MMM yyyy", CultureInfo.InvariantCulture))
+            .ToList();
 
         return new StatisticsLineChartModel
-      {
-          TotalItem = totalItem,
-          PeakItem = peak,
-          ThisMonthItem = thisMonth,
-          Data = statistics,
-      };
+        {
+            TotalItem = totalItem,
+            PeakItem = peak,
+            ThisMonthItem = thisMonthItem,
+            Data = statistics
+        };
     }
 }
-

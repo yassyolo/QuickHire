@@ -69,7 +69,7 @@ const fetchReviewResponseData = async () => {
 
     return(
     <StatisticsTable>
-        <StatisticsLineChart icon={<i className="bi bi-star-half"></i>} label={"Stars"} thisMonthCount={viewsStars?.thisMonthItem.count || ""} thisMonthPercentage={viewsStars?.thisMonthItem.percentage || ""} peakDate={viewsStars?.peakItem.date || ""} data={viewsStars?.data || []}></StatisticsLineChart>
+        <StatisticsLineChart icon={<i className="bi bi-star-half"></i>} label={"5 Stars"} thisMonthCount={viewsStars?.thisMonthItem.count || ""} thisMonthPercentage={viewsStars?.thisMonthItem.percentage || ""} peakDate={viewsStars?.peakItem.date || ""} data={viewsStars?.data || []}></StatisticsLineChart>
         <StatisticsLineChart icon={<i className="bi bi-chat-quote"></i>} label={"Reviews"} totalItemsCount={reviewsData?.totalItem.count || ""} totalItemslabel={reviewsData?.totalItem.label || ""} thisMonthCount={reviewsData?.thisMonthItem.count || ""} thisMonthPercentage={reviewsData?.thisMonthItem.percentage || ""} peakDate={reviewsData?.peakItem.date || ""} data={reviewsData?.data || []}></StatisticsLineChart>
         <StatisticsPieChart label={"Rating Distribution"} data={ratingDistributionData?.data || []}></StatisticsPieChart>
         <StatisticsPieChart label={"Review Response Rate"} data={reviewResponseData?.data || []}></StatisticsPieChart>
