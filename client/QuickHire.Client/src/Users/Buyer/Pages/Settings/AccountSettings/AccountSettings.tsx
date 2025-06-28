@@ -86,7 +86,7 @@ export function AccountSettings({onSaveChanges}: AccountSettingsProps) {
             FullName: fullName,
             Username: username,
             City: city,
-            Address: address,
+            Street: address,
             ZipCode: zipCode,
             Email: email,
             CountryId: selectedCountryId
