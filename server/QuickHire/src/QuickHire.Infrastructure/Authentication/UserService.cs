@@ -104,6 +104,7 @@ internal class UserService : IUserService
             Email = email,
             EmailConfirmed = false,
             JoinedAt = DateTime.Now,
+            ModerationStatus = QuickHire.Domain.Moderation.Enums.ModerationStatus.Active,
         };
 
         var result = await _userManager.CreateAsync(applicationUser, password);
@@ -249,7 +250,7 @@ internal class UserService : IUserService
 
     public async Task<(string fullName, bool repeatBuyer, string countryName, string profileImageUrl)> GetBuyerReviewDetailsAsync(int buyerId, int sellerId)
     {
-        var userId = GetCurrentUserIdAsync();
+        var userId = await GetUserIdByBuyerIdAsync(buyerId);
         var user = await _userManager.FindByIdAsync(userId);
         var country = await _repository.GetAllReadOnly<Address>().Where(x => x.UserId == userId).Include(x => x.Country).Select(x => x.Country.Name).FirstOrDefaultAsync();
 
@@ -666,6 +667,7 @@ internal class UserService : IUserService
                 userAddress.Street = street;
             }
         }
+        user.ModerationStatus = Domain.Moderation.Enums.ModerationStatus.Active;
 
         await _repository.UpdateAsync(user);
         await _repository.SaveChangesAsync();
@@ -845,5 +847,10 @@ internal class UserService : IUserService
         var billingAddress = string.Join(", ", billingDetails.Address.Street, billingDetails.Address.City, billingDetails.Address.ZipCode, billingDetails.Address.Country.Name);
 
         return (billingDetails.FullName, billingAddress, billingDetails.CompanyName);
+    }
+
+    public async Task<int> GetBuyerIdByExistingUserId(string userId)
+    {
+        return await _repository.GetAllReadOnly<Buyer>().Where(x => x.UserId == userId).Select(x => x.Id).FirstOrDefaultAsync();
     }
 }

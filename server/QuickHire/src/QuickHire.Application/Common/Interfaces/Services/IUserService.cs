@@ -66,4 +66,5 @@ public interface IUserService
     Task ReportUserAsync(string reportedUserId);
     Task<int> CreateSellerAsync(int industryId, string username, string fullName, string description, IFormFile? profilePicture);
     Task<(string name, string address, string companyName)> GetBuyerForInvoiceAsync(string buyerUserId);
+    Task<int> GetBuyerIdByExistingUserId(string userId);
 }
