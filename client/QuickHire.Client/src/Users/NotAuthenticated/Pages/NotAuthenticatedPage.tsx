@@ -80,7 +80,7 @@ const handleOnSearch = () => {
     
 
   <div className="popular-services" style={{padding: "50px 50px"}}>
-    <div className="popular-services-header">Popular serices</div>
+    <div className="popular-services-header">Popular services</div>
     <div className="popular-services-list">
       {notAuthenticatedPage.popularServices.map((service) => (
         <div key={service.id} className="popular-service-item">
