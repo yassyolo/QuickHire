@@ -25,9 +25,8 @@ public class ReviewsStatisticsQueryHandler : IQueryHandler<ReviewsStatisticsQuer
             throw new NotFoundException(nameof(Gig), request.Id);
         }
 
-        var reviewsQuery = _repository.GetAllReadOnly<Review>().Where(x => x.Order.GigId == request.Id);
-
-        var reviewsList = await _repository.ToListAsync(reviewsQuery);
+        var reviews = _repository.GetAllReadOnly<Review>().Where(x => x.Order.GigId == request.Id);
+        var reviewsList = await _repository.ToListAsync(reviews);
 
         var totalItem = new TotalItemModel
         {
@@ -36,12 +35,12 @@ public class ReviewsStatisticsQueryHandler : IQueryHandler<ReviewsStatisticsQuer
         };
 
         var peakReviews = reviewsList.GroupBy(x => new { x.CreatedOn.Year, x.CreatedOn.Month })
-            .Select(g => new
+            .Select(x => new
             {
-                Date = new DateTime(g.Key.Year, g.Key.Month, 1),
-                Average = g.Average(r => r.Rating)
+                Date = new DateTime(x.Key.Year, x.Key.Month, 1),
+                Average = x.Average(r => r.Rating)
             })
-            .OrderByDescending(g => g.Average)
+            .OrderByDescending(x => x.Average)
             .FirstOrDefault();
 
         var peak = new PeakModel
