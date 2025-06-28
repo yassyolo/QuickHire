@@ -36,7 +36,7 @@ export function SubCategoryPage() {
     const [selectedCountryIds, setSelectedCountryIds] = useState<number[]>([]);
     const [selectedLanguageIds, setSelectedLanguageIds] = useState<number[]>([]);
 
-    const itemsPerPage = 10;
+    const itemsPerPage = 12;
 
     const [subCategories, setSubCategories] = useState<SubSubCategoriesInSubCategory[]>([]);
     const fetchSubSubCategories = async () => {

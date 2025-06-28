@@ -38,7 +38,7 @@ export function SubSubCategoryPage() {
     const [selectedLanguageIds, setSelectedLanguageIds] = useState<number[]>([]);
     const [selectedOptions, setSelectedOptions] = useState<SelectedOption[]>([]);
 
-    const itemsPerPage = 10;
+    const itemsPerPage = 12;
 
     const fetchMainCategory = async (subSubCategoryId: number) => {
         try {

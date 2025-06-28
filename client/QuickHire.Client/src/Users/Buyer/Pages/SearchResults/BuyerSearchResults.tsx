@@ -27,7 +27,7 @@ export function BuyerSearchResultsPage() {
     const [selectedCountryIds, setSelectedCountryIds] = useState<number[]>([]);
     const [selectedLanguageIds, setSelectedLanguageIds] = useState<number[]>([]);
 
-    const itemsPerPage = 10;
+    const itemsPerPage = 12;
 
     const fetchSearchResults = async () => {
         if (!keyword.trim()) return;
