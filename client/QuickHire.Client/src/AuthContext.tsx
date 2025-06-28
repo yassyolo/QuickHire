@@ -138,7 +138,7 @@ const fetchUser = useCallback(async (): Promise<void> => {
     await axios.post("https://localhost:7267/auth/logout", {}, { withCredentials: true });
     setUser(null);
     await stopSignalRConnection();
-    navigate("/login");
+    navigate("/");
   }, [stopSignalRConnection, navigate]);
 
   const switchMode = useCallback(
