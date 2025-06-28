@@ -21,7 +21,7 @@ public class GetSellerDashboardOrdersQueryHandler : IQueryHandler<GetSellerDashb
     {
         var sellerId = await _userService.GetSellerIdByUserIdAsync();
 
-        var ordersQueryable = _repository.GetAllIncluding<QuickHire.Domain.Orders.Order>(x => x.Gig, x => x.Buyer, x => x.SelectedPaymentPlan).Where(x => x.SellerId == sellerId && request.Active ? x.Status == QuickHire.Domain.Orders.Enums.OrderStatus.InProgress : x.Status == QuickHire.Domain.Orders.Enums.OrderStatus.Delivered);
+        var ordersQueryable = _repository.GetAllIncluding<QuickHire.Domain.Orders.Order>(x => x.Gig, x => x.Buyer, x => x.SelectedPaymentPlan).Where(x => x.SellerId == sellerId && (request.Active ? x.Status == QuickHire.Domain.Orders.Enums.OrderStatus.InProgress: x.Status == QuickHire.Domain.Orders.Enums.OrderStatus.Delivered));
 
         var ordersList = await _repository.ToListAsync<QuickHire.Domain.Orders.Order>(ordersQueryable);
         ordersList = ordersList.OrderByDescending(x => x.CreatedAt);

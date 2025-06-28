@@ -28,6 +28,7 @@ public class GetGigDetailsQueryHandler : IQueryHandler<GetGigDetailsQuery, GigDe
         {
             throw new NotFoundException(nameof(QuickHire.Domain.Gigs.Gig), request.Id);
         }
+        var liked = false;
 
         if (!request.Preview)
         {
@@ -60,6 +61,13 @@ public class GetGigDetailsQueryHandler : IQueryHandler<GetGigDetailsQuery, GigDe
                     await _repository.SaveChangesAsync();
                 }
             }
+
+            var favouriteGigsQueryable = _repository.GetAllReadOnly<QuickHire.Domain.Users.FavouriteGig>().Where(x => x.GigId == gig.Id && x.BuyerId == buyerId);
+            var favouriteGig = await _repository.FirstOrDefaultAsync(favouriteGigsQueryable);
+            if (favouriteGig != null)
+            {
+                liked = true;
+            }
         }
 
         var model = new GigDetailsModel
@@ -71,7 +79,8 @@ public class GetGigDetailsQueryHandler : IQueryHandler<GetGigDetailsQuery, GigDe
             UserId = await _userService.GetUserIdBySellerIdAsync(gig.SellerId),
             Title = gig.Title,
             Description = gig.Description,
-            ImageUrls = gig.ImageUrls.ToArray()  
+            ImageUrls = gig.ImageUrls.ToArray()  ,
+            Liked = liked,
         };
 
         var paymentPlansQueryable = _repository.GetAllIncluding<QuickHire.Domain.Gigs.PaymentPlan>(x => x.Inclusions).Where(x => x.GigId == gig.Id);
