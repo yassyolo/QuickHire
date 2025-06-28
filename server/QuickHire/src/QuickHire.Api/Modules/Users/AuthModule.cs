@@ -114,7 +114,7 @@ public class AuthModule : CarterModule
         app.MapGet("/auth/verify-email", async ([AsParameters] VerifyEmailCommand command, IMediator mediator) =>
         {
             await mediator.Send(command);
-            return Results.Redirect("http://localhost:5173/buyer");
+            return Results.Redirect("http://localhost:5173/login");
         })
         .WithName("VerifyEmail")
         .WithTags("Authentication")

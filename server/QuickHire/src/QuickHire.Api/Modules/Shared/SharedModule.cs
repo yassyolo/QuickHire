@@ -149,7 +149,7 @@ public class SharedModule : CarterModule
             var result = await mediator.Send(new PopulateMainCategoriesQuery());
             return Results.Ok(result);
         })
-        .RequireAuthorization(new AuthorizeAttribute { Roles = "seller,admin" })
+        .RequireAuthorization(new AuthorizeAttribute { Roles = "seller,admin,buyer" })
         .WithName("PopulateMainCategories")
         .WithTags("Filters")
         .WithDescription("Populates main categories.");
