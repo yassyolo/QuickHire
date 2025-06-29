@@ -5,6 +5,7 @@ import { isAxiosError } from "axios";
 import { ImagePreview } from "../../../Images/ImagePreview/ImagePreview";
 import { FormGroup } from "../../../Forms/FormGroup/FormGroup";
 import { useTooltip } from "../../../Forms/Common/Tooltips/Tooltip";
+import { useAuth } from "../../../../AuthContext";
 
 export interface AddBuyerDetailsModalProps {
     showModal: boolean;
@@ -14,6 +15,7 @@ export interface AddBuyerDetailsModalProps {
 
 
 export function AddBuyerDetailsModal({onClose, onAddBuyerDetailsSuccess, showModal }: AddBuyerDetailsModalProps) {
+    const {fetchUser} = useAuth();
     const [description, setDescription] = useState<string>("");
     const [image, setImage] = useState<File | null>(null);
     const [newImagePreviewUrl, setNewImagePreviewUrl] = useState<string>("");
@@ -58,6 +60,7 @@ export function AddBuyerDetailsModal({onClose, onAddBuyerDetailsSuccess, showMod
                 description: description,
                 imageUrl: result.data.imageUrl
             };        
+            fetchUser();
             onAddBuyerDetailsSuccess(buyerDetails.imageUrl, buyerDetails.description);
             setDescription("");
             setImage(null);
