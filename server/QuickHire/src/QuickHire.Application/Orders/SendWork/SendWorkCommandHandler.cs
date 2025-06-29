@@ -46,7 +46,7 @@ public class SendWorkCommandHandler : ICommandHandler<SendWorkCommand, SendWorkR
                 Status = QuickHire.Domain.Orders.Enums.RevisionStatus.Pending,
             };
 
-            /*if (request.Image != null)
+            if (request.Image != null)
             {                
                     var uploadResult = _cloudinaryService.UploadFile(request.Image);
                     if (uploadResult == null)
@@ -54,7 +54,7 @@ public class SendWorkCommandHandler : ICommandHandler<SendWorkCommand, SendWorkR
                         throw new Exception("Failed to upload image to cloud storage.");
                     }
                     newRevision.AttachmentUrls.Add(uploadResult);
-            }*/
+            }
 
             await _repository.AddAsync(newRevision);
             await _repository.SaveChangesAsync();
@@ -78,7 +78,7 @@ public class SendWorkCommandHandler : ICommandHandler<SendWorkCommand, SendWorkR
                 OrderId = request.Id,
                 CreatedAt = DateTime.UtcNow,
             };
-           /* if (request.Image != null)
+            if (request.Image != null)
             {
                     var uploadResult = _cloudinaryService.UploadFile(request.Image);
                     if (uploadResult == null)
@@ -86,7 +86,7 @@ public class SendWorkCommandHandler : ICommandHandler<SendWorkCommand, SendWorkR
                         throw new Exception("Failed to upload image to cloud storage.");
                     }
                     delivery.AttachmentUrls.Add(uploadResult);
-            }*/
+            }
 
             await _repository.AddAsync(delivery);
             await _repository.SaveChangesAsync();

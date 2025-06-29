@@ -33,17 +33,21 @@ public class GetReportTablesQueryHandler : IQueryHandler<GetReportTablesQuery, M
 
         var reportedItems = await _repository.ToListAsync(reportedItemsQueryable);
 
-        var reportTable = await Task.WhenAll( reportedItems.Select(async x =>
+        var reportTable = new List<ReportTableModel>();
+
+        foreach (var x in reportedItems)
         {
-        var reportedByUserInfo = await _userService.GetUserEmailByUserIdAsync(x.ReportedById);
-        return new ReportTableModel
-        {
-            Id = x.Id,
-            CreatedBy = reportedByUserInfo,
-            Reason = x.Reason,
-            CreatedOn = x.CreatedAt.ToString("dd MMM, yyyy"),
-        };
-        }));
+            var reportedByUserInfo = await _userService.GetUserEmailByUserIdAsync(x.ReportedById);
+
+            reportTable.Add(new ReportTableModel
+            {
+                Id = x.Id,
+                CreatedBy = reportedByUserInfo,
+                Reason = x.Reason,
+                CreatedOn = x.CreatedAt.ToString("dd MMM, yyyy"),
+            });
+        }
+
 
         var status = string.Empty;
         if(request.GigId.HasValue)

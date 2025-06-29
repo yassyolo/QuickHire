@@ -58,18 +58,21 @@ public class SellerDetailsQueryHandler : IQueryHandler<SellerDetailsQuery, GigSe
 
         var reviewsList = ordersList.SelectMany(x => x.Reviews).ToList();
 
-        var reviewModels = await Task.WhenAll(reviewsList.Select(async x =>
+        var reviewModels = new List<ReviewsForUserModel>();
+
+        foreach (var x in reviewsList)
         {
             var userDetails = await _userService.GetBuyerReviewDetailsAsync(x.Order.BuyerId, x.Order.SellerId);
-            return new ReviewsForUserModel
+            reviewModels.Add(new ReviewsForUserModel
             {
                 FullName = userDetails.fullName,
                 Date = x.CreatedOn.ToString("dd MMMM yyyy"),
                 Rating = x.Rating,
                 ProfileImageUrl = userDetails.profileImageUrl,
-                Comment = x.Comment,              
-            };
-        }));
+                Comment = x.Comment,
+            });
+        }
+
 
         return new GigSellerDetailsModel
         {

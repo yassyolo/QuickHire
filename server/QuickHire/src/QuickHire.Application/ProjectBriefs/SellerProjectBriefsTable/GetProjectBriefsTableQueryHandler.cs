@@ -22,14 +22,21 @@ public class GetProjectBriefsTableQueryHandler : IQueryHandler<GetProjectBriefsT
         var suitableProjectBriefsQueryable = _repository.GetAllIncluding<Domain.ProjectBriefs.SuitableSellerProjectBrief>(x => x.ProjectBrief).Where(x => x.SellerId == sellerId);
         var suitableProjectBriefs = await _repository.ToListAsync(suitableProjectBriefsQueryable);
 
-        var model = await Task.WhenAll(suitableProjectBriefs.Select(async x => new SellerProjectBriefTableModel
+        var model = new List<SellerProjectBriefTableModel>();
+
+        foreach (var x in suitableProjectBriefs)
         {
-            Id = x.ProjectBrief.Id,
-            BuyerUsername = await _userService.GetUsernameByBuyerIdAsync(x.ProjectBrief.BuyerId),
-            Description = x.ProjectBrief.Description,
-            DeliveryTimeInDays = x.ProjectBrief.DeliveryTimeInDays.ToString(),
-            Budget = x.ProjectBrief.Budget
-        }).ToList());
+            var buyerUsername = await _userService.GetUsernameByBuyerIdAsync(x.ProjectBrief.BuyerId);
+
+            model.Add(new SellerProjectBriefTableModel
+            {
+                Id = x.ProjectBrief.Id,
+                BuyerUsername = buyerUsername,
+                Description = x.ProjectBrief.Description,
+                DeliveryTimeInDays = x.ProjectBrief.DeliveryTimeInDays.ToString(),
+                Budget = x.ProjectBrief.Budget
+            });
+        }
 
         return model.ToList();
     }

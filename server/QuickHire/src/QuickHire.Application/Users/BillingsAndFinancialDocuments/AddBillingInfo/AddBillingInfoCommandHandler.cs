@@ -44,6 +44,7 @@ public class AddBillingInfoCommandHandler : ICommandHandler<AddBillingInfoComman
                 CompanyName = request.CompanyName,
                 AddressId = address.Id,
                 FullName = request.FullName,
+                UserId = userId,
             };
 
             await _repository.AddAsync(billingDetails);

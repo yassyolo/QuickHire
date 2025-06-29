@@ -23,23 +23,32 @@ public class GetFavouriteListsQueryHandler : IQueryHandler<GetFavouriteListsQuer
         var favouriteListsQueryable = _repository.GetAllIncluding<Domain.Users.FavouriteGigsList>().Where(x => x.BuyerId == buyerId);
         var favouriteLists = await _repository.ToListAsync<Domain.Users.FavouriteGigsList>(favouriteListsQueryable);
 
-        var models = await Task.WhenAll(favouriteLists.Select(async x =>
-        {
-            var favourriteGigsQueryable = _repository.GetAllIncluding<Domain.Users.FavouriteGig>(x => x.Gig).Where(s => s.FavouriteGigsListId == x.Id);
-            var favouriteGigsList = await _repository.ToListAsync<Domain.Users.FavouriteGig>(favourriteGigsQueryable);
-            var images = favouriteGigsList.SelectMany(fg => fg.Gig.ImageUrls.Take(1)).Distinct()
-                .Take(3)
-                .ToList() ?? new List<string>();
+        var models = new List<FavouriteListModel>();
 
-            return new FavouriteListModel
+        foreach (var x in favouriteLists)
+        {
+            var favourriteGigsQueryable = _repository
+                .GetAllIncluding<Domain.Users.FavouriteGig>(s => s.Gig)
+                .Where(s => s.FavouriteGigsListId == x.Id);
+
+            var favouriteGigsList = await _repository.ToListAsync<Domain.Users.FavouriteGig>(favourriteGigsQueryable);
+
+            var images = favouriteGigsList
+                .SelectMany(fg => fg.Gig.ImageUrls.Take(1))
+                .Distinct()
+                .Take(3)
+                .ToList();
+
+            models.Add(new FavouriteListModel
             {
                 Id = x.Id,
                 Name = x.Name,
-                Description = x.Description!,
+                Description = x.Description ?? "",
                 GigCount = x.FavouriteGigs?.Count() ?? 0,
                 ImageUrls = images
-            };
-        }));
+            });
+        }
+
 
         return models;
     }

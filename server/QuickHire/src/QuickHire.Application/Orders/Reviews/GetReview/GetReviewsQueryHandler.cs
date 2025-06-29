@@ -51,10 +51,13 @@ public class GetReviewsQueryHandler : IQueryHandler<GetReviewsQuery, List<Review
 
         var reviewsList = await _repository.ToListAsync<QuickHire.Domain.Orders.Review>(reviewsQueryable);
 
-        var reviewModels = await Task.WhenAll(reviewsList.Select(async x =>
+        var reviewModels = new List<ReviewResponseRowModel>();
+
+        foreach (var x in reviewsList)
         {
             var userDetails = await _userService.GetBuyerReviewDetailsAsync(x.Order.BuyerId, x.Order.SellerId);
-            return new ReviewResponseRowModel
+
+            reviewModels.Add(new ReviewResponseRowModel
             {
                 FullName = userDetails.fullName,
                 Date = x.CreatedOn.ToString("dd MMMM yyyy"),
@@ -65,10 +68,10 @@ public class GetReviewsQueryHandler : IQueryHandler<GetReviewsQuery, List<Review
                 Price = x.Order.TotalPrice.ToString("C"),
                 CountryName = userDetails.countryName,
                 RepeatBuyer = userDetails.repeatBuyer
-            };
-        }));
+            });
+        }
 
-        return reviewModels.ToList();
+        return reviewModels;
     }
    
 }
