@@ -16,8 +16,14 @@ export function DeliveryMessage({ senderProfilePictureUrl, senderUsername, times
                 <div className="decription-title">Description</div>
                 <div className="revision-description">{payload.description}</div>
                 <div className="decription-title">Attahcments</div>
-                <div className="revision-attachments d-flex flex-row" style={{ overflowX: 'auto', gap: '20px' }}>
-                        <img className="attachment-image" src={payload.attachment}  />
+                <div className="revision-attachments d-flex flex-row" style={{
+    overflowX: 'auto',
+    gap: '20px',
+    width: '80%',
+    margin: '0 auto'  
+  }}>
+                        <img className="attachment-image" src={payload.attachment}     style={{ objectFit: 'cover', width: '400px', height: '250px', borderRadius: '10px' }}
+  />
                 </div>
             </div>
           

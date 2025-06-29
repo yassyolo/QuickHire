@@ -151,7 +151,8 @@ export  function OrderDetails() {
 {view === "review" && order && <OrderReview review={order.review} orderStep={order.currentStatus}/>}
 {view === "delivery" && order && <OrderDelivery delivery={order.delivery} />}
 {view === "details" && order && <OrderInfo gigRequirements={order.gigRequirements} gigId={order.gigId} gigTitle={order.gigTitle} gigImageUrl={order.gigImageUrl} orderNumber={order.orderNumber} paymentPlan={order.plan}/>}
-{view === "chat" && order?.conversationId !== undefined && <OrderChat id={order.conversationId} orderId={orderId} />}
+{view === "chat" && order?.conversationId !== undefined && <OrderChat onUpdateOrderDetails={fetchOrderDetails} 
+ id={order.conversationId} orderId={orderId} />}
 <OrderProgressTracker steps={order?.steps ?? []} />
         </div>
         </SellerPage>

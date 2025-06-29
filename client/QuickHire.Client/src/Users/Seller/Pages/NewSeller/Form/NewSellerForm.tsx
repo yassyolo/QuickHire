@@ -247,7 +247,7 @@ const handleSaveNewUser = async () => {
 
   try {
     await axios.post("https://localhost:7267/seller/new", formData);
-      switchMode("seller");
+      await switchMode("seller");
       navigate("/seller/profile");
 
   } catch (err) {

@@ -1,7 +1,4 @@
 import { MessageItem } from "../Common/MessageItem";
-import { useAuth } from "../../../../../AuthContext";
-import { useState } from "react";
-import { ActionButton } from "../../../../../Shared/Buttons/ActionButton/ActionButton";
 import "./RevisionMessage.css";
 import { RevisionPayload } from "../../../../../Orders/Pages/OrderDetails/OrderChat/OrderChat";
 
@@ -14,11 +11,6 @@ interface CustomOfferProps {
 }
 
 export function RevisionMessage({ senderProfilePictureUrl, senderUsername, timestamp, payload, content }: CustomOfferProps) {
-    const { user } = useAuth();
-    const [showAcceptRevisionModal, setAcceptRevisionModal] = useState(false);
-    const handleShowRevisionModal = () => {
-        setAcceptRevisionModal(!showAcceptRevisionModal);
-    }
 
     return (
         <MessageItem senderProfilePictureUrl={senderProfilePictureUrl} senderUsername={senderUsername} content={content} timestamp={timestamp}>
@@ -27,20 +19,25 @@ export function RevisionMessage({ senderProfilePictureUrl, senderUsername, times
                 <div className="decription-title">Description</div>
                 <div className="revision-description">{payload.description}</div>
                 <div className="decription-title">Attahcments</div>
-                <div className="revision-attachments d-flex flex-row" style={{ overflowX: 'auto', gap: '20px' }}>
-                    <img className="attachment-image" src={payload.attachment}  />
-                </div>
+               <div
+  className="revision-attachments d-flex flex-row justify-content-center"
+  style={{
+    overflowX: 'auto',
+    gap: '20px',
+    width: '80%',
+    margin: '0 auto'  
+  }}
+>
+  <img
+    className="attachment-image"
+    src={payload.attachment}
+    style={{ objectFit: 'cover', width: '400px', height: '250px', borderRadius: '10px' }}
+  />
+</div>
             
 
             </div>
-          {user?.mode === "buyer" && (
-            <>
-            
-                <ActionButton className="withdraw-offer-button" onClick={handleShowRevisionModal} text={"Accept"} ariaLabel={"Accept revision offer"}></ActionButton>
-                            {showAcceptRevisionModal && <div></div>}
-
-            </>
-          ) }
+          
 
 
         </MessageItem>
